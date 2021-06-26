@@ -349,98 +349,113 @@
 </ul>
 </li>
 <li>策略<code>Policy</code> $\pi$<ul>
-<li>一般是一个条件概率分布$\pi(a|s)$，即状态 $S_t=s$ 时采取动作$A_t=a$的概率。<h2 id="MDP-有限-马尔科夫决策过程"><a href="#MDP-有限-马尔科夫决策过程" class="headerlink" title="MDP: (有限)马尔科夫决策过程"></a>MDP: (有限)马尔科夫决策过程</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3>&emsp;&emsp; (有限)马尔科夫决策过程中，$\mathcal{S},\mathcal{A},\mathcal{R}$都是有限且离散的，且我们假设$t$时刻的状态 $S_{t}$ 和 $R_{t}$ 都指依赖于上一时刻$t-1$时候的状态 $S_{t-1}$ 和 动作 $A_{t-1}$。即：<br>$$<br>p(s’,r|s,a)\overset{def}{=}P(S_t=s’,R_t=r|S_{t-1}=s, A_{t-1}=a)<br>$$</li>
+<li>一般是一个条件概率分布$\pi(a|s)$，即状态 $S_t=s$ 时采取动作$A_t=a$的概率。<h2 id="MDP-有限-马尔科夫决策过程"><a href="#MDP-有限-马尔科夫决策过程" class="headerlink" title="MDP: (有限)马尔科夫决策过程"></a>MDP: (有限)马尔科夫决策过程</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3>&emsp;&emsp; (有限)马尔科夫决策过程中，$\mathcal{S},\mathcal{A},\mathcal{R}$都是有限且离散的，且我们假设$t$时刻的状态 $S_{t}$ 和 $R_{t}$ 都指依赖于上一时刻$t-1$时候的状态 $S_{t-1}$ 和 动作 $A_{t-1}$。即：<script type="math/tex; mode=display">
+p(s',r|s,a)\overset{def}{=}P(S_t=s',R_t=r|S_{t-1}=s, A_{t-1}=a)</script></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>注意这里的$S_i,A_i,R_i$都是随机变量。</p>
 </li>
-<li><p>$p$是一个映射: $p: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow [0,1]$</p>
-</li>
-<li><p>我们可以得到一些基本的概率表示：</p>
-<ul>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统状态的概率：<br>$$<br>  p(s’|s,a)=\sum_{r\in \mathcal{R}}p(s’,r|s,a)<br>$$</li>
-<li>给定上一时刻状态 $s$，当前系统状态的概率：<br>$$<br>  \begin{aligned}<pre><code>p(s&#39;|s)&amp;=\frac&#123;\sum_&#123;a&#125;p(s&#39;,s,a)&#125;&#123;p(s)&#125;=\frac&#123;\sum_&#123;a&#125;p(s&#39;|s,a)\pi(a|s)p(s)&#125;&#123;p(s)&#125;\\
-&amp;=\sum_&#123;a\in \mathcal&#123;A&#125;&#125;\pi(a|s)p(s&#39;|s,a)
-</code></pre>
-  \end{aligned}<br>$$</li>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统奖励值的概率：<br>$$<br>  p(r|s,a)=\sum_{s’\in \mathcal{S}}p(s’,r|s,a)<br>$$</li>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统的奖励期望：<br>$$<br>  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in \mathcal{R}}r\sum_{s’\in\mathcal{S}}p(s’,r|s,a)<br>$$</li>
-<li>给定上一时刻状态 $s$ 后，当前系统的奖励期望为：<br>$$<br>  \begin{aligned}<pre><code>R(s)&amp;=E(R_t|S_&#123;t-1&#125;=s)=\sum_&#123;r\in \mathcal&#123;R&#125;&#125;r\sum_&#123;a\in\mathcal&#123;A&#125;&#125;p(r|s,a)\pi(a|s)\\
-&amp;=\sum_&#123;a\in\mathcal&#123;A&#125;&#125;\pi(a|s)\sum_&#123;r\in \mathcal&#123;R&#125;&#125;rp(r|s,a)\\
-&amp;=\sum_&#123;a\in\mathcal&#123;A&#125;&#125;\pi(a|s)R(s,a)
-</code></pre>
-  \end{aligned}<br>$$</li>
-<li>给定上一时刻状态 $s$ 和动作 $a$，当前时刻状态$s’$ 后，当前系统的奖励期望：<br>$$<br>  \begin{aligned}<pre><code>E(R_t|S_&#123;t-1&#125;,A_&#123;t-1&#125;,S_t)&amp;=\sum_&#123;r\in \mathcal&#123;R&#125;&#125;r*p(r|s,a,s&#39;)\\
-&amp;=\sum_&#123;r\in \mathcal&#123;R&#125;&#125;r\frac&#123;p(s&#39;,r|s,a)&#125;&#123;p(s&#39;|s,a)&#125;
-</code></pre>
-  \end{aligned}<br>$$</li>
+<li>$p$是一个映射: $p: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow [0,1]$</li>
+<li>我们可以得到一些基本的概率表示：<ul>
+<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统状态的概率：<script type="math/tex; mode=display">
+  p(s'|s,a)=\sum_{r\in \mathcal{R}}p(s',r|s,a)</script></li>
+<li>给定上一时刻状态 $s$，当前系统状态的概率：<script type="math/tex; mode=display">
+  \begin{aligned}
+    p(s'|s)&=\frac{\sum_{a}p(s',s,a)}{p(s)}=\frac{\sum_{a}p(s'|s,a)\pi(a|s)p(s)}{p(s)}\\
+    &=\sum_{a\in \mathcal{A}}\pi(a|s)p(s'|s,a)
+  \end{aligned}</script></li>
+<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统奖励值的概率：<script type="math/tex; mode=display">
+  p(r|s,a)=\sum_{s'\in \mathcal{S}}p(s',r|s,a)</script></li>
+<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统的奖励期望：<script type="math/tex; mode=display">
+  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in \mathcal{R}}r\sum_{s'\in\mathcal{S}}p(s',r|s,a)</script></li>
+<li>给定上一时刻状态 $s$ 后，当前系统的奖励期望为：<script type="math/tex; mode=display">
+  \begin{aligned}
+    R(s)&=E(R_t|S_{t-1}=s)=\sum_{r\in \mathcal{R}}r\sum_{a\in\mathcal{A}}p(r|s,a)\pi(a|s)\\
+    &=\sum_{a\in\mathcal{A}}\pi(a|s)\sum_{r\in \mathcal{R}}rp(r|s,a)\\
+    &=\sum_{a\in\mathcal{A}}\pi(a|s)R(s,a)
+  \end{aligned}</script></li>
+<li>给定上一时刻状态 $s$ 和动作 $a$，当前时刻状态$s’$ 后，当前系统的奖励期望：<script type="math/tex; mode=display">
+  \begin{aligned}
+    E(R_t|S_{t-1},A_{t-1},S_t)&=\sum_{r\in \mathcal{R}}r*p(r|s,a,s')\\
+    &=\sum_{r\in \mathcal{R}}r\frac{p(s',r|s,a)}{p(s'|s,a)}
+  \end{aligned}</script></li>
 </ul>
 </li>
 </ul>
 <h3 id="一些新增定义："><a href="#一些新增定义：" class="headerlink" title="一些新增定义："></a>一些新增定义：</h3><ul>
 <li>章节<code>Episode</code><ul>
-<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state: </code>$\mathcal{S}^{+}$。</li>
+<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state:</code>$\mathcal{S}^{+}$。</li>
 <li>每段<code>episode</code>之后，系统回到初始状态。</li>
 <li>不同的<code>episode</code>之间相互独立。</li>
 <li>每段<code>episode</code>的终止时刻<code>T</code>都不一样，是一个随机变量。</li>
+<li>回报<code>Return</code>：$t$时刻采取动作$A_t$后，后续全部的回报被定义为：<script type="math/tex; mode=display">
+G_t\overset{def}{=}R_{t+1}+\gamma R_{t+2}...=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}</script></li>
 </ul>
 </li>
-<li>回报<code>Return</code>：$t$时刻采取动作$A_t$后，后续全部的回报被定义为：<br>$$<br>  G_t\overset{def}{=}R_{t+1}+\gamma R_{t+2}…=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}<br>$$<ul>
 <li>其中$T$是终止时刻。</li>
 <li>关于<code>episode task</code>和<code>continue task</code>统一：<ul>
 <li>$T$时刻之后，可以看做进入了一个<code>special absorbing state</code>状态，之后时刻都回到该状态，且回报为$0$。</li>
 <li>$T=\infty$代表无<code>terminal state</code>的过程。</li>
+<li>(状态)价值函数<code>state-value function</code>：$t$时刻系统状态处于$s$时，基于策略$\pi$的价值函数$v_{\pi}(s)$被定义为后续的回报期望，即：<script type="math/tex; mode=display">
+\begin{aligned}
+v_{\pi}(s)&\overset{def}{=}E[G_t|S_t=s]\\
+&=E[R_{t+1}+\gamma G_{t+1}|S_t=s]
+\end{aligned}</script></li>
 </ul>
 </li>
+<li>价值函数定义了不同策略$\pi$之间的偏序关系。<ul>
+<li>动作价值函数：<script type="math/tex; mode=display">
+\begin{aligned}
+q_{\pi}(s,a)&\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\\
+&=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]
+\end{aligned}</script></li>
+<li>最优策略：</li>
 </ul>
 </li>
-<li>(状态)价值函数<code>state-value function</code>：$t$时刻系统状态处于$s$时，基于策略$\pi$的价值函数$v_{\pi}(s)$被定义为后续的回报期望，即：<br>$$<br>  \begin{aligned}<pre><code>v_&#123;\pi&#125;(s)&amp;\overset&#123;def&#125;&#123;=&#125;E[G_t|S_t=s]\\
-&amp;=E[R_&#123;t+1&#125;+\gamma G_&#123;t+1&#125;|S_t=s]
-</code></pre>
-  \end{aligned}<br>$$<ul>
-<li>价值函数定义了不同策略$\pi$之间的偏序关系。</li>
+<li>策略是最优当且仅当对于所有状态 $s$，其<code>state-value function</code>优于其他策略。或者对于所有状态 $s$ 和动作 $a$，其<code>action-value function</code>优于其他策略。<script type="math/tex; mode=display">
+\begin{aligned}
+v_{\pi^*}(s)&=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\\
+q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
+&=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a] 
+\end{aligned}</script><ul>
+<li>性质：</li>
 </ul>
 </li>
-<li>动作价值函数：<br>$$<br>\begin{aligned}<br>  q_{\pi}(s,a)&amp;\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\<br>  &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]<br>\end{aligned}<br>$$</li>
-<li>最优策略：<ul>
-<li>策略是最优当且仅当对于所有状态 $s$，其<code>state-value function</code>优于其他策略。或者对于所有状态 $s$ 和动作 $a$，其<code>action-value function</code>优于其他策略。<br>$$<br>\begin{aligned}<br>v_{\pi^*}(s)&amp;=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\<br>q_{\pi^*}(s,a)&amp;=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\<br>&amp;=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a]<br>\end{aligned}<br>$$</li>
-</ul>
-</li>
-<li>性质：<ul>
-<li>$v_{\pi}$和$q_{\pi}$之间的关系，若令$g=G_t$：<br>$$<br>  \begin{aligned}<pre><code>v_&#123;\pi&#125;(s)&amp;=\sum_gg*p(g|s)\\
-&amp;=\sum_gg\sum_&#123;a\in \mathcal&#123;A&#125;&#125;p(g|s,a)\pi(a|s)\\
-&amp;=\sum_&#123;a\in \mathcal&#123;A&#125;&#125;\pi(a|s)\sum_gg*p(g|s,a)\\
-&amp;=\sum_&#123;a\in \mathcal&#123;A&#125;&#125;\pi(a|s)q_&#123;\pi&#125;(s,a)\\
-</code></pre>
-  \end{aligned}<br>$$</li>
+<li>$v_{\pi}$和$q_{\pi}$之间的关系，若令$g=G_t$：<script type="math/tex; mode=display">
+  \begin{aligned}
+    v_{\pi}(s)&=\sum_gg*p(g|s)\\
+    &=\sum_gg\sum_{a\in \mathcal{A}}p(g|s,a)\pi(a|s)\\
+    &=\sum_{a\in \mathcal{A}}\pi(a|s)\sum_gg*p(g|s,a)\\
+    &=\sum_{a\in \mathcal{A}}\pi(a|s)q_{\pi}(s,a)\\
+  \end{aligned}</script></li>
 <li>相邻时刻 $t$ 和 $t+1$ 的递推关系(<strong>贝尔曼方程</strong>)，令$s’=S_{t+1}$：<ul>
-<li>$v_{\pi}(s)$ 和 $v_{\pi}(s’)$：<br>$$<br>  \begin{aligned}<pre><code>v_&#123;\pi&#125;(s)&amp;=E[R_&#123;t+1&#125;|S_t=s]+\gamma E[G_&#123;t+1&#125;|S_t=s]\\
-&amp;=R(s)+\gamma \sum_&#123;s&#39;&#125;p(s&#39;|s)E[G_&#123;t+1&#125;|S_&#123;t+1&#125;=s&#39;]\\
-&amp;=R(s)+\gamma \sum_&#123;s&#39;&#125;p(s&#39;|s)v_&#123;\pi&#125;(s&#39;)\\
-&amp;=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_&#123;s&#39;&#125;p(s&#39;|s,a)v_&#123;\pi&#125;(s&#39;)\\
-&amp;=\sum_a\pi(a|s)\sum_&#123;s&#39;&#125;\sum_rp(s&#39;,r|s,a)[r+\gamma v_&#123;\pi&#125;(s&#39;)]
-</code></pre>
-  \end{aligned}<br>$$<ul>
+<li>$v_{\pi}(s)$ 和 $v_{\pi}(s’)$：<script type="math/tex; mode=display">
+  \begin{aligned}
+    v_{\pi}(s)&=E[R_{t+1}|S_t=s]+\gamma E[G_{t+1}|S_t=s]\\
+    &=R(s)+\gamma \sum_{s'}p(s'|s)E[G_{t+1}|S_{t+1}=s']\\
+    &=R(s)+\gamma \sum_{s'}p(s'|s)v_{\pi}(s')\\
+    &=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_{s'}p(s'|s,a)v_{\pi}(s')\\
+    &=\sum_a\pi(a|s)\sum_{s'}\sum_rp(s',r|s,a)[r+\gamma v_{\pi}(s')]
+  \end{aligned}</script><ul>
 <li>直观上看，就是 $t$ 时刻产生的未来回报期望 = $t$时刻产生的即时奖励 + 从$t$转移到 $t+1$ 时刻之后基于 $t+1$ 时刻的未来回报期望。</li>
 </ul>
 </li>
-<li>$q_{\pi}(s,a)$ 和 $q_{\pi}(s’,a’)$：<br>$$<br>  \begin{aligned}<pre><code>q_&#123;\pi&#125;(s,a)&amp;=E[R_&#123;t+1&#125;|S_t=s,A_t=a]+\gamma E[G_&#123;t+1&#125;|S_t=s,A_t=a]\\
-&amp;=R(s,a)+\gamma \sum_&#123;s&#39;&#125;\sum_&#123;a&#39;&#125;p(s&#39;,a&#39;|s,a)E[G_&#123;t+1&#125;|S_&#123;t+1&#125;=s&#39;,A_&#123;t+1&#125;=a&#39;]\\
-&amp;=R(s,a)+\gamma \sum_&#123;s&#39;&#125;\sum_&#123;a&#39;&#125;p(s&#39;,a&#39;|s,a)q_&#123;\pi&#125;(s&#39;,a&#39;)\\
-&amp;=R(s,a)+\gamma \sum_&#123;a&#39;&#125;\pi(a&#39;|s&#39;)\sum_&#123;s&#39;&#125;p(s&#39;|s,a)q_&#123;\pi&#125;(s&#39;,a&#39;)
-</code></pre>
-  \end{aligned}<br>$$</li>
-</ul>
-</li>
+<li>$q_{\pi}(s,a)$ 和 $q_{\pi}(s’,a’)$：<script type="math/tex; mode=display">
+  \begin{aligned}
+    q_{\pi}(s,a)&=E[R_{t+1}|S_t=s,A_t=a]+\gamma E[G_{t+1}|S_t=s,A_t=a]\\
+    &=R(s,a)+\gamma \sum_{s'}\sum_{a'}p(s',a'|s,a)E[G_{t+1}|S_{t+1}=s',A_{t+1}=a']\\
+    &=R(s,a)+\gamma \sum_{s'}\sum_{a'}p(s',a'|s,a)q_{\pi}(s',a')\\
+    &=R(s,a)+\gamma \sum_{a'}\pi(a'|s')\sum_{s'}p(s'|s,a)q_{\pi}(s',a')
+  \end{aligned}</script></li>
 </ul>
 </li>
 </ul>
 <h3 id="待解问题："><a href="#待解问题：" class="headerlink" title="待解问题："></a>待解问题：</h3><ul>
 <li>MDP主要包括两个问题：<ul>
-<li>预测<code>Prediction</code>问题，即给定模型$\mu ={\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma}$，求$v_{\pi}(s)$</li>
-<li>控制<code>Control</code>问题，给定模型$\mu = {\mathcal{S},\mathcal{A},\mathcal{R},P, \gamma}$，求解最佳策略$\pi^*$。</li>
+<li>预测<code>Prediction</code>问题，即给定模型$\mu =\{\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma\}$，求$v_{\pi}(s)$</li>
+<li>控制<code>Control</code>问题，给定模型$\mu = \{\mathcal{S},\mathcal{A},\mathcal{R},P, \gamma\}$，求解最佳策略$\pi^*$。</li>
 </ul>
 </li>
 </ul>
@@ -454,25 +469,28 @@
 <h2 id="动态规划法"><a href="#动态规划法" class="headerlink" title="动态规划法"></a>动态规划法</h2><h3 id="预测Prediction问题："><a href="#预测Prediction问题：" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><ul>
 <li><strong>解析法</strong>：<ul>
 <li>由$v_{\pi}(s)=\sum_a\pi(a|s)\sum_{s’}\sum_rp(s’,r|s,a)[r+\gamma v_{\pi}(s’)]$可知，求解全状态其实就是在解一个线性方程组。<ul>
-<li>令：<br>$$<br>  \begin{aligned}<pre><code>b(s)&amp;=\sum_a\pi(a|s)\sum_&#123;s&#39;,r&#125;p(s&#39;,r|s,a)\\
-w(s&#39;,s)&amp;=\sum_a\pi(a|s)\sum_rp(s&#39;,r|s,a)
-</code></pre>
-  \end{aligned}<br>$$</li>
-<li>则有：<br>$$<br>  \begin{aligned}<pre><code>v_&#123;\pi&#125;(s_1)&amp;=
-\sum_a\pi(a|s_1)\sum_&#123;s&#39;&#125;\sum_rp(s&#39;,r|s_1,a)[r+\gamma v_&#123;\pi&#125;(s&#39;)]\\
-v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
-+\gamma[w(s&#39;_1, s_0),...,w(s&#39;_d,s_0)]
-\begin&#123;bmatrix&#125;
-  v_&#123;\pi&#125;(s&#39;_1)\\
-  ...\\
-  v_&#123;\pi&#125;(s&#39;_d)
-\end&#123;bmatrix&#125;
-</code></pre>
-  \end{aligned}<br>$$</li>
-<li>即：<br>$$<br>  \begin{aligned}<pre><code>\mathbf&#123;v&#125;&amp;=\mathbf&#123;W&#125;\mathbf&#123;v&#125;+\mathbf&#123;b&#125;\\
-\mathbf&#123;v&#125;&amp;=(\mathbf&#123;E&#125;-\mathbf&#123;W&#125;)^&#123;-1&#125;\mathbf&#123;b&#125;
-</code></pre>
-  \end{aligned}<br>$$</li>
+<li>令：<script type="math/tex; mode=display">
+  \begin{aligned}
+    b(s)&=\sum_a\pi(a|s)\sum_{s',r}p(s',r|s,a)\\
+    w(s',s)&=\sum_a\pi(a|s)\sum_rp(s',r|s,a)
+  \end{aligned}</script></li>
+<li>则有：<script type="math/tex; mode=display">
+  \begin{aligned}
+    v_{\pi}(s_1)&=
+    \sum_a\pi(a|s_1)\sum_{s'}\sum_rp(s',r|s_1,a)[r+\gamma v_{\pi}(s')]\\
+    v_{\pi}(s_1)&=rb(s_1)
+    +\gamma[w(s'_1, s_0),...,w(s'_d,s_0)]
+    \begin{bmatrix}
+      v_{\pi}(s'_1)\\
+      ...\\
+      v_{\pi}(s'_d)
+    \end{bmatrix}
+  \end{aligned}</script></li>
+<li>即：<script type="math/tex; mode=display">
+  \begin{aligned}
+    \mathbf{v}&=\mathbf{W}\mathbf{v}+\mathbf{b}\\
+    \mathbf{v}&=(\mathbf{E}-\mathbf{W})^{-1}\mathbf{b}
+  \end{aligned}</script></li>
 </ul>
 </li>
 </ul>
@@ -483,7 +501,7 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 <li>随机初始化：$v(s)$</li>
 <li>$Loop:$<ul>
 <li>$\Delta \leftarrow 0$</li>
-<li>$for\ s\in S:$<ul>
+<li>$for s\in S:$<ul>
 <li>$v\leftarrow v(s)$</li>
 <li>$v(s)\leftarrow \sum_a\pi(a|s)\sum_{s’}\sum_rp(s’,r|s,a)[r+\gamma v(s’)]$</li>
 <li>$\Delta \leftarrow max(\Delta, |v-v(s)|)$</li>
@@ -491,7 +509,7 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 </li>
 </ul>
 </li>
-<li>$until\ \Delta &lt; \theta$</li>
+<li>$until \Delta &lt; \theta$</li>
 </ul>
 </li>
 </ul>
@@ -501,7 +519,7 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 <li><p><strong>基于策略的迭代<code>Policy Iteration</code></strong>:</p>
 <ul>
 <li>1: 初始化<code>Initialization</code>:<ul>
-<li>随机初始化：$v(s)\in R, \pi(s)\in \mathcal{A}(s)\ for\ all\ s\in \mathcal{S}$</li>
+<li>随机初始化：$v(s)\in R, \pi(s)\in \mathcal{A}(s) for all s\in \mathcal{S}$</li>
 </ul>
 </li>
 <li>2: 回报预估<code>Policy Evaluation</code>:<ul>
@@ -510,13 +528,13 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 </li>
 <li>3: 策略改进<code>Policy Improvement</code>:<ul>
 <li>$policy_stable\leftarrow true$</li>
-<li>$for\ s\in S:$<ul>
+<li>$for s\in S:$<ul>
 <li>$old_action\leftarrow \pi(s)$</li>
 <li>$\pi(s)\leftarrow \underset{a}{\operatorname{argmax}}\sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$if\ old_action\neq\pi(s),\ policy_stable\leftarrow false$</li>
+<li>$if old_action\neq\pi(s), policy_stable\leftarrow false$</li>
 </ul>
 </li>
-<li>$if\ policy_stable\leftarrow false,\ goto\ 2$</li>
+<li>$if policy_stable\leftarrow false, goto 2$</li>
 </ul>
 </li>
 </ul>
@@ -530,7 +548,7 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 <li>2: 迭代(<code>Evaluation</code>和<code>Improvement</code>统一)：<ul>
 <li>$Loop:$<ul>
 <li>$\Delta \leftarrow 0$</li>
-<li>$for\ s\in S:$<ul>
+<li>$for s\in S:$<ul>
 <li>$v\leftarrow V(s)$</li>
 <li>$V(s)\leftarrow \underset{a}{max}\sum_a\pi(a|s)\sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
 <li>$\Delta \leftarrow max(\Delta, |v-V(s)|)$</li>
@@ -538,11 +556,11 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 </li>
 </ul>
 </li>
-<li>$until\ \Delta &lt; \theta$</li>
+<li>$until \Delta &lt; \theta$</li>
 </ul>
 </li>
 <li>3: 产出<code>Deterministic</code>最优策略：<ul>
-<li>$for\ s\in S$<ul>
+<li>$for s\in S$<ul>
 <li>$\pi(s)=\underset{a}{\operatorname{argmax}} \sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
 </ul>
 </li>
@@ -550,25 +568,24 @@ v_&#123;\pi&#125;(s_1)&amp;=rb(s_1)
 </li>
 </ul>
 </li>
-<li><p><strong>异步动态规划</strong></p>
-</li>
+<li><strong>异步动态规划</strong></li>
 </ul>
-<h2 id="蒙特卡洛法"><a href="#蒙特卡洛法" class="headerlink" title="蒙特卡洛法"></a>蒙特卡洛法</h2><h3 id="预测Prediction问题：-1"><a href="#预测Prediction问题：-1" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><p>&emsp;&emsp; 给定策略$\pi$，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过 $avg$ 来估计 $expectation$。<br>即$v_{\pi}(s)=avg(G_t),s.t\ S_t=s$</p>
+<h2 id="蒙特卡洛法"><a href="#蒙特卡洛法" class="headerlink" title="蒙特卡洛法"></a>蒙特卡洛法</h2><h3 id="预测Prediction问题：-1"><a href="#预测Prediction问题：-1" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><p>&emsp;&emsp; 给定策略$\pi$，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过 $avg$ 来估计 $expectation$。<br>即$v_{\pi}(s)=avg(G_t),s.t S_t=s$</p>
 <ul>
 <li><strong>First-visit MC prediction</strong>:<br>给定策略$\pi$后，状态$s$可能会被多次访问，那么第一次访问$s$后的平均回报的预估就是<code>First-visit MC prediction</code><ul>
 <li><code>Input</code>: $\pi$</li>
 <li><code>Initialize</code>：<ul>
-<li>$Randomly\ initialize\ V(s)\ for\ all\ s\in \mathcal{S}$</li>
+<li>$Randomly initialize V(s) for all s\in \mathcal{S}$</li>
 <li>$Return(s)=\mathbf{0}$</li>
 </ul>
 </li>
-<li>$Loop\ forever\ (for\ each\ episode)$:<ul>
-<li>$Generate\ an\ episode\ following\ \pi: S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T$</li>
+<li>$Loop forever (for each episode)$:<ul>
+<li>$Generate an episode following \pi: S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T$</li>
 <li>$G\leftarrow 0$</li>
-<li>$Loop\ for\ each\ step\ of\ episode\ t=T-1,T-2,…,0:$<ul>
+<li>$Loop for each step of episode t=T-1,T-2,…,0:$<ul>
 <li>$G\leftarrow \gamma G+R_{t+1}$</li>
-<li>$Unless\ S_t\ appears\ in\ S_0,…,S_{t-1}$<ul>
-<li>$Append\ G\ to\ Return(S_t)$</li>
+<li>$Unless S_t appears in S_0,…,S_{t-1}$<ul>
+<li>$Append G to Return(S_t)$</li>
 <li>$V(S_t)\leftarrow avg(Returns(S_t))$</li>
 </ul>
 </li>
@@ -2317,21 +2334,26 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
       
         
           
-            <h1 id="提升树boost"><a href="#提升树boost" class="headerlink" title="提升树boost"></a>提升树boost</h1><p>假设样本空间为$\mathcal{D}={y_i, \mathbf{x}<em>i},\ i\in{1,…,N}$，提升树模型是以决策树模型为基础的加法集成模型，可以概括为<br>$$<br>f(\mathbf{x})=f_M(\mathbf{x})=\sum</em>{m=1}^Mh_m(\mathbf{x; {\Theta}_m})<br>$$</p>
-<ul>
+            <h1 id="提升树boost"><a href="#提升树boost" class="headerlink" title="提升树boost"></a>提升树boost</h1><p>假设样本空间为$\mathcal{D}=\{y_i, \mathbf{x}_i\}, i\in\{1,…,N\}$，提升树模型是以决策树模型为基础的加法集成模型，可以概括为</p>
+<script type="math/tex; mode=display">
+f(\mathbf{x})=f_M(\mathbf{x})=\sum_{m=1}^Mh_m(\mathbf{x; {\Theta}_m})</script><ul>
 <li>提升树模型采用前向分步算法：  <ol>
 <li>确定$f_0(\mathbf{x})=0$。</li>
 <li>第$m$步的表达式为$f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+h_m(\mathbf{x, {\Theta}_m})$。</li>
 </ol>
 </li>
 </ul>
-<p>假设第$m$步的树把样本空间划分成$J_m$个不相交${R_{1m},…,R_{J_mm}}$个区域，在每个区域上输出常量$c_j$，则第$m$棵决策树可表示为<br>$$<br>h_m(\mathbf{x},C_m)=\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})<br>$$</p>
-<h3 id="1-GBT"><a href="#1-GBT" class="headerlink" title="1. GBT"></a>1. GBT</h3><p>分类树叫做GBDT, 回归树叫做GBRT<br>对损失函数做一阶泰勒展开近似：<br>$$<br>L(y, f_m(\mathbf{x})) = L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}<em>m}))=L(y,f</em>{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}<em>m})<br>$$<br>则<br>$$<br>\Delta L = L(y, f_m(\mathbf{x})) - L(y, f</em>{m-1}(\mathbf{x})) = \frac{\partial L}{\partial f_{m-1}(\mathbf{x})}h_m(\mathbf{x; {\Theta}_m})<br>$$  </p>
-<p>要使得$\Delta L$降低，一种可选的方案为$h_m(\mathbf{x; {\Theta}<em>m})=-\frac{\partial L}{\partial f</em>{m-1}(\mathbf{x})}$，这样$\Delta L$就恒为负。当$L = L_{MSE}$时，$h_m=2(y-f_{m-1}(\mathbf{x}))=2r_{m-1}$，即前$m-1$棵树的预测的残差。  </p>
+<p>假设第$m$步的树把样本空间划分成$J_m$个不相交$\{R_{1m},…,R_{J_mm}\}$个区域，在每个区域上输出常量$c_j$，则第$m$棵决策树可表示为</p>
+<script type="math/tex; mode=display">
+h_m(\mathbf{x},C_m)=\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})</script><h3 id="1-GBT"><a href="#1-GBT" class="headerlink" title="1. GBT"></a>1. GBT</h3><p>分类树叫做GBDT, 回归树叫做GBRT<br>对损失函数做一阶泰勒展开近似：  </p>
+<script type="math/tex; mode=display">
+L(y, f_m(\mathbf{x})) = L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}_m}))=L(y,f_{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})</script><p>则</p>
+<script type="math/tex; mode=display">
+\Delta L = L(y, f_m(\mathbf{x})) - L(y, f_{m-1}(\mathbf{x})) = \frac{\partial L}{\partial f_{m-1}(\mathbf{x})}h_m(\mathbf{x; {\Theta}_m})</script><p>要使得$\Delta L$降低，一种可选的方案为$h_m(\mathbf{x; {\Theta}_m})=-\frac{\partial L}{\partial f_{m-1}(\mathbf{x})}$，这样$\Delta L$就恒为负。当$L = L_{MSE}$时，$h_m=2(y-f_{m-1}(\mathbf{x}))=2r_{m-1}$，即前$m-1$棵树的预测的残差。  </p>
 <h4 id="GBRT算法："><a href="#GBRT算法：" class="headerlink" title="GBRT算法："></a>GBRT算法：</h4><p>算法：    </p>
 <ul>
 <li>输入：    <ul>
-<li>样本空间$\mathcal{D}={y_i, \mathbf{x}_i},\ i\in{1,…,N}$  </li>
+<li>样本空间$\mathcal{D}=\{y_i, \mathbf{x}_i\}, i\in\{1,…,N\}$  </li>
 <li>损失函数$L(y, \hat{y})$    </li>
 </ul>
 </li>
@@ -2341,10 +2363,12 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 </li>
 <li>步骤：  <ul>
 <li>初始化$f_0(\mathbf{x})=argmin \sum_{i=1}^NL(y_i, c)$  </li>
-<li>$for \ \ m\ \ in\ \ [1,…,M]$:  <ul>
-<li>$for\ \ i\ \ in\ \ [1,…,N]$，计算：<br>$$<br>r_{m,i}=-\frac{\partial L(y_i, f_{m-1}(\mathbf{x}<em>i))}{\partial f</em>{m-1}(\mathbf{x}_i)}<br>$$  </li>
-<li>对${r_{m,1},…,r_{m,N}}$拟合一棵回归树，得到$J_m$个区域${R_{1m},…,R_{J_mm}}$  </li>
-<li>$for\ \ j_m\ \ in\ \ [1_m,…,J_m]$，计算：<br>$$<br>c_{j_m}=arg\ \underset{c_{j_m}}{\operatorname{min}}\sum_{\mathbf{x}<em>i\in R</em>{j_mm}}L(y_i, f_{m-1}(\mathbf{x})+c_{j_m})<br>$$  </li>
+<li>$for   m  in  [1,…,M]$:  <ul>
+<li>$for  i  in  [1,…,N]$，计算：  <script type="math/tex; mode=display">
+r_{m,i}=-\frac{\partial L(y_i, f_{m-1}(\mathbf{x}_i))}{\partial f_{m-1}(\mathbf{x}_i)}</script></li>
+<li>对$\{r_{m,1},…,r_{m,N}\}$拟合一棵回归树，得到$J_m$个区域$\{R_{1m},…,R_{J_mm}\}$  </li>
+<li>$for  j_m  in  [1_m,…,J_m]$，计算：  <script type="math/tex; mode=display">
+c_{j_m}=arg\ \underset{c_{j_m}}{\operatorname{min}}\sum_{\mathbf{x}_i\in R_{j_mm}}L(y_i, f_{m-1}(\mathbf{x})+c_{j_m})</script></li>
 <li>更新$f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})$  </li>
 </ul>
 </li>
@@ -2357,28 +2381,55 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 <li>正则化：  </li>
 <li>采样：  </li>
 </ol>
-<h3 id="2-XGboost"><a href="#2-XGboost" class="headerlink" title="2 XGboost"></a>2 XGboost</h3><h4 id="2-1-模型刻画："><a href="#2-1-模型刻画：" class="headerlink" title="2.1 模型刻画："></a>2.1 模型刻画：</h4><p>相对于GBT，XGboost主要有两点改动：1.损失函数做二阶泰勒展开。2. 引入正则项。<br>$$<br>\begin{aligned}<br>L(y, f_m(\mathbf{x}))<br>&amp;=L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}<em>m}))\\<br>&amp;=L(y,f</em>{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})<br>\end{aligned}<br>$$</p>
-<p>令：<br>$$<br>g_i=\frac{\partial L(y_i, f_{m-1}(\mathbf{x}<em>i))}{\partial f</em>{m-1}(\mathbf{x}_i)}\\<br>h_i=<br>$$</p>
-<p>引入正则项后，在样本空间$\mathcal D$上的损失函数为：<br>$$<br>\begin{aligned}<br>\mathcal{L}<br>&amp;=\Omega(h_m)<br>+\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}L(y_i, f_m(\mathbf{x}<em>i))\\<br>&amp;=\Omega(h_m)<br>+\sum</em>{(\mathbf{x}<em>i, y_i)\in \mathcal{D}}L(y_i,f</em>{m-1}(\mathbf{x}_i))<br>+g_ih_m(\mathbf{x}_i; \mathbf{\Theta}_m)<br>+h_ih_m^2(\mathbf{x}_i; \mathbf{\Theta}_m)<br>\end{aligned}<br>$$</p>
-<p>定义正则项：<br>$$<br>\Omega(h_m)=\gamma T+\frac{1}{2}\lambda \sum_{i=1}^Tw_j^2<br>$$</p>
-<p>其中$T$为叶节点的个数，$w_j$为每个叶节点的输出值。<br>则有：<br>$$<br>\mathcal{L}=\sum_{(\mathbf{x}<em>i, y_i)\in \mathcal{D}}\left[ g_iw</em>{q(\mathbf{x}<em>i)}+h_iw</em>{q(\mathbf{x}<em>i)}^2\right] + \gamma T+\frac{1}{2}\lambda \sum</em>{j=1}^Tw_j^2+constant<br>$$</p>
-<p>若令划分到节点$j$的样本集合为$\mathbb{I}<em>j={i|q(\mathbf{x}<em>i)=j}$，则上述公式等价于：<br>$$<br>\mathcal{L}=\sum</em>{j=1}^T[(\sum</em>{i \in \mathbb{I}<em>j}g_i)w_j+\frac{1}{2}(\sum</em>{i\in \mathbb{I}_j}h_i + \lambda )w_j^2]+\gamma T + constant<br>$$</p>
-<p>令$G_j=\sum_{i \in \mathbb{I}<em>j}g_i$，$H_j=\sum</em>{i \in \mathbb{I}<em>j}h_i$，则有:<br>$$<br>\mathcal{L}=\sum</em>{j=1}^T[G_jw_j+\frac{1}{2}(H_j+\lambda )w_j^2]+\gamma T + constant<br>$$</p>
-<ul>
+<h3 id="2-XGboost"><a href="#2-XGboost" class="headerlink" title="2 XGboost"></a>2 XGboost</h3><h4 id="2-1-模型刻画："><a href="#2-1-模型刻画：" class="headerlink" title="2.1 模型刻画："></a>2.1 模型刻画：</h4><p>相对于GBT，XGboost主要有两点改动：1.损失函数做二阶泰勒展开。2. 引入正则项。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+L(y, f_m(\mathbf{x}))
+&=L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}_m}))\\
+&=L(y,f_{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})
+\end{aligned}</script><p>令： </p>
+<script type="math/tex; mode=display">
+g_i=\frac{\partial L(y_i, f_{m-1}(\mathbf{x}_i))}{\partial f_{m-1}(\mathbf{x}_i)}\\
+h_i=</script><p>引入正则项后，在样本空间$\mathcal D$上的损失函数为：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathcal{L}
+&=\Omega(h_m)
++\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}L(y_i, f_m(\mathbf{x}_i))\\
+&=\Omega(h_m)
++\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}L(y_i,f_{m-1}(\mathbf{x}_i))
++g_ih_m(\mathbf{x}_i; \mathbf{\Theta}_m)
++h_ih_m^2(\mathbf{x}_i; \mathbf{\Theta}_m) 
+\end{aligned}</script><p>定义正则项：</p>
+<script type="math/tex; mode=display">
+\Omega(h_m)=\gamma T+\frac{1}{2}\lambda \sum_{i=1}^Tw_j^2</script><p>其中$T$为叶节点的个数，$w_j$为每个叶节点的输出值。<br>则有：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}=\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}\left[ g_iw_{q(\mathbf{x}_i)}+h_iw_{q(\mathbf{x}_i)}^2\right] + \gamma T+\frac{1}{2}\lambda \sum_{j=1}^Tw_j^2+constant</script><p>若令划分到节点$j$的样本集合为$\mathbb{I}_j=\{i|q(\mathbf{x}_i)=j\}$，则上述公式等价于：</p>
+<script type="math/tex; mode=display">
+\mathcal{L}=\sum_{j=1}^T[(\sum_{i \in \mathbb{I}_j}g_i)w_j+\frac{1}{2}(\sum_{i\in \mathbb{I}_j}h_i + \lambda )w_j^2]+\gamma T + constant</script><p>令$G_j=\sum_{i \in \mathbb{I}_j}g_i$，$H_j=\sum_{i \in \mathbb{I}_j}h_i$，则有:</p>
+<script type="math/tex; mode=display">
+\mathcal{L}=\sum_{j=1}^T[G_jw_j+\frac{1}{2}(H_j+\lambda )w_j^2]+\gamma T + constant</script><ul>
 <li>其中$G_j$代表划分为$j$节点的所有样本的一阶偏导数之和</li>
 <li>其中$H_j$代表了划分为$j$节点的所有样本的二阶偏导数之和</li>
 </ul>
-<p>关于$w_j$的偏导为0，则有:<br>$$<br>w_j^*=-\frac{G_j}{H_j+\lambda}<br>$$<br>则有最小损失函数:<br>$$<br>\mathcal{L}=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T+constant<br>$$</p>
-<h4 id="2-2-优化求解"><a href="#2-2-优化求解" class="headerlink" title="2.2 优化求解"></a>2.2 优化求解</h4><p>在每个叶节点上，假设进行分裂，新增划分左右子树集合分别为$\mathbb{I}_L={i|q(\mathbf{x}_i)=L}$，$\mathbb{I}_R={i|q(\mathbf{x}<em>i)=R}$，则可以定义：<br>$$<br>G_L=\sum</em>{i \in \mathbb{I}<em>L}g_i,\ H_L=\sum</em>{i \in \mathbb{I}<em>L}h_i\\<br>G_R=\sum</em>{i \in \mathbb{I}<em>R}g_i,\ H_R=\sum</em>{i \in \mathbb{I}_R}h_i\\<br>G=G_L+G_R, \ H=H_L + H_R<br>$$</p>
-<p>从而不难计算出损失增益$Gain$为：<br>$$<br>Gain=\frac{1}{2}(\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})-\lambda<br>$$</p>
-<ul>
+<p>关于$w_j$的偏导为0，则有:</p>
+<script type="math/tex; mode=display">
+w_j^*=-\frac{G_j}{H_j+\lambda}</script><p>则有最小损失函数:</p>
+<script type="math/tex; mode=display">
+\mathcal{L}=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T+constant</script><h4 id="2-2-优化求解"><a href="#2-2-优化求解" class="headerlink" title="2.2 优化求解"></a>2.2 优化求解</h4><p>在每个叶节点上，假设进行分裂，新增划分左右子树集合分别为$\mathbb{I}_L=\{i|q(\mathbf{x}_i)=L\}$，$\mathbb{I}_R=\{i|q(\mathbf{x}_i)=R\}$，则可以定义：</p>
+<script type="math/tex; mode=display">
+G_L=\sum_{i \in \mathbb{I}_L}g_i,\ H_L=\sum_{i \in \mathbb{I}_L}h_i\\
+G_R=\sum_{i \in \mathbb{I}_R}g_i,\ H_R=\sum_{i \in \mathbb{I}_R}h_i\\
+G=G_L+G_R, \ H=H_L + H_R</script><p>从而不难计算出损失增益$Gain$为：</p>
+<script type="math/tex; mode=display">
+Gain=\frac{1}{2}(\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})-\lambda</script><ul>
 <li>$\lambda$是正则项，表示叶节点增大1，则树的复杂度增加1。</li>
 <li>如果$Gain&gt;0$则进行分裂，否则不进行分裂。</li>
 </ul>
 <p>算法过程：    </p>
 <ul>
 <li>输入：<ul>
-<li>样本空间$\mathcal{D}={(\mathbf{x_1},y_1),…,(\mathbf{x_n}, y_n)}$</li>
+<li>样本空间$\mathcal{D}=\{(\mathbf{x_1},y_1),…,(\mathbf{x_n}, y_n)\}$</li>
 <li>属于当前叶节点的样本下标 $index$ 的集合 $\mathbb{I}$</li>
 <li>假设输入 $\mathbf{x}$ 共 $K$ 个特征</li>
 </ul>
@@ -2388,11 +2439,23 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 </ul>
 </li>
 <li>过程：<ul>
-<li>计算$score\leftarrow 0,\ G\leftarrow \sum_{i \in \mathbb{I}}g_i$，$H\leftarrow \sum_{i \in \mathbb{I}}h_i$</li>
-<li>$for\ \  k \ \ in\ \ {1,…,K}:$<ul>
-<li>初始化：$G_L\leftarrow 0,\ G_R\leftarrow 0$</li>
-<li>如果当前特征 $k$ 是连续型特征，则对所有样本在 $k$ 维度上进行排序，用 $i$ 去排序样本下标。有：<br>$$<br>\begin{aligned}<br>&amp;G_L\leftarrow G_L+g_i,\ H_L\leftarrow G_L+g_i \\<br>&amp;G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R \\<br>&amp;score\leftarrow max(score,\ \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})<br>\end{aligned}<br>$$</li>
-<li>如果当前特征 $k$ 是离散型特征 ${a_{m_1},…a_{m_k}}$，其中 $a_{m_1}&lt;…&lt;a_{m_k}$。 假设每个特征值$a_j$对应的样本集合为 $\mathbb{I}<em>j$, 则$for\ \ j\ \ in\ \ {1,…,m_k}$, 计算:<br>$$<br>\begin{aligned}<br>&amp;G_L\leftarrow G_L+\sum</em>{i \in \mathbb{I}<em>j}g_i,<br>\ H_L\leftarrow H_L+\sum</em>{i \in \mathbb{I}_j}h_i\\<br>&amp;G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R\\<br>&amp;score\leftarrow max(score,\<br>   \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})<br>\end{aligned}<br>$$</li>
+<li>计算$score\leftarrow 0, G\leftarrow \sum_{i \in \mathbb{I}}g_i$，$H\leftarrow \sum_{i \in \mathbb{I}}h_i$</li>
+<li>$for   k   in  \{1,…,K\}:$<ul>
+<li>初始化：$G_L\leftarrow 0, G_R\leftarrow 0$</li>
+<li>如果当前特征 $k$ 是连续型特征，则对所有样本在 $k$ 维度上进行排序，用 $i$ 去排序样本下标。有：<script type="math/tex; mode=display">
+\begin{aligned}
+&G_L\leftarrow G_L+g_i,\ H_L\leftarrow G_L+g_i \\
+&G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R \\
+&score\leftarrow max(score,\ \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})
+\end{aligned}</script></li>
+<li>如果当前特征 $k$ 是离散型特征 $\{a_{m_1},…a_{m_k}\}$，其中 $a_{m_1}&lt;…&lt;a_{m_k}$。 假设每个特征值$a_j$对应的样本集合为 $\mathbb{I}_j$, 则$for  j  in  \{1,…,m_k\}$, 计算: <script type="math/tex; mode=display">
+\begin{aligned}
+&G_L\leftarrow G_L+\sum_{i \in \mathbb{I}_j}g_i,
+\ H_L\leftarrow H_L+\sum_{i \in \mathbb{I}_j}h_i\\
+&G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R\\
+&score\leftarrow max(score,\ 
+   \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})
+\end{aligned}</script></li>
 </ul>
 </li>
 <li>选取最大的 $score$ 对应的维度和拆分点作为分裂节点</li>
@@ -2425,8 +2488,7 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 </ol>
 <h3 id="3-lightGBM"><a href="#3-lightGBM" class="headerlink" title="3. lightGBM"></a>3. lightGBM</h3><p>&emsp;&emsp; <code>lightGBM</code>主要是创新点是来自对训练速度的提升上，主要有两点：1. 减少训练样本的基于梯度的采样-<code>GOSS(Gradient-based One-Side Sampling)</code>；2. 减少特征数量的互斥特征捆绑-<code>Exclusive Feature Bundling(EFB)</code> <br></p>
 <h4 id="GOSS"><a href="#GOSS" class="headerlink" title="GOSS "></a>GOSS <br></h4><ul>
-<li><p>输入：</p>
-<ul>
+<li>输入：<ul>
 <li>样本 $\mathcal{D}$，假设样本个数为 $N$</li>
 <li>大梯度采样比 $a$</li>
 <li>小梯度采样比 $b$</li>
@@ -2441,7 +2503,7 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 <li><p>过程：</p>
 <ul>
 <li>计算：<ul>
-<li>计算每个样本的损失梯度为 $\mathbf{g}={g_1,…,g_N}$</li>
+<li>计算每个样本的损失梯度为 $\mathbf{g}=\{g_1,…,g_N\}$</li>
 <li>大梯度采样比例为 $topN=aN$</li>
 <li>小梯度的采样比例为 $randN=bN$</li>
 <li>修正因子 $factor=\frac{1-a}{b}$</li>
@@ -2463,7 +2525,7 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 <li><p>几个值得注意的点：</p>
 <ul>
 <li>可以从数学上证明，随着样本数量的增加，该采样方法训练的模型和一般情况下的模型误差趋向于0</li>
-<li>$a=1,\ b=1$ 即为一般的随机采样</li>
+<li>$a=1, b=1$ 即为一般的随机采样</li>
 </ul>
 </li>
 </ul>
@@ -2475,7 +2537,7 @@ log(\frac&#123;\hat&#123;y&#125;_k^&#123;(i)&#125;&#125;&#123;\sum_&#123;u=1&#12
 <p>定义：<br></p>
 <ul>
 <li>打包特征集 := 该集合中的特征两两互斥 <br></li>
-<li>互斥定义：给定数据集 $\mathcal{D}={y_i, \mathbf{x}<em>i},\ i\in{1,…,N}$。其中 $\mathbf{x}<em>i=(x</em>{i_1},…x</em>{i_K})$。如果对于所有样本，$x_{i,j}\neq 0\ and\ x_{i,k}\neq 0$ 都不会出现。则认为特征 $j$ 和特征 $k$ 互斥。<br></li>
+<li>互斥定义：给定数据集 $\mathcal{D}=\{y_i, \mathbf{x}_i\}, i\in\{1,…,N\}$。其中 $\mathbf{x}_i=(x_{i_1},…x_{i_K})$。如果对于所有样本，$x_{i,j}\neq 0 and x_{i,k}\neq 0$ 都不会出现。则认为特征 $j$ 和特征 $k$ 互斥。<br></li>
 </ul>
 
           
