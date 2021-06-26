@@ -716,16 +716,18 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
         
           
             <p>&emsp;&emsp;这个专题主要涉及统计机器学习模型的介绍，学习和回顾统计机器学习模型可以帮助理解<code>Deep Learning</code>的统计特性。</p>
-<h2 id="常见分布"><a href="#常见分布" class="headerlink" title="常见分布"></a>常见分布</h2><h2 id="马尔科夫链-Markov-chain"><a href="#马尔科夫链-Markov-chain" class="headerlink" title="马尔科夫链(Markov chain)"></a>马尔科夫链(Markov chain)</h2><p>&emsp;&emsp;马尔科夫链，也称作马尔科夫过程(Markov process)。现有随机变量序列$X=(X_1,…X_t)$，则第$t$时刻的状态依赖于其前$t-1$时刻的状态。若序列具有<strong>马尔科夫性质</strong>，即：<br>$$<br>  P(X_t|X_{t-1},…,X_1)=P(X_t|X_{t-1})<br>$$<br>则该过程构成一个一阶马尔科夫链。(一阶)马尔科夫链由其状态转移概率$P(X’|X)$唯一确定。</p>
+<h2 id="常见分布"><a href="#常见分布" class="headerlink" title="常见分布"></a>常见分布</h2><h2 id="马尔科夫链-Markov-chain"><a href="#马尔科夫链-Markov-chain" class="headerlink" title="马尔科夫链(Markov chain)"></a>马尔科夫链(Markov chain)</h2><p>&emsp;&emsp;马尔科夫链，也称作马尔科夫过程(Markov process)。现有随机变量序列$X=(X_1,…X_t)$，则第$t$时刻的状态依赖于其前$t-1$时刻的状态。若序列具有<strong>马尔科夫性质</strong>，即：</p>
+<script type="math/tex; mode=display">
+  P(X_t|X_{t-1},...,X_1)=P(X_t|X_{t-1})</script><p>则该过程构成一个一阶马尔科夫链。(一阶)马尔科夫链由其状态转移概率$P(X’|X)$唯一确定。</p>
 <p>&emsp;&emsp;<strong>离散时间间隔</strong>下的马尔科夫链通有以下两个分类(连续时间不在这里讨论)：</p>
 <ul>
 <li><code>Discret-time Markov chain on discret state space</code>：离散时间，离散状态空间下的马尔科夫链(最常见的定义形式)<ul>
-<li>状态空间：$S={s_0,s_1,…s_j,…}$，可以是可数无穷多个。</li>
+<li>状态空间：$S=\{s_0,s_1,…s_j,…\}$，可以是可数无穷多个。</li>
 <li>马尔科夫性质：$P(X_t=s_j|X_{t-1}=s_{t-1},…,X_1=s_1)=P(X_t=s_j|X_{t-1}=s_{t-1})$，这里$s_i$为离散值。</li>
 <li>转移概率：$P(X_{t+1}=s_j|X_{t}=s_i)=A_{i,j}$，$A$即状态转移概率矩阵。</li>
-<li>n步转移概率：$P^{(n)}<em>{i,j}=A^n</em>{i,j}$。即n步转移概率为方阵$A$的$n$次阶乘。</li>
+<li>n步转移概率：$P^{(n)}_{i,j}=A^n_{i,j}$。即n步转移概率为方阵$A$的$n$次阶乘。</li>
 <li>平稳分布(<code>stationary distribution</code>)：<ul>
-<li>$\boldsymbol{\pi}^*=\boldsymbol{\pi}^*A$</li>
+<li>$\boldsymbol{\pi}^<em>=\boldsymbol{\pi}^</em>A$</li>
 <li>即到达平稳分布$\boldsymbol{\pi}^*$后，再经过一次转移，仍然回到该分布。</li>
 <li>平稳分布在一定条件下满足唯一性。</li>
 </ul>
@@ -741,23 +743,26 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li><code>Discret-time Markov chain on continuous state</code>：离散时间，连续状态空间下的马尔科夫链(通常和MCMC算法放在一起讨论)。<ul>
 <li>状态空间：$S\subseteq R$</li>
 <li>马尔科夫性质：$P(X_t\in A|X_{t-1}=s_{t-1},…,X_1=s_1)=P(X_t\in A|X_{t-1}=s_{t-1})$，这里$s_i$为连续值。</li>
-<li>转移核(<code>transition kernel</code>)：$P(x,\cdot)\ for\ x\in S$</li>
+<li>转移核(<code>transition kernel</code>)：$P(x,\cdot) for x\in S$</li>
 <li>转移核密度(<code>transition kernel density</code>)：$p(x,y)$。<ul>
 <li>则有$P(x,A)=\int_Ap(x,y)dy$，注意有$P(x, S)=\int_Sp(x,y)dy=1$</li>
 <li>注意这里的<code>transition kernel density</code>不是多维概率密度函数，这两者不要搞混了。这里$p(x,y)$可以看做是看做带有参数$x$的变量$y$的概率密度函数。比如$p(x,y)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-x)^2}{2\sigma^2})$，即均值为$x$的高斯分布，而不是多维高斯分布。</li>
 </ul>
 </li>
-<li>2步转移核密度：<br>$$<br>  p^{(2)}(x,y)=\int_Sp(x,z)p(z,y)dz<br>$$<ul>
+<li>2步转移核密度：<script type="math/tex; mode=display">
+  p^{(2)}(x,y)=\int_Sp(x,z)p(z,y)dz</script><ul>
 <li>可以这么理解，先以一定的概率(密度)转移到$z$，再从$z$转移到$y$。完全就是矩阵乘法法则的连续型表示。</li>
 </ul>
 </li>
-<li>n步转移核密度：对于任意$0\leq m\leq n \in N$<br>$$<br>  p^{(n)}=\int_Sp^{(m)}(x,z)p^{(n-m)}(z,y)dz<br>$$</li>
-<li>平稳分布(<code>stationary distribution</code>)，我们可以类比离散平稳分布定义：<br>$$<br>  \begin{aligned}<pre><code>\pi^*(dy)&amp;=\int_&#123;x\in S&#125;\pi^*(dx)p(x,dy)\\
-\pi^*(y)dy&amp;=\int_&#123;x\in S&#125;\pi^*(x)dxp(x,y)dy\\
-\pi^*(y)dy&amp;=dy\int_&#123;S&#125;\pi^*(x)p(x,y)dx\\
-\pi^*(y)&amp;=\int_S\pi^*(x)p(x,y)dx
-</code></pre>
-  \end{aligned}<br>$$<ul>
+<li>n步转移核密度：对于任意$0\leq m\leq n \in N$<script type="math/tex; mode=display">
+  p^{(n)}=\int_Sp^{(m)}(x,z)p^{(n-m)}(z,y)dz</script></li>
+<li>平稳分布(<code>stationary distribution</code>)，我们可以类比离散平稳分布定义：<script type="math/tex; mode=display">
+  \begin{aligned}
+    \pi^*(dy)&=\int_{x\in S}\pi^*(dx)p(x,dy)\\\\
+    \pi^*(y)dy&=\int_{x\in S}\pi^*(x)dxp(x,y)dy\\\\
+    \pi^*(y)dy&=dy\int_{S}\pi^*(x)p(x,y)dx\\\\
+    \pi^*(y)&=\int_S\pi^*(x)p(x,y)dx
+  \end{aligned}</script><ul>
 <li>平稳分布在一定条件下满足唯一性。</li>
 <li>比较离散和连续的平稳分布的定义，可以发现两者其实同一性质的两种表述语言罢了。</li>
 </ul>
@@ -765,11 +770,12 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li>细致平衡条件(<code>detailed balance</code>)：<ul>
 <li>如果存在分布 $\pi(dy)P(y,dx)=\pi(dx)P(x,dy)$，则说明该马尔科夫链满足细致平衡条件。等价满足$\pi(y)p(y,x)=\pi(x)p(x,y)$条件。</li>
 <li>可以证明: $\pi^*= \pi$<ul>
-<li>证明也很简单：<br>$$<br>  \begin{aligned}<pre><code>\int_S\pi(x)p(x,y)dx&amp;=\int_S\pi(y)p(y,x)dx\\
-&amp;=\pi(y)\int_Sp(y,x)dx\\
-&amp;=\pi(y)*1=\pi(y)
-</code></pre>
-  \end{aligned}<br>$$</li>
+<li>证明也很简单：<script type="math/tex; mode=display">
+  \begin{aligned}
+    \int_S\pi(x)p(x,y)dx&=\int_S\pi(y)p(y,x)dx\\
+    &=\pi(y)\int_Sp(y,x)dx\\
+    &=\pi(y)*1=\pi(y)
+  \end{aligned}</script></li>
 </ul>
 </li>
 <li>比较离散和连续状态的细致平衡条件的描述，可以看到两者的描述其实是一样的。</li>
@@ -782,16 +788,20 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <ul>
 <li>求积分：<ul>
 <li>如果我们要求一个复杂函数的积分$I(x)=\int_a^bf(x)dx$。如果我们有一分布$p(x)$，那么该式子可改写为$I(x)=\int_a^b\frac{f(x)}{p(x)}p(x)dx$</li>
-<li>可以看到式子就是$g(x)=\frac{f(x)}{p(x)}$的期望，那么我们就可以用样本均值来进行估计。即$I(x)=E_{X\sim p(x)}[\frac{f(x)}{p(x)}]\approx \frac{1}{n}\sum_{i=1}^n\frac{f(x_i)}{p(x_i)}$，而$x_i\in {x_1,…x_n}$是依据概率分布$p(x)$采样出来得到的样本。</li>
+<li>可以看到式子就是$g(x)=\frac{f(x)}{p(x)}$的期望，那么我们就可以用样本均值来进行估计。即$I(x)=E_{X\sim p(x)}[\frac{f(x)}{p(x)}]\approx \frac{1}{n}\sum_{i=1}^n\frac{f(x_i)}{p(x_i)}$，而$x_i\in \{x_1,…x_n\}$是依据概率分布$p(x)$采样出来得到的样本。</li>
 </ul>
 </li>
 <li>求期望：<ul>
-<li>如果我们要求一个函数$f: \mathcal{X}\rightarrow R$ 基于分布$\pi(\cdot)$的期望$\mathbf{E}<em>{\pi}[f(\mathbf{X})]$。可以基于分布$\pi(\cdot)$生成一系列样本${x_1,…,x_N}$，则:<br>$$<br>\begin{aligned}<br>  \mathbf{E}</em>{\pi}[f(X)]&amp;=f(\mathbf{E}<em>{\pi}[X])\<br>  &amp;\approx f(\frac{1}{N}\sum</em>{i=1}^{N}x_i)= \frac{1}{N}\sum_{i=1}^{N}f(x_i)<br>\end{aligned}<br>$$</li>
+<li>如果我们要求一个函数$f: \mathcal{X}\rightarrow R$ 基于分布$\pi(\cdot)$的期望$\mathbf{E}_{\pi}[f(\mathbf{X})]$。可以基于分布$\pi(\cdot)$生成一系列样本$\{x_1,…,x_N\}$，则:<script type="math/tex; mode=display">
+\begin{aligned}
+  \mathbf{E}_{\pi}[f(X)]&=f(\mathbf{E}_{\pi}[X])\\
+  &\approx f(\frac{1}{N}\sum_{i=1}^{N}x_i)= \frac{1}{N}\sum_{i=1}^{N}f(x_i)
+\end{aligned}</script></li>
 </ul>
 </li>
 </ul>
 <hr>
-<h2 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h2><p>&emsp;&emsp;采样的本质问题是已知一个复杂分布$p(x)$，我们希望得到一批服从于$p(x)$的样本集$\mathbb{X}={x_1,…,x_n}$。而计算机只能非常方便的生成$U(0,1)$的样本集。如何利用这个特点构造出我们想要的服从$p(x)$的样本集便是采样的关键所在。</p>
+<h2 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h2><p>&emsp;&emsp;采样的本质问题是已知一个复杂分布$p(x)$，我们希望得到一批服从于$p(x)$的样本集$\mathbb{X}=\{x_1,…,x_n\}$。而计算机只能非常方便的生成$U(0,1)$的样本集。如何利用这个特点构造出我们想要的服从$p(x)$的样本集便是采样的关键所在。</p>
 <h3 id="常见分布采样"><a href="#常见分布采样" class="headerlink" title="常见分布采样"></a>常见分布采样</h3><ul>
 <li>$U(0,1)$</li>
 <li>$\mathcal{N}(0,1)$</li>
@@ -817,7 +827,8 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <ul>
 <li><strong>M-H采样</strong>：<ul>
 <li>输入：<ul>
-<li>待采样**概率分布(密度)**：$\pi(\cdot)$，假设$\pi(\cdot)$对应的密度函数为$\pi_u(\cdot)$。即：<br>$$<br>  \pi(A)=\frac{\int_A\pi_u(x)dx}{\int_S\pi_u(x)dx}<br>$$<ul>
+<li>待采样<strong>概率分布(密度)</strong>：$\pi(\cdot)$，假设$\pi(\cdot)$对应的密度函数为$\pi_u(\cdot)$。即：<script type="math/tex; mode=display">
+  \pi(A)=\frac{\int_A\pi_u(x)dx}{\int_S\pi_u(x)dx}</script><ul>
 <li>可以看到$\pi_u(\cdot)\propto \pi(\cdot)$</li>
 </ul>
 </li>
@@ -826,13 +837,14 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 </li>
 <li>过程：<ul>
 <li>随机生成$x_0$</li>
-<li>$for\ t=0,…$，依据$Q(x_t,\cdot)$生成$x_{t+1}’$</li>
-<li>计算：<br>$$<br>  \begin{aligned}<pre><code>&amp;\alpha(x_t,x&#39;_&#123;t+1&#125;)=min\ \&#123;1,\frac&#123;\pi_u(x&#39;_&#123;t+1&#125;)p(x&#39;_&#123;t+1&#125;,x)&#125;&#123;\pi_u(x)p(x,x&#39;_&#123;t+1&#125;)&#125;\&#125;\\
-&amp;\alpha(i,j)=min\ \&#123;1,\frac&#123;K_1\pi_jK_2A_&#123;j,i&#125;&#125;&#123;K_1\pi_iK_2A_&#123;i,j&#125;&#125;\&#125;=min\ \&#123;1,\frac&#123;\pi_jA_&#123;j,i&#125;&#125;&#123;\pi_iA_&#123;i,j&#125;&#125;\&#125;\ //离散情况，其中K_1,K_2为比例缩放系数\\
-</code></pre>
-  \end{aligned}<br>$$<ul>
-<li>然后以$\alpha(x_t,x’<em>{t+1})$的概率接受样本$x’</em>{t+1}$。具体操作如下：<ul>
-<li>依据均匀分布$U(0,1)$采样得到$u$，如果$u\leq \alpha(x_t,x’<em>{t+1})$，则接受$x’</em>{t+1}$，即$x_{t+1}=x’<em>{t+1}$。否则，拒绝$x’</em>{t+1}$，即$x_{t+1}=x_{t}$。</li>
+<li>$for t=0,…$，依据$Q(x_t,\cdot)$生成$x_{t+1}’$</li>
+<li>计算：<script type="math/tex; mode=display">
+  \begin{aligned}
+    &\alpha(x_t,x'_{t+1})=min\ \{1,\frac{\pi_u(x'_{t+1})p(x'_{t+1},x)}{\pi_u(x)p(x,x'_{t+1})}\}\\
+    &\alpha(i,j)=min\ \{1,\frac{K_1\pi_jK_2A_{j,i}}{K_1\pi_iK_2A_{i,j}}\}=min\ \{1,\frac{\pi_jA_{j,i}}{\pi_iA_{i,j}}\}\ //离散情况，其中K_1,K_2为比例缩放系数\\
+  \end{aligned}</script><ul>
+<li>然后以$\alpha(x_t,x’_{t+1})$的概率接受样本$x’_{t+1}$。具体操作如下：<ul>
+<li>依据均匀分布$U(0,1)$采样得到$u$，如果$u\leq \alpha(x_t,x’_{t+1})$，则接受$x’_{t+1}$，即$x_{t+1}=x’_{t+1}$。否则，拒绝$x’_{t+1}$，即$x_{t+1}=x_{t}$。</li>
 </ul>
 </li>
 </ul>
@@ -840,9 +852,15 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 </ul>
 </li>
 <li>性质：<ul>
-<li>M-H算法生成一个常返马尔科夫过程，即满足细致平衡条件：<br>$$<br>  \pi(dx)P(x,dy)=\pi(dy)P(y,dx)<br>$$<ul>
+<li>M-H算法生成一个常返马尔科夫过程，即满足细致平衡条件：<script type="math/tex; mode=display">
+  \pi(dx)P(x,dy)=\pi(dy)P(y,dx)</script><ul>
 <li>证明：<ul>
-<li>令$c=\int_S\pi_u(x)dx$<br>$$<br>\begin{aligned}<br>  \pi(dx)P(x,dy)&amp;=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\<br>  &amp;=c^{-1}(min\ {\pi_u(y)p(y,x),\pi_u(x)p(x,y)})dxdy\ //关于x,y对称。\<br>  &amp;=\pi(dy)P(x,dx)<br>\end{aligned}<br>$$</li>
+<li>令$c=\int_S\pi_u(x)dx$<script type="math/tex; mode=display">
+\begin{aligned}
+  \pi(dx)P(x,dy)&=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\\
+  &=c^{-1}(min\ \{\pi_u(y)p(y,x),\pi_u(x)p(x,y)\})dxdy\ //关于x,y对称。\\
+  &=\pi(dy)P(x,dx)
+\end{aligned}</script></li>
 <li>通过证明过程，也能知道为什么要这么定义$\alpha$</li>
 </ul>
 </li>
@@ -858,12 +876,12 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li>依据条件分布进行边际采样通常比边际化联合分布(通过积分)求得边际分布后再进行采样要容易得多(<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gibbs_sampling">wiki</a>)。</li>
 <li>算法：<ul>
 <li>输入：$p(\mathbf{x})$</li>
-<li>输出：服从$p$的一批样本${\mathbf{x}_1,…\mathbf{x}_n}$</li>
+<li>输出：服从$p$的一批样本$\{\mathbf{x}_1,…\mathbf{x}_n\}$</li>
 <li>过程：<ul>
 <li>随机生成：$\mathbf{x}^{(0)}$</li>
-<li>$for\ t=0,…$<ul>
-<li>$for\ i\ in\ {1,…,d}$<ul>
-<li>依据$p(x_i^{(t+1)}|x_1^{(t)},…,x^{(t)}<em>{i-1},x^{(t)}</em>{i+1},…x^{(t)}_d)$进行采样得到i坐标轴下的$x^{(t+1)}_i$的值。</li>
+<li>$for t=0,…$<ul>
+<li>$for i in \{1,…,d\}$<ul>
+<li>依据$p(x_i^{(t+1)}|x_1^{(t)},…,x^{(t)}_{i-1},x^{(t)}_{i+1},…x^{(t)}_d)$进行采样得到i坐标轴下的$x^{(t+1)}_i$的值。</li>
 </ul>
 </li>
 <li>得到：$\mathbf{x}^{(t+1)}$</li>
@@ -888,21 +906,27 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li>《百面机器学习》</li>
 </ol>
 <hr>
-<h2 id="贝叶斯分类器"><a href="#贝叶斯分类器" class="headerlink" title="贝叶斯分类器"></a>贝叶斯分类器</h2><p>&emsp;&emsp;贝叶斯定理$P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)*P(B|A)}{P(B)}$。假设样本属性为$\mathbf{x}\in R^m$，类别$c\in R$，贝叶斯分类器如下：<br>$$<br>\begin{aligned}<br>  P(c|\mathbf{x})&amp;=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\<br>  &amp;=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\ //如果\mathbf{x}中个属性分量x_i相互独立\<br>\hat{c}&amp;=h(\mathbf{x})\<br>  &amp;= argmax\ P(c)\prod_{i=1}^mP(x_i|c)<br>\end{aligned}<br>$$</p>
-<ul>
+<h2 id="贝叶斯分类器"><a href="#贝叶斯分类器" class="headerlink" title="贝叶斯分类器"></a>贝叶斯分类器</h2><p>&emsp;&emsp;贝叶斯定理$P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)*P(B|A)}{P(B)}$。假设样本属性为$\mathbf{x}\in R^m$，类别$c\in R$，贝叶斯分类器如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+  P(c|\mathbf{x})&=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\\
+  &=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\ //如果\mathbf{x}中个属性分量x_i相互独立\\
+\hat{c}&=h(\mathbf{x})\\
+  &= argmax\ P(c)\prod_{i=1}^mP(x_i|c)
+\end{aligned}</script><ul>
 <li>学习：根据大数定理，其中$P(c)=\frac{|D_c|}{|D|}$，即类别为$c$的样本数除以总样本数。<br>$P(x_i|c)=\frac{|D_{c, x_i}|}{|D|}$，即类别为$c$且属性为$x_i$的样本数除以总样本数。</li>
 <li>推断：基于测试样本$\mathbf{x}_c$，基于学习到的概率分别计算各类别的概率值，再取最大值。</li>
 <li>为了应对样本不充分问题导致未出现的属性值的概率为$0$，一般计算后验概率的时候取平滑。</li>
 </ul>
 <h2 id="贝叶斯网"><a href="#贝叶斯网" class="headerlink" title="贝叶斯网"></a>贝叶斯网</h2><ul>
-<li><p>定义：给定一个<strong>有向无环图</strong>$G=\langle D, E\rangle$，$D$是点集，假设点的个数为$m$，$E$是边集。$D$上的每个点$i$代表了一个随机变量$X_i$，每个$X_i$的父节点集为$\boldsymbol{\pi}<em>i$，则一个网络的联合分布为：<br>$$<br>  P(\mathbf{X})=\prod</em>{i=1}^mP(X_i|\boldsymbol{\pi}_i)<br>$$</p>
-<ul>
+<li>定义：给定一个<strong>有向无环图</strong>$G=\langle D, E\rangle$，$D$是点集，假设点的个数为$m$，$E$是边集。$D$上的每个点$i$代表了一个随机变量$X_i$，每个$X_i$的父节点集为$\boldsymbol{\pi}_i$，则一个网络的联合分布为：<script type="math/tex; mode=display">
+  P(\mathbf{X})=\prod_{i=1}^mP(X_i|\boldsymbol{\pi}_i)</script><ul>
 <li>网络中每个节点及其父节点组成的结构$(i, \boldsymbol{\pi}_i)$都代表了一个条件概率分布。</li>
 </ul>
 </li>
 <li><p>学习：</p>
 <ul>
-<li>假如网络结构已知，则$P(X_i|\boldsymbol{\pi}_i)=\frac{P(X_i, \boldsymbol{\pi}_i)}{P(\boldsymbol{\pi}<em>i)}=\frac{|D</em>{X_i, \boldsymbol{\pi}<em>i}|}{|D|}*\frac{|D|}{|D</em>{\boldsymbol{\pi}_i}|}$</li>
+<li>假如网络结构已知，则$P(X_i|\boldsymbol{\pi}_i)=\frac{P(X_i, \boldsymbol{\pi}_i)}{P(\boldsymbol{\pi}_i)}=\frac{|D_{X_i, \boldsymbol{\pi}_i}|}{|D|}*\frac{|D|}{|D_{\boldsymbol{\pi}_i}|}$</li>
 </ul>
 </li>
 <li><p>推断：</p>
@@ -911,14 +935,15 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 </ul>
 </li>
 </ul>
-<h2 id="隐马尔科夫过程"><a href="#隐马尔科夫过程" class="headerlink" title="隐马尔科夫过程"></a>隐马尔科夫过程</h2><p>&emsp;&emsp;隐马尔可夫模型可以由一个五元组描述：$\mu = (S, O, \mathbf{A}, \mathbf{B}, \pi)$。$S={s_1,…,s_m}$是隐状态集，$O={o_1,…,o_n}$是观测集，$A$是隐状态转移矩阵(条件概率分布)，$B$是从隐状态到观测状态的条件概率分布，$\pi$是初始隐状态概率分布。隐马尔可夫链有三个典型的问题。</p>
+<h2 id="隐马尔科夫过程"><a href="#隐马尔科夫过程" class="headerlink" title="隐马尔科夫过程"></a>隐马尔科夫过程</h2><p>&emsp;&emsp;隐马尔可夫模型可以由一个五元组描述：$\mu = (S, O, \mathbf{A}, \mathbf{B}, \pi)$。$S=\{s_1,…,s_m\}$是隐状态集，$O=\{o_1,…,o_n\}$是观测集，$A$是隐状态转移矩阵(条件概率分布)，$B$是从隐状态到观测状态的条件概率分布，$\pi$是初始隐状态概率分布。隐马尔可夫链有三个典型的问题。</p>
 <ul>
 <li>给定一个模型$\mu$和观测序列$\mathbf{O}=(o_1,…,o_T)$，如何求出该序列的概率？<ul>
-<li>对于给定的状态序列$\mathbf{S}=(s_1,…,s_t)$<br>$$<br>  \begin{aligned}<pre><code>P(\mathbf&#123;O&#125;|\mu)&amp;=\sum_&#123;\mathbf&#123;S&#125;&#125;P(\mathbf&#123;O&#125;,\mathbf&#123;S&#125;|\mu)\\
-&amp;=\sum_&#123;\mathbf&#123;S&#125;&#125;P(\mathbf&#123;O&#125;|\mathbf&#123;S&#125;,\mu)P(\mathbf&#123;S&#125;|\mu)\\
-&amp;=\sum_&#123;(s_1,...s_T)&#125;b_&#123;s_1&#125;(o_1)...b_&#123;s_t&#125;(o_t)\pi_&#123;s_1&#125;a_&#123;s_1,s_2&#125;...a_&#123;s_&#123;T-1&#125;,s_T&#125;
-</code></pre>
-  \end{aligned}<br>$$<ul>
+<li>对于给定的状态序列$\mathbf{S}=(s_1,…,s_t)$<script type="math/tex; mode=display">
+  \begin{aligned}
+    P(\mathbf{O}|\mu)&=\sum_{\mathbf{S}}P(\mathbf{O},\mathbf{S}|\mu)\\
+    &=\sum_{\mathbf{S}}P(\mathbf{O}|\mathbf{S},\mu)P(\mathbf{S}|\mu)\\
+    &=\sum_{(s_1,...s_T)}b_{s_1}(o_1)...b_{s_t}(o_t)\pi_{s_1}a_{s_1,s_2}...a_{s_{T-1},s_T}
+  \end{aligned}</script><ul>
 <li>该算法的时间复杂度为$O(T^m)$</li>
 </ul>
 </li>
@@ -929,9 +954,9 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li>$\alpha_{t+1}(i)=(\sum_j^S\alpha_t(j)a_{j,i})b_i(o_{t+1})$</li>
 <li>步骤：<ul>
 <li>输入：观测序列$O=(o_1,…o_t)$，模型$\mu$</li>
-<li>计算：$\alpha_1(i)=\pi_ib_i(o_1)\ for\ i=1,…,m$ </li>
+<li>计算：$\alpha_1(i)=\pi_ib_i(o_1) for i=1,…,m$ </li>
 <li>for t=2,…,T：<ul>
-<li>计算$\alpha_t(i)=(\sum_j^S\alpha_{t-1}(j)a_{j,i})b_i(o_{t})\ for\ j=1,…,m$</li>
+<li>计算$\alpha_t(i)=(\sum_j^S\alpha_{t-1}(j)a_{j,i})b_i(o_{t}) for j=1,…,m$</li>
 </ul>
 </li>
 <li>终止：$P(O|\mu)=\sum_i^S\alpha_T(i)$</li>
@@ -944,12 +969,13 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li>后向算法：<ul>
 <li>令<strong>后向概率</strong>$\beta_t(i)=P(o_{t+1},…o_{T}|s_t=s_i,\mu)$，即$t$时刻系统状态为$s_i$的时候，后续的观测序列为当前观测序列的概率，注意后向概率里面的观测序列并不包括当前时刻$t$。</li>
 <li>已知$\beta_t(i)$，则当前时刻$t$的观测概率为：$P(o_{t},…o_{T}|s_t=s_i,\mu)=\beta_t(i)b_i(o_t)$。</li>
-<li>假设当前时刻是由上一时刻状态为$s_j$转移过来的，则有：<br>$$<br>  \beta_{t-1}(i)=\sum_j^Sa_{i,j}\beta_t(j)b_j(o_t)<br>$$</li>
+<li>假设当前时刻是由上一时刻状态为$s_j$转移过来的，则有：<script type="math/tex; mode=display">
+  \beta_{t-1}(i)=\sum_j^Sa_{i,j}\beta_t(j)b_j(o_t)</script></li>
 <li>步骤：<ul>
 <li>输入：观测序列$O=(o_1,…o_t)$，模型$\mu$</li>
-<li>计算：$\beta_T(j)=1\ for\ j=1,…,m$</li>
+<li>计算：$\beta_T(j)=1 for j=1,…,m$</li>
 <li>for t=T-1,…,1：<ul>
-<li>计算$\beta_t(i)=\sum_j^Sa_{i,j}\beta_{t+1}(j)b_j(o_{t+1})\ for\ i=1,…m$</li>
+<li>计算$\beta_t(i)=\sum_j^Sa_{i,j}\beta_{t+1}(j)b_j(o_{t+1}) for i=1,…m$</li>
 </ul>
 </li>
 <li>终止：$P(O|\mu)=\sum_j^S\pi_j\beta_1(j)b_j(o_1)$</li>
@@ -957,18 +983,19 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 <li>后向算法每次计算好$t$时刻的$m$个状态的定义概率，然后假设从前一时刻$t-1$的第$i$个状态转移过来计算前一时刻的定义概率并保存$m$个状态。</li>
 </ul>
 </li>
-<li>前向后向算法统一:<br>$$<br>  \begin{aligned}<pre><code>P(\mathbf&#123;O&#125;|\mu)&amp;=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_&#123;t+1&#125;,...o_T,s_t=s_i|\mu)\\
-&amp;=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\
-P(\mathbf&#123;O&#125;|\mu)&amp;=\sum_i^S\sum_j^S\alpha_t(i)a_&#123;i,j&#125;b_j(o_&#123;t+1&#125;)\beta_&#123;t+1&#125;(j)\quad t=1,...,T-1\\
-&amp;=\sum_j^S(\sum_i^S\alpha_t(i)a_&#123;i,j&#125;b_j(o_&#123;t+1&#125;))\beta_&#123;t+1&#125;(j)\\
-&amp;=\sum_j^S\alpha_&#123;t+1&#125;(j)\beta_&#123;t+1&#125;(j)\quad t=1,...T-1\\
-&amp;=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\
-P(s_t=s_i,\mathbf&#123;O&#125;|\mu)&amp;=\alpha_t(i)\beta_t(i)\\
-&amp;=P(s_t=s_i|\mathbf&#123;O&#125;,\mu)P(\mathbf&#123;O&#125;|\mu)\\
-\gamma_t(i)&amp;=P(s_t=s_i|\mathbf&#123;O&#125;,\mu)\\
-&amp;=\frac&#123;P(s_t=s_i,\mathbf&#123;O&#125;|\mu)&#125;&#123;P(\mathbf&#123;O&#125;|\mu)&#125;=\frac&#123;\alpha_t(i)\beta_t(i)&#125;&#123;\sum_i^S\alpha_t(i)\beta_t(i)&#125;
-</code></pre>
-  \end{aligned}<br>$$<ul>
+<li>前向后向算法统一:<script type="math/tex; mode=display">
+  \begin{aligned}
+    P(\mathbf{O}|\mu)&=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_{t+1},...o_T,s_t=s_i|\mu)\\
+    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\
+    P(\mathbf{O}|\mu)&=\sum_i^S\sum_j^S\alpha_t(i)a_{i,j}b_j(o_{t+1})\beta_{t+1}(j)\quad t=1,...,T-1\\
+    &=\sum_j^S(\sum_i^S\alpha_t(i)a_{i,j}b_j(o_{t+1}))\beta_{t+1}(j)\\
+    &=\sum_j^S\alpha_{t+1}(j)\beta_{t+1}(j)\quad t=1,...T-1\\
+    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\
+    P(s_t=s_i,\mathbf{O}|\mu)&=\alpha_t(i)\beta_t(i)\\
+    &=P(s_t=s_i|\mathbf{O},\mu)P(\mathbf{O}|\mu)\\
+    \gamma_t(i)&=P(s_t=s_i|\mathbf{O},\mu)\\
+    &=\frac{P(s_t=s_i,\mathbf{O}|\mu)}{P(\mathbf{O}|\mu)}=\frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}
+  \end{aligned}</script><ul>
 <li>其中$P(\mathbf{O}|\mu):=$已知模型$\mu$，出现观测序列$\mathbf{O}$的概率。</li>
 <li>$P(s_t=s_i, \mathbf{O}|\mu):=$已知模型$\mu$，出现观测序列$\mathbf{O}$且第$t$时刻的隐状态为$s_i$的概率。</li>
 <li>$P(s_t=s_i|\mathbf{O},\mu):=$已知模型$\mu$和观测序列$\mathbf{O}$，第$t$时刻隐状态为$s_i$的概率。</li>
@@ -980,26 +1007,29 @@ P(s_t=s_i,\mathbf&#123;O&#125;|\mu)&amp;=\alpha_t(i)\beta_t(i)\\
 <li>注意边界。</li>
 </ul>
 </li>
-<li>给定一个模型$\mu$和观测序列$\mathbf{O}=(o_1,…,o_t)$，如何求出<strong>最优</strong>隐状态序$\mathbf{S}^*=(s_1^*,…s_t^*)$能够<strong>最好地解释</strong>观测序列？<ul>
-<li>近似算法：<br>$$<br>  \gamma_t(i)=\underset{i}{\operatorname{argmax}}\ \<br>  \frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}\quad for\ t=1,…,T<br>$$<ul>
-<li>$for\ t=1,…,T$ 做前向算法，后向算法。</li>
-<li>$for\ t=1,…,T$ 求 $\operatorname{argmax}$</li>
+<li>给定一个模型$\mu$和观测序列$\mathbf{O}=(o_1,…,o_t)$，如何求出<strong>最优</strong>隐状态序$\mathbf{S}^<em>=(s_1^</em>,…s_t^<em>)$能够<em>*最好地解释</em></em>观测序列？<ul>
+<li>近似算法：<script type="math/tex; mode=display">
+  \gamma_t(i)=\underset{i}{\operatorname{argmax}}\ \  
+  \frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}\quad for\ t=1,...,T</script><ul>
+<li>$for t=1,…,T$ 做前向算法，后向算法。</li>
+<li>$for t=1,…,T$ 求 $\operatorname{argmax}$</li>
 </ul>
 </li>
 <li>维特比算法：<ul>
 <li>定义：$\delta_t(i)=\underset{s_1,…s_{t-1}}{max}P(s_t=s_i,s_{t-1},..,s_1,o_t,…,o_1|\mu)$ 即从各个路径 $(s_1,…,s_{t-1})$ 中到达$s_t=s_i$时概率最大的那条路径。、</li>
-<li>递推：<br>$$<br>  \begin{aligned}<pre><code>\delta_&#123;t+1&#125;(i)&amp;=\underset&#123;s_1,...s_&#123;t&#125;&#125;&#123;max&#125;\ P(s_&#123;t+1&#125;=s_i,s_t,...,s_1,o_&#123;t+1&#125;,...,o_1|\mu)\\
-&amp;=\underset&#123;j&#125;&#123;max&#125;\ \delta_&#123;t&#125;(j)a_&#123;j,i&#125;b_i(o_&#123;t+1&#125;)
-</code></pre>
-  \end{aligned}<br>$$</li>
+<li>递推：<script type="math/tex; mode=display">
+  \begin{aligned}
+    \delta_{t+1}(i)&=\underset{s_1,...s_{t}}{max}\ P(s_{t+1}=s_i,s_t,...,s_1,o_{t+1},...,o_1|\mu)\\
+    &=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})
+  \end{aligned}</script></li>
 <li>算法：<ul>
 <li>输入：模型$\mu=(S,O,\mathbf{A},\mathbf{B},\pi)$，观测序列$\mathbf{O}$</li>
-<li>输出：最佳隐状态序列$\mathbf{S}^*=(s_1^*,…s_T^*)$</li>
+<li>输出：最佳隐状态序列$\mathbf{S}^<em>=(s_1^</em>,…s_T^*)$</li>
 <li>过程：<ul>
 <li>计算：由于$t=1$之前没有路径，$\delta_1(i)=P(s_1=s_i,o_1|\mu)=\pi_ib_i(o_1)$</li>
-<li>递推：$\delta_{t+1}(i)=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})$</li>
-<li>终止：$P(s_T^*,…s_1^*,O|\mu)=\underset{i}{max}\ \delta_T(i)$，得到$s_T^*$。</li>
-<li>回溯：根据$s_T^*$ 依次往前回溯得到最佳序列$(s_1^*,…s_T^*)$</li>
+<li>递推：$\delta_{t+1}(i)=\underset{j}{max} \delta_{t}(j)a_{j,i}b_i(o_{t+1})$</li>
+<li>终止：$P(s_T^<em>,…s_1^</em>,O|\mu)=\underset{i}{max} \delta_T(i)$，得到$s_T^*$。</li>
+<li>回溯：根据$s_T^<em>$ 依次往前回溯得到最佳序列$(s_1^</em>,…s_T^*)$</li>
 </ul>
 </li>
 </ul>
@@ -1019,12 +1049,12 @@ P(s_t=s_i,\mathbf&#123;O&#125;|\mu)&amp;=\alpha_t(i)\beta_t(i)\\
 </li>
 </ul>
 <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><ol>
-<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/chapters/15_HMM.html">http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html">http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html</a></li>
 </ol>
-<h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>&emsp;&emsp;EM算法的全程是<code>Expectation-maximization algorithm</code>，即期望最大值算法，主要用于估计依赖于隐变量的样本的最大似然参数。<br>(PS: 一般针对无隐变量的估计用最大似然估计法)。算法通过不断求解E步(<code>Expectation</code>)和M步(<code>Maximize Likelyhood</code>)来预估变量(含隐变量)<br>的分布。<br>&emsp;&emsp;假如有两个分布$Y$和$Z$，一个能被观测到$Y$，一个不能被观测到$Z$(隐变量)，其中观测变量$Y$依赖于隐变量$Z$，分布参数为$\boldsymbol{\theta}$。现在我们能够<br>观测到一批观测变量样本$\mathbb{Y}={y_1,…,y_N}$</p>
+<h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>&emsp;&emsp;EM算法的全程是<code>Expectation-maximization algorithm</code>，即期望最大值算法，主要用于估计依赖于隐变量的样本的最大似然参数。<br>(PS: 一般针对无隐变量的估计用最大似然估计法)。算法通过不断求解E步(<code>Expectation</code>)和M步(<code>Maximize Likelyhood</code>)来预估变量(含隐变量)<br>的分布。<br>&emsp;&emsp;假如有两个分布$Y$和$Z$，一个能被观测到$Y$，一个不能被观测到$Z$(隐变量)，其中观测变量$Y$依赖于隐变量$Z$，分布参数为$\boldsymbol{\theta}$。现在我们能够<br>观测到一批观测变量样本$\mathbb{Y}=\{y_1,…,y_N\}$</p>
 <h3 id="EM算法原理及收敛性"><a href="#EM算法原理及收敛性" class="headerlink" title="EM算法原理及收敛性"></a>EM算法原理及收敛性</h3><h3 id="EM算法过程"><a href="#EM算法过程" class="headerlink" title="EM算法过程"></a>EM算法过程</h3><ul>
 <li>输入：<ul>
-<li>观测样本$\mathbb{Y}={y_1,…,y_n}$</li>
+<li>观测样本$\mathbb{Y}=\{y_1,…,y_n\}$</li>
 <li>联合分布$P(Y,Z;\theta)$，条件分布$P(Z|Y;\theta)$</li>
 </ul>
 </li>
@@ -1034,8 +1064,14 @@ P(s_t=s_i,\mathbf&#123;O&#125;|\mu)&amp;=\alpha_t(i)\beta_t(i)\\
 </li>
 <li>步骤：<ul>
 <li>选择参数初始值：$\boldsymbol{\theta}^{(0)}$。</li>
-<li><code>E</code>步：计算：<br>$$<br> \begin{aligned}<br>   Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})&amp;=<br>   \sum_{j=1}^N\mathbb{E}<em>{P(Z|Y=y_j;\boldsymbol{\theta}^{(i)})}log(P(Y=y_i,Z;\boldsymbol{\theta}))\<br>   &amp;=\sum</em>{j=1}^N(\sum_ZP(Z|Y=y_i;\boldsymbol{\theta}^{(i)})log(P(Y=y_j,Z;\boldsymbol{\theta}))<br> \end{aligned}<br>$$</li>
-<li><code>M</code>步：<br>$$<br> \boldsymbol{\theta}^{(i+1)}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}}\quad Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})<br>$$</li>
+<li><code>E</code>步：计算：<script type="math/tex; mode=display">
+ \begin{aligned}
+   Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})&=
+   \sum_{j=1}^N\mathbb{E}_{P(Z|Y=y_j;\boldsymbol{\theta}^{(i)})}log(P(Y=y_i,Z;\boldsymbol{\theta}))\\
+   &=\sum_{j=1}^N(\sum_ZP(Z|Y=y_i;\boldsymbol{\theta}^{(i)})log(P(Y=y_j,Z;\boldsymbol{\theta}))
+ \end{aligned}</script></li>
+<li><code>M</code>步：<script type="math/tex; mode=display">
+ \boldsymbol{\theta}^{(i+1)}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}}\quad Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})</script></li>
 <li>重复上面两步，直至收敛。</li>
 </ul>
 </li>
@@ -1045,7 +1081,7 @@ P(s_t=s_i,\mathbf&#123;O&#125;|\mu)&amp;=\alpha_t(i)\beta_t(i)\\
 <li>EM算法与隐马尔可夫模型</li>
 </ul>
 <h3 id="Ref-1"><a href="#Ref-1" class="headerlink" title="Ref:"></a>Ref:</h3><ol>
-<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%A0/chapters/13_EM.html">http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html">http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html</a></li>
 </ol>
 
           
