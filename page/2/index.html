@@ -334,42 +334,65 @@
         
           
             <h2 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h2><ul>
-<li><strong>基本方法</strong>：<br>&emsp;&emsp;设词表大小为$V$，则每个样本(词)表示为$x_i=(0,…,1_{i},…0)$<br>&emsp;&emsp;两层神经网络: 从输入层到隐层: $A\in R^{V\times K}$，从隐层到输出层: $B\in R^{K\times V}$，<br>表示为embedding向量即为<br>$A=(\mathbf{a_1}, \mathbf{a_2}, …, \mathbf{a_V})^T, B=(\mathbf{b_1^T}, \mathbf{b_2^T}, …, \mathbf{b_V^T})$，<br>针对某个输入词$w_I$，令$u_j = \mathbf{a}<em>I\mathbf{b}<em>j^T$，<br>那么我们从输入词$w_I$到输出词$w_O$之间的条件概率$P(w_O|w_I)$为:<br>$$<br>\hat{y_O} = P(w_O|w_I) = \frac{exp(\mathbf{a}<em>I\mathbf{b}<em>O^T)}{\sum</em>{j=1}^{V}exp(\mathbf{a}<em>I\mathbf{b}<em>j^T)}=\frac{exp(u_O)}{\sum</em>{j=1}^{V}exp(u_j)} \tag{1}<br>$$<br>&emsp;&emsp;根据极大似然概率我们有Loss函数：<br>$$<br>L = -log(P(w_O|w_I)) = -log(y_O)=log(\sum</em>{j^=1}^{V}exp(u_j))-u_O \tag{2}<br>$$<br>&emsp;&emsp;那么样本空间$\mathcal{D}$上的极大似然(Loss函数)为：<br>$$<br>\mathcal{L} = -\sum</em>{(w_O, w_I)\in \mathcal{D}}log(P(w_O|w_I)) \tag{3}<br>$$<br>对输出隐向量求偏导，针对每一项$u_j$(每一个输出隐向量)的偏导为，这里的$e_j$可以看做是一种误差:<br>$$<br>\frac{\partial L}{\partial u_j}=\frac{exp(u_j)}{\sum</em>{j^{‘}=1}^{V}exp(u</em>{j^{‘}})}-\mathbb{I}_{j=O}=y_j-t_j:=e_j \tag{4}<br>$$<br>$$<br>\frac{\partial L}{\partial \mathbf{b_j}}=\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{b_j}}=e_j<em>\mathbf{a_i} \tag{5}<br>$$<br>参数更新，可以看到针对一对输入输出词对$ {w_I, w_O}$，都要更新全部的输出隐向量，计算量非常大：<br>$$<br>\mathbf{b_j}^{new} \leftarrow \mathbf{b_j}^{old}-\eta</em>e_j*\mathbf{a_i}\quad for \ j \ in \ {1, …, V} \tag{6}<br>$$<ul>
+<li><strong>基本方法</strong>：<br>&emsp;&emsp;设词表大小为$V$，则每个样本(词)表示为$x_i=(0,…,1_{i},…0)$<br>&emsp;&emsp;两层神经网络: 从输入层到隐层: $A\in R^{V\times K}$，从隐层到输出层: $B\in R^{K\times V}$，<br>表示为embedding向量即为<br>$A=(\mathbf{a_1}, \mathbf{a_2}, …, \mathbf{a_V})^T, B=(\mathbf{b_1^T}, \mathbf{b_2^T}, …, \mathbf{b_V^T})$，<br>针对某个输入词$w_I$，令$u_j = \mathbf{a}_I\mathbf{b}_j^{T}$，<br>那么我们从输入词 $w_I$ 到输出词 $w_O$ 之间的条件概率$P(w_O|w_I)$为: <script type="math/tex; mode=display">
+\hat{y_O} = P(w_O|w_I) = \frac{exp(\mathbf{a}_I\mathbf{b}_O^T)}{\sum_{j=1}^{V}exp(\mathbf{a}_I\mathbf{b}_j^T)}=\frac{exp(u_O)}{\sum_{j=1}^{V}exp(u_j)} \tag{1}</script>&emsp;&emsp;根据极大似然概率我们有Loss函数：<script type="math/tex; mode=display">
+L = -log(P(w_O|w_I)) = -log(y_O)=log(\sum_{j^=1}^{V}exp(u_j))-u_O \tag{2}</script>&emsp;&emsp;那么样本空间$\mathcal{D}$上的极大似然(Loss函数)为：<script type="math/tex; mode=display">
+\mathcal{L} = -\sum_{(w_O, w_I)\in \mathcal{D}}log(P(w_O|w_I)) \tag{3}</script>对输出隐向量求偏导，针对每一项$u_j$(每一个输出隐向量)的偏导为，这里的$e_j$可以看做是一种误差:<script type="math/tex; mode=display">
+\frac{\partial L}{\partial u_j}=\frac{exp(u_j)}{\sum_{j^{'}=1}^{V}exp(u_{j^{'}})}-\mathbb{I}_{j=O}=y_j-t_j:=e_j \tag{4}</script><script type="math/tex; mode=display">
+\frac{\partial L}{\partial \mathbf{b_j}}=\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{b_j}}=e_j*\mathbf{a_i} \tag{5}</script>参数更新，可以看到针对一对输入输出词对$ \{w_I, w_O\}$，都要更新全部的输出隐向量，计算量非常大：<script type="math/tex; mode=display">
+\mathbf{b_j}^{new} \leftarrow \mathbf{b_j}^{old}-\eta*e_j*\mathbf{a_i}\quad for \ j \ in \ \{1, ..., V\} \tag{6}</script><ul>
 <li>加入$b_j$, $a_j$都是正向量时，当$j==O$时，$e_j &lt; 0$，此时$b_j$各分量增大，当$j!=O$时，$e_j &gt; 0$, 此时$b_j$个分量减少。</li>
 </ul>
 </li>
 </ul>
-<p>对输入隐向量求偏导，由链式法则得：<br>$$<br>\frac{\partial L(u_1, …, u_V)}{\partial \mathbf{a}<em>I}<br>= \sum</em>{j=1}^V\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{a}<em>I}<br>=\sum</em>{j=1}^{V}e_j\mathbf{b}_j \tag{7}<br>$$<br>参数更新：<br>$$\mathbf{a}_I^{new} \leftarrow \mathbf{a}<em>I^{old}-\eta*\sum</em>{j=1}^Ve_j\mathbf{b_j} \tag{8}$$</p>
-<h5 id="模型变种-CBOW模型："><a href="#模型变种-CBOW模型：" class="headerlink" title="[模型变种] CBOW模型："></a>[模型变种] CBOW模型：</h5><p>&emsp;&emsp;由多个词的上下文来预测一个词<br>$P(w_O|w_I) \rightarrow P(w_O|w_{I_1}, w_{I_2}, …, w_{I_C})$，<br>此时$u_j=\frac{1}{C}(\mathbf{a}<em>{I_1}+…+\mathbf{a}</em>{I_C})\mathbf{b}_j^T$，<br>剩下的参数更新就不写了。</p>
+<p>对输入隐向量求偏导，由链式法则得：</p>
+<script type="math/tex; mode=display">
+\frac{\partial L(u_1, ..., u_V)}{\partial \mathbf{a}_I} 
+= \sum_{j=1}^V\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{a}_I}
+=\sum_{j=1}^{V}e_j\mathbf{b}_j \tag{7}</script><p>参数更新：</p>
+<script type="math/tex; mode=display">\mathbf{a}_I^{new} \leftarrow \mathbf{a}_I^{old}-\eta*\sum_{j=1}^Ve_j\mathbf{b_j} \tag{8}</script><h5 id="模型变种-CBOW模型："><a href="#模型变种-CBOW模型：" class="headerlink" title="[模型变种] CBOW模型："></a>[模型变种] CBOW模型：</h5><p>&emsp;&emsp;由多个词的上下文来预测一个词<br>$P(w_O|w_I) \rightarrow P(w_O|w_{I_1}, w_{I_2}, …, w_{I_C})$，<br>此时$u_j=\frac{1}{C}(\mathbf{a}_{I_1}+…+\mathbf{a}_{I_C})\mathbf{b}_j^T$，<br>剩下的参数更新就不写了。</p>
 <h5 id="模型变种-Skip-Gram模型："><a href="#模型变种-Skip-Gram模型：" class="headerlink" title="[模型变种] Skip-Gram模型："></a>[模型变种] Skip-Gram模型：</h5><p>&emsp;&emsp;一个词预测多个上下文$P(w_O|w_I) \rightarrow P(w_{O_1},…,w_{O_C}|w_I)=\prod_{o=1}^CP(w_o|w_I)$，<br>剩下的Loss函数和参数更新就不写了。</p>
 <h5 id="复杂度分析："><a href="#复杂度分析：" class="headerlink" title="复杂度分析："></a>复杂度分析：</h5><p>&emsp;&emsp;CBOW模型针对每个样本组合$(w_{I_1}, …, w_{I_C}, w_O)$需要更新$O(V)$个输出层的隐向量，Skip-Gram为$C*V$个，<br>而每个隐向量的计算涉及到$softmax$，复杂度为$O(V)$，总的复杂度为$O(V^2)$</p>
 <h5 id="加速训练-Hierarchical-Softmax"><a href="#加速训练-Hierarchical-Softmax" class="headerlink" title="[加速训练] Hierarchical Softmax:"></a>[加速训练] Hierarchical Softmax:</h5><p>&emsp;&emsp;分层Softmax的主要思想是降低$softmax$的复杂度$O(V) \rightarrow O(log(V))$。将词表$\mathbb{V}$构建成一棵二叉树(通常为哈夫曼树)，该树共有$V$个叶子节点，则有$V-1$个中间节点。</p>
 <ul>
-<li><p>定义：</p>
-<ul>
+<li>定义：<ul>
 <li>$n(w, j)$为从$root$到单词$w$路径上的第$j$个<strong>节点</strong>，则$(w, 1)=root$</li>
 <li>$L(w)$为从$root$到单词$w$上的路径长度，则$n(w, L(w))=w$</li>
-<li>对于任意一个中间节点$\mathbf{v^{‘}}_t$，给定输入向量$w_I$后，从该节点往左走的概率为$\sigma(\mathbf{v}^{‘}<em>t\mathbf{v}</em>{w_I})$，<br>  那么往右走的概率为$\sigma(-\mathbf{v}^{‘}<em>t\mathbf{v}</em>{w_I})$</li>
+<li>对于任意一个中间节点$\mathbf{v^{‘}}_t$，给定输入向量$w_I$后，从该节点往左走的概率为$\sigma(\mathbf{v}^{‘}_t\mathbf{v}_{w_I})$，<br>  那么往右走的概率为$\sigma(-\mathbf{v}^{‘}_t\mathbf{v}_{w_I})$</li>
 </ul>
 </li>
-<li><p>概率分布，由以上定义可知：<br>$$<br>P(w_O|w_I)=\prod_{j=1}^{L(w_O)-1}\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}<em>{n(w,j)}^{‘}\mathbf{v}</em>{w_I}^T)<br>$$</p>
-<ul>
-<li>其中<br>$$<br>sig(x)=\begin{cases}<br>1 \quad x\ is \ true \<br>-1 \quad x\ is \ false<br>\end{cases}<br>$$</li>
+<li>概率分布，由以上定义可知：<script type="math/tex; mode=display">
+P(w_O|w_I)=\prod_{j=1}^{L(w_O)-1}\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}_{n(w,j)}^{'}\mathbf{v}_{w_I}^T)</script><ul>
+<li>其中<script type="math/tex; mode=display">
+sig(x)=\begin{cases}
+1 \quad x\ is \ true \\
+-1 \quad x\ is \ false
+\end{cases}</script></li>
 <li>$\sigma(x)=\frac{1}{1+e^{-x}}$</li>
-<li>$lc(n):= leftchild \ \ node\ \ of\ \ n$</li>
+<li>$lc(n):= leftchild   node  of  n$</li>
 <li>可以证明$\sum_{O=1}^VP(w_O|w_I)=1$</li>
 </ul>
 </li>
-<li><p>由概率分布的Loss函数如下：<br>$$L<br>=-log(P(w_O|w_I))<br>=-\sum_{j=1}^{L(w_O)-1}log(\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}<em>{n(w,j)}^{‘}\mathbf{v}</em>{w_I}^{T})<br>$$</p>
-</li>
+<li><p>由概率分布的Loss函数如下：</p>
+<script type="math/tex; mode=display">L
+=-log(P(w_O|w_I))
+=-\sum_{j=1}^{L(w_O)-1}log(\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}_{n(w,j)}^{'}\mathbf{v}_{w_I}^{T})</script></li>
 <li><p>参数更新：</p>
 <ul>
 <li>针对一对$(w_O, w_I)$样本下的更新如下：</li>
 </ul>
 </li>
 </ul>
-<h5 id="加速训练-Negative-Sampling"><a href="#加速训练-Negative-Sampling" class="headerlink" title="[加速训练] Negative Sampling:"></a>[加速训练] Negative Sampling:</h5><p>&emsp;&emsp;传统的参数更新针对每一个$(w_O, w_I)$对都要更新全部词表的emb向量(softmax中分母)，负采样的思想是从全部词表中随机采样一批负向单元，仅仅利用这批负向单元来更新。<br>&emsp;&emsp;令$\mathcal{W}<em>{neg}={j</em>{neg_1}, j_{neg_2}, …, j_{neg_K}}$，对于真实的输出分布，我们有：<br>$$<br>\hat{y_j} = P(w_j|w_I)=\frac{exp(u_j)}{\sum_{j^{‘}=1}^Vexp(u_{j^{‘}})}<br>$$<br>那么在负采样的情况下，我们有：<br>$$<br>\hat{y_j}=P(w_j|w_I)=\begin{cases}<br>  \frac{exp(u_j)}{\sum_{j^{‘}\in \mathcal{W}<em>{neg} \cup {O}}exp(u</em>{j^{‘}})}, \quad if\ j \in \mathcal{W}_{neg}\cup{O}\<br>  0, \quad else<br>\end{cases}<br>$$<br>论文直接从对数损失的角度给出了Loss函数：<br>$$<br>L = -log(\sigma(\mathbf{a}<em>I\mathbf{b}<em>O^T)) - \sum</em>{j\in \mathcal{W}</em>{neg}}log(\sigma(-\mathbf{a}_I\mathbf{b}_O^T))<br>$$</p>
-<h5 id="提问："><a href="#提问：" class="headerlink" title="提问："></a>提问：</h5><ol>
+<h5 id="加速训练-Negative-Sampling"><a href="#加速训练-Negative-Sampling" class="headerlink" title="[加速训练] Negative Sampling:"></a>[加速训练] Negative Sampling:</h5><p>&emsp;&emsp;传统的参数更新针对每一个$(w_O, w_I)$对都要更新全部词表的emb向量(softmax中分母)，负采样的思想是从全部词表中随机采样一批负向单元，仅仅利用这批负向单元来更新。<br>&emsp;&emsp;令$\mathcal{W}_{neg}=\{j_{neg_1}, j_{neg_2}, …, j_{neg_K}\}$，对于真实的输出分布，我们有：</p>
+<script type="math/tex; mode=display">
+\hat{y_j} = P(w_j|w_I)=\frac{exp(u_j)}{\sum_{j^{'}=1}^Vexp(u_{j^{'}})}</script><p>那么在负采样的情况下，我们有：</p>
+<script type="math/tex; mode=display">
+\hat{y_j}=P(w_j|w_I)=\begin{cases}
+  \frac{exp(u_j)}{\sum_{j^{'}\in \mathcal{W}_{neg} \cup \{O\}}exp(u_{j^{'}})}, \quad if\ j \in \mathcal{W}_{neg}\cup\{O\}\\
+  0, \quad else
+\end{cases}</script><p>论文直接从对数损失的角度给出了Loss函数：</p>
+<script type="math/tex; mode=display">
+L = -log(\sigma(\mathbf{a}_I\mathbf{b}_O^T)) - \sum_{j\in \mathcal{W}_{neg}}log(\sigma(-\mathbf{a}_I\mathbf{b}_O^T))</script><h5 id="提问："><a href="#提问：" class="headerlink" title="提问："></a>提问：</h5><ol>
 <li>由以上的分析，为什么语义相近的word其embedding向量的距离更近？</li>
 <li>经验有，出现频率更高的词其embedding向量的L2长度更长，为什么？</li>
 </ol>
