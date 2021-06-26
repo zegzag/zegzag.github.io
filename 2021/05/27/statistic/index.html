@@ -87,7 +87,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;这个专题主要涉及统计机器学习模型的介绍，学习和回顾统计机器学习模型可以帮助理解Deep Learning的统计特性。 常见分布马尔科夫链(Markov chain)&amp;emsp;&amp;emsp;马尔科夫链，也称作马尔科夫过程(Markov process)。现有随机变量序列$X&#x3D;(X_1,…X_t)$，则第$t$时刻的状态依赖于其前$t-1$时刻的状态。若序列具有马尔科夫性质，即">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-05-27T12:34:08.000Z">
-<meta property="article:modified_time" content="2021-06-26T15:18:08.289Z">
+<meta property="article:modified_time" content="2021-06-26T15:21:29.043Z">
 <meta property="article:author" content="Z">
 <meta property="article:tag" content="AI博客,深度学习,机器学习,强化学习,推荐系统">
 <meta name="twitter:card" content="summary">
@@ -392,8 +392,8 @@
 <li>可以证明: $\pi^*= \pi$<ul>
 <li>证明也很简单：<script type="math/tex; mode=display">
   \begin{aligned}
-    \int_S\pi(x)p(x,y)dx&=\int_S\pi(y)p(y,x)dx\\
-    &=\pi(y)\int_Sp(y,x)dx\\
+    \int_S\pi(x)p(x,y)dx&=\int_S\pi(y)p(y,x)dx\\\\
+    &=\pi(y)\int_Sp(y,x)dx\\\\
     &=\pi(y)*1=\pi(y)
   \end{aligned}</script></li>
 </ul>
@@ -414,7 +414,7 @@
 <li>求期望：<ul>
 <li>如果我们要求一个函数$f: \mathcal{X}\rightarrow R$ 基于分布$\pi(\cdot)$的期望$\mathbf{E}_{\pi}[f(\mathbf{X})]$。可以基于分布$\pi(\cdot)$生成一系列样本$\{x_1,…,x_N\}$，则:<script type="math/tex; mode=display">
 \begin{aligned}
-  \mathbf{E}_{\pi}[f(X)]&=f(\mathbf{E}_{\pi}[X])\\
+  \mathbf{E}_{\pi}[f(X)]&=f(\mathbf{E}_{\pi}[X])\\\\
   &\approx f(\frac{1}{N}\sum_{i=1}^{N}x_i)= \frac{1}{N}\sum_{i=1}^{N}f(x_i)
 \end{aligned}</script></li>
 </ul>
@@ -460,8 +460,8 @@
 <li>$for t=0,…$，依据$Q(x_t,\cdot)$生成$x_{t+1}’$</li>
 <li>计算：<script type="math/tex; mode=display">
   \begin{aligned}
-    &\alpha(x_t,x'_{t+1})=min\ \{1,\frac{\pi_u(x'_{t+1})p(x'_{t+1},x)}{\pi_u(x)p(x,x'_{t+1})}\}\\
-    &\alpha(i,j)=min\ \{1,\frac{K_1\pi_jK_2A_{j,i}}{K_1\pi_iK_2A_{i,j}}\}=min\ \{1,\frac{\pi_jA_{j,i}}{\pi_iA_{i,j}}\}\ //离散情况，其中K_1,K_2为比例缩放系数\\
+    &\alpha(x_t,x'_{t+1})=min\ \{1,\frac{\pi_u(x'_{t+1})p(x'_{t+1},x)}{\pi_u(x)p(x,x'_{t+1})}\}\\\\
+    &\alpha(i,j)=min\ \{1,\frac{K_1\pi_jK_2A_{j,i}}{K_1\pi_iK_2A_{i,j}}\}=min\ \{1,\frac{\pi_jA_{j,i}}{\pi_iA_{i,j}}\}\ //离散情况，其中K_1,K_2为比例缩放系数\\\\
   \end{aligned}</script><ul>
 <li>然后以$\alpha(x_t,x’_{t+1})$的概率接受样本$x’_{t+1}$。具体操作如下：<ul>
 <li>依据均匀分布$U(0,1)$采样得到$u$，如果$u\leq \alpha(x_t,x’_{t+1})$，则接受$x’_{t+1}$，即$x_{t+1}=x’_{t+1}$。否则，拒绝$x’_{t+1}$，即$x_{t+1}=x_{t}$。</li>
@@ -477,8 +477,8 @@
 <li>证明：<ul>
 <li>令$c=\int_S\pi_u(x)dx$<script type="math/tex; mode=display">
 \begin{aligned}
-  \pi(dx)P(x,dy)&=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\\
-  &=c^{-1}(min\ \{\pi_u(y)p(y,x),\pi_u(x)p(x,y)\})dxdy\ //关于x,y对称。\\
+  \pi(dx)P(x,dy)&=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\\\\
+  &=c^{-1}(min\ \{\pi_u(y)p(y,x),\pi_u(x)p(x,y)\})dxdy\ //关于x,y对称。\\\\
   &=\pi(dy)P(x,dx)
 \end{aligned}</script></li>
 <li>通过证明过程，也能知道为什么要这么定义$\alpha$</li>
@@ -529,9 +529,9 @@
 <h2 id="贝叶斯分类器"><a href="#贝叶斯分类器" class="headerlink" title="贝叶斯分类器"></a>贝叶斯分类器</h2><p>&emsp;&emsp;贝叶斯定理$P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)*P(B|A)}{P(B)}$。假设样本属性为$\mathbf{x}\in R^m$，类别$c\in R$，贝叶斯分类器如下：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-  P(c|\mathbf{x})&=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\\
-  &=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\ //如果\mathbf{x}中个属性分量x_i相互独立\\
-\hat{c}&=h(\mathbf{x})\\
+  P(c|\mathbf{x})&=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\\\\
+  &=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\ //如果\mathbf{x}中个属性分量x_i相互独立\\\\
+\hat{c}&=h(\mathbf{x})\\\\
   &= argmax\ P(c)\prod_{i=1}^mP(x_i|c)
 \end{aligned}</script><ul>
 <li>学习：根据大数定理，其中$P(c)=\frac{|D_c|}{|D|}$，即类别为$c$的样本数除以总样本数。<br>$P(x_i|c)=\frac{|D_{c, x_i}|}{|D|}$，即类别为$c$且属性为$x_i$的样本数除以总样本数。</li>
@@ -560,8 +560,8 @@
 <li>给定一个模型$\mu$和观测序列$\mathbf{O}=(o_1,…,o_T)$，如何求出该序列的概率？<ul>
 <li>对于给定的状态序列$\mathbf{S}=(s_1,…,s_t)$<script type="math/tex; mode=display">
   \begin{aligned}
-    P(\mathbf{O}|\mu)&=\sum_{\mathbf{S}}P(\mathbf{O},\mathbf{S}|\mu)\\
-    &=\sum_{\mathbf{S}}P(\mathbf{O}|\mathbf{S},\mu)P(\mathbf{S}|\mu)\\
+    P(\mathbf{O}|\mu)&=\sum_{\mathbf{S}}P(\mathbf{O},\mathbf{S}|\mu)\\\\
+    &=\sum_{\mathbf{S}}P(\mathbf{O}|\mathbf{S},\mu)P(\mathbf{S}|\mu)\\\\
     &=\sum_{(s_1,...s_T)}b_{s_1}(o_1)...b_{s_t}(o_t)\pi_{s_1}a_{s_1,s_2}...a_{s_{T-1},s_T}
   \end{aligned}</script><ul>
 <li>该算法的时间复杂度为$O(T^m)$</li>
@@ -605,15 +605,15 @@
 </li>
 <li>前向后向算法统一:<script type="math/tex; mode=display">
   \begin{aligned}
-    P(\mathbf{O}|\mu)&=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_{t+1},...o_T,s_t=s_i|\mu)\\
-    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\
-    P(\mathbf{O}|\mu)&=\sum_i^S\sum_j^S\alpha_t(i)a_{i,j}b_j(o_{t+1})\beta_{t+1}(j)\quad t=1,...,T-1\\
-    &=\sum_j^S(\sum_i^S\alpha_t(i)a_{i,j}b_j(o_{t+1}))\beta_{t+1}(j)\\
-    &=\sum_j^S\alpha_{t+1}(j)\beta_{t+1}(j)\quad t=1,...T-1\\
-    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\
-    P(s_t=s_i,\mathbf{O}|\mu)&=\alpha_t(i)\beta_t(i)\\
-    &=P(s_t=s_i|\mathbf{O},\mu)P(\mathbf{O}|\mu)\\
-    \gamma_t(i)&=P(s_t=s_i|\mathbf{O},\mu)\\
+    P(\mathbf{O}|\mu)&=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_{t+1},...o_T,s_t=s_i|\mu)\\\\
+    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\\\
+    P(\mathbf{O}|\mu)&=\sum_i^S\sum_j^S\alpha_t(i)a_{i,j}b_j(o_{t+1})\beta_{t+1}(j)\quad t=1,...,T-1\\\\
+    &=\sum_j^S(\sum_i^S\alpha_t(i)a_{i,j}b_j(o_{t+1}))\beta_{t+1}(j)\\\\
+    &=\sum_j^S\alpha_{t+1}(j)\beta_{t+1}(j)\quad t=1,...T-1\\\\
+    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\\\
+    P(s_t=s_i,\mathbf{O}|\mu)&=\alpha_t(i)\beta_t(i)\\\\
+    &=P(s_t=s_i|\mathbf{O},\mu)P(\mathbf{O}|\mu)\\\\
+    \gamma_t(i)&=P(s_t=s_i|\mathbf{O},\mu)\\\\
     &=\frac{P(s_t=s_i,\mathbf{O}|\mu)}{P(\mathbf{O}|\mu)}=\frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}
   \end{aligned}</script><ul>
 <li>其中$P(\mathbf{O}|\mu):=$已知模型$\mu$，出现观测序列$\mathbf{O}$的概率。</li>
@@ -639,7 +639,7 @@
 <li>定义：$\delta_t(i)=\underset{s_1,…s_{t-1}}{max}P(s_t=s_i,s_{t-1},..,s_1,o_t,…,o_1|\mu)$ 即从各个路径 $(s_1,…,s_{t-1})$ 中到达$s_t=s_i$时概率最大的那条路径。、</li>
 <li>递推：<script type="math/tex; mode=display">
   \begin{aligned}
-    \delta_{t+1}(i)&=\underset{s_1,...s_{t}}{max}\ P(s_{t+1}=s_i,s_t,...,s_1,o_{t+1},...,o_1|\mu)\\
+    \delta_{t+1}(i)&=\underset{s_1,...s_{t}}{max}\ P(s_{t+1}=s_i,s_t,...,s_1,o_{t+1},...,o_1|\mu)\\\\
     &=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})
   \end{aligned}</script></li>
 <li>算法：<ul>
@@ -687,7 +687,7 @@
 <li><code>E</code>步：计算：<script type="math/tex; mode=display">
  \begin{aligned}
    Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})&=
-   \sum_{j=1}^N\mathbb{E}_{P(Z|Y=y_j;\boldsymbol{\theta}^{(i)})}log(P(Y=y_i,Z;\boldsymbol{\theta}))\\
+   \sum_{j=1}^N\mathbb{E}_{P(Z|Y=y_j;\boldsymbol{\theta}^{(i)})}log(P(Y=y_i,Z;\boldsymbol{\theta}))\\\\
    &=\sum_{j=1}^N(\sum_ZP(Z|Y=y_i;\boldsymbol{\theta}^{(i)})log(P(Y=y_j,Z;\boldsymbol{\theta}))
  \end{aligned}</script></li>
 <li><code>M</code>步：<script type="math/tex; mode=display">
