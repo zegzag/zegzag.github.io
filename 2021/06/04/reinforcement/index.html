@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="强化学习涉及到的一些符号定义。  状态空间$\mathcal{S}$ $t$ 时刻的系统的状态为$s_t\in \mathcal{S}$   动作空间$A$ $t$ 时刻agent采取的动作为$a_t\in \mathcal{A}$   奖励$\mathcal{R}$ $t$ 时刻在状态$s_t$和动作$a_t$后，在$t+1$时刻会得到奖励$r_{t+1}\in R$，即 $r_{t+1}\o">
+<meta name="description" content="强化学习涉及到的一些符号定义。  状态空间\(\mathcal{S}\)  \(t\) 时刻的系统的状态为\(s_t\in \mathcal{S}\)  动作空间\(A\)  \(t\) 时刻agent采取的动作为\(a_t\in \mathcal{A}\)  奖励\(\mathcal{R}\)  \(t\) 时刻在状态\(s_t\)和动作\(a_t\)后，在\(t+1\)时刻会得到奖励\(r_">
 <meta property="og:type" content="article">
 <meta property="og:title" content="强化学习">
 <meta property="og:url" content="http://example.com/2021/06/04/reinforcement/index.html">
 <meta property="og:site_name" content="泽">
-<meta property="og:description" content="强化学习涉及到的一些符号定义。  状态空间$\mathcal{S}$ $t$ 时刻的系统的状态为$s_t\in \mathcal{S}$   动作空间$A$ $t$ 时刻agent采取的动作为$a_t\in \mathcal{A}$   奖励$\mathcal{R}$ $t$ 时刻在状态$s_t$和动作$a_t$后，在$t+1$时刻会得到奖励$r_{t+1}\in R$，即 $r_{t+1}\o">
+<meta property="og:description" content="强化学习涉及到的一些符号定义。  状态空间\(\mathcal{S}\)  \(t\) 时刻的系统的状态为\(s_t\in \mathcal{S}\)  动作空间\(A\)  \(t\) 时刻agent采取的动作为\(a_t\in \mathcal{A}\)  奖励\(\mathcal{R}\)  \(t\) 时刻在状态\(s_t\)和动作\(a_t\)后，在\(t+1\)时刻会得到奖励\(r_">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-06-04T09:56:08.000Z">
 <meta property="article:modified_time" content="2021-06-26T15:10:59.534Z">
@@ -336,267 +336,292 @@
 
       
         <ul>
-<li><p>强化学习涉及到的一些符号定义。</p>
+<li>强化学习涉及到的一些符号定义。
 <ul>
-<li>状态空间$\mathcal{S}$<ul>
-<li>$t$ 时刻的系统的状态为$s_t\in \mathcal{S}$</li>
-</ul>
-</li>
-<li>动作空间$A$<ul>
-<li>$t$ 时刻<code>agent</code>采取的动作为$a_t\in \mathcal{A}$</li>
-</ul>
-</li>
-<li>奖励$\mathcal{R}$<ul>
-<li>$t$ 时刻在状态$s_t$和动作$a_t$后，在$t+1$时刻会得到奖励$r_{t+1}\in R$，即 $r_{t+1}\overset{def}{=}r_{t+1}(s_t,a_t)$</li>
-</ul>
-</li>
-<li>策略<code>Policy</code> $\pi$<ul>
-<li>一般是一个条件概率分布$\pi(a|s)$，即状态 $S_t=s$ 时采取动作$A_t=a$的概率。<h2 id="MDP-有限-马尔科夫决策过程"><a href="#MDP-有限-马尔科夫决策过程" class="headerlink" title="MDP: (有限)马尔科夫决策过程"></a>MDP: (有限)马尔科夫决策过程</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3>&emsp;&emsp; (有限)马尔科夫决策过程中，$\mathcal{S},\mathcal{A},\mathcal{R}$都是有限且离散的，且我们假设$t$时刻的状态 $S_{t}$ 和 $R_{t}$ 都指依赖于上一时刻$t-1$时候的状态 $S_{t-1}$ 和 动作 $A_{t-1}$。即：<script type="math/tex; mode=display">
-p(s',r|s,a)\overset{def}{=}P(S_t=s',R_t=r|S_{t-1}=s, A_{t-1}=a)</script></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>注意这里的$S_i,A_i,R_i$都是随机变量。</p>
-</li>
-<li>$p$是一个映射: $p: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow [0,1]$</li>
-<li>我们可以得到一些基本的概率表示：<ul>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统状态的概率：<script type="math/tex; mode=display">
-  p(s'|s,a)=\sum_{r\in \mathcal{R}}p(s',r|s,a)</script></li>
-<li>给定上一时刻状态 $s$，当前系统状态的概率：<script type="math/tex; mode=display">
+<li>状态空间<span class="math inline">\(\mathcal{S}\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻的系统的状态为<span class="math inline">\(s_t\in \mathcal{S}\)</span></li>
+</ul></li>
+<li>动作空间<span class="math inline">\(A\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻<code>agent</code>采取的动作为<span class="math inline">\(a_t\in \mathcal{A}\)</span></li>
+</ul></li>
+<li>奖励<span class="math inline">\(\mathcal{R}\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻在状态<span class="math inline">\(s_t\)</span>和动作<span class="math inline">\(a_t\)</span>后，在<span class="math inline">\(t+1\)</span>时刻会得到奖励<span class="math inline">\(r_{t+1}\in R\)</span>，即 <span class="math inline">\(r_{t+1}\overset{def}{=}r_{t+1}(s_t,a_t)\)</span></li>
+</ul></li>
+<li>策略<code>Policy</code> <span class="math inline">\(\pi\)</span>
+<ul>
+<li>一般是一个条件概率分布<span class="math inline">\(\pi(a|s)\)</span>，即状态 <span class="math inline">\(S_t=s\)</span> 时采取动作<span class="math inline">\(A_t=a\)</span>的概率。 ## MDP: (有限)马尔科夫决策过程 ### 定义    (有限)马尔科夫决策过程中，<span class="math inline">\(\mathcal{S},\mathcal{A},\mathcal{R}\)</span>都是有限且离散的，且我们假设<span class="math inline">\(t\)</span>时刻的状态 <span class="math inline">\(S_{t}\)</span> 和 <span class="math inline">\(R_{t}\)</span> 都指依赖于上一时刻<span class="math inline">\(t-1\)</span>时候的状态 <span class="math inline">\(S_{t-1}\)</span> 和 动作 <span class="math inline">\(A_{t-1}\)</span>。即： <span class="math display">\[
+p(s&#39;,r|s,a)\overset{def}{=}P(S_t=s&#39;,R_t=r|S_{t-1}=s, A_{t-1}=a)
+\]</span></li>
+</ul></li>
+</ul></li>
+<li>注意这里的<span class="math inline">\(S_i,A_i,R_i\)</span>都是随机变量。</li>
+<li><span class="math inline">\(p\)</span>是一个映射: <span class="math inline">\(p: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow [0,1]\)</span></li>
+<li>我们可以得到一些基本的概率表示：
+<ul>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span> 后，当前系统状态的概率： <span class="math display">\[
+  p(s&#39;|s,a)=\sum_{r\in \mathcal{R}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span>，当前系统状态的概率： <span class="math display">\[
   \begin{aligned}
-    p(s'|s)&=\frac{\sum_{a}p(s',s,a)}{p(s)}=\frac{\sum_{a}p(s'|s,a)\pi(a|s)p(s)}{p(s)}\\
-    &=\sum_{a\in \mathcal{A}}\pi(a|s)p(s'|s,a)
-  \end{aligned}</script></li>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统奖励值的概率：<script type="math/tex; mode=display">
-  p(r|s,a)=\sum_{s'\in \mathcal{S}}p(s',r|s,a)</script></li>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统的奖励期望：<script type="math/tex; mode=display">
-  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in \mathcal{R}}r\sum_{s'\in\mathcal{S}}p(s',r|s,a)</script></li>
-<li>给定上一时刻状态 $s$ 后，当前系统的奖励期望为：<script type="math/tex; mode=display">
+    p(s&#39;|s)&amp;=\frac{\sum_{a}p(s&#39;,s,a)}{p(s)}=\frac{\sum_{a}p(s&#39;|s,a)\pi(a|s)p(s)}{p(s)}\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)p(s&#39;|s,a)
+  \end{aligned}
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span> 后，当前系统奖励值的概率： <span class="math display">\[
+  p(r|s,a)=\sum_{s&#39;\in \mathcal{S}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span> 后，当前系统的奖励期望： <span class="math display">\[
+  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in \mathcal{R}}r\sum_{s&#39;\in\mathcal{S}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 后，当前系统的奖励期望为： <span class="math display">\[
   \begin{aligned}
-    R(s)&=E(R_t|S_{t-1}=s)=\sum_{r\in \mathcal{R}}r\sum_{a\in\mathcal{A}}p(r|s,a)\pi(a|s)\\
-    &=\sum_{a\in\mathcal{A}}\pi(a|s)\sum_{r\in \mathcal{R}}rp(r|s,a)\\
-    &=\sum_{a\in\mathcal{A}}\pi(a|s)R(s,a)
-  \end{aligned}</script></li>
-<li>给定上一时刻状态 $s$ 和动作 $a$，当前时刻状态$s’$ 后，当前系统的奖励期望：<script type="math/tex; mode=display">
+    R(s)&amp;=E(R_t|S_{t-1}=s)=\sum_{r\in \mathcal{R}}r\sum_{a\in\mathcal{A}}p(r|s,a)\pi(a|s)\\
+    &amp;=\sum_{a\in\mathcal{A}}\pi(a|s)\sum_{r\in \mathcal{R}}rp(r|s,a)\\
+    &amp;=\sum_{a\in\mathcal{A}}\pi(a|s)R(s,a)
+  \end{aligned}
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span>，当前时刻状态<span class="math inline">\(s&#39;\)</span> 后，当前系统的奖励期望： <span class="math display">\[
   \begin{aligned}
-    E(R_t|S_{t-1},A_{t-1},S_t)&=\sum_{r\in \mathcal{R}}r*p(r|s,a,s')\\
-    &=\sum_{r\in \mathcal{R}}r\frac{p(s',r|s,a)}{p(s'|s,a)}
-  \end{aligned}</script></li>
+    E(R_t|S_{t-1},A_{t-1},S_t)&amp;=\sum_{r\in \mathcal{R}}r*p(r|s,a,s&#39;)\\
+    &amp;=\sum_{r\in \mathcal{R}}r\frac{p(s&#39;,r|s,a)}{p(s&#39;|s,a)}
+  \end{aligned}
+\]</span></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="一些新增定义："><a href="#一些新增定义：" class="headerlink" title="一些新增定义："></a>一些新增定义：</h3><ul>
-<li>章节<code>Episode</code><ul>
-<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state:</code>$\mathcal{S}^{+}$。</li>
+<h3 id="一些新增定义">一些新增定义：</h3>
+<ul>
+<li>章节<code>Episode</code>
+<ul>
+<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state:</code><span class="math inline">\(\mathcal{S}^{+}\)</span>。</li>
 <li>每段<code>episode</code>之后，系统回到初始状态。</li>
 <li>不同的<code>episode</code>之间相互独立。</li>
 <li>每段<code>episode</code>的终止时刻<code>T</code>都不一样，是一个随机变量。</li>
-<li>回报<code>Return</code>：$t$时刻采取动作$A_t$后，后续全部的回报被定义为：<script type="math/tex; mode=display">
-G_t\overset{def}{=}R_{t+1}+\gamma R_{t+2}...=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}</script></li>
-</ul>
-</li>
-<li>其中$T$是终止时刻。</li>
-<li>关于<code>episode task</code>和<code>continue task</code>统一：<ul>
-<li>$T$时刻之后，可以看做进入了一个<code>special absorbing state</code>状态，之后时刻都回到该状态，且回报为$0$。</li>
-<li>$T=\infty$代表无<code>terminal state</code>的过程。</li>
-<li>(状态)价值函数<code>state-value function</code>：$t$时刻系统状态处于$s$时，基于策略$\pi$的价值函数$v_{\pi}(s)$被定义为后续的回报期望，即：<script type="math/tex; mode=display">
-\begin{aligned}
-v_{\pi}(s)&\overset{def}{=}E[G_t|S_t=s]\\
-&=E[R_{t+1}+\gamma G_{t+1}|S_t=s]
-\end{aligned}</script></li>
-</ul>
-</li>
-<li>价值函数定义了不同策略$\pi$之间的偏序关系。<ul>
-<li>动作价值函数：<script type="math/tex; mode=display">
-\begin{aligned}
-q_{\pi}(s,a)&\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\\
-&=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]
-\end{aligned}</script></li>
-<li>最优策略：</li>
-</ul>
-</li>
-<li>策略是最优当且仅当对于所有状态 $s$，其<code>state-value function</code>优于其他策略。或者对于所有状态 $s$ 和动作 $a$，其<code>action-value function</code>优于其他策略。<script type="math/tex; mode=display">
-\begin{aligned}
-v_{\pi^*}(s)&=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\\
-q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
-&=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a] 
-\end{aligned}</script><ul>
-<li>性质：</li>
-</ul>
-</li>
-<li>$v_{\pi}$和$q_{\pi}$之间的关系，若令$g=G_t$：<script type="math/tex; mode=display">
+</ul></li>
+<li>回报<code>Return</code>：<span class="math inline">\(t\)</span>时刻采取动作<span class="math inline">\(A_t\)</span>后，后续全部的回报被定义为： <span class="math display">\[
+  G_t\overset{def}{=}R_{t+1}+\gamma R_{t+2}...=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}
+\]</span>
+<ul>
+<li>其中<span class="math inline">\(T\)</span>是终止时刻。</li>
+<li>关于<code>episode task</code>和<code>continue task</code>统一：
+<ul>
+<li><span class="math inline">\(T\)</span>时刻之后，可以看做进入了一个<code>special absorbing state</code>状态，之后时刻都回到该状态，且回报为<span class="math inline">\(0\)</span>。</li>
+<li><span class="math inline">\(T=\infty\)</span>代表无<code>terminal state</code>的过程。</li>
+</ul></li>
+</ul></li>
+<li>(状态)价值函数<code>state-value function</code>：<span class="math inline">\(t\)</span>时刻系统状态处于<span class="math inline">\(s\)</span>时，基于策略<span class="math inline">\(\pi\)</span>的价值函数<span class="math inline">\(v_{\pi}(s)\)</span>被定义为后续的回报期望，即： <span class="math display">\[
   \begin{aligned}
-    v_{\pi}(s)&=\sum_gg*p(g|s)\\
-    &=\sum_gg\sum_{a\in \mathcal{A}}p(g|s,a)\pi(a|s)\\
-    &=\sum_{a\in \mathcal{A}}\pi(a|s)\sum_gg*p(g|s,a)\\
-    &=\sum_{a\in \mathcal{A}}\pi(a|s)q_{\pi}(s,a)\\
-  \end{aligned}</script></li>
-<li>相邻时刻 $t$ 和 $t+1$ 的递推关系(<strong>贝尔曼方程</strong>)，令$s’=S_{t+1}$：<ul>
-<li>$v_{\pi}(s)$ 和 $v_{\pi}(s’)$：<script type="math/tex; mode=display">
+    v_{\pi}(s)&amp;\overset{def}{=}E[G_t|S_t=s]\\
+    &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s]
+  \end{aligned}
+\]</span>
+<ul>
+<li>价值函数定义了不同策略<span class="math inline">\(\pi\)</span>之间的偏序关系。</li>
+</ul></li>
+<li>动作价值函数： <span class="math display">\[
+\begin{aligned}
+  q_{\pi}(s,a)&amp;\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\\
+  &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]
+\end{aligned}
+\]</span></li>
+<li>最优策略：
+<ul>
+<li>策略是最优当且仅当对于所有状态 <span class="math inline">\(s\)</span>，其<code>state-value function</code>优于其他策略。或者对于所有状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span>，其<code>action-value function</code>优于其他策略。 <span class="math display">\[
+\begin{aligned}
+v_{\pi^*}(s)&amp;=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\\
+q_{\pi^*}(s,a)&amp;=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
+&amp;=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a] 
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>性质：
+<ul>
+<li><span class="math inline">\(v_{\pi}\)</span>和<span class="math inline">\(q_{\pi}\)</span>之间的关系，若令<span class="math inline">\(g=G_t\)</span>： <span class="math display">\[
   \begin{aligned}
-    v_{\pi}(s)&=E[R_{t+1}|S_t=s]+\gamma E[G_{t+1}|S_t=s]\\
-    &=R(s)+\gamma \sum_{s'}p(s'|s)E[G_{t+1}|S_{t+1}=s']\\
-    &=R(s)+\gamma \sum_{s'}p(s'|s)v_{\pi}(s')\\
-    &=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_{s'}p(s'|s,a)v_{\pi}(s')\\
-    &=\sum_a\pi(a|s)\sum_{s'}\sum_rp(s',r|s,a)[r+\gamma v_{\pi}(s')]
-  \end{aligned}</script><ul>
-<li>直观上看，就是 $t$ 时刻产生的未来回报期望 = $t$时刻产生的即时奖励 + 从$t$转移到 $t+1$ 时刻之后基于 $t+1$ 时刻的未来回报期望。</li>
-</ul>
-</li>
-<li>$q_{\pi}(s,a)$ 和 $q_{\pi}(s’,a’)$：<script type="math/tex; mode=display">
+    v_{\pi}(s)&amp;=\sum_gg*p(g|s)\\
+    &amp;=\sum_gg\sum_{a\in \mathcal{A}}p(g|s,a)\pi(a|s)\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)\sum_gg*p(g|s,a)\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)q_{\pi}(s,a)\\
+  \end{aligned}
+\]</span></li>
+<li>相邻时刻 <span class="math inline">\(t\)</span> 和 <span class="math inline">\(t+1\)</span> 的递推关系(<strong>贝尔曼方程</strong>)，令<span class="math inline">\(s&#39;=S_{t+1}\)</span>：
+<ul>
+<li><span class="math inline">\(v_{\pi}(s)\)</span> 和 <span class="math inline">\(v_{\pi}(s&#39;)\)</span>： <span class="math display">\[
   \begin{aligned}
-    q_{\pi}(s,a)&=E[R_{t+1}|S_t=s,A_t=a]+\gamma E[G_{t+1}|S_t=s,A_t=a]\\
-    &=R(s,a)+\gamma \sum_{s'}\sum_{a'}p(s',a'|s,a)E[G_{t+1}|S_{t+1}=s',A_{t+1}=a']\\
-    &=R(s,a)+\gamma \sum_{s'}\sum_{a'}p(s',a'|s,a)q_{\pi}(s',a')\\
-    &=R(s,a)+\gamma \sum_{a'}\pi(a'|s')\sum_{s'}p(s'|s,a)q_{\pi}(s',a')
-  \end{aligned}</script></li>
+    v_{\pi}(s)&amp;=E[R_{t+1}|S_t=s]+\gamma E[G_{t+1}|S_t=s]\\
+    &amp;=R(s)+\gamma \sum_{s&#39;}p(s&#39;|s)E[G_{t+1}|S_{t+1}=s&#39;]\\
+    &amp;=R(s)+\gamma \sum_{s&#39;}p(s&#39;|s)v_{\pi}(s&#39;)\\
+    &amp;=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_{s&#39;}p(s&#39;|s,a)v_{\pi}(s&#39;)\\
+    &amp;=\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma v_{\pi}(s&#39;)]
+  \end{aligned}
+\]</span>
+<ul>
+<li>直观上看，就是 <span class="math inline">\(t\)</span> 时刻产生的未来回报期望 = <span class="math inline">\(t\)</span>时刻产生的即时奖励 + 从<span class="math inline">\(t\)</span>转移到 <span class="math inline">\(t+1\)</span> 时刻之后基于 <span class="math inline">\(t+1\)</span> 时刻的未来回报期望。</li>
+</ul></li>
+<li><span class="math inline">\(q_{\pi}(s,a)\)</span> 和 <span class="math inline">\(q_{\pi}(s&#39;,a&#39;)\)</span>： <span class="math display">\[
+  \begin{aligned}
+    q_{\pi}(s,a)&amp;=E[R_{t+1}|S_t=s,A_t=a]+\gamma E[G_{t+1}|S_t=s,A_t=a]\\
+    &amp;=R(s,a)+\gamma \sum_{s&#39;}\sum_{a&#39;}p(s&#39;,a&#39;|s,a)E[G_{t+1}|S_{t+1}=s&#39;,A_{t+1}=a&#39;]\\
+    &amp;=R(s,a)+\gamma \sum_{s&#39;}\sum_{a&#39;}p(s&#39;,a&#39;|s,a)q_{\pi}(s&#39;,a&#39;)\\
+    &amp;=R(s,a)+\gamma \sum_{a&#39;}\pi(a&#39;|s&#39;)\sum_{s&#39;}p(s&#39;|s,a)q_{\pi}(s&#39;,a&#39;)
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="待解问题："><a href="#待解问题：" class="headerlink" title="待解问题："></a>待解问题：</h3><ul>
-<li>MDP主要包括两个问题：<ul>
-<li>预测<code>Prediction</code>问题，即给定模型$\mu =\{\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma\}$，求$v_{\pi}(s)$</li>
-<li>控制<code>Control</code>问题，给定模型$\mu = \{\mathcal{S},\mathcal{A},\mathcal{R},P, \gamma\}$，求解最佳策略$\pi^*$。</li>
-</ul>
-</li>
+<h3 id="待解问题">待解问题：</h3>
+<ul>
+<li>MDP主要包括两个问题：
+<ul>
+<li>预测<code>Prediction</code>问题，即给定模型<span class="math inline">\(\mu =\{\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma\}\)</span>，求<span class="math inline">\(v_{\pi}(s)\)</span></li>
+<li>控制<code>Control</code>问题，给定模型<span class="math inline">\(\mu = \{\mathcal{S},\mathcal{A},\mathcal{R},P, \gamma\}\)</span>，求解最佳策略<span class="math inline">\(\pi^*\)</span>。</li>
+</ul></li>
 </ul>
 <p>回顾以上推导，最关键的是两点：</p>
 <ul>
-<li>对状态转移函数的定义，由马尔科夫链的$p(S_{t+1}|S_t)$变为$p(S_{t+1}|S_t,A_t)$或者$p(S_{t+1},R_{t+1}|S_t,A_t)$。</li>
-<li>满足马尔科夫性质，即$p(S_{t+1},R_{t+1}|S_t,A_t,…,S_0,A_0)=p(S_{t+1},R_{t+1}|S_t,A_t)$</li>
+<li>对状态转移函数的定义，由马尔科夫链的<span class="math inline">\(p(S_{t+1}|S_t)\)</span>变为<span class="math inline">\(p(S_{t+1}|S_t,A_t)\)</span>或者<span class="math inline">\(p(S_{t+1},R_{t+1}|S_t,A_t)\)</span>。</li>
+<li>满足马尔科夫性质，即<span class="math inline">\(p(S_{t+1},R_{t+1}|S_t,A_t,...,S_0,A_0)=p(S_{t+1},R_{t+1}|S_t,A_t)\)</span></li>
 <li>剩下所有的推导都是基于以上两点。所以，不同的概率定义方式产生不同的模型。试想一下如果想建模一个概率模型，该以什么方式定义概率。</li>
 </ul>
-<hr>
-<h2 id="动态规划法"><a href="#动态规划法" class="headerlink" title="动态规划法"></a>动态规划法</h2><h3 id="预测Prediction问题："><a href="#预测Prediction问题：" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><ul>
-<li><strong>解析法</strong>：<ul>
-<li>由$v_{\pi}(s)=\sum_a\pi(a|s)\sum_{s’}\sum_rp(s’,r|s,a)[r+\gamma v_{\pi}(s’)]$可知，求解全状态其实就是在解一个线性方程组。<ul>
-<li>令：<script type="math/tex; mode=display">
+<hr />
+<h2 id="动态规划法">动态规划法</h2>
+<h3 id="预测prediction问题">预测<code>Prediction</code>问题：</h3>
+<ul>
+<li><strong>解析法</strong>：
+<ul>
+<li>由<span class="math inline">\(v_{\pi}(s)=\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma v_{\pi}(s&#39;)]\)</span>可知，求解全状态其实就是在解一个线性方程组。
+<ul>
+<li>令： <span class="math display">\[
   \begin{aligned}
-    b(s)&=\sum_a\pi(a|s)\sum_{s',r}p(s',r|s,a)\\
-    w(s',s)&=\sum_a\pi(a|s)\sum_rp(s',r|s,a)
-  \end{aligned}</script></li>
-<li>则有：<script type="math/tex; mode=display">
+    b(s)&amp;=\sum_a\pi(a|s)\sum_{s&#39;,r}p(s&#39;,r|s,a)\\
+    w(s&#39;,s)&amp;=\sum_a\pi(a|s)\sum_rp(s&#39;,r|s,a)
+  \end{aligned}
+\]</span></li>
+<li>则有： <span class="math display">\[
   \begin{aligned}
-    v_{\pi}(s_1)&=
-    \sum_a\pi(a|s_1)\sum_{s'}\sum_rp(s',r|s_1,a)[r+\gamma v_{\pi}(s')]\\
-    v_{\pi}(s_1)&=rb(s_1)
-    +\gamma[w(s'_1, s_0),...,w(s'_d,s_0)]
+    v_{\pi}(s_1)&amp;=
+    \sum_a\pi(a|s_1)\sum_{s&#39;}\sum_rp(s&#39;,r|s_1,a)[r+\gamma v_{\pi}(s&#39;)]\\
+    v_{\pi}(s_1)&amp;=rb(s_1)
+    +\gamma[w(s&#39;_1, s_0),...,w(s&#39;_d,s_0)]
     \begin{bmatrix}
-      v_{\pi}(s'_1)\\
+      v_{\pi}(s&#39;_1)\\
       ...\\
-      v_{\pi}(s'_d)
+      v_{\pi}(s&#39;_d)
     \end{bmatrix}
-  \end{aligned}</script></li>
-<li>即：<script type="math/tex; mode=display">
+  \end{aligned}
+\]</span></li>
+<li>即： <span class="math display">\[
   \begin{aligned}
-    \mathbf{v}&=\mathbf{W}\mathbf{v}+\mathbf{b}\\
-    \mathbf{v}&=(\mathbf{E}-\mathbf{W})^{-1}\mathbf{b}
-  \end{aligned}</script></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>迭代法</strong>：<ul>
-<li>输入：策略$\pi$，阈值$\theta$</li>
-<li>过程：<ul>
-<li>随机初始化：$v(s)$</li>
-<li>$Loop:$<ul>
-<li>$\Delta \leftarrow 0$</li>
-<li>$for s\in S:$<ul>
-<li>$v\leftarrow v(s)$</li>
-<li>$v(s)\leftarrow \sum_a\pi(a|s)\sum_{s’}\sum_rp(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$\Delta \leftarrow max(\Delta, |v-v(s)|)$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>$until \Delta &lt; \theta$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="控制Control问题："><a href="#控制Control问题：" class="headerlink" title="控制Control问题："></a>控制<code>Control</code>问题：</h3><ul>
-<li><p><strong>基于策略的迭代<code>Policy Iteration</code></strong>:</p>
+    \mathbf{v}&amp;=\mathbf{W}\mathbf{v}+\mathbf{b}\\
+    \mathbf{v}&amp;=(\mathbf{E}-\mathbf{W})^{-1}\mathbf{b}
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+<li><strong>迭代法</strong>：
 <ul>
-<li>1: 初始化<code>Initialization</code>:<ul>
-<li>随机初始化：$v(s)\in R, \pi(s)\in \mathcal{A}(s) for all s\in \mathcal{S}$</li>
+<li>输入：策略<span class="math inline">\(\pi\)</span>，阈值<span class="math inline">\(\theta\)</span></li>
+<li>过程：
+<ul>
+<li>随机初始化：<span class="math inline">\(v(s)\)</span></li>
+<li><span class="math inline">\(Loop:\)</span>
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(v\leftarrow v(s)\)</span></li>
+<li><span class="math inline">\(v(s)\leftarrow \sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta, |v-v(s)|)\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(until\ \Delta &lt; \theta\)</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-<li>2: 回报预估<code>Policy Evaluation</code>:<ul>
+<h3 id="控制control问题">控制<code>Control</code>问题：</h3>
+<ul>
+<li><strong>基于策略的迭代<code>Policy Iteration</code></strong>:
+<ul>
+<li>1: 初始化<code>Initialization</code>:
+<ul>
+<li>随机初始化：<span class="math inline">\(v(s)\in R, \pi(s)\in \mathcal{A}(s)\ for\ all\ s\in \mathcal{S}\)</span></li>
+</ul></li>
+<li>2: 回报预估<code>Policy Evaluation</code>:
+<ul>
 <li>运行<strong>迭代法</strong>进行预估。</li>
-</ul>
-</li>
-<li>3: 策略改进<code>Policy Improvement</code>:<ul>
-<li>$policy_stable\leftarrow true$</li>
-<li>$for s\in S:$<ul>
-<li>$old_action\leftarrow \pi(s)$</li>
-<li>$\pi(s)\leftarrow \underset{a}{\operatorname{argmax}}\sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$if old_action\neq\pi(s), policy_stable\leftarrow false$</li>
-</ul>
-</li>
-<li>$if policy_stable\leftarrow false, goto 2$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>基于价值的迭代<code>Value Iteration</code></strong>:</p>
+</ul></li>
+<li>3: 策略改进<code>Policy Improvement</code>:
 <ul>
-<li>1: 初始化<code>Initialization</code>:<ul>
-<li>随机初始化：$V(s)$</li>
-</ul>
-</li>
-<li>2: 迭代(<code>Evaluation</code>和<code>Improvement</code>统一)：<ul>
-<li>$Loop:$<ul>
-<li>$\Delta \leftarrow 0$</li>
-<li>$for s\in S:$<ul>
-<li>$v\leftarrow V(s)$</li>
-<li>$V(s)\leftarrow \underset{a}{max}\sum_a\pi(a|s)\sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$\Delta \leftarrow max(\Delta, |v-V(s)|)$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>$until \Delta &lt; \theta$</li>
-</ul>
-</li>
-<li>3: 产出<code>Deterministic</code>最优策略：<ul>
-<li>$for s\in S$<ul>
-<li>$\pi(s)=\underset{a}{\operatorname{argmax}} \sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><span class="math inline">\(policy\_stable\leftarrow true\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(old\_action\leftarrow \pi(s)\)</span></li>
+<li><span class="math inline">\(\pi(s)\leftarrow \underset{a}{\operatorname{argmax}}\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(if\ old\_action\neq\pi(s),\ policy\_stable\leftarrow false\)</span></li>
+</ul></li>
+<li><span class="math inline">\(if\ policy\_stable\leftarrow false,\ goto\ 2\)</span></li>
+</ul></li>
+</ul></li>
+<li><strong>基于价值的迭代<code>Value Iteration</code></strong>:
+<ul>
+<li>1: 初始化<code>Initialization</code>:
+<ul>
+<li>随机初始化：<span class="math inline">\(V(s)\)</span></li>
+</ul></li>
+<li>2: 迭代(<code>Evaluation</code>和<code>Improvement</code>统一)：
+<ul>
+<li><span class="math inline">\(Loop:\)</span>
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(v\leftarrow V(s)\)</span></li>
+<li><span class="math inline">\(V(s)\leftarrow \underset{a}{max}\sum_a\pi(a|s)\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta, |v-V(s)|)\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(until\ \Delta &lt; \theta\)</span></li>
+</ul></li>
+<li>3: 产出<code>Deterministic</code>最优策略：
+<ul>
+<li><span class="math inline">\(for\ s\in S\)</span>
+<ul>
+<li><span class="math inline">\(\pi(s)=\underset{a}{\operatorname{argmax}} \sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
 <li><strong>异步动态规划</strong></li>
 </ul>
-<h2 id="蒙特卡洛法"><a href="#蒙特卡洛法" class="headerlink" title="蒙特卡洛法"></a>蒙特卡洛法</h2><h3 id="预测Prediction问题：-1"><a href="#预测Prediction问题：-1" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><p>&emsp;&emsp; 给定策略$\pi$，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过 $avg$ 来估计 $expectation$。<br>即$v_{\pi}(s)=avg(G_t),s.t S_t=s$</p>
+<h2 id="蒙特卡洛法">蒙特卡洛法</h2>
+<h3 id="预测prediction问题-1">预测<code>Prediction</code>问题：</h3>
+<p>   给定策略<span class="math inline">\(\pi\)</span>，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过 <span class="math inline">\(avg\)</span> 来估计 <span class="math inline">\(expectation\)</span>。 即<span class="math inline">\(v_{\pi}(s)=avg(G_t),s.t\ S_t=s\)</span></p>
 <ul>
-<li><strong>First-visit MC prediction</strong>:<br>给定策略$\pi$后，状态$s$可能会被多次访问，那么第一次访问$s$后的平均回报的预估就是<code>First-visit MC prediction</code><ul>
-<li><code>Input</code>: $\pi$</li>
-<li><code>Initialize</code>：<ul>
-<li>$Randomly initialize V(s) for all s\in \mathcal{S}$</li>
-<li>$Return(s)=\mathbf{0}$</li>
-</ul>
-</li>
-<li>$Loop forever (for each episode)$:<ul>
-<li>$Generate an episode following \pi: S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T$</li>
-<li>$G\leftarrow 0$</li>
-<li>$Loop for each step of episode t=T-1,T-2,…,0:$<ul>
-<li>$G\leftarrow \gamma G+R_{t+1}$</li>
-<li>$Unless S_t appears in S_0,…,S_{t-1}$<ul>
-<li>$Append G to Return(S_t)$</li>
-<li>$V(S_t)\leftarrow avg(Returns(S_t))$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><strong>First-visit MC prediction</strong>:<br />
+给定策略<span class="math inline">\(\pi\)</span>后，状态<span class="math inline">\(s\)</span>可能会被多次访问，那么第一次访问<span class="math inline">\(s\)</span>后的平均回报的预估就是<code>First-visit MC prediction</code>
+<ul>
+<li><code>Input</code>: <span class="math inline">\(\pi\)</span></li>
+<li><code>Initialize</code>：
+<ul>
+<li><span class="math inline">\(Randomly\ initialize\ V(s)\ for\ all\ s\in \mathcal{S}\)</span></li>
+<li><span class="math inline">\(Return(s)=\mathbf{0}\)</span></li>
+</ul></li>
+<li><span class="math inline">\(Loop\ forever\ (for\ each\ episode)\)</span>:
+<ul>
+<li><span class="math inline">\(Generate\ an\ episode\ following\ \pi: S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T\)</span></li>
+<li><span class="math inline">\(G\leftarrow 0\)</span></li>
+<li><span class="math inline">\(Loop\ for\ each\ step\ of\ episode\ t=T-1,T-2,...,0:\)</span>
+<ul>
+<li><span class="math inline">\(G\leftarrow \gamma G+R_{t+1}\)</span></li>
+<li><span class="math inline">\(Unless\ S_t\ appears\ in\ S_0,...,S_{t-1}\)</span>
+<ul>
+<li><span class="math inline">\(Append\ G\ to\ Return(S_t)\)</span></li>
+<li><span class="math inline">\(V(S_t)\leftarrow avg(Returns(S_t))\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
 
       
@@ -767,7 +792,7 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MDP-%E6%9C%89%E9%99%90-%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E5%86%B3%E7%AD%96%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">MDP: (有限)马尔科夫决策过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%96%B0%E5%A2%9E%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">一些新增定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%85%E8%A7%A3%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">待解问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">动态规划法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8BPrediction%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">预测Prediction问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6Control%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">控制Control问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">蒙特卡洛法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8BPrediction%E9%97%AE%E9%A2%98%EF%BC%9A-1"><span class="nav-number">3.1.</span> <span class="nav-text">预测Prediction问题：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%96%B0%E5%A2%9E%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">一些新增定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%85%E8%A7%A3%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">待解问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%B3%95"><span class="nav-number"></span> <span class="nav-text">动态规划法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8Bprediction%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">预测Prediction问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6control%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">控制Control问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%B3%95"><span class="nav-number"></span> <span class="nav-text">蒙特卡洛法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8Bprediction%E9%97%AE%E9%A2%98-1"><span class="nav-number">1.</span> <span class="nav-text">预测Prediction问题：</span></a></li></ol></div>
             
 
           </div>
@@ -1022,5 +1047,5 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":-50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
 </html>

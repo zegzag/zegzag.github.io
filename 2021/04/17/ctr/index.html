@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="FM&amp;emsp;&amp;emsp;FM的基本公式为： y&#x3D;w_0+\sum_{i&#x3D;1}^{n}w_ix_i+\sum_{i&#x3D;1}^{n}\sum_{j&#x3D;i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}&amp;emsp;&amp;emsp;令 $\mathbf{x}&#x3D;(x_1, x_2, … x_n)，\mathbf{v}&#x3D;(v_1, v_2, v_3,…,v_n)，">
+<meta name="description" content="FM   FM的基本公式为： \[y&#x3D;w_0+\sum_{i&#x3D;1}^{n}w_ix_i+\sum_{i&#x3D;1}^{n}\sum_{j&#x3D;i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}\]   令 \(\mathbf{x}&#x3D;(x_1, x_2, ... x_n)，\mathbf{v}&#x3D;(v_1, v_2, v_3,...,v_n)， \mathbf{e">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ctr">
 <meta property="og:url" content="http://example.com/2021/04/17/ctr/index.html">
 <meta property="og:site_name" content="泽">
-<meta property="og:description" content="FM&amp;emsp;&amp;emsp;FM的基本公式为： y&#x3D;w_0+\sum_{i&#x3D;1}^{n}w_ix_i+\sum_{i&#x3D;1}^{n}\sum_{j&#x3D;i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}&amp;emsp;&amp;emsp;令 $\mathbf{x}&#x3D;(x_1, x_2, … x_n)，\mathbf{v}&#x3D;(v_1, v_2, v_3,…,v_n)，">
+<meta property="og:description" content="FM   FM的基本公式为： \[y&#x3D;w_0+\sum_{i&#x3D;1}^{n}w_ix_i+\sum_{i&#x3D;1}^{n}\sum_{j&#x3D;i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}\]   令 \(\mathbf{x}&#x3D;(x_1, x_2, ... x_n)，\mathbf{v}&#x3D;(v_1, v_2, v_3,...,v_n)， \mathbf{e">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-04-17T11:17:00.000Z">
 <meta property="article:modified_time" content="2021-06-26T15:25:55.861Z">
@@ -335,16 +335,15 @@
       
 
       
-        <h2 id="FM"><a href="#FM" class="headerlink" title="FM"></a>FM</h2><p>&emsp;&emsp;FM的基本公式为：</p>
-<script type="math/tex; mode=display">y=w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n}\sum_{j=i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}</script><p>&emsp;&emsp;令 $\mathbf{x}=(x_1, x_2, … x_n)，\mathbf{v}=(v_1, v_2, v_3,…,v_n)， \mathbf{e}=(1,1,…,1)$ 为单位向量，$\mathbf{U}$为上三角矩阵， $\mathbf{E}$为单位阵，则其矩阵形式表示为：</p>
-<script type="math/tex; mode=display">
+        <h2 id="fm">FM</h2>
+<p>  FM的基本公式为： <span class="math display">\[y=w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n}\sum_{j=i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}\]</span>   令 <span class="math inline">\(\mathbf{x}=(x_1, x_2, ... x_n)，\mathbf{v}=(v_1, v_2, v_3,...,v_n)， \mathbf{e}=(1,1,...,1)\)</span> 为单位向量，<span class="math inline">\(\mathbf{U}\)</span>为上三角矩阵， <span class="math inline">\(\mathbf{E}\)</span>为单位阵，则其矩阵形式表示为： <span class="math display">\[
 y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
 \begin{bmatrix} x_1\mathbf{v_1}\\\\x_2\mathbf{v_2}\\\\x_3\mathbf{v_3}\\\\...\\\\x_n\mathbf{v_n}
 \end{bmatrix}
 \begin{bmatrix} x_1\mathbf{v_1^T},x_2\mathbf{v_2^T},x_3\mathbf{v_3^T}, ...,x_n\mathbf{v_n^T} 
 \end{bmatrix}
-\mathbf{e^T}\tag{2}</script><p>&emsp;&emsp;注意如果$\mathbf{x}$是一个one-hot向量，那么在一个样本$\{y_i, \mathbf{x_i} \}$下，公式(2)就退化成：</p>
-<script type="math/tex; mode=display">y=w_0+w_i*1+\mathbf{v_i}\mathbf{v_i^T} \tag{3}</script><p>这里的$\mathbf{v_i}$即可看成$x_i$的embedding表示。</p>
+\mathbf{e^T}\tag{2}
+\]</span>   注意如果<span class="math inline">\(\mathbf{x}\)</span>是一个one-hot向量，那么在一个样本<span class="math inline">\(\{y_i, \mathbf{x_i} \}\)</span>下，公式(2)就退化成： <span class="math display">\[y=w_0+w_i*1+\mathbf{v_i}\mathbf{v_i^T} \tag{3}\]</span> 这里的<span class="math inline">\(\mathbf{v_i}\)</span>即可看成<span class="math inline">\(x_i\)</span>的embedding表示。</p>
 
       
     </div>
@@ -375,8 +374,8 @@ y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/04/17/boost/" rel="next" title="集成学习">
-                <i class="fa fa-chevron-left"></i> 集成学习
+              <a href="/2021/04/17/embedding/" rel="next" title="Embedding">
+                <i class="fa fa-chevron-left"></i> Embedding
               </a>
             
           </div>
@@ -385,8 +384,8 @@ y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2021/05/18/loss/" rel="prev" title="Loss">
-                Loss <i class="fa fa-chevron-right"></i>
+              <a href="/2021/04/17/boost/" rel="prev" title="集成学习">
+                集成学习 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -518,7 +517,7 @@ y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FM"><span class="nav-number">1.</span> <span class="nav-text">FM</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fm"><span class="nav-number">1.</span> <span class="nav-text">FM</span></a></li></ol></div>
             
 
           </div>
@@ -773,5 +772,5 @@ y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":-50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
 </html>

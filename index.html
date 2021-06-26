@@ -334,267 +334,292 @@
         
           
             <ul>
-<li><p>强化学习涉及到的一些符号定义。</p>
+<li>强化学习涉及到的一些符号定义。
 <ul>
-<li>状态空间$\mathcal{S}$<ul>
-<li>$t$ 时刻的系统的状态为$s_t\in \mathcal{S}$</li>
-</ul>
-</li>
-<li>动作空间$A$<ul>
-<li>$t$ 时刻<code>agent</code>采取的动作为$a_t\in \mathcal{A}$</li>
-</ul>
-</li>
-<li>奖励$\mathcal{R}$<ul>
-<li>$t$ 时刻在状态$s_t$和动作$a_t$后，在$t+1$时刻会得到奖励$r_{t+1}\in R$，即 $r_{t+1}\overset{def}{=}r_{t+1}(s_t,a_t)$</li>
-</ul>
-</li>
-<li>策略<code>Policy</code> $\pi$<ul>
-<li>一般是一个条件概率分布$\pi(a|s)$，即状态 $S_t=s$ 时采取动作$A_t=a$的概率。<h2 id="MDP-有限-马尔科夫决策过程"><a href="#MDP-有限-马尔科夫决策过程" class="headerlink" title="MDP: (有限)马尔科夫决策过程"></a>MDP: (有限)马尔科夫决策过程</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3>&emsp;&emsp; (有限)马尔科夫决策过程中，$\mathcal{S},\mathcal{A},\mathcal{R}$都是有限且离散的，且我们假设$t$时刻的状态 $S_{t}$ 和 $R_{t}$ 都指依赖于上一时刻$t-1$时候的状态 $S_{t-1}$ 和 动作 $A_{t-1}$。即：<script type="math/tex; mode=display">
-p(s',r|s,a)\overset{def}{=}P(S_t=s',R_t=r|S_{t-1}=s, A_{t-1}=a)</script></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>注意这里的$S_i,A_i,R_i$都是随机变量。</p>
-</li>
-<li>$p$是一个映射: $p: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow [0,1]$</li>
-<li>我们可以得到一些基本的概率表示：<ul>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统状态的概率：<script type="math/tex; mode=display">
-  p(s'|s,a)=\sum_{r\in \mathcal{R}}p(s',r|s,a)</script></li>
-<li>给定上一时刻状态 $s$，当前系统状态的概率：<script type="math/tex; mode=display">
+<li>状态空间<span class="math inline">\(\mathcal{S}\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻的系统的状态为<span class="math inline">\(s_t\in \mathcal{S}\)</span></li>
+</ul></li>
+<li>动作空间<span class="math inline">\(A\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻<code>agent</code>采取的动作为<span class="math inline">\(a_t\in \mathcal{A}\)</span></li>
+</ul></li>
+<li>奖励<span class="math inline">\(\mathcal{R}\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻在状态<span class="math inline">\(s_t\)</span>和动作<span class="math inline">\(a_t\)</span>后，在<span class="math inline">\(t+1\)</span>时刻会得到奖励<span class="math inline">\(r_{t+1}\in R\)</span>，即 <span class="math inline">\(r_{t+1}\overset{def}{=}r_{t+1}(s_t,a_t)\)</span></li>
+</ul></li>
+<li>策略<code>Policy</code> <span class="math inline">\(\pi\)</span>
+<ul>
+<li>一般是一个条件概率分布<span class="math inline">\(\pi(a|s)\)</span>，即状态 <span class="math inline">\(S_t=s\)</span> 时采取动作<span class="math inline">\(A_t=a\)</span>的概率。 ## MDP: (有限)马尔科夫决策过程 ### 定义    (有限)马尔科夫决策过程中，<span class="math inline">\(\mathcal{S},\mathcal{A},\mathcal{R}\)</span>都是有限且离散的，且我们假设<span class="math inline">\(t\)</span>时刻的状态 <span class="math inline">\(S_{t}\)</span> 和 <span class="math inline">\(R_{t}\)</span> 都指依赖于上一时刻<span class="math inline">\(t-1\)</span>时候的状态 <span class="math inline">\(S_{t-1}\)</span> 和 动作 <span class="math inline">\(A_{t-1}\)</span>。即： <span class="math display">\[
+p(s&#39;,r|s,a)\overset{def}{=}P(S_t=s&#39;,R_t=r|S_{t-1}=s, A_{t-1}=a)
+\]</span></li>
+</ul></li>
+</ul></li>
+<li>注意这里的<span class="math inline">\(S_i,A_i,R_i\)</span>都是随机变量。</li>
+<li><span class="math inline">\(p\)</span>是一个映射: <span class="math inline">\(p: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow [0,1]\)</span></li>
+<li>我们可以得到一些基本的概率表示：
+<ul>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span> 后，当前系统状态的概率： <span class="math display">\[
+  p(s&#39;|s,a)=\sum_{r\in \mathcal{R}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span>，当前系统状态的概率： <span class="math display">\[
   \begin{aligned}
-    p(s'|s)&=\frac{\sum_{a}p(s',s,a)}{p(s)}=\frac{\sum_{a}p(s'|s,a)\pi(a|s)p(s)}{p(s)}\\
-    &=\sum_{a\in \mathcal{A}}\pi(a|s)p(s'|s,a)
-  \end{aligned}</script></li>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统奖励值的概率：<script type="math/tex; mode=display">
-  p(r|s,a)=\sum_{s'\in \mathcal{S}}p(s',r|s,a)</script></li>
-<li>给定上一时刻状态 $s$ 和动作 $a$ 后，当前系统的奖励期望：<script type="math/tex; mode=display">
-  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in \mathcal{R}}r\sum_{s'\in\mathcal{S}}p(s',r|s,a)</script></li>
-<li>给定上一时刻状态 $s$ 后，当前系统的奖励期望为：<script type="math/tex; mode=display">
+    p(s&#39;|s)&amp;=\frac{\sum_{a}p(s&#39;,s,a)}{p(s)}=\frac{\sum_{a}p(s&#39;|s,a)\pi(a|s)p(s)}{p(s)}\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)p(s&#39;|s,a)
+  \end{aligned}
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span> 后，当前系统奖励值的概率： <span class="math display">\[
+  p(r|s,a)=\sum_{s&#39;\in \mathcal{S}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span> 后，当前系统的奖励期望： <span class="math display">\[
+  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in \mathcal{R}}r\sum_{s&#39;\in\mathcal{S}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 后，当前系统的奖励期望为： <span class="math display">\[
   \begin{aligned}
-    R(s)&=E(R_t|S_{t-1}=s)=\sum_{r\in \mathcal{R}}r\sum_{a\in\mathcal{A}}p(r|s,a)\pi(a|s)\\
-    &=\sum_{a\in\mathcal{A}}\pi(a|s)\sum_{r\in \mathcal{R}}rp(r|s,a)\\
-    &=\sum_{a\in\mathcal{A}}\pi(a|s)R(s,a)
-  \end{aligned}</script></li>
-<li>给定上一时刻状态 $s$ 和动作 $a$，当前时刻状态$s’$ 后，当前系统的奖励期望：<script type="math/tex; mode=display">
+    R(s)&amp;=E(R_t|S_{t-1}=s)=\sum_{r\in \mathcal{R}}r\sum_{a\in\mathcal{A}}p(r|s,a)\pi(a|s)\\
+    &amp;=\sum_{a\in\mathcal{A}}\pi(a|s)\sum_{r\in \mathcal{R}}rp(r|s,a)\\
+    &amp;=\sum_{a\in\mathcal{A}}\pi(a|s)R(s,a)
+  \end{aligned}
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span>，当前时刻状态<span class="math inline">\(s&#39;\)</span> 后，当前系统的奖励期望： <span class="math display">\[
   \begin{aligned}
-    E(R_t|S_{t-1},A_{t-1},S_t)&=\sum_{r\in \mathcal{R}}r*p(r|s,a,s')\\
-    &=\sum_{r\in \mathcal{R}}r\frac{p(s',r|s,a)}{p(s'|s,a)}
-  \end{aligned}</script></li>
+    E(R_t|S_{t-1},A_{t-1},S_t)&amp;=\sum_{r\in \mathcal{R}}r*p(r|s,a,s&#39;)\\
+    &amp;=\sum_{r\in \mathcal{R}}r\frac{p(s&#39;,r|s,a)}{p(s&#39;|s,a)}
+  \end{aligned}
+\]</span></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="一些新增定义："><a href="#一些新增定义：" class="headerlink" title="一些新增定义："></a>一些新增定义：</h3><ul>
-<li>章节<code>Episode</code><ul>
-<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state:</code>$\mathcal{S}^{+}$。</li>
+<h3 id="一些新增定义">一些新增定义：</h3>
+<ul>
+<li>章节<code>Episode</code>
+<ul>
+<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state:</code><span class="math inline">\(\mathcal{S}^{+}\)</span>。</li>
 <li>每段<code>episode</code>之后，系统回到初始状态。</li>
 <li>不同的<code>episode</code>之间相互独立。</li>
 <li>每段<code>episode</code>的终止时刻<code>T</code>都不一样，是一个随机变量。</li>
-<li>回报<code>Return</code>：$t$时刻采取动作$A_t$后，后续全部的回报被定义为：<script type="math/tex; mode=display">
-G_t\overset{def}{=}R_{t+1}+\gamma R_{t+2}...=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}</script></li>
-</ul>
-</li>
-<li>其中$T$是终止时刻。</li>
-<li>关于<code>episode task</code>和<code>continue task</code>统一：<ul>
-<li>$T$时刻之后，可以看做进入了一个<code>special absorbing state</code>状态，之后时刻都回到该状态，且回报为$0$。</li>
-<li>$T=\infty$代表无<code>terminal state</code>的过程。</li>
-<li>(状态)价值函数<code>state-value function</code>：$t$时刻系统状态处于$s$时，基于策略$\pi$的价值函数$v_{\pi}(s)$被定义为后续的回报期望，即：<script type="math/tex; mode=display">
-\begin{aligned}
-v_{\pi}(s)&\overset{def}{=}E[G_t|S_t=s]\\
-&=E[R_{t+1}+\gamma G_{t+1}|S_t=s]
-\end{aligned}</script></li>
-</ul>
-</li>
-<li>价值函数定义了不同策略$\pi$之间的偏序关系。<ul>
-<li>动作价值函数：<script type="math/tex; mode=display">
-\begin{aligned}
-q_{\pi}(s,a)&\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\\
-&=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]
-\end{aligned}</script></li>
-<li>最优策略：</li>
-</ul>
-</li>
-<li>策略是最优当且仅当对于所有状态 $s$，其<code>state-value function</code>优于其他策略。或者对于所有状态 $s$ 和动作 $a$，其<code>action-value function</code>优于其他策略。<script type="math/tex; mode=display">
-\begin{aligned}
-v_{\pi^*}(s)&=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\\
-q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
-&=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a] 
-\end{aligned}</script><ul>
-<li>性质：</li>
-</ul>
-</li>
-<li>$v_{\pi}$和$q_{\pi}$之间的关系，若令$g=G_t$：<script type="math/tex; mode=display">
+</ul></li>
+<li>回报<code>Return</code>：<span class="math inline">\(t\)</span>时刻采取动作<span class="math inline">\(A_t\)</span>后，后续全部的回报被定义为： <span class="math display">\[
+  G_t\overset{def}{=}R_{t+1}+\gamma R_{t+2}...=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}
+\]</span>
+<ul>
+<li>其中<span class="math inline">\(T\)</span>是终止时刻。</li>
+<li>关于<code>episode task</code>和<code>continue task</code>统一：
+<ul>
+<li><span class="math inline">\(T\)</span>时刻之后，可以看做进入了一个<code>special absorbing state</code>状态，之后时刻都回到该状态，且回报为<span class="math inline">\(0\)</span>。</li>
+<li><span class="math inline">\(T=\infty\)</span>代表无<code>terminal state</code>的过程。</li>
+</ul></li>
+</ul></li>
+<li>(状态)价值函数<code>state-value function</code>：<span class="math inline">\(t\)</span>时刻系统状态处于<span class="math inline">\(s\)</span>时，基于策略<span class="math inline">\(\pi\)</span>的价值函数<span class="math inline">\(v_{\pi}(s)\)</span>被定义为后续的回报期望，即： <span class="math display">\[
   \begin{aligned}
-    v_{\pi}(s)&=\sum_gg*p(g|s)\\
-    &=\sum_gg\sum_{a\in \mathcal{A}}p(g|s,a)\pi(a|s)\\
-    &=\sum_{a\in \mathcal{A}}\pi(a|s)\sum_gg*p(g|s,a)\\
-    &=\sum_{a\in \mathcal{A}}\pi(a|s)q_{\pi}(s,a)\\
-  \end{aligned}</script></li>
-<li>相邻时刻 $t$ 和 $t+1$ 的递推关系(<strong>贝尔曼方程</strong>)，令$s’=S_{t+1}$：<ul>
-<li>$v_{\pi}(s)$ 和 $v_{\pi}(s’)$：<script type="math/tex; mode=display">
+    v_{\pi}(s)&amp;\overset{def}{=}E[G_t|S_t=s]\\
+    &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s]
+  \end{aligned}
+\]</span>
+<ul>
+<li>价值函数定义了不同策略<span class="math inline">\(\pi\)</span>之间的偏序关系。</li>
+</ul></li>
+<li>动作价值函数： <span class="math display">\[
+\begin{aligned}
+  q_{\pi}(s,a)&amp;\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\\
+  &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]
+\end{aligned}
+\]</span></li>
+<li>最优策略：
+<ul>
+<li>策略是最优当且仅当对于所有状态 <span class="math inline">\(s\)</span>，其<code>state-value function</code>优于其他策略。或者对于所有状态 <span class="math inline">\(s\)</span> 和动作 <span class="math inline">\(a\)</span>，其<code>action-value function</code>优于其他策略。 <span class="math display">\[
+\begin{aligned}
+v_{\pi^*}(s)&amp;=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\\
+q_{\pi^*}(s,a)&amp;=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
+&amp;=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a] 
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>性质：
+<ul>
+<li><span class="math inline">\(v_{\pi}\)</span>和<span class="math inline">\(q_{\pi}\)</span>之间的关系，若令<span class="math inline">\(g=G_t\)</span>： <span class="math display">\[
   \begin{aligned}
-    v_{\pi}(s)&=E[R_{t+1}|S_t=s]+\gamma E[G_{t+1}|S_t=s]\\
-    &=R(s)+\gamma \sum_{s'}p(s'|s)E[G_{t+1}|S_{t+1}=s']\\
-    &=R(s)+\gamma \sum_{s'}p(s'|s)v_{\pi}(s')\\
-    &=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_{s'}p(s'|s,a)v_{\pi}(s')\\
-    &=\sum_a\pi(a|s)\sum_{s'}\sum_rp(s',r|s,a)[r+\gamma v_{\pi}(s')]
-  \end{aligned}</script><ul>
-<li>直观上看，就是 $t$ 时刻产生的未来回报期望 = $t$时刻产生的即时奖励 + 从$t$转移到 $t+1$ 时刻之后基于 $t+1$ 时刻的未来回报期望。</li>
-</ul>
-</li>
-<li>$q_{\pi}(s,a)$ 和 $q_{\pi}(s’,a’)$：<script type="math/tex; mode=display">
+    v_{\pi}(s)&amp;=\sum_gg*p(g|s)\\
+    &amp;=\sum_gg\sum_{a\in \mathcal{A}}p(g|s,a)\pi(a|s)\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)\sum_gg*p(g|s,a)\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)q_{\pi}(s,a)\\
+  \end{aligned}
+\]</span></li>
+<li>相邻时刻 <span class="math inline">\(t\)</span> 和 <span class="math inline">\(t+1\)</span> 的递推关系(<strong>贝尔曼方程</strong>)，令<span class="math inline">\(s&#39;=S_{t+1}\)</span>：
+<ul>
+<li><span class="math inline">\(v_{\pi}(s)\)</span> 和 <span class="math inline">\(v_{\pi}(s&#39;)\)</span>： <span class="math display">\[
   \begin{aligned}
-    q_{\pi}(s,a)&=E[R_{t+1}|S_t=s,A_t=a]+\gamma E[G_{t+1}|S_t=s,A_t=a]\\
-    &=R(s,a)+\gamma \sum_{s'}\sum_{a'}p(s',a'|s,a)E[G_{t+1}|S_{t+1}=s',A_{t+1}=a']\\
-    &=R(s,a)+\gamma \sum_{s'}\sum_{a'}p(s',a'|s,a)q_{\pi}(s',a')\\
-    &=R(s,a)+\gamma \sum_{a'}\pi(a'|s')\sum_{s'}p(s'|s,a)q_{\pi}(s',a')
-  \end{aligned}</script></li>
+    v_{\pi}(s)&amp;=E[R_{t+1}|S_t=s]+\gamma E[G_{t+1}|S_t=s]\\
+    &amp;=R(s)+\gamma \sum_{s&#39;}p(s&#39;|s)E[G_{t+1}|S_{t+1}=s&#39;]\\
+    &amp;=R(s)+\gamma \sum_{s&#39;}p(s&#39;|s)v_{\pi}(s&#39;)\\
+    &amp;=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_{s&#39;}p(s&#39;|s,a)v_{\pi}(s&#39;)\\
+    &amp;=\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma v_{\pi}(s&#39;)]
+  \end{aligned}
+\]</span>
+<ul>
+<li>直观上看，就是 <span class="math inline">\(t\)</span> 时刻产生的未来回报期望 = <span class="math inline">\(t\)</span>时刻产生的即时奖励 + 从<span class="math inline">\(t\)</span>转移到 <span class="math inline">\(t+1\)</span> 时刻之后基于 <span class="math inline">\(t+1\)</span> 时刻的未来回报期望。</li>
+</ul></li>
+<li><span class="math inline">\(q_{\pi}(s,a)\)</span> 和 <span class="math inline">\(q_{\pi}(s&#39;,a&#39;)\)</span>： <span class="math display">\[
+  \begin{aligned}
+    q_{\pi}(s,a)&amp;=E[R_{t+1}|S_t=s,A_t=a]+\gamma E[G_{t+1}|S_t=s,A_t=a]\\
+    &amp;=R(s,a)+\gamma \sum_{s&#39;}\sum_{a&#39;}p(s&#39;,a&#39;|s,a)E[G_{t+1}|S_{t+1}=s&#39;,A_{t+1}=a&#39;]\\
+    &amp;=R(s,a)+\gamma \sum_{s&#39;}\sum_{a&#39;}p(s&#39;,a&#39;|s,a)q_{\pi}(s&#39;,a&#39;)\\
+    &amp;=R(s,a)+\gamma \sum_{a&#39;}\pi(a&#39;|s&#39;)\sum_{s&#39;}p(s&#39;|s,a)q_{\pi}(s&#39;,a&#39;)
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="待解问题："><a href="#待解问题：" class="headerlink" title="待解问题："></a>待解问题：</h3><ul>
-<li>MDP主要包括两个问题：<ul>
-<li>预测<code>Prediction</code>问题，即给定模型$\mu =\{\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma\}$，求$v_{\pi}(s)$</li>
-<li>控制<code>Control</code>问题，给定模型$\mu = \{\mathcal{S},\mathcal{A},\mathcal{R},P, \gamma\}$，求解最佳策略$\pi^*$。</li>
-</ul>
-</li>
+<h3 id="待解问题">待解问题：</h3>
+<ul>
+<li>MDP主要包括两个问题：
+<ul>
+<li>预测<code>Prediction</code>问题，即给定模型<span class="math inline">\(\mu =\{\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma\}\)</span>，求<span class="math inline">\(v_{\pi}(s)\)</span></li>
+<li>控制<code>Control</code>问题，给定模型<span class="math inline">\(\mu = \{\mathcal{S},\mathcal{A},\mathcal{R},P, \gamma\}\)</span>，求解最佳策略<span class="math inline">\(\pi^*\)</span>。</li>
+</ul></li>
 </ul>
 <p>回顾以上推导，最关键的是两点：</p>
 <ul>
-<li>对状态转移函数的定义，由马尔科夫链的$p(S_{t+1}|S_t)$变为$p(S_{t+1}|S_t,A_t)$或者$p(S_{t+1},R_{t+1}|S_t,A_t)$。</li>
-<li>满足马尔科夫性质，即$p(S_{t+1},R_{t+1}|S_t,A_t,…,S_0,A_0)=p(S_{t+1},R_{t+1}|S_t,A_t)$</li>
+<li>对状态转移函数的定义，由马尔科夫链的<span class="math inline">\(p(S_{t+1}|S_t)\)</span>变为<span class="math inline">\(p(S_{t+1}|S_t,A_t)\)</span>或者<span class="math inline">\(p(S_{t+1},R_{t+1}|S_t,A_t)\)</span>。</li>
+<li>满足马尔科夫性质，即<span class="math inline">\(p(S_{t+1},R_{t+1}|S_t,A_t,...,S_0,A_0)=p(S_{t+1},R_{t+1}|S_t,A_t)\)</span></li>
 <li>剩下所有的推导都是基于以上两点。所以，不同的概率定义方式产生不同的模型。试想一下如果想建模一个概率模型，该以什么方式定义概率。</li>
 </ul>
-<hr>
-<h2 id="动态规划法"><a href="#动态规划法" class="headerlink" title="动态规划法"></a>动态规划法</h2><h3 id="预测Prediction问题："><a href="#预测Prediction问题：" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><ul>
-<li><strong>解析法</strong>：<ul>
-<li>由$v_{\pi}(s)=\sum_a\pi(a|s)\sum_{s’}\sum_rp(s’,r|s,a)[r+\gamma v_{\pi}(s’)]$可知，求解全状态其实就是在解一个线性方程组。<ul>
-<li>令：<script type="math/tex; mode=display">
+<hr />
+<h2 id="动态规划法">动态规划法</h2>
+<h3 id="预测prediction问题">预测<code>Prediction</code>问题：</h3>
+<ul>
+<li><strong>解析法</strong>：
+<ul>
+<li>由<span class="math inline">\(v_{\pi}(s)=\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma v_{\pi}(s&#39;)]\)</span>可知，求解全状态其实就是在解一个线性方程组。
+<ul>
+<li>令： <span class="math display">\[
   \begin{aligned}
-    b(s)&=\sum_a\pi(a|s)\sum_{s',r}p(s',r|s,a)\\
-    w(s',s)&=\sum_a\pi(a|s)\sum_rp(s',r|s,a)
-  \end{aligned}</script></li>
-<li>则有：<script type="math/tex; mode=display">
+    b(s)&amp;=\sum_a\pi(a|s)\sum_{s&#39;,r}p(s&#39;,r|s,a)\\
+    w(s&#39;,s)&amp;=\sum_a\pi(a|s)\sum_rp(s&#39;,r|s,a)
+  \end{aligned}
+\]</span></li>
+<li>则有： <span class="math display">\[
   \begin{aligned}
-    v_{\pi}(s_1)&=
-    \sum_a\pi(a|s_1)\sum_{s'}\sum_rp(s',r|s_1,a)[r+\gamma v_{\pi}(s')]\\
-    v_{\pi}(s_1)&=rb(s_1)
-    +\gamma[w(s'_1, s_0),...,w(s'_d,s_0)]
+    v_{\pi}(s_1)&amp;=
+    \sum_a\pi(a|s_1)\sum_{s&#39;}\sum_rp(s&#39;,r|s_1,a)[r+\gamma v_{\pi}(s&#39;)]\\
+    v_{\pi}(s_1)&amp;=rb(s_1)
+    +\gamma[w(s&#39;_1, s_0),...,w(s&#39;_d,s_0)]
     \begin{bmatrix}
-      v_{\pi}(s'_1)\\
+      v_{\pi}(s&#39;_1)\\
       ...\\
-      v_{\pi}(s'_d)
+      v_{\pi}(s&#39;_d)
     \end{bmatrix}
-  \end{aligned}</script></li>
-<li>即：<script type="math/tex; mode=display">
+  \end{aligned}
+\]</span></li>
+<li>即： <span class="math display">\[
   \begin{aligned}
-    \mathbf{v}&=\mathbf{W}\mathbf{v}+\mathbf{b}\\
-    \mathbf{v}&=(\mathbf{E}-\mathbf{W})^{-1}\mathbf{b}
-  \end{aligned}</script></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>迭代法</strong>：<ul>
-<li>输入：策略$\pi$，阈值$\theta$</li>
-<li>过程：<ul>
-<li>随机初始化：$v(s)$</li>
-<li>$Loop:$<ul>
-<li>$\Delta \leftarrow 0$</li>
-<li>$for s\in S:$<ul>
-<li>$v\leftarrow v(s)$</li>
-<li>$v(s)\leftarrow \sum_a\pi(a|s)\sum_{s’}\sum_rp(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$\Delta \leftarrow max(\Delta, |v-v(s)|)$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>$until \Delta &lt; \theta$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="控制Control问题："><a href="#控制Control问题：" class="headerlink" title="控制Control问题："></a>控制<code>Control</code>问题：</h3><ul>
-<li><p><strong>基于策略的迭代<code>Policy Iteration</code></strong>:</p>
+    \mathbf{v}&amp;=\mathbf{W}\mathbf{v}+\mathbf{b}\\
+    \mathbf{v}&amp;=(\mathbf{E}-\mathbf{W})^{-1}\mathbf{b}
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+<li><strong>迭代法</strong>：
 <ul>
-<li>1: 初始化<code>Initialization</code>:<ul>
-<li>随机初始化：$v(s)\in R, \pi(s)\in \mathcal{A}(s) for all s\in \mathcal{S}$</li>
+<li>输入：策略<span class="math inline">\(\pi\)</span>，阈值<span class="math inline">\(\theta\)</span></li>
+<li>过程：
+<ul>
+<li>随机初始化：<span class="math inline">\(v(s)\)</span></li>
+<li><span class="math inline">\(Loop:\)</span>
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(v\leftarrow v(s)\)</span></li>
+<li><span class="math inline">\(v(s)\leftarrow \sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta, |v-v(s)|)\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(until\ \Delta &lt; \theta\)</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-<li>2: 回报预估<code>Policy Evaluation</code>:<ul>
+<h3 id="控制control问题">控制<code>Control</code>问题：</h3>
+<ul>
+<li><strong>基于策略的迭代<code>Policy Iteration</code></strong>:
+<ul>
+<li>1: 初始化<code>Initialization</code>:
+<ul>
+<li>随机初始化：<span class="math inline">\(v(s)\in R, \pi(s)\in \mathcal{A}(s)\ for\ all\ s\in \mathcal{S}\)</span></li>
+</ul></li>
+<li>2: 回报预估<code>Policy Evaluation</code>:
+<ul>
 <li>运行<strong>迭代法</strong>进行预估。</li>
-</ul>
-</li>
-<li>3: 策略改进<code>Policy Improvement</code>:<ul>
-<li>$policy_stable\leftarrow true$</li>
-<li>$for s\in S:$<ul>
-<li>$old_action\leftarrow \pi(s)$</li>
-<li>$\pi(s)\leftarrow \underset{a}{\operatorname{argmax}}\sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$if old_action\neq\pi(s), policy_stable\leftarrow false$</li>
-</ul>
-</li>
-<li>$if policy_stable\leftarrow false, goto 2$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>基于价值的迭代<code>Value Iteration</code></strong>:</p>
+</ul></li>
+<li>3: 策略改进<code>Policy Improvement</code>:
 <ul>
-<li>1: 初始化<code>Initialization</code>:<ul>
-<li>随机初始化：$V(s)$</li>
-</ul>
-</li>
-<li>2: 迭代(<code>Evaluation</code>和<code>Improvement</code>统一)：<ul>
-<li>$Loop:$<ul>
-<li>$\Delta \leftarrow 0$</li>
-<li>$for s\in S:$<ul>
-<li>$v\leftarrow V(s)$</li>
-<li>$V(s)\leftarrow \underset{a}{max}\sum_a\pi(a|s)\sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-<li>$\Delta \leftarrow max(\Delta, |v-V(s)|)$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>$until \Delta &lt; \theta$</li>
-</ul>
-</li>
-<li>3: 产出<code>Deterministic</code>最优策略：<ul>
-<li>$for s\in S$<ul>
-<li>$\pi(s)=\underset{a}{\operatorname{argmax}} \sum_{s’,r}p(s’,r|s,a)[r+\gamma v(s’)]$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><span class="math inline">\(policy\_stable\leftarrow true\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(old\_action\leftarrow \pi(s)\)</span></li>
+<li><span class="math inline">\(\pi(s)\leftarrow \underset{a}{\operatorname{argmax}}\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(if\ old\_action\neq\pi(s),\ policy\_stable\leftarrow false\)</span></li>
+</ul></li>
+<li><span class="math inline">\(if\ policy\_stable\leftarrow false,\ goto\ 2\)</span></li>
+</ul></li>
+</ul></li>
+<li><strong>基于价值的迭代<code>Value Iteration</code></strong>:
+<ul>
+<li>1: 初始化<code>Initialization</code>:
+<ul>
+<li>随机初始化：<span class="math inline">\(V(s)\)</span></li>
+</ul></li>
+<li>2: 迭代(<code>Evaluation</code>和<code>Improvement</code>统一)：
+<ul>
+<li><span class="math inline">\(Loop:\)</span>
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(v\leftarrow V(s)\)</span></li>
+<li><span class="math inline">\(V(s)\leftarrow \underset{a}{max}\sum_a\pi(a|s)\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta, |v-V(s)|)\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(until\ \Delta &lt; \theta\)</span></li>
+</ul></li>
+<li>3: 产出<code>Deterministic</code>最优策略：
+<ul>
+<li><span class="math inline">\(for\ s\in S\)</span>
+<ul>
+<li><span class="math inline">\(\pi(s)=\underset{a}{\operatorname{argmax}} \sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
 <li><strong>异步动态规划</strong></li>
 </ul>
-<h2 id="蒙特卡洛法"><a href="#蒙特卡洛法" class="headerlink" title="蒙特卡洛法"></a>蒙特卡洛法</h2><h3 id="预测Prediction问题：-1"><a href="#预测Prediction问题：-1" class="headerlink" title="预测Prediction问题："></a>预测<code>Prediction</code>问题：</h3><p>&emsp;&emsp; 给定策略$\pi$，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过 $avg$ 来估计 $expectation$。<br>即$v_{\pi}(s)=avg(G_t),s.t S_t=s$</p>
+<h2 id="蒙特卡洛法">蒙特卡洛法</h2>
+<h3 id="预测prediction问题-1">预测<code>Prediction</code>问题：</h3>
+<p>   给定策略<span class="math inline">\(\pi\)</span>，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过 <span class="math inline">\(avg\)</span> 来估计 <span class="math inline">\(expectation\)</span>。 即<span class="math inline">\(v_{\pi}(s)=avg(G_t),s.t\ S_t=s\)</span></p>
 <ul>
-<li><strong>First-visit MC prediction</strong>:<br>给定策略$\pi$后，状态$s$可能会被多次访问，那么第一次访问$s$后的平均回报的预估就是<code>First-visit MC prediction</code><ul>
-<li><code>Input</code>: $\pi$</li>
-<li><code>Initialize</code>：<ul>
-<li>$Randomly initialize V(s) for all s\in \mathcal{S}$</li>
-<li>$Return(s)=\mathbf{0}$</li>
-</ul>
-</li>
-<li>$Loop forever (for each episode)$:<ul>
-<li>$Generate an episode following \pi: S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T$</li>
-<li>$G\leftarrow 0$</li>
-<li>$Loop for each step of episode t=T-1,T-2,…,0:$<ul>
-<li>$G\leftarrow \gamma G+R_{t+1}$</li>
-<li>$Unless S_t appears in S_0,…,S_{t-1}$<ul>
-<li>$Append G to Return(S_t)$</li>
-<li>$V(S_t)\leftarrow avg(Returns(S_t))$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><strong>First-visit MC prediction</strong>:<br />
+给定策略<span class="math inline">\(\pi\)</span>后，状态<span class="math inline">\(s\)</span>可能会被多次访问，那么第一次访问<span class="math inline">\(s\)</span>后的平均回报的预估就是<code>First-visit MC prediction</code>
+<ul>
+<li><code>Input</code>: <span class="math inline">\(\pi\)</span></li>
+<li><code>Initialize</code>：
+<ul>
+<li><span class="math inline">\(Randomly\ initialize\ V(s)\ for\ all\ s\in \mathcal{S}\)</span></li>
+<li><span class="math inline">\(Return(s)=\mathbf{0}\)</span></li>
+</ul></li>
+<li><span class="math inline">\(Loop\ forever\ (for\ each\ episode)\)</span>:
+<ul>
+<li><span class="math inline">\(Generate\ an\ episode\ following\ \pi: S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T\)</span></li>
+<li><span class="math inline">\(G\leftarrow 0\)</span></li>
+<li><span class="math inline">\(Loop\ for\ each\ step\ of\ episode\ t=T-1,T-2,...,0:\)</span>
+<ul>
+<li><span class="math inline">\(G\leftarrow \gamma G+R_{t+1}\)</span></li>
+<li><span class="math inline">\(Unless\ S_t\ appears\ in\ S_0,...,S_{t-1}\)</span>
+<ul>
+<li><span class="math inline">\(Append\ G\ to\ Return(S_t)\)</span></li>
+<li><span class="math inline">\(V(S_t)\leftarrow avg(Returns(S_t))\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
 
           
@@ -715,373 +740,405 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
       
         
           
-            <p>&emsp;&emsp;这个专题主要涉及统计机器学习模型的介绍，学习和回顾统计机器学习模型可以帮助理解<code>Deep Learning</code>的统计特性。</p>
-<h2 id="常见分布"><a href="#常见分布" class="headerlink" title="常见分布"></a>常见分布</h2><h2 id="马尔科夫链-Markov-chain"><a href="#马尔科夫链-Markov-chain" class="headerlink" title="马尔科夫链(Markov chain)"></a>马尔科夫链(Markov chain)</h2><p>&emsp;&emsp;马尔科夫链，也称作马尔科夫过程(Markov process)。现有随机变量序列$X=(X_1,…X_t)$，则第$t$时刻的状态依赖于其前$t-1$时刻的状态。若序列具有<strong>马尔科夫性质</strong>，即：</p>
-<script type="math/tex; mode=display">
-  P(X_t|X_{t-1},...,X_1)=P(X_t|X_{t-1})</script><p>则该过程构成一个一阶马尔科夫链。(一阶)马尔科夫链由其状态转移概率$P(X’|X)$唯一确定。</p>
-<p>&emsp;&emsp;<strong>离散时间间隔</strong>下的马尔科夫链通有以下两个分类(连续时间不在这里讨论)：</p>
+            <p>  这个专题主要涉及统计机器学习模型的介绍，学习和回顾统计机器学习模型可以帮助理解<code>Deep Learning</code>的统计特性。</p>
+<h2 id="常见分布">常见分布</h2>
+<h2 id="马尔科夫链markov-chain">马尔科夫链(Markov chain)</h2>
+<p>  马尔科夫链，也称作马尔科夫过程(Markov process)。现有随机变量序列<span class="math inline">\(X=(X_1,...X_t)\)</span>，则第<span class="math inline">\(t\)</span>时刻的状态依赖于其前<span class="math inline">\(t-1\)</span>时刻的状态。若序列具有<strong>马尔科夫性质</strong>，即： <span class="math display">\[
+  P(X_t|X_{t-1},...,X_1)=P(X_t|X_{t-1})
+\]</span> 则该过程构成一个一阶马尔科夫链。(一阶)马尔科夫链由其状态转移概率<span class="math inline">\(P(X&#39;|X)\)</span>唯一确定。</p>
+<p>  <strong>离散时间间隔</strong>下的马尔科夫链通有以下两个分类(连续时间不在这里讨论)：</p>
 <ul>
-<li><code>Discret-time Markov chain on discret state space</code>：离散时间，离散状态空间下的马尔科夫链(最常见的定义形式)<ul>
-<li>状态空间：$S=\{s_0,s_1,…s_j,…\}$，可以是可数无穷多个。</li>
-<li>马尔科夫性质：$P(X_t=s_j|X_{t-1}=s_{t-1},…,X_1=s_1)=P(X_t=s_j|X_{t-1}=s_{t-1})$，这里$s_i$为离散值。</li>
-<li>转移概率：$P(X_{t+1}=s_j|X_{t}=s_i)=A_{i,j}$，$A$即状态转移概率矩阵。</li>
-<li>n步转移概率：$P^{(n)}_{i,j}=A^n_{i,j}$。即n步转移概率为方阵$A$的$n$次阶乘。</li>
-<li>平稳分布(<code>stationary distribution</code>)：<ul>
-<li>$\boldsymbol{\pi}^{<em>}= \boldsymbol{\pi}^{</em>}A$</li>
-<li>即到达平稳分布$\boldsymbol{\pi}^*$后，再经过一次转移，仍然回到该分布。</li>
+<li><code>Discret-time Markov chain on discret state space</code>：离散时间，离散状态空间下的马尔科夫链(最常见的定义形式)
+<ul>
+<li>状态空间：<span class="math inline">\(S=\{s_0,s_1,...s_j,...\}\)</span>，可以是可数无穷多个。</li>
+<li>马尔科夫性质：<span class="math inline">\(P(X_t=s_j|X_{t-1}=s_{t-1},...,X_1=s_1)=P(X_t=s_j|X_{t-1}=s_{t-1})\)</span>，这里<span class="math inline">\(s_i\)</span>为离散值。</li>
+<li>转移概率：<span class="math inline">\(P(X_{t+1}=s_j|X_{t}=s_i)=A_{i,j}\)</span>，<span class="math inline">\(A\)</span>即状态转移概率矩阵。</li>
+<li>n步转移概率：<span class="math inline">\(P^{(n)}_{i,j}=A^n_{i,j}\)</span>。即n步转移概率为方阵<span class="math inline">\(A\)</span>的<span class="math inline">\(n\)</span>次阶乘。</li>
+<li>平稳分布(<code>stationary distribution</code>)：
+<ul>
+<li><span class="math inline">\(\boldsymbol{\pi}^{*}= \boldsymbol{\pi}^{*}A\)</span></li>
+<li>即到达平稳分布<span class="math inline">\(\boldsymbol{\pi}^*\)</span>后，再经过一次转移，仍然回到该分布。</li>
 <li>平稳分布在一定条件下满足唯一性。</li>
-</ul>
-</li>
-<li>细致平衡条件(<code>detailed balance</code>)：<ul>
-<li>如果存在分布$\boldsymbol{\pi}$，使得$\pi_iA_{i,j}=\pi_jA_{j,i}$，则该<code>Markov chain</code>满足细致平衡条件。</li>
+</ul></li>
+<li>细致平衡条件(<code>detailed balance</code>)：
+<ul>
+<li>如果存在分布<span class="math inline">\(\boldsymbol{\pi}\)</span>，使得<span class="math inline">\(\pi_iA_{i,j}=\pi_jA_{j,i}\)</span>，则该<code>Markov chain</code>满足细致平衡条件。</li>
 <li>如果一个马尔科夫链满足细致平衡，则该马尔科夫链具有常返性<code>Reversibility</code>，即为常返马尔科夫链<code>reversible Markov chain</code></li>
-<li>可以证明$\boldsymbol{\pi}^* = \boldsymbol{\pi}$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><code>Discret-time Markov chain on continuous state</code>：离散时间，连续状态空间下的马尔科夫链(通常和MCMC算法放在一起讨论)。<ul>
-<li>状态空间：$S\subseteq R$</li>
-<li>马尔科夫性质：$P(X_t\in A|X_{t-1}=s_{t-1},…,X_1=s_1)=P(X_t\in A|X_{t-1}=s_{t-1})$，这里$s_i$为连续值。</li>
-<li>转移核(<code>transition kernel</code>)：$P(x,\cdot) for x\in S$</li>
-<li>转移核密度(<code>transition kernel density</code>)：$p(x,y)$。<ul>
-<li>则有$P(x,A)=\int_Ap(x,y)dy$，注意有$P(x, S)=\int_Sp(x,y)dy=1$</li>
-<li>注意这里的<code>transition kernel density</code>不是多维概率密度函数，这两者不要搞混了。这里$p(x,y)$可以看做是看做带有参数$x$的变量$y$的概率密度函数。比如$p(x,y)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-x)^2}{2\sigma^2})$，即均值为$x$的高斯分布，而不是多维高斯分布。</li>
-</ul>
-</li>
-<li>2步转移核密度：<script type="math/tex; mode=display">
-  p^{(2)}(x,y)=\int_Sp(x,z)p(z,y)dz</script><ul>
-<li>可以这么理解，先以一定的概率(密度)转移到$z$，再从$z$转移到$y$。完全就是矩阵乘法法则的连续型表示。</li>
-</ul>
-</li>
-<li>n步转移核密度：对于任意$0\leq m\leq n \in N$<script type="math/tex; mode=display">
-  p^{(n)}=\int_Sp^{(m)}(x,z)p^{(n-m)}(z,y)dz</script></li>
-<li>平稳分布(<code>stationary distribution</code>)，我们可以类比离散平稳分布定义：<script type="math/tex; mode=display">
+<li>可以证明<span class="math inline">\(\boldsymbol{\pi}^* = \boldsymbol{\pi}\)</span></li>
+</ul></li>
+</ul></li>
+<li><code>Discret-time Markov chain on continuous state</code>：离散时间，连续状态空间下的马尔科夫链(通常和MCMC算法放在一起讨论)。
+<ul>
+<li>状态空间：<span class="math inline">\(S\subseteq R\)</span></li>
+<li>马尔科夫性质：<span class="math inline">\(P(X_t\in A|X_{t-1}=s_{t-1},...,X_1=s_1)=P(X_t\in A|X_{t-1}=s_{t-1})\)</span>，这里<span class="math inline">\(s_i\)</span>为连续值。</li>
+<li>转移核(<code>transition kernel</code>)：<span class="math inline">\(P(x,\cdot)\ for\ x\in S\)</span></li>
+<li>转移核密度(<code>transition kernel density</code>)：<span class="math inline">\(p(x,y)\)</span>。
+<ul>
+<li>则有<span class="math inline">\(P(x,A)=\int_Ap(x,y)dy\)</span>，注意有<span class="math inline">\(P(x, S)=\int_Sp(x,y)dy=1\)</span></li>
+<li>注意这里的<code>transition kernel density</code>不是多维概率密度函数，这两者不要搞混了。这里<span class="math inline">\(p(x,y)\)</span>可以看做是看做带有参数<span class="math inline">\(x\)</span>的变量<span class="math inline">\(y\)</span>的概率密度函数。比如<span class="math inline">\(p(x,y)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-x)^2}{2\sigma^2})\)</span>，即均值为<span class="math inline">\(x\)</span>的高斯分布，而不是多维高斯分布。</li>
+</ul></li>
+<li>2步转移核密度： <span class="math display">\[
+  p^{(2)}(x,y)=\int_Sp(x,z)p(z,y)dz
+\]</span>
+<ul>
+<li>可以这么理解，先以一定的概率(密度)转移到<span class="math inline">\(z\)</span>，再从<span class="math inline">\(z\)</span>转移到<span class="math inline">\(y\)</span>。完全就是矩阵乘法法则的连续型表示。</li>
+</ul></li>
+<li>n步转移核密度：对于任意<span class="math inline">\(0\leq m\leq n \in N\)</span> <span class="math display">\[
+  p^{(n)}=\int_Sp^{(m)}(x,z)p^{(n-m)}(z,y)dz
+\]</span></li>
+<li>平稳分布(<code>stationary distribution</code>)，我们可以类比离散平稳分布定义： <span class="math display">\[
   \begin{aligned}
-    \pi^*(dy)&=\int_{x\in S}\pi^*(dx)p(x,dy)\\\\
-    \pi^*(y)dy&=\int_{x\in S}\pi^*(x)dxp(x,y)dy\\\\
-    \pi^*(y)dy&=dy\int_{S}\pi^*(x)p(x,y)dx\\\\
-    \pi^*(y)&=\int_S\pi^*(x)p(x,y)dx
-  \end{aligned}</script><ul>
+    \pi^*(dy)&amp;=\int_{x\in S}\pi^*(dx)p(x,dy)\\\\
+    \pi^*(y)dy&amp;=\int_{x\in S}\pi^*(x)dxp(x,y)dy\\\\
+    \pi^*(y)dy&amp;=dy\int_{S}\pi^*(x)p(x,y)dx\\\\
+    \pi^*(y)&amp;=\int_S\pi^*(x)p(x,y)dx
+  \end{aligned}
+\]</span>
+<ul>
 <li>平稳分布在一定条件下满足唯一性。</li>
 <li>比较离散和连续的平稳分布的定义，可以发现两者其实同一性质的两种表述语言罢了。</li>
-</ul>
-</li>
-<li>细致平衡条件(<code>detailed balance</code>)：<ul>
-<li>如果存在分布 $\pi(dy)P(y,dx)=\pi(dx)P(x,dy)$，则说明该马尔科夫链满足细致平衡条件。等价满足$\pi(y)p(y,x)=\pi(x)p(x,y)$条件。</li>
-<li>可以证明: $\pi^*= \pi$<ul>
-<li>证明也很简单：<script type="math/tex; mode=display">
+</ul></li>
+<li>细致平衡条件(<code>detailed balance</code>)：
+<ul>
+<li>如果存在分布 <span class="math inline">\(\pi(dy)P(y,dx)=\pi(dx)P(x,dy)\)</span>，则说明该马尔科夫链满足细致平衡条件。等价满足<span class="math inline">\(\pi(y)p(y,x)=\pi(x)p(x,y)\)</span>条件。</li>
+<li>可以证明: <span class="math inline">\(\pi^*= \pi\)</span>
+<ul>
+<li>证明也很简单： <span class="math display">\[
   \begin{aligned}
-    \int_S\pi(x)p(x,y)dx&=\int_S\pi(y)p(y,x)dx\\\\
-    &=\pi(y)\int_Sp(y,x)dx\\\\
-    &=\pi(y)*1=\pi(y)
-  \end{aligned}</script></li>
-</ul>
-</li>
+    \int_S\pi(x)p(x,y)dx&amp;=\int_S\pi(y)p(y,x)dx\\\\
+    &amp;=\pi(y)\int_Sp(y,x)dx\\\\
+    &amp;=\pi(y)*1=\pi(y)
+  \end{aligned}
+\]</span></li>
+</ul></li>
 <li>比较离散和连续状态的细致平衡条件的描述，可以看到两者的描述其实是一样的。</li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="蒙特卡洛法："><a href="#蒙特卡洛法：" class="headerlink" title="蒙特卡洛法："></a>蒙特卡洛法：</h3><p>&emsp;&emsp;MC(Monte Carlo)法是通过依概率分布(密度)生成样本来对一些任务(如求积分，求期望)进行预估计算的方法。</p>
+<h3 id="蒙特卡洛法">蒙特卡洛法：</h3>
+<p>  MC(Monte Carlo)法是通过依概率分布(密度)生成样本来对一些任务(如求积分，求期望)进行预估计算的方法。</p>
 <ul>
-<li>求积分：<ul>
-<li>如果我们要求一个复杂函数的积分$I(x)=\int_a^bf(x)dx$。如果我们有一分布$p(x)$，那么该式子可改写为$I(x)=\int_a^b\frac{f(x)}{p(x)}p(x)dx$</li>
-<li>可以看到式子就是$g(x)=\frac{f(x)}{p(x)}$的期望，那么我们就可以用样本均值来进行估计。即$I(x)=E_{X\sim p(x)}[\frac{f(x)}{p(x)}]\approx \frac{1}{n}\sum_{i=1}^n\frac{f(x_i)}{p(x_i)}$，而$x_i\in \{x_1,…x_n\}$是依据概率分布$p(x)$采样出来得到的样本。</li>
-</ul>
-</li>
-<li>求期望：<ul>
-<li>如果我们要求一个函数$f: \mathcal{X}\rightarrow R$ 基于分布$\pi(\cdot)$的期望$\mathbf{E}_{\pi}[f(\mathbf{X})]$。可以基于分布$\pi(\cdot)$生成一系列样本$\{x_1,…,x_N\}$，则:<script type="math/tex; mode=display">
+<li>求积分：
+<ul>
+<li>如果我们要求一个复杂函数的积分<span class="math inline">\(I(x)=\int_a^bf(x)dx\)</span>。如果我们有一分布<span class="math inline">\(p(x)\)</span>，那么该式子可改写为<span class="math inline">\(I(x)=\int_a^b\frac{f(x)}{p(x)}p(x)dx\)</span></li>
+<li>可以看到式子就是<span class="math inline">\(g(x)=\frac{f(x)}{p(x)}\)</span>的期望，那么我们就可以用样本均值来进行估计。即<span class="math inline">\(I(x)=E_{X\sim p(x)}[\frac{f(x)}{p(x)}]\approx \frac{1}{n}\sum_{i=1}^n\frac{f(x_i)}{p(x_i)}\)</span>，而<span class="math inline">\(x_i\in \{x_1,...x_n\}\)</span>是依据概率分布<span class="math inline">\(p(x)\)</span>采样出来得到的样本。</li>
+</ul></li>
+<li>求期望：
+<ul>
+<li>如果我们要求一个函数<span class="math inline">\(f: \mathcal{X}\rightarrow R\)</span> 基于分布<span class="math inline">\(\pi(\cdot)\)</span>的期望<span class="math inline">\(\mathbf{E}_{\pi}[f(\mathbf{X})]\)</span>。可以基于分布<span class="math inline">\(\pi(\cdot)\)</span>生成一系列样本<span class="math inline">\(\{x_1,...,x_N\}\)</span>，则: <span class="math display">\[
 \begin{aligned}
-  \mathbf{E}_{\pi}[f(X)]&=f(\mathbf{E}_{\pi}[X])\\\\
-  &\approx f(\frac{1}{N}\sum_{i=1}^{N}x_i)= \frac{1}{N}\sum_{i=1}^{N}f(x_i)
-\end{aligned}</script></li>
+  \mathbf{E}_{\pi}[f(X)]&amp;=f(\mathbf{E}_{\pi}[X])\\\\
+  &amp;\approx f(\frac{1}{N}\sum_{i=1}^{N}x_i)= \frac{1}{N}\sum_{i=1}^{N}f(x_i)
+\end{aligned}
+\]</span></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<hr>
-<h2 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h2><p>&emsp;&emsp;采样的本质问题是已知一个复杂分布$p(x)$，我们希望得到一批服从于$p(x)$的样本集$\mathbb{X}=\{x_1,…,x_n\}$。而计算机只能非常方便的生成$U(0,1)$的样本集。如何利用这个特点构造出我们想要的服从$p(x)$的样本集便是采样的关键所在。</p>
-<h3 id="常见分布采样"><a href="#常见分布采样" class="headerlink" title="常见分布采样"></a>常见分布采样</h3><ul>
-<li>$U(0,1)$</li>
-<li>$\mathcal{N}(0,1)$</li>
-</ul>
-<h3 id="复杂分布采样"><a href="#复杂分布采样" class="headerlink" title="复杂分布采样"></a>复杂分布采样</h3><ul>
-<li><p>反函数采样：</p>
+<hr />
+<h2 id="采样">采样</h2>
+<p>  采样的本质问题是已知一个复杂分布<span class="math inline">\(p(x)\)</span>，我们希望得到一批服从于<span class="math inline">\(p(x)\)</span>的样本集<span class="math inline">\(\mathbb{X}=\{x_1,...,x_n\}\)</span>。而计算机只能非常方便的生成<span class="math inline">\(U(0,1)\)</span>的样本集。如何利用这个特点构造出我们想要的服从<span class="math inline">\(p(x)\)</span>的样本集便是采样的关键所在。</p>
+<h3 id="常见分布采样">常见分布采样</h3>
 <ul>
-<li>过程：<ul>
-<li>假如分布$p(x)$的累计分布函数为$F(x)=\int_{-\infty}^xp(x)dx$。</li>
-<li>基于均匀分布$U(0,1)$采样得到$z_i$，令$z_i=F(x_i)$。</li>
-<li>则$x_i=F^{-1}(z_i)$。其中$F^{-1}$是$F$的反函数。</li>
+<li><span class="math inline">\(U(0,1)\)</span></li>
+<li><span class="math inline">\(\mathcal{N}(0,1)\)</span></li>
 </ul>
-</li>
-</ul>
-</li>
-<li><p>接受-拒绝采样：</p>
+<h3 id="复杂分布采样">复杂分布采样</h3>
 <ul>
-<li>如果$p(x)$的分布复杂到难以求其反函数，可以采用接受-拒绝采样。</li>
+<li>反函数采样：
+<ul>
+<li>过程：
+<ul>
+<li>假如分布<span class="math inline">\(p(x)\)</span>的累计分布函数为<span class="math inline">\(F(x)=\int_{-\infty}^xp(x)dx\)</span>。</li>
+<li>基于均匀分布<span class="math inline">\(U(0,1)\)</span>采样得到<span class="math inline">\(z_i\)</span>，令<span class="math inline">\(z_i=F(x_i)\)</span>。</li>
+<li>则<span class="math inline">\(x_i=F^{-1}(z_i)\)</span>。其中<span class="math inline">\(F^{-1}\)</span>是<span class="math inline">\(F\)</span>的反函数。</li>
+</ul></li>
+</ul></li>
+<li>接受-拒绝采样：
+<ul>
+<li>如果<span class="math inline">\(p(x)\)</span>的分布复杂到难以求其反函数，可以采用接受-拒绝采样。</li>
 <li>拒绝接受采样应用之一详见<code>LeetCode-470</code></li>
-</ul>
-</li>
-<li><p><strong>MCMC(Markov Chain Monte Carlo)采样</strong>:<br>&emsp;&emsp;MC(Monte Carlo)法是通过依概率分布(密度)生成样本来对一些任务(如求积分，求期望)进行预估计算。而MCMC采样是根据概率分布(密度)，通过构造马尔科夫链/过程并来生成样本的一簇方法。(Markov Chain Monte Carlo (MCMC) techniques are<br>methods for sampling from probability distributions<br>using Markov chains)。<br>&emsp;&emsp;假设$\pi(\cdot)$为该马尔科夫链的平稳分布(<code>stationary distribution</code>)，则经过足够长时间后，样本的分布收敛于$\pi(\cdot)$。MCMC采样的核心是构造该马尔科夫过程，使得其平稳分布为$\pi(\cdot)$。</p>
+</ul></li>
+<li><strong>MCMC(Markov Chain Monte Carlo)采样</strong>:<br />
+  MC(Monte Carlo)法是通过依概率分布(密度)生成样本来对一些任务(如求积分，求期望)进行预估计算。而MCMC采样是根据概率分布(密度)，通过构造马尔科夫链/过程并来生成样本的一簇方法。(Markov Chain Monte Carlo (MCMC) techniques are methods for sampling from probability distributions using Markov chains)。<br />
+  假设<span class="math inline">\(\pi(\cdot)\)</span>为该马尔科夫链的平稳分布(<code>stationary distribution</code>)，则经过足够长时间后，样本的分布收敛于<span class="math inline">\(\pi(\cdot)\)</span>。MCMC采样的核心是构造该马尔科夫过程，使得其平稳分布为<span class="math inline">\(\pi(\cdot)\)</span>。
 <ul>
-<li><strong>M-H采样</strong>：<ul>
-<li>输入：<ul>
-<li>待采样<strong>概率分布(密度)</strong>：$\pi(\cdot)$，假设$\pi(\cdot)$对应的密度函数为$\pi_u(\cdot)$。即：<script type="math/tex; mode=display">
-  \pi(A)=\frac{\int_A\pi_u(x)dx}{\int_S\pi_u(x)dx}</script><ul>
-<li>可以看到$\pi_u(\cdot)\propto \pi(\cdot)$</li>
-</ul>
-</li>
-<li>任意马尔科夫过程$Q(x,\cdot)$，其状态转移概率为：$Q(x,dy)\propto p(x,y)dy$</li>
-</ul>
-</li>
-<li>过程：<ul>
-<li>随机生成$x_0$</li>
-<li>$for t=0,…$，依据$Q(x_t,\cdot)$生成$x_{t+1}’$</li>
-<li>计算：<script type="math/tex; mode=display">
+<li><strong>M-H采样</strong>：
+<ul>
+<li>输入：
+<ul>
+<li>待采样<strong>概率分布(密度)</strong>：<span class="math inline">\(\pi(\cdot)\)</span>，假设<span class="math inline">\(\pi(\cdot)\)</span>对应的密度函数为<span class="math inline">\(\pi_u(\cdot)\)</span>。即： <span class="math display">\[
+  \pi(A)=\frac{\int_A\pi_u(x)dx}{\int_S\pi_u(x)dx}
+\]</span>
+<ul>
+<li>可以看到<span class="math inline">\(\pi_u(\cdot)\propto \pi(\cdot)\)</span></li>
+</ul></li>
+<li>任意马尔科夫过程<span class="math inline">\(Q(x,\cdot)\)</span>，其状态转移概率为：<span class="math inline">\(Q(x,dy)\propto p(x,y)dy\)</span></li>
+</ul></li>
+<li>过程：
+<ul>
+<li>随机生成<span class="math inline">\(x_0\)</span></li>
+<li><span class="math inline">\(for\ t=0,...\)</span>，依据<span class="math inline">\(Q(x_t,\cdot)\)</span>生成<span class="math inline">\(x_{t+1}&#39;\)</span></li>
+<li>计算： <span class="math display">\[
   \begin{aligned}
-    &\alpha(x_t,x'_{t+1})=min\ \{1,\frac{\pi_u(x'_{t+1})p(x'_{t+1},x)}{\pi_u(x)p(x,x'_{t+1})}\}\\\\
-    &\alpha(i,j)=min\ \{1,\frac{K_1\pi_jK_2A_{j,i}}{K_1\pi_iK_2A_{i,j}}\}=min\ \{1,\frac{\pi_jA_{j,i}}{\pi_iA_{i,j}}\}\ //离散情况，其中K_1,K_2为比例缩放系数\\\\
-  \end{aligned}</script><ul>
-<li>然后以$\alpha(x_t,x’_{t+1})$的概率接受样本$x’_{t+1}$。具体操作如下：<ul>
-<li>依据均匀分布$U(0,1)$采样得到$u$，如果$u\leq \alpha(x_t,x’_{t+1})$，则接受$x’_{t+1}$，即$x_{t+1}=x’_{t+1}$。否则，拒绝$x’_{t+1}$，即$x_{t+1}=x_{t}$。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>性质：<ul>
-<li>M-H算法生成一个常返马尔科夫过程，即满足细致平衡条件：<script type="math/tex; mode=display">
-  \pi(dx)P(x,dy)=\pi(dy)P(y,dx)</script><ul>
-<li>证明：<ul>
-<li>令$c=\int_S\pi_u(x)dx$<script type="math/tex; mode=display">
+    &amp;\alpha(x_t,x&#39;_{t+1})=min\ \{1,\frac{\pi_u(x&#39;_{t+1})p(x&#39;_{t+1},x)}{\pi_u(x)p(x,x&#39;_{t+1})}\}\\\\
+    &amp;\alpha(i,j)=min\ \{1,\frac{K_1\pi_jK_2A_{j,i}}{K_1\pi_iK_2A_{i,j}}\}=min\ \{1,\frac{\pi_jA_{j,i}}{\pi_iA_{i,j}}\}\ //离散情况，其中K_1,K_2为比例缩放系数\\\\
+  \end{aligned}
+\]</span>
+<ul>
+<li>然后以<span class="math inline">\(\alpha(x_t,x&#39;_{t+1})\)</span>的概率接受样本<span class="math inline">\(x&#39;_{t+1}\)</span>。具体操作如下：
+<ul>
+<li>依据均匀分布<span class="math inline">\(U(0,1)\)</span>采样得到<span class="math inline">\(u\)</span>，如果<span class="math inline">\(u\leq \alpha(x_t,x&#39;_{t+1})\)</span>，则接受<span class="math inline">\(x&#39;_{t+1}\)</span>，即<span class="math inline">\(x_{t+1}=x&#39;_{t+1}\)</span>。否则，拒绝<span class="math inline">\(x&#39;_{t+1}\)</span>，即<span class="math inline">\(x_{t+1}=x_{t}\)</span>。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>性质：
+<ul>
+<li>M-H算法生成一个常返马尔科夫过程，即满足细致平衡条件： <span class="math display">\[
+  \pi(dx)P(x,dy)=\pi(dy)P(y,dx)
+\]</span>
+<ul>
+<li>证明：
+<ul>
+<li>令<span class="math inline">\(c=\int_S\pi_u(x)dx\)</span> <span class="math display">\[
 \begin{aligned}
-  \pi(dx)P(x,dy)&=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\\\\
-  &=c^{-1}(min\ \{\pi_u(y)p(y,x),\pi_u(x)p(x,y)\})dxdy\ //关于x,y对称。\\\\
-  &=\pi(dy)P(x,dx)
-\end{aligned}</script></li>
-<li>通过证明过程，也能知道为什么要这么定义$\alpha$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>由细致平衡条件和平稳分布的关系，可以知道M-H算法产生的马尔科夫过程最终收敛于待采样的概率(密度)分布$\pi$</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Gibbs采样</strong>：<ul>
-<li>吉布斯采样方法为多维随机变量情况下的一种MCMC方法。假如我们有多变量联合概率密度分布$p(\mathbf{x})=f(x_1,…,x_d)$，状态空间 $S\subseteq R^d$</li>
+  \pi(dx)P(x,dy)&amp;=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\\\\
+  &amp;=c^{-1}(min\ \{\pi_u(y)p(y,x),\pi_u(x)p(x,y)\})dxdy\ //关于x,y对称。\\\\
+  &amp;=\pi(dy)P(x,dx)
+\end{aligned}
+\]</span></li>
+<li>通过证明过程，也能知道为什么要这么定义<span class="math inline">\(\alpha\)</span></li>
+</ul></li>
+</ul></li>
+<li>由细致平衡条件和平稳分布的关系，可以知道M-H算法产生的马尔科夫过程最终收敛于待采样的概率(密度)分布<span class="math inline">\(\pi\)</span></li>
+</ul></li>
+</ul></li>
+<li><strong>Gibbs采样</strong>：
+<ul>
+<li>吉布斯采样方法为多维随机变量情况下的一种MCMC方法。假如我们有多变量联合概率密度分布<span class="math inline">\(p(\mathbf{x})=f(x_1,...,x_d)\)</span>，状态空间 <span class="math inline">\(S\subseteq R^d\)</span></li>
 <li>依据条件分布进行边际采样通常比边际化联合分布(通过积分)求得边际分布后再进行采样要容易得多(<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gibbs_sampling">wiki</a>)。</li>
-<li>算法：<ul>
-<li>输入：$p(\mathbf{x})$</li>
-<li>输出：服从$p$的一批样本$\{\mathbf{x}_1,…\mathbf{x}_n\}$</li>
-<li>过程：<ul>
-<li>随机生成：$\mathbf{x}^{(0)}$</li>
-<li>$for t=0,…$<ul>
-<li>$for i in \{1,…,d\}$<ul>
-<li>依据$p(x_i^{(t+1)}|x_1^{(t)},…,x^{(t)}_{i-1},x^{(t)}_{i+1},…x^{(t)}_d)$进行采样得到i坐标轴下的$x^{(t+1)}_i$的值。</li>
+<li>算法：
+<ul>
+<li>输入：<span class="math inline">\(p(\mathbf{x})\)</span></li>
+<li>输出：服从<span class="math inline">\(p\)</span>的一批样本<span class="math inline">\(\{\mathbf{x}_1,...\mathbf{x}_n\}\)</span></li>
+<li>过程：
+<ul>
+<li>随机生成：<span class="math inline">\(\mathbf{x}^{(0)}\)</span></li>
+<li><span class="math inline">\(for\ t=0,...\)</span>
+<ul>
+<li><span class="math inline">\(for\ i\ in\ \{1,...,d\}\)</span>
+<ul>
+<li>依据<span class="math inline">\(p(x_i^{(t+1)}|x_1^{(t)},...,x^{(t)}_{i-1},x^{(t)}_{i+1},...x^{(t)}_d)\)</span>进行采样得到i坐标轴下的<span class="math inline">\(x^{(t+1)}_i\)</span>的值。</li>
+</ul></li>
+<li>得到：<span class="math inline">\(\mathbf{x}^{(t+1)}\)</span></li>
+</ul></li>
+<li>当 <span class="math inline">\(t\geq t_{spec}\)</span>时，<span class="math inline">\(\mathbf{x}^{(t+1)}\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-<li>得到：$\mathbf{x}^{(t+1)}$</li>
-</ul>
-</li>
-<li>当 $t\geq t_{spec}$时，$\mathbf{x}^{(t+1)}$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><ol>
+<h4 id="ref">Ref：</h4>
+<ol type="1">
 <li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/math/0404033.pdf">General state space Markov chains and MCMC algorithms</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.webpages.uidaho.edu/~stevel/565/lectures/5d%20MCMC.pdf">https://www.webpages.uidaho.edu/~stevel/565/lectures/5d%20MCMC.pdf</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.colorado.edu/amath/sites/default/files/attached-files/2_28_2018.pdf">https://www.colorado.edu/amath/sites/default/files/attached-files/2_28_2018.pdf</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm">https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm</a></li>
+<li>https://www.webpages.uidaho.edu/~stevel/565/lectures/5d%20MCMC.pdf</li>
+<li>https://www.colorado.edu/amath/sites/default/files/attached-files/2_28_2018.pdf</li>
+<li>https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo</li>
+<li>https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm</li>
 <li>《百面机器学习》</li>
 </ol>
-<hr>
-<h2 id="贝叶斯分类器"><a href="#贝叶斯分类器" class="headerlink" title="贝叶斯分类器"></a>贝叶斯分类器</h2><p>&emsp;&emsp;贝叶斯定理$P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)*P(B|A)}{P(B)}$。假设样本属性为$\mathbf{x}\in R^m$，类别$c\in R$，贝叶斯分类器如下：</p>
-<script type="math/tex; mode=display">
+<hr />
+<h2 id="贝叶斯分类器">贝叶斯分类器</h2>
+<p>  贝叶斯定理<span class="math inline">\(P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)*P(B|A)}{P(B)}\)</span>。假设样本属性为<span class="math inline">\(\mathbf{x}\in R^m\)</span>，类别<span class="math inline">\(c\in R\)</span>，贝叶斯分类器如下： <span class="math display">\[
 \begin{aligned}
-  P(c|\mathbf{x})&=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\\\\
-  &=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\ //如果\mathbf{x}中个属性分量x_i相互独立\\\\
-\hat{c}&=h(\mathbf{x})\\\\
-  &= argmax\ P(c)\prod_{i=1}^mP(x_i|c)
-\end{aligned}</script><ul>
-<li>学习：根据大数定理，其中$P(c)=\frac{|D_c|}{|D|}$，即类别为$c$的样本数除以总样本数。<br>$P(x_i|c)=\frac{|D_{c, x_i}|}{|D|}$，即类别为$c$且属性为$x_i$的样本数除以总样本数。</li>
-<li>推断：基于测试样本$\mathbf{x}_c$，基于学习到的概率分别计算各类别的概率值，再取最大值。</li>
-<li>为了应对样本不充分问题导致未出现的属性值的概率为$0$，一般计算后验概率的时候取平滑。</li>
-</ul>
-<h2 id="贝叶斯网"><a href="#贝叶斯网" class="headerlink" title="贝叶斯网"></a>贝叶斯网</h2><ul>
-<li>定义：给定一个<strong>有向无环图</strong>$G=\langle D, E\rangle$，$D$是点集，假设点的个数为$m$，$E$是边集。$D$上的每个点$i$代表了一个随机变量$X_i$，每个$X_i$的父节点集为$\boldsymbol{\pi}_i$，则一个网络的联合分布为：<script type="math/tex; mode=display">
-  P(\mathbf{X})=\prod_{i=1}^mP(X_i|\boldsymbol{\pi}_i)</script><ul>
-<li>网络中每个节点及其父节点组成的结构$(i, \boldsymbol{\pi}_i)$都代表了一个条件概率分布。</li>
-</ul>
-</li>
-<li><p>学习：</p>
+  P(c|\mathbf{x})&amp;=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\\\\
+  &amp;=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\ //如果\mathbf{x}中个属性分量x_i相互独立\\\\
+\hat{c}&amp;=h(\mathbf{x})\\\\
+  &amp;= argmax\ P(c)\prod_{i=1}^mP(x_i|c)
+\end{aligned}
+\]</span></p>
 <ul>
-<li>假如网络结构已知，则$P(X_i|\boldsymbol{\pi}_i)=\frac{P(X_i, \boldsymbol{\pi}_i)}{P(\boldsymbol{\pi}_i)}=\frac{|D_{X_i, \boldsymbol{\pi}_i}|}{|D|}*\frac{|D|}{|D_{\boldsymbol{\pi}_i}|}$</li>
+<li>学习：根据大数定理，其中<span class="math inline">\(P(c)=\frac{|D_c|}{|D|}\)</span>，即类别为<span class="math inline">\(c\)</span>的样本数除以总样本数。 <span class="math inline">\(P(x_i|c)=\frac{|D_{c, x_i}|}{|D|}\)</span>，即类别为<span class="math inline">\(c\)</span>且属性为<span class="math inline">\(x_i\)</span>的样本数除以总样本数。</li>
+<li>推断：基于测试样本<span class="math inline">\(\mathbf{x}_c\)</span>，基于学习到的概率分别计算各类别的概率值，再取最大值。</li>
+<li>为了应对样本不充分问题导致未出现的属性值的概率为<span class="math inline">\(0\)</span>，一般计算后验概率的时候取平滑。</li>
 </ul>
-</li>
-<li><p>推断：</p>
+<h2 id="贝叶斯网">贝叶斯网</h2>
 <ul>
-<li>对于一个已知的贝叶斯网，如果我们已知某些节点集$\mathbf{A}$的值$\mathbf{a}$，想要推断剩下的节点集$\mathbf{B}=\mathbf{\overline{A}}$的值$\mathbf{b}$的概率。一种近似推理算法是Gibbs采样算法。</li>
-</ul>
-</li>
-</ul>
-<h2 id="隐马尔科夫过程"><a href="#隐马尔科夫过程" class="headerlink" title="隐马尔科夫过程"></a>隐马尔科夫过程</h2><p>&emsp;&emsp;隐马尔可夫模型可以由一个五元组描述：$\mu = (S, O, \mathbf{A}, \mathbf{B}, \pi)$。$S=\{s_1,…,s_m\}$是隐状态集，$O=\{o_1,…,o_n\}$是观测集，$A$是隐状态转移矩阵(条件概率分布)，$B$是从隐状态到观测状态的条件概率分布，$\pi$是初始隐状态概率分布。隐马尔可夫链有三个典型的问题。</p>
+<li>定义：给定一个<strong>有向无环图</strong><span class="math inline">\(G=\langle D, E\rangle\)</span>，<span class="math inline">\(D\)</span>是点集，假设点的个数为<span class="math inline">\(m\)</span>，<span class="math inline">\(E\)</span>是边集。<span class="math inline">\(D\)</span>上的每个点<span class="math inline">\(i\)</span>代表了一个随机变量<span class="math inline">\(X_i\)</span>，每个<span class="math inline">\(X_i\)</span>的父节点集为<span class="math inline">\(\boldsymbol{\pi}_i\)</span>，则一个网络的联合分布为： <span class="math display">\[
+  P(\mathbf{X})=\prod_{i=1}^mP(X_i|\boldsymbol{\pi}_i)
+\]</span>
 <ul>
-<li>给定一个模型$\mu$和观测序列$\mathbf{O}=(o_1,…,o_T)$，如何求出该序列的概率？<ul>
-<li>对于给定的状态序列$\mathbf{S}=(s_1,…,s_t)$<script type="math/tex; mode=display">
+<li>网络中每个节点及其父节点组成的结构<span class="math inline">\((i, \boldsymbol{\pi}_i)\)</span>都代表了一个条件概率分布。</li>
+</ul></li>
+<li>学习：
+<ul>
+<li>假如网络结构已知，则<span class="math inline">\(P(X_i|\boldsymbol{\pi}_i)=\frac{P(X_i, \boldsymbol{\pi}_i)}{P(\boldsymbol{\pi}_i)}=\frac{|D_{X_i, \boldsymbol{\pi}_i}|}{|D|}*\frac{|D|}{|D_{\boldsymbol{\pi}_i}|}\)</span></li>
+</ul></li>
+<li>推断：
+<ul>
+<li>对于一个已知的贝叶斯网，如果我们已知某些节点集<span class="math inline">\(\mathbf{A}\)</span>的值<span class="math inline">\(\mathbf{a}\)</span>，想要推断剩下的节点集<span class="math inline">\(\mathbf{B}=\mathbf{\overline{A}}\)</span>的值<span class="math inline">\(\mathbf{b}\)</span>的概率。一种近似推理算法是Gibbs采样算法。</li>
+</ul></li>
+</ul>
+<h2 id="隐马尔科夫过程">隐马尔科夫过程</h2>
+<p>  隐马尔可夫模型可以由一个五元组描述：<span class="math inline">\(\mu = (S, O, \mathbf{A}, \mathbf{B}, \pi)\)</span>。<span class="math inline">\(S=\{s_1,...,s_m\}\)</span>是隐状态集，<span class="math inline">\(O=\{o_1,...,o_n\}\)</span>是观测集，<span class="math inline">\(A\)</span>是隐状态转移矩阵(条件概率分布)，<span class="math inline">\(B\)</span>是从隐状态到观测状态的条件概率分布，<span class="math inline">\(\pi\)</span>是初始隐状态概率分布。隐马尔可夫链有三个典型的问题。</p>
+<ul>
+<li>给定一个模型<span class="math inline">\(\mu\)</span>和观测序列<span class="math inline">\(\mathbf{O}=(o_1,...,o_T)\)</span>，如何求出该序列的概率？
+<ul>
+<li>对于给定的状态序列<span class="math inline">\(\mathbf{S}=(s_1,...,s_t)\)</span> <span class="math display">\[
   \begin{aligned}
-    P(\mathbf{O}|\mu)&=\sum_{\mathbf{S}}P(\mathbf{O},\mathbf{S}|\mu)\\\\
-    &=\sum_{\mathbf{S}}P(\mathbf{O}|\mathbf{S},\mu)P(\mathbf{S}|\mu)\\\\
-    &=\sum_{(s_1,...s_T)}b_{s_1}(o_1)...b_{s_t}(o_t)\pi_{s_1}a_{s_1,s_2}...a_{s_{T-1},s_T}
-  \end{aligned}</script><ul>
-<li>该算法的时间复杂度为$O(T^m)$</li>
-</ul>
-</li>
-<li>前向算法：<ul>
-<li>令$\alpha_t(i):=P(o_1,…o_t,s_t=s_i|\mu)$，即给定前$t$次观测序列，$t$时刻状态为$s_i$的概率，则有：</li>
-<li>$\alpha_t(j)a_{j,i}:=$t时刻状态为j，且t+1时刻状态为s_i的概率</li>
-<li>$\sum_j^S\alpha_t(j)a_{j,i}:=$给定观测序列$\mathbf{O}=(o_1,…o_t)$，t+1时刻状态为s_i的概率。</li>
-<li>$\alpha_{t+1}(i)=(\sum_j^S\alpha_t(j)a_{j,i})b_i(o_{t+1})$</li>
-<li>步骤：<ul>
-<li>输入：观测序列$O=(o_1,…o_t)$，模型$\mu$</li>
-<li>计算：$\alpha_1(i)=\pi_ib_i(o_1) for i=1,…,m$ </li>
-<li>for t=2,…,T：<ul>
-<li>计算$\alpha_t(i)=(\sum_j^S\alpha_{t-1}(j)a_{j,i})b_i(o_{t}) for j=1,…,m$</li>
-</ul>
-</li>
-<li>终止：$P(O|\mu)=\sum_i^S\alpha_T(i)$</li>
-</ul>
-</li>
-<li>该算法的时间复杂度为$O(Tm^2)$</li>
-<li>前向算法每$t+1$步的计算是有第$t$步的共$m$个状态转移过来，在第$t$步计算好$m$个状态的定义概率$\alpha_t(i)$然后往后推导。</li>
-</ul>
-</li>
-<li>后向算法：<ul>
-<li>令<strong>后向概率</strong>$\beta_t(i)=P(o_{t+1},…o_{T}|s_t=s_i,\mu)$，即$t$时刻系统状态为$s_i$的时候，后续的观测序列为当前观测序列的概率，注意后向概率里面的观测序列并不包括当前时刻$t$。</li>
-<li>已知$\beta_t(i)$，则当前时刻$t$的观测概率为：$P(o_{t},…o_{T}|s_t=s_i,\mu)=\beta_t(i)b_i(o_t)$。</li>
-<li>假设当前时刻是由上一时刻状态为$s_j$转移过来的，则有：<script type="math/tex; mode=display">
-  \beta_{t-1}(i)=\sum_j^Sa_{i,j}\beta_t(j)b_j(o_t)</script></li>
-<li>步骤：<ul>
-<li>输入：观测序列$O=(o_1,…o_t)$，模型$\mu$</li>
-<li>计算：$\beta_T(j)=1 for j=1,…,m$</li>
-<li>for t=T-1,…,1：<ul>
-<li>计算$\beta_t(i)=\sum_j^Sa_{i,j}\beta_{t+1}(j)b_j(o_{t+1}) for i=1,…m$</li>
-</ul>
-</li>
-<li>终止：$P(O|\mu)=\sum_j^S\pi_j\beta_1(j)b_j(o_1)$</li>
-<li>该算法时间复杂度为$O(Tm^2)$</li>
-<li>后向算法每次计算好$t$时刻的$m$个状态的定义概率，然后假设从前一时刻$t-1$的第$i$个状态转移过来计算前一时刻的定义概率并保存$m$个状态。</li>
-</ul>
-</li>
-<li>前向后向算法统一:<script type="math/tex; mode=display">
+    P(\mathbf{O}|\mu)&amp;=\sum_{\mathbf{S}}P(\mathbf{O},\mathbf{S}|\mu)\\\\
+    &amp;=\sum_{\mathbf{S}}P(\mathbf{O}|\mathbf{S},\mu)P(\mathbf{S}|\mu)\\\\
+    &amp;=\sum_{(s_1,...s_T)}b_{s_1}(o_1)...b_{s_t}(o_t)\pi_{s_1}a_{s_1,s_2}...a_{s_{T-1},s_T}
+  \end{aligned}
+\]</span>
+<ul>
+<li>该算法的时间复杂度为<span class="math inline">\(O(T^m)\)</span></li>
+</ul></li>
+<li>前向算法：
+<ul>
+<li>令<span class="math inline">\(\alpha_t(i):=P(o_1,...o_t,s_t=s_i|\mu)\)</span>，即给定前<span class="math inline">\(t\)</span>次观测序列，<span class="math inline">\(t\)</span>时刻状态为<span class="math inline">\(s_i\)</span>的概率，则有：</li>
+<li><span class="math inline">\(\alpha_t(j)a_{j,i}:=\)</span>t时刻状态为j，且t+1时刻状态为s_i的概率</li>
+<li><span class="math inline">\(\sum_j^S\alpha_t(j)a_{j,i}:=\)</span>给定观测序列<span class="math inline">\(\mathbf{O}=(o_1,...o_t)\)</span>，t+1时刻状态为s_i的概率。</li>
+<li><span class="math inline">\(\alpha_{t+1}(i)=(\sum_j^S\alpha_t(j)a_{j,i})b_i(o_{t+1})\)</span></li>
+<li>步骤：
+<ul>
+<li>输入：观测序列<span class="math inline">\(O=(o_1,...o_t)\)</span>，模型<span class="math inline">\(\mu\)</span></li>
+<li>计算：<span class="math inline">\(\alpha_1(i)=\pi_ib_i(o_1)\ for\ i=1,...,m\)</span></li>
+<li>for t=2,...,T：
+<ul>
+<li>计算<span class="math inline">\(\alpha_t(i)=(\sum_j^S\alpha_{t-1}(j)a_{j,i})b_i(o_{t})\ for\ j=1,...,m\)</span></li>
+</ul></li>
+<li>终止：<span class="math inline">\(P(O|\mu)=\sum_i^S\alpha_T(i)\)</span></li>
+</ul></li>
+<li>该算法的时间复杂度为<span class="math inline">\(O(Tm^2)\)</span></li>
+<li>前向算法每<span class="math inline">\(t+1\)</span>步的计算是有第<span class="math inline">\(t\)</span>步的共<span class="math inline">\(m\)</span>个状态转移过来，在第<span class="math inline">\(t\)</span>步计算好<span class="math inline">\(m\)</span>个状态的定义概率<span class="math inline">\(\alpha_t(i)\)</span>然后往后推导。</li>
+</ul></li>
+<li>后向算法：
+<ul>
+<li>令<strong>后向概率</strong><span class="math inline">\(\beta_t(i)=P(o_{t+1},...o_{T}|s_t=s_i,\mu)\)</span>，即<span class="math inline">\(t\)</span>时刻系统状态为<span class="math inline">\(s_i\)</span>的时候，后续的观测序列为当前观测序列的概率，注意后向概率里面的观测序列并不包括当前时刻<span class="math inline">\(t\)</span>。</li>
+<li>已知<span class="math inline">\(\beta_t(i)\)</span>，则当前时刻<span class="math inline">\(t\)</span>的观测概率为：<span class="math inline">\(P(o_{t},...o_{T}|s_t=s_i,\mu)=\beta_t(i)b_i(o_t)\)</span>。</li>
+<li>假设当前时刻是由上一时刻状态为<span class="math inline">\(s_j\)</span>转移过来的，则有： <span class="math display">\[
+  \beta_{t-1}(i)=\sum_j^Sa_{i,j}\beta_t(j)b_j(o_t)
+\]</span></li>
+<li>步骤：
+<ul>
+<li>输入：观测序列<span class="math inline">\(O=(o_1,...o_t)\)</span>，模型<span class="math inline">\(\mu\)</span></li>
+<li>计算：<span class="math inline">\(\beta_T(j)=1\ for\ j=1,...,m\)</span></li>
+<li>for t=T-1,...,1：
+<ul>
+<li>计算<span class="math inline">\(\beta_t(i)=\sum_j^Sa_{i,j}\beta_{t+1}(j)b_j(o_{t+1})\ for\ i=1,...m\)</span></li>
+</ul></li>
+<li>终止：<span class="math inline">\(P(O|\mu)=\sum_j^S\pi_j\beta_1(j)b_j(o_1)\)</span></li>
+<li>该算法时间复杂度为<span class="math inline">\(O(Tm^2)\)</span></li>
+<li>后向算法每次计算好<span class="math inline">\(t\)</span>时刻的<span class="math inline">\(m\)</span>个状态的定义概率，然后假设从前一时刻<span class="math inline">\(t-1\)</span>的第<span class="math inline">\(i\)</span>个状态转移过来计算前一时刻的定义概率并保存<span class="math inline">\(m\)</span>个状态。</li>
+</ul></li>
+<li>前向后向算法统一: <span class="math display">\[
   \begin{aligned}
-    P(\mathbf{O}|\mu)&=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_{t+1},...o_T,s_t=s_i|\mu)\\\\
-    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\\\
-    P(\mathbf{O}|\mu)&=\sum_i^S\sum_j^S\alpha_t(i)a_{i,j}b_j(o_{t+1})\beta_{t+1}(j)\quad t=1,...,T-1\\\\
-    &=\sum_j^S(\sum_i^S\alpha_t(i)a_{i,j}b_j(o_{t+1}))\beta_{t+1}(j)\\\\
-    &=\sum_j^S\alpha_{t+1}(j)\beta_{t+1}(j)\quad t=1,...T-1\\\\
-    &=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\\\
-    P(s_t=s_i,\mathbf{O}|\mu)&=\alpha_t(i)\beta_t(i)\\\\
-    &=P(s_t=s_i|\mathbf{O},\mu)P(\mathbf{O}|\mu)\\\\
-    \gamma_t(i)&=P(s_t=s_i|\mathbf{O},\mu)\\\\
-    &=\frac{P(s_t=s_i,\mathbf{O}|\mu)}{P(\mathbf{O}|\mu)}=\frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}
-  \end{aligned}</script><ul>
-<li>其中$P(\mathbf{O}|\mu):=$已知模型$\mu$，出现观测序列$\mathbf{O}$的概率。</li>
-<li>$P(s_t=s_i, \mathbf{O}|\mu):=$已知模型$\mu$，出现观测序列$\mathbf{O}$且第$t$时刻的隐状态为$s_i$的概率。</li>
-<li>$P(s_t=s_i|\mathbf{O},\mu):=$已知模型$\mu$和观测序列$\mathbf{O}$，第$t$时刻隐状态为$s_i$的概率。</li>
-</ul>
-</li>
-</ul>
-</li>
+    P(\mathbf{O}|\mu)&amp;=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_{t+1},...o_T,s_t=s_i|\mu)\\\\
+    &amp;=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\\\
+    P(\mathbf{O}|\mu)&amp;=\sum_i^S\sum_j^S\alpha_t(i)a_{i,j}b_j(o_{t+1})\beta_{t+1}(j)\quad t=1,...,T-1\\\\
+    &amp;=\sum_j^S(\sum_i^S\alpha_t(i)a_{i,j}b_j(o_{t+1}))\beta_{t+1}(j)\\\\
+    &amp;=\sum_j^S\alpha_{t+1}(j)\beta_{t+1}(j)\quad t=1,...T-1\\\\
+    &amp;=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\\\
+    P(s_t=s_i,\mathbf{O}|\mu)&amp;=\alpha_t(i)\beta_t(i)\\\\
+    &amp;=P(s_t=s_i|\mathbf{O},\mu)P(\mathbf{O}|\mu)\\\\
+    \gamma_t(i)&amp;=P(s_t=s_i|\mathbf{O},\mu)\\\\
+    &amp;=\frac{P(s_t=s_i,\mathbf{O}|\mu)}{P(\mathbf{O}|\mu)}=\frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}
+  \end{aligned}
+\]</span>
+<ul>
+<li>其中<span class="math inline">\(P(\mathbf{O}|\mu):=\)</span>已知模型<span class="math inline">\(\mu\)</span>，出现观测序列<span class="math inline">\(\mathbf{O}\)</span>的概率。</li>
+<li><span class="math inline">\(P(s_t=s_i, \mathbf{O}|\mu):=\)</span>已知模型<span class="math inline">\(\mu\)</span>，出现观测序列<span class="math inline">\(\mathbf{O}\)</span>且第<span class="math inline">\(t\)</span>时刻的隐状态为<span class="math inline">\(s_i\)</span>的概率。</li>
+<li><span class="math inline">\(P(s_t=s_i|\mathbf{O},\mu):=\)</span>已知模型<span class="math inline">\(\mu\)</span>和观测序列<span class="math inline">\(\mathbf{O}\)</span>，第<span class="math inline">\(t\)</span>时刻隐状态为<span class="math inline">\(s_i\)</span>的概率。</li>
+</ul></li>
+</ul></li>
 <li>注意前向后向算法对对概率的定义的巧妙之处。</li>
 <li>注意边界。</li>
-</ul>
-</li>
-<li>给定一个模型$\mu$和观测序列$\mathbf{O}=(o_1,…,o_t)$，如何求出<strong>最优</strong>隐状态序$\mathbf{S}^<em>=(s_1^</em>,…s_t^<em>)$能够<em>*最好地解释</em></em>观测序列？<ul>
-<li>近似算法：<script type="math/tex; mode=display">
+</ul></li>
+<li>给定一个模型<span class="math inline">\(\mu\)</span>和观测序列<span class="math inline">\(\mathbf{O}=(o_1,...,o_t)\)</span>，如何求出<strong>最优</strong>隐状态序<span class="math inline">\(\mathbf{S}^*=(s_1^*,...s_t^*)\)</span>能够<strong>最好地解释</strong>观测序列？
+<ul>
+<li>近似算法： <span class="math display">\[
   \gamma_t(i)=\underset{i}{\operatorname{argmax}}\ \  
-  \frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}\quad for\ t=1,...,T</script><ul>
-<li>$for t=1,…,T$ 做前向算法，后向算法。</li>
-<li>$for t=1,…,T$ 求 $\operatorname{argmax}$</li>
-</ul>
-</li>
-<li>维特比算法：<ul>
-<li>定义：$\delta_t(i)=\underset{s_1,…s_{t-1}}{max}P(s_t=s_i,s_{t-1},..,s_1,o_t,…,o_1|\mu)$ 即从各个路径 $(s_1,…,s_{t-1})$ 中到达$s_t=s_i$时概率最大的那条路径。、</li>
-<li>递推：<script type="math/tex; mode=display">
+  \frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}\quad for\ t=1,...,T
+\]</span>
+<ul>
+<li><span class="math inline">\(for\ t=1,...,T\)</span> 做前向算法，后向算法。</li>
+<li><span class="math inline">\(for\ t=1,...,T\)</span> 求 <span class="math inline">\(\operatorname{argmax}\)</span></li>
+</ul></li>
+<li>维特比算法：
+<ul>
+<li>定义：<span class="math inline">\(\delta_t(i)=\underset{s_1,...s_{t-1}}{max}P(s_t=s_i,s_{t-1},..,s_1,o_t,...,o_1|\mu)\)</span> 即从各个路径 <span class="math inline">\((s_1,...,s_{t-1})\)</span> 中到达<span class="math inline">\(s_t=s_i\)</span>时概率最大的那条路径。、</li>
+<li>递推： <span class="math display">\[
   \begin{aligned}
-    \delta_{t+1}(i)&=\underset{s_1,...s_{t}}{max}\ P(s_{t+1}=s_i,s_t,...,s_1,o_{t+1},...,o_1|\mu)\\\\
-    &=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})
-  \end{aligned}</script></li>
-<li>算法：<ul>
-<li>输入：模型$\mu=(S,O,\mathbf{A},\mathbf{B},\pi)$，观测序列$\mathbf{O}$</li>
-<li>输出：最佳隐状态序列$\mathbf{S}^<em>=(s_1^</em>,…s_T^*)$</li>
-<li>过程：<ul>
-<li>计算：由于$t=1$之前没有路径，$\delta_1(i)=P(s_1=s_i,o_1|\mu)=\pi_ib_i(o_1)$</li>
-<li>递推：$\delta_{t+1}(i)=\underset{j}{max} \delta_{t}(j)a_{j,i}b_i(o_{t+1})$</li>
-<li>终止：$P(s_T^<em>,…s_1^</em>,O|\mu)=\underset{i}{max} \delta_T(i)$，得到$s_T^*$。</li>
-<li>回溯：根据$s_T^<em>$ 依次往前回溯得到最佳序列$(s_1^</em>,…s_T^*)$</li>
-</ul>
-</li>
-</ul>
-</li>
+    \delta_{t+1}(i)&amp;=\underset{s_1,...s_{t}}{max}\ P(s_{t+1}=s_i,s_t,...,s_1,o_{t+1},...,o_1|\mu)\\\\
+    &amp;=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})
+  \end{aligned}
+\]</span></li>
+<li>算法：
+<ul>
+<li>输入：模型<span class="math inline">\(\mu=(S,O,\mathbf{A},\mathbf{B},\pi)\)</span>，观测序列<span class="math inline">\(\mathbf{O}\)</span></li>
+<li>输出：最佳隐状态序列<span class="math inline">\(\mathbf{S}^*=(s_1^*,...s_T^*)\)</span></li>
+<li>过程：
+<ul>
+<li>计算：由于<span class="math inline">\(t=1\)</span>之前没有路径，<span class="math inline">\(\delta_1(i)=P(s_1=s_i,o_1|\mu)=\pi_ib_i(o_1)\)</span></li>
+<li>递推：<span class="math inline">\(\delta_{t+1}(i)=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})\)</span></li>
+<li>终止：<span class="math inline">\(P(s_T^*,...s_1^*,O|\mu)=\underset{i}{max}\ \delta_T(i)\)</span>，得到<span class="math inline">\(s_T^*\)</span>。</li>
+<li>回溯：根据<span class="math inline">\(s_T^*\)</span> 依次往前回溯得到最佳序列<span class="math inline">\((s_1^*,...s_T^*)\)</span></li>
+</ul></li>
+</ul></li>
 <li>维特比算法是采用动态规划算法，其状态函数的定义可以和<code>LeetCode</code>这种动态规划题结合起来思考比较。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>给定一个观测序列$O=(o_1,…,o_t)$，如何估计模型参数？<ul>
-<li>若隐状态也能被观测到<ul>
+</ul></li>
+</ul></li>
+<li>给定一个观测序列<span class="math inline">\(O=(o_1,...,o_t)\)</span>，如何估计模型参数？
+<ul>
+<li>若隐状态也能被观测到
+<ul>
 <li>给定观测序列样本</li>
-</ul>
-</li>
+</ul></li>
 <li>若隐状态不能被观测到</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><ol>
-<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html">http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html</a></li>
+<h3 id="ref-1">Ref:</h3>
+<ol type="1">
+<li>http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html</li>
 </ol>
-<h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>&emsp;&emsp;EM算法的全程是<code>Expectation-maximization algorithm</code>，即期望最大值算法，主要用于估计依赖于隐变量的样本的最大似然参数。<br>(PS: 一般针对无隐变量的估计用最大似然估计法)。算法通过不断求解E步(<code>Expectation</code>)和M步(<code>Maximize Likelyhood</code>)来预估变量(含隐变量)<br>的分布。<br>&emsp;&emsp;假如有两个分布$Y$和$Z$，一个能被观测到$Y$，一个不能被观测到$Z$(隐变量)，其中观测变量$Y$依赖于隐变量$Z$，分布参数为$\boldsymbol{\theta}$。现在我们能够<br>观测到一批观测变量样本$\mathbb{Y}=\{y_1,…,y_N\}$</p>
-<h3 id="EM算法原理及收敛性"><a href="#EM算法原理及收敛性" class="headerlink" title="EM算法原理及收敛性"></a>EM算法原理及收敛性</h3><h3 id="EM算法过程"><a href="#EM算法过程" class="headerlink" title="EM算法过程"></a>EM算法过程</h3><ul>
-<li>输入：<ul>
-<li>观测样本$\mathbb{Y}=\{y_1,…,y_n\}$</li>
-<li>联合分布$P(Y,Z;\theta)$，条件分布$P(Z|Y;\theta)$</li>
-</ul>
-</li>
-<li>输出：<ul>
-<li>模型参数：$\boldsymbol{\theta}$</li>
-</ul>
-</li>
-<li>步骤：<ul>
-<li>选择参数初始值：$\boldsymbol{\theta}^{(0)}$。</li>
-<li><code>E</code>步：计算：<script type="math/tex; mode=display">
+<h2 id="em算法">EM算法</h2>
+<p>  EM算法的全程是<code>Expectation-maximization algorithm</code>，即期望最大值算法，主要用于估计依赖于隐变量的样本的最大似然参数。 (PS: 一般针对无隐变量的估计用最大似然估计法)。算法通过不断求解E步(<code>Expectation</code>)和M步(<code>Maximize Likelyhood</code>)来预估变量(含隐变量) 的分布。<br />
+  假如有两个分布<span class="math inline">\(Y\)</span>和<span class="math inline">\(Z\)</span>，一个能被观测到<span class="math inline">\(Y\)</span>，一个不能被观测到<span class="math inline">\(Z\)</span>(隐变量)，其中观测变量<span class="math inline">\(Y\)</span>依赖于隐变量<span class="math inline">\(Z\)</span>，分布参数为<span class="math inline">\(\boldsymbol{\theta}\)</span>。现在我们能够 观测到一批观测变量样本<span class="math inline">\(\mathbb{Y}=\{y_1,...,y_N\}\)</span></p>
+<h3 id="em算法原理及收敛性">EM算法原理及收敛性</h3>
+<h3 id="em算法过程">EM算法过程</h3>
+<ul>
+<li>输入：
+<ul>
+<li>观测样本<span class="math inline">\(\mathbb{Y}=\{y_1,...,y_n\}\)</span></li>
+<li>联合分布<span class="math inline">\(P(Y,Z;\theta)\)</span>，条件分布<span class="math inline">\(P(Z|Y;\theta)\)</span></li>
+</ul></li>
+<li>输出：
+<ul>
+<li>模型参数：<span class="math inline">\(\boldsymbol{\theta}\)</span></li>
+</ul></li>
+<li>步骤：
+<ul>
+<li>选择参数初始值：<span class="math inline">\(\boldsymbol{\theta}^{(0)}\)</span>。</li>
+<li><code>E</code>步：计算： <span class="math display">\[
  \begin{aligned}
-   Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})&=
+   Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})&amp;=
    \sum_{j=1}^N\mathbb{E}_{P(Z|Y=y_j;\boldsymbol{\theta}^{(i)})}log(P(Y=y_i,Z;\boldsymbol{\theta}))\\\\
-   &=\sum_{j=1}^N(\sum_ZP(Z|Y=y_i;\boldsymbol{\theta}^{(i)})log(P(Y=y_j,Z;\boldsymbol{\theta}))
- \end{aligned}</script></li>
-<li><code>M</code>步：<script type="math/tex; mode=display">
- \boldsymbol{\theta}^{(i+1)}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}}\quad Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})</script></li>
+   &amp;=\sum_{j=1}^N(\sum_ZP(Z|Y=y_i;\boldsymbol{\theta}^{(i)})log(P(Y=y_j,Z;\boldsymbol{\theta}))
+ \end{aligned}
+\]</span></li>
+<li><code>M</code>步： <span class="math display">\[
+ \boldsymbol{\theta}^{(i+1)}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}}\quad Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})
+\]</span></li>
 <li>重复上面两步，直至收敛。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="EM算法应用"><a href="#EM算法应用" class="headerlink" title="EM算法应用"></a>EM算法应用</h3><ul>
+<h3 id="em算法应用">EM算法应用</h3>
+<ul>
 <li>EM算法与高斯混合模型</li>
 <li>EM算法与隐马尔可夫模型</li>
 </ul>
-<h3 id="Ref-1"><a href="#Ref-1" class="headerlink" title="Ref:"></a>Ref:</h3><ol>
-<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html">http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html</a></li>
+<h3 id="ref-2">Ref:</h3>
+<ol type="1">
+<li>http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html</li>
 </ol>
 
           
@@ -1202,7 +1259,7 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
       
         
           
-            <p>&emsp;&emsp; 本专题主要涉及Deep Learning领域内非常基础却又十分重要的论文的回顾，例如dropout, layernorm, resnet，基础激活函数等。<br>这些论文本身并不复杂，但是背后的思想却非常的深刻和敏锐。复读这类文章有助于对整体深度学习模型的表现性有所感知和把握。</p>
+            <p>   本专题主要涉及Deep Learning领域内非常基础却又十分重要的论文的回顾，例如dropout, layernorm, resnet，基础激活函数等。 这些论文本身并不复杂，但是背后的思想却非常的深刻和敏锐。复读这类文章有助于对整体深度学习模型的表现性有所感知和把握。</p>
 
           
         
@@ -1323,6 +1380,7 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
         
           
             
+
           
         
       
@@ -1441,222 +1499,252 @@ q_{\pi^*}(s,a)&=\underset{\pi}{\operatorname{argmax}}\ q_{\pi}(s,a)\\
       
         
           
-            <p>&emsp;&emsp; 优化算法在深度学习中也起着非常重要的地位，各种优化算法对应的特点。在训练各个阶段的收敛速度，场景的适用性(例如是Dense还是Sparse场景)等，都应该比较熟练的掌握。</p>
-<h1 id="梯度下降法-Gradient-Descent"><a href="#梯度下降法-Gradient-Descent" class="headerlink" title="梯度下降法(Gradient Descent)"></a>梯度下降法(Gradient Descent)</h1><p>&emsp;&emsp; 梯度是个矢量，为函数值增长最快的方向(可通过方向导数证明)。反方向则为函数值下降最快的方向。<br>&emsp;&emsp; 随机梯度下降法(SGD)由样本数量的不同有着几种分类。符号：$t$ 指迭代到第$t$步；$\mathbf{w}$为待学习参数；$b$为 <code>batch_size</code>；$\mathbf{z} := \{\mathbf{x}, \mathbf{y}\}$为样本，则$\mathbf{z}_{1:N}$代表全体样本，$\mathbf{z}_t$代表第$t$个样本，$\mathbf{z}_{t:t+b}$代表第$t$批次的样本。</p>
+            <p>   优化算法在深度学习中也起着非常重要的地位，各种优化算法对应的特点。在训练各个阶段的收敛速度，场景的适用性(例如是Dense还是Sparse场景)等，都应该比较熟练的掌握。</p>
+<h1 id="梯度下降法gradient-descent">梯度下降法(Gradient Descent)</h1>
+<p>   梯度是个矢量，为函数值增长最快的方向(可通过方向导数证明)。反方向则为函数值下降最快的方向。<br />
+   随机梯度下降法(SGD)由样本数量的不同有着几种分类。符号：<span class="math inline">\(t\)</span> 指迭代到第<span class="math inline">\(t\)</span>步；<span class="math inline">\(\mathbf{w}\)</span>为待学习参数；<span class="math inline">\(b\)</span>为 <code>batch_size</code>；<span class="math inline">\(\mathbf{z} := \{\mathbf{x}, \mathbf{y}\}\)</span>为样本，则<span class="math inline">\(\mathbf{z}_{1:N}\)</span>代表全体样本，<span class="math inline">\(\mathbf{z}_t\)</span>代表第<span class="math inline">\(t\)</span>个样本，<span class="math inline">\(\mathbf{z}_{t:t+b}\)</span>代表第<span class="math inline">\(t\)</span>批次的样本。</p>
 <ul>
-<li>Batch Gradient Descent(BGD)<script type="math/tex; mode=display">
-\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta \nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_{1:N})</script></li>
-<li>Online Gradient Descent(OGD)<script type="math/tex; mode=display">
-\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta \nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_t)</script></li>
-<li><p>Mini-batch Gradient Descent</p>
-<script type="math/tex; mode=display">
-\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta \nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_{t:t+b})</script></li>
+<li><p>Batch Gradient Descent(BGD) <span class="math display">\[
+\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta \nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_{1:N})
+\]</span></p></li>
+<li><p>Online Gradient Descent(OGD) <span class="math display">\[
+\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta \nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_t)
+\]</span></p></li>
+<li><p>Mini-batch Gradient Descent <span class="math display">\[
+\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta \nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_{t:t+b})
+\]</span></p></li>
 <li><p>问答：</p>
 <ul>
-<li>问：为什么样本数量不同都能对$\mathbf{w}$求梯度呢，区别是啥？</li>
-<li>答：因为是求$L$关于$\mathbf{w}$的梯度。$loss$是个标量，最后会在<code>batch_size</code>维度上做<code>reduce_sum/mean</code>。所以不同的样本量都同样可以对$\mathbf{w}$求梯度。无非最后的极小值点代表的是全体样本，还是单个样本，还是单个批次的样本的极小值点罢了。</li>
+<li>问：为什么样本数量不同都能对<span class="math inline">\(\mathbf{w}\)</span>求梯度呢，区别是啥？</li>
+<li>答：因为是求<span class="math inline">\(L\)</span>关于<span class="math inline">\(\mathbf{w}\)</span>的梯度。<span class="math inline">\(loss\)</span>是个标量，最后会在<code>batch_size</code>维度上做<code>reduce_sum/mean</code>。所以不同的样本量都同样可以对<span class="math inline">\(\mathbf{w}\)</span>求梯度。无非最后的极小值点代表的是全体样本，还是单个样本，还是单个批次的样本的极小值点罢了。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref: "></a>Ref: <br></h3><ol>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gradient_descent">https://en.wikipedia.org/wiki/Gradient_descent</a><br></li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/75198821">https://zhuanlan.zhihu.com/p/75198821</a><br></li>
+<h3 id="ref">Ref: <br></h3>
+<ol type="1">
+<li>https://en.wikipedia.org/wiki/Gradient_descent<br></li>
+<li>https://zhuanlan.zhihu.com/p/75198821<br></li>
 </ol>
-<h1 id="梯度下降法进阶"><a href="#梯度下降法进阶" class="headerlink" title="梯度下降法进阶"></a>梯度下降法进阶</h1><p>&emsp;&emsp; 基础的梯度下降法每次都依赖于当前步骤$\mathbf{w}_t$的梯度，因此非常不稳定。目前深度框架中提供了多种梯度下降法，这里做一下汇总。</p>
+<h1 id="梯度下降法进阶">梯度下降法进阶</h1>
+<p>   基础的梯度下降法每次都依赖于当前步骤<span class="math inline">\(\mathbf{w}_t\)</span>的梯度，因此非常不稳定。目前深度框架中提供了多种梯度下降法，这里做一下汇总。</p>
 <ul>
-<li><h3 id="Momentum："><a href="#Momentum：" class="headerlink" title="Momentum："></a>Momentum：</h3><script type="math/tex; mode=display">
+<li><h3 id="momentum">Momentum：</h3>
+<span class="math display">\[
   \begin{aligned}
-    &\mathbf{v}_t \leftarrow \gamma \mathbf{v}_{t-1} + \eta \nabla_{\mathbf{w}_{t-1}}L\\\\
-    &\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t - \mathbf{v}_t
-  \end{aligned}</script><ul>
-<li>直观来看的话，如果第$t$次和第$t-1$次的梯度方向相同，那么第$t$的更新就会加快。如果方向相反，那么就会减速；如果两次梯度方向存在一个夹角，那么更新的梯度方向就处于这个夹角内；动量法一定程度上可以减少振荡。</li>
-</ul>
-</li>
-<li><h3 id="Adagrad："><a href="#Adagrad：" class="headerlink" title="Adagrad："></a>Adagrad：</h3><script type="math/tex; mode=display">
-  \begin{aligned}
-  &\mathbf{g}_t = \nabla_{\mathbf{w}_t}L\\\\
-  &\mathbf{a}_t \leftarrow \mathbf{a}_{t-1}+\mathbf{g}_t\odot \mathbf{g}_t\\\\
-  &\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t - \eta*\frac{1}{\sqrt{\mathbf{a}_t+\epsilon}}\odot\mathbf{g}_t
-  \end{aligned}</script><ul>
-<li>注意这里的乘积符号是<code>element-wise</code>的，即<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices">Hadamard Product</a>)，相当于针对不同的参数学习率是不同的。一般的博客直接写成$\mathbf{g}_t^2$。</li>
-<li>$\mathbf{a}_t$是一个单调递增的状态，训练后期学习率趋向于0。</li>
-</ul>
-</li>
-<li><h3 id="Adadelta："><a href="#Adadelta：" class="headerlink" title="Adadelta："></a>Adadelta：</h3><ul>
-<li>令$\mathbf{g}_t^2 = \mathbf{g}_t\odot\mathbf{g}_t$<script type="math/tex; mode=display">
-\begin{aligned}
-E[\mathbf{g}^2]_t &\leftarrow \gamma E[\mathbf{g}^2]_t + (1-\gamma)\mathbf{g}_t^2\\\\
-\Delta \mathbf{w}_t &=-\frac{\eta}{\sqrt{E[\mathbf{g}^2]_t+\epsilon}}\mathbf{g}_t\\\\
-&=-\frac{\eta}{RMS[\mathbf{g}]_t}\mathbf{g}_t\\\\
-\mathbf{w}_{t+1} &\leftarrow \mathbf{w}_t +\Delta \mathbf{w}_t
-\end{aligned}</script></li>
-<li>这里的$E[\mathbf{g}^2]_t$看着很唬人，其实初始化($t=0$时)就是一个零张量。</li>
-<li>如果把$\eta$也加入到迭代当中来，那么有：<script type="math/tex; mode=display">
-\begin{aligned}
-E[\Delta {\mathbf{w}}^2]_t &\leftarrow \gamma E[\Delta {\mathbf{w}}^2]_t + (1-\gamma)\Delta {\mathbf{w}}_t^2\\\\
-RMS[\Delta {\mathbf{w}}]_t &= \sqrt{E[\Delta {\mathbf{w}}^2]_t+\epsilon}\\\\
-\Delta \mathbf{w}_t &=-\frac{RMS[\Delta {\mathbf{w}}]_t}{RMS[\mathbf{g}]_t}\mathbf{g}_t\\\\
-\mathbf{w}_{t+1} &\leftarrow \mathbf{w}_t +\Delta \mathbf{w}_t
-\end{aligned}</script></li>
-</ul>
+    &amp;\mathbf{v}_t \leftarrow \gamma \mathbf{v}_{t-1} + \eta \nabla_{\mathbf{w}_{t-1}}L\\\\
+    &amp;\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t - \mathbf{v}_t
+  \end{aligned}
+\]</span>
 <ul>
+<li>直观来看的话，如果第<span class="math inline">\(t\)</span>次和第<span class="math inline">\(t-1\)</span>次的梯度方向相同，那么第<span class="math inline">\(t\)</span>的更新就会加快。如果方向相反，那么就会减速；如果两次梯度方向存在一个夹角，那么更新的梯度方向就处于这个夹角内；动量法一定程度上可以减少振荡。</li>
+</ul></li>
+<li><h3 id="adagrad">Adagrad：</h3>
+<span class="math display">\[
+  \begin{aligned}
+  &amp;\mathbf{g}_t = \nabla_{\mathbf{w}_t}L\\\\
+  &amp;\mathbf{a}_t \leftarrow \mathbf{a}_{t-1}+\mathbf{g}_t\odot \mathbf{g}_t\\\\
+  &amp;\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t - \eta*\frac{1}{\sqrt{\mathbf{a}_t+\epsilon}}\odot\mathbf{g}_t
+  \end{aligned}
+\]</span>
+<ul>
+<li>注意这里的乘积符号是<code>element-wise</code>的，即<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard Product</a>，相当于针对不同的参数学习率是不同的。一般的博客直接写成<span class="math inline">\(\mathbf{g}_t^2\)</span>。</li>
+<li><span class="math inline">\(\mathbf{a}_t\)</span>是一个单调递增的状态，训练后期学习率趋向于0。</li>
+</ul></li>
+<li><h3 id="adadelta">Adadelta：</h3>
+<ul>
+<li>令<span class="math inline">\(\mathbf{g}_t^2 = \mathbf{g}_t\odot\mathbf{g}_t\)</span> <span class="math display">\[
+\begin{aligned}
+E[\mathbf{g}^2]_t &amp;\leftarrow \gamma E[\mathbf{g}^2]_t + (1-\gamma)\mathbf{g}_t^2\\\\
+\Delta \mathbf{w}_t &amp;=-\frac{\eta}{\sqrt{E[\mathbf{g}^2]_t+\epsilon}}\mathbf{g}_t\\\\
+&amp;=-\frac{\eta}{RMS[\mathbf{g}]_t}\mathbf{g}_t\\\\
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t +\Delta \mathbf{w}_t
+\end{aligned}
+\]</span></li>
+<li>这里的<span class="math inline">\(E[\mathbf{g}^2]_t\)</span>看着很唬人，其实初始化(<span class="math inline">\(t=0\)</span>时)就是一个零张量。</li>
+<li>如果把<span class="math inline">\(\eta\)</span>也加入到迭代当中来，那么有： <span class="math display">\[
+\begin{aligned}
+E[\Delta {\mathbf{w}}^2]_t &amp;\leftarrow \gamma E[\Delta {\mathbf{w}}^2]_t + (1-\gamma)\Delta {\mathbf{w}}_t^2\\\\
+RMS[\Delta {\mathbf{w}}]_t &amp;= \sqrt{E[\Delta {\mathbf{w}}^2]_t+\epsilon}\\\\
+\Delta \mathbf{w}_t &amp;=-\frac{RMS[\Delta {\mathbf{w}}]_t}{RMS[\mathbf{g}]_t}\mathbf{g}_t\\\\
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t +\Delta \mathbf{w}_t
+\end{aligned}
+\]</span></li>
 <li>Adadelta迭代甚至不需要设置人工的超参数。</li>
-</ul>
-</li>
-<li><h3 id="RMSprop："><a href="#RMSprop：" class="headerlink" title="RMSprop："></a>RMSprop：</h3><ul>
-<li>RMS即<code>Root Mean Square</code>的缩写，RMSprop是Adadelta的特例。<script type="math/tex; mode=display">
-\begin{aligned}
-E[\mathbf{g}^2]_t &\leftarrow 0.9E[\mathbf{g}^2]_t + 0.1\mathbf{g}_t^2\\\\
-\mathbf{w}_{t+1} &\leftarrow \mathbf{w}_t -\frac{\eta}{RMS[\mathbf{g}]_t}\mathbf{g}_t
-\end{aligned}</script></li>
-</ul>
-</li>
-<li><h3 id="Adam："><a href="#Adam：" class="headerlink" title="Adam："></a>Adam：</h3><script type="math/tex; mode=display">
-\begin{aligned}
- &\mathbf{g}_t = \nabla_{\mathbf{w}_t}L\\\\
- &\mathbf{m}_t \leftarrow \beta_1\mathbf{m}_{t-1} + (1-\beta_1)\mathbf{g}_t\\\\
- &\mathbf{v}_t \leftarrow \beta_2\mathbf{v}_{t-1} + (1-\beta_2)\mathbf{g}_t\odot \mathbf{g}_t\\\\
- &\hat{\mathbf{m}_t} \leftarrow \frac{\mathbf{m}_t}{1-\beta_1^t}\\\\
- &\hat{\mathbf{v}_t} \leftarrow \frac{\mathbf{v}_t}{1-\beta_2^t}\\\\
- &\mathbf{w}_{t+1} \leftarrow \eta·\mathbf{\hat{m}_t}\odot\frac{1}{\sqrt{\mathbf{\hat{v}}_t}+\epsilon}
-\end{aligned}</script><ul>
-<li>里面的加减乘除变换都是<code>element-wise</code>的。</li>
-<li>其中$\mathbf{m}_t$是梯度的一阶移动平均值，$\mathbf{v}_t$是梯度的二阶移动平均值。</li>
-</ul>
-</li>
-</ul>
-<h3 id="Ref-1"><a href="#Ref-1" class="headerlink" title="Ref: "></a>Ref: <br></h3><ol>
-<li>Summary: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1609.04747.pdf">https://arxiv.org/pdf/1609.04747.pdf</a><br></li>
-<li>Adagrad: <a target="_blank" rel="noopener" href="https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf</a><br></li>
-<li>AdaDelta: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1212.5701.pdf">https://arxiv.org/pdf/1212.5701.pdf</a><br></li>
-<li>Adam: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1412.6980.pdf">https://arxiv.org/pdf/1412.6980.pdf</a><br></li>
-</ol>
-<h1 id="FTRL漫谈-超大规模在线学习稀疏性解决方案"><a href="#FTRL漫谈-超大规模在线学习稀疏性解决方案" class="headerlink" title="FTRL漫谈(超大规模在线学习稀疏性解决方案)"></a>FTRL漫谈(超大规模在线学习稀疏性解决方案)</h1><p>&emsp;&emsp; 稀疏性是模型追求的一个目标，它在<strong>特征筛选</strong>，<strong>预估速度</strong>和<strong>防止过拟合</strong>上都有优势。</p>
+</ul></li>
+<li><h3 id="rmsprop">RMSprop：</h3>
 <ul>
-<li><h3 id="L1正则"><a href="#L1正则" class="headerlink" title="L1正则"></a>L1正则</h3><ul>
-<li>最直观的方法就是引入L1正则化。<script type="math/tex; mode=display">
-J(y, \mathbf{w}, \mathbf{x}) = L(y, \mathbf{w}, \mathbf{x}) + \lambda||\mathbf{w}||_1</script></li>
-<li>引入L1正则化的SGD：<script type="math/tex; mode=display">
-\mathbf{w}_t \leftarrow \mathbf{w}_{t-1} - \eta\nabla_{\mathbf{w}_{t-1}}L - \eta\lambda sgn(\mathbf{w}_{t-1})</script></li>
-<li>设想其中一个分量$w_i$，针对L1部分的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Subderivative">次梯度</a>，它在自己的坐标轴上向原点收敛。<br>那么针对空间中的一个点，其(次)梯度方向一定指向原点，表现为各分量分别向原点靠近$\eta\lambda$个步长。其在迭代时，其更容易到达一个坐标轴平面，即某一个分量为0。</li>
-<li>为什么L1正则在SGD而非BGD情况下并不容易获得稀疏性？</li>
-</ul>
-</li>
-<li><h3 id="简单截断法"><a href="#简单截断法" class="headerlink" title="简单截断法"></a>简单截断法</h3><ul>
-<li>以$k$为窗口，当$t/k$不时整数采用标准的SGD进行迭代，当$t/k$为整数时，采取如下方式进行更新：<script type="math/tex; mode=display">
+<li>RMS即<code>Root Mean Square</code>的缩写，RMSprop是Adadelta的特例。 <span class="math display">\[
 \begin{aligned}
-  &\mathbf{w}_t \leftarrow T_0(\mathbf{w}_{t-1}-\eta_t\nabla_{\mathbf{w}_{t-1}}L; \theta)\\\\
-  &T(x_i;\theta) = \begin{cases}
+E[\mathbf{g}^2]_t &amp;\leftarrow 0.9E[\mathbf{g}^2]_t + 0.1\mathbf{g}_t^2\\\\
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t -\frac{\eta}{RMS[\mathbf{g}]_t}\mathbf{g}_t
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li><h3 id="adam">Adam：</h3>
+<span class="math display">\[
+\begin{aligned}
+ &amp;\mathbf{g}_t = \nabla_{\mathbf{w}_t}L\\\\
+ &amp;\mathbf{m}_t \leftarrow \beta_1\mathbf{m}_{t-1} + (1-\beta_1)\mathbf{g}_t\\\\
+ &amp;\mathbf{v}_t \leftarrow \beta_2\mathbf{v}_{t-1} + (1-\beta_2)\mathbf{g}_t\odot \mathbf{g}_t\\\\
+ &amp;\hat{\mathbf{m}_t} \leftarrow \frac{\mathbf{m}_t}{1-\beta_1^t}\\\\
+ &amp;\hat{\mathbf{v}_t} \leftarrow \frac{\mathbf{v}_t}{1-\beta_2^t}\\\\
+ &amp;\mathbf{w}_{t+1} \leftarrow \eta·\mathbf{\hat{m}_t}\odot\frac{1}{\sqrt{\mathbf{\hat{v}}_t}+\epsilon}
+\end{aligned}
+\]</span>
+<ul>
+<li>里面的加减乘除变换都是<code>element-wise</code>的。</li>
+<li>其中<span class="math inline">\(\mathbf{m}_t\)</span>是梯度的一阶移动平均值，<span class="math inline">\(\mathbf{v}_t\)</span>是梯度的二阶移动平均值。</li>
+</ul></li>
+</ul>
+<h3 id="ref-1">Ref: <br></h3>
+<ol type="1">
+<li>Summary: https://arxiv.org/pdf/1609.04747.pdf<br></li>
+<li>Adagrad: https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf<br></li>
+<li>AdaDelta: https://arxiv.org/pdf/1212.5701.pdf<br></li>
+<li>Adam: https://arxiv.org/pdf/1412.6980.pdf<br></li>
+</ol>
+<h1 id="ftrl漫谈超大规模在线学习稀疏性解决方案">FTRL漫谈(超大规模在线学习稀疏性解决方案)</h1>
+<p>   稀疏性是模型追求的一个目标，它在<strong>特征筛选</strong>，<strong>预估速度</strong>和<strong>防止过拟合</strong>上都有优势。</p>
+<ul>
+<li><h3 id="l1正则">L1正则</h3>
+<ul>
+<li>最直观的方法就是引入L1正则化。 <span class="math display">\[
+J(y, \mathbf{w}, \mathbf{x}) = L(y, \mathbf{w}, \mathbf{x}) + \lambda||\mathbf{w}||_1
+\]</span></li>
+<li>引入L1正则化的SGD： <span class="math display">\[
+\mathbf{w}_t \leftarrow \mathbf{w}_{t-1} - \eta\nabla_{\mathbf{w}_{t-1}}L - \eta\lambda sgn(\mathbf{w}_{t-1})
+\]</span></li>
+<li>设想其中一个分量<span class="math inline">\(w_i\)</span>，针对L1部分的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Subderivative">次梯度</a>，它在自己的坐标轴上向原点收敛。 那么针对空间中的一个点，其(次)梯度方向一定指向原点，表现为各分量分别向原点靠近<span class="math inline">\(\eta\lambda\)</span>个步长。其在迭代时，其更容易到达一个坐标轴平面，即某一个分量为0。</li>
+<li>为什么L1正则在SGD而非BGD情况下并不容易获得稀疏性？</li>
+</ul></li>
+<li><h3 id="简单截断法">简单截断法</h3>
+<ul>
+<li>以<span class="math inline">\(k\)</span>为窗口，当<span class="math inline">\(t/k\)</span>不时整数采用标准的SGD进行迭代，当<span class="math inline">\(t/k\)</span>为整数时，采取如下方式进行更新： <span class="math display">\[
+\begin{aligned}
+  &amp;\mathbf{w}_t \leftarrow T_0(\mathbf{w}_{t-1}-\eta_t\nabla_{\mathbf{w}_{t-1}}L; \theta)\\\\
+  &amp;T(x_i;\theta) = \begin{cases}
     0, \ if\ |x_i|\leq\theta\\\\
     v_i,\ otherwise
   \end{cases}
-\end{aligned}</script></li>
-</ul>
-</li>
-<li><h3 id="梯度截断法-TG"><a href="#梯度截断法-TG" class="headerlink" title="梯度截断法(TG)"></a>梯度截断法(TG)</h3><script type="math/tex; mode=display">
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li><h3 id="梯度截断法tg">梯度截断法(TG)</h3>
+<span class="math display">\[
   \begin{aligned}
-  &\mathbf{w}_t \leftarrow T_1(\mathbf{w}_{t-1}-\eta_t\nabla_{\mathbf{w}_{t-1}}L,\ \eta_t\lambda,\ \theta)\\\\
-  &T_1(x, \alpha, \theta)=\begin{cases}
+  &amp;\mathbf{w}_t \leftarrow T_1(\mathbf{w}_{t-1}-\eta_t\nabla_{\mathbf{w}_{t-1}}L,\ \eta_t\lambda,\ \theta)\\\\
+  &amp;T_1(x, \alpha, \theta)=\begin{cases}
     max(0, x-\alpha),\ if\ x\in[0,\ \theta]\\\\
     min(0, x+\alpha),\ if\ x\in[-\theta,\  0]\\\\
     x,\ otherwise
   \end{cases}
-  \end{aligned}</script><ul>
-<li>当$\alpha\geq\theta$时，退化成简单截断法。</li>
-<li>当$w=0$时，退化成SGD。</li>
-<li>$T_1公式改写一下$：<script type="math/tex; mode=display">
+  \end{aligned}
+\]</span>
+<ul>
+<li>当<span class="math inline">\(\alpha\geq\theta\)</span>时，退化成简单截断法。</li>
+<li>当<span class="math inline">\(w=0\)</span>时，退化成SGD。</li>
+<li><span class="math inline">\(T_1公式改写一下\)</span>： <span class="math display">\[
 T_1(x, \alpha, \theta)=\begin{cases}
   0,\ if\ |v|\leq\alpha\\\\
   x-\alpha \cdot sgn(x)\ if\ \alpha\leq|v|\leq\theta\\\\
   x,\ otherwise
-\end{cases}</script></li>
-<li>当$\alpha, w\rightarrow+\infty$时，退化成L1正则法。注意此时是更新梯度后(第t步)再做(L1)截断(求L1梯度)，而L1正则法是在更新梯度时(第t-1步)做L1截断(求L1梯度)。</li>
-</ul>
-</li>
-<li><h3 id="FOBOS算法"><a href="#FOBOS算法" class="headerlink" title="FOBOS算法"></a>FOBOS算法</h3><ul>
-<li>在FOBOS 中，将权重的更新分为两个步骤：<script type="math/tex; mode=display">
+\end{cases}
+\]</span></li>
+<li>当<span class="math inline">\(\alpha,\ w\rightarrow+\infty\)</span>时，退化成L1正则法。注意此时是更新梯度后(第t步)再做(L1)截断(求L1梯度)，而L1正则法是在更新梯度时(第t-1步)做L1截断(求L1梯度)。</li>
+</ul></li>
+<li><h3 id="fobos算法">FOBOS算法</h3>
+<ul>
+<li>在FOBOS 中，将权重的更新分为两个步骤： <span class="math display">\[
 \begin{aligned}
-  &\mathbf{w}_{t+0.5}=\mathbf{w}_{t}-\eta_t\nabla_{\mathbf{w}_{t}}L\\\\
-  &\mathbf{w}_{t+1}=argmin\ \frac{1}{2}||\mathbf{w-w_{t+0.5}}||_2+\eta_t\Psi(w)
-\end{aligned}</script></li>
-<li>第一项$\frac{1}{2}||\mathbf{w-w_{t+0.5}}||_2$保证权重更新在负梯度下降的附近，后一项$\Psi(w)$是正则函数项。</li>
-<li>合并后即为：<script type="math/tex; mode=display">
-\mathbf{w}_{t+1}=argmin\ \frac{1}{2}||\mathbf{w}-\mathbf{w}_{t}+\eta_t\nabla_{\mathbf{w}_{t}}L||_2+\eta_t\Psi(w)</script></li>
-<li>当$\Psi(\mathbf{w})=|\mathbf{w}|$时，为L1-FOBOS。省略推导公式，直接给出权重更新公式。<script type="math/tex; mode=display">
+  &amp;\mathbf{w}_{t+0.5}=\mathbf{w}_{t}-\eta_t\nabla_{\mathbf{w}_{t}}L\\\\
+  &amp;\mathbf{w}_{t+1}=argmin\ \frac{1}{2}||\mathbf{w-w_{t+0.5}}||_2+\eta_t\Psi(w)
+\end{aligned}
+\]</span></li>
+<li>第一项<span class="math inline">\(\frac{1}{2}||\mathbf{w-w_{t+0.5}}||_2\)</span>保证权重更新在负梯度下降的附近，后一项<span class="math inline">\(\Psi(w)\)</span>是正则函数项。</li>
+<li>合并后即为： <span class="math display">\[
+\mathbf{w}_{t+1}=argmin\ \frac{1}{2}||\mathbf{w}-\mathbf{w}_{t}+\eta_t\nabla_{\mathbf{w}_{t}}L||_2+\eta_t\Psi(w)
+\]</span></li>
+<li>当<span class="math inline">\(\Psi(\mathbf{w})=|\mathbf{w}|\)</span>时，为L1-FOBOS。省略推导公式，直接给出权重更新公式。 <span class="math display">\[
 \begin{aligned}
- \mathbf{g}_t &= \nabla_{\mathbf{w}_t}L\\\\
- for\ &w_i\ in\ \mathbf{w}:\\\\
- &w_i^{t+1}\leftarrow sgn(w_i^t-\eta g_i^t)max(0, |w_i^t-\eta g_i^t|-\eta_t\lambda)\\\\
-\end{aligned}</script></li>
-<li>上诉更新公式也可以写为：<script type="math/tex; mode=display">
+ \mathbf{g}_t &amp;= \nabla_{\mathbf{w}_t}L\\\\
+ for\ &amp;w_i\ in\ \mathbf{w}:\\\\
+ &amp;w_i^{t+1}\leftarrow sgn(w_i^t-\eta g_i^t)max(0, |w_i^t-\eta g_i^t|-\eta_t\lambda)\\\\
+\end{aligned}
+\]</span></li>
+<li>上诉更新公式也可以写为： <span class="math display">\[
 w_i^{(t+1)}\leftarrow\begin{cases}
 0,\ if\ |w_i^{(t)}-\eta g_i^{(t)}|\leq\eta^{(t)}\lambda\\\\
 w_i^{(t)}-\eta g_i^{(t)}-\eta\lambda sgn(w_i^{(t)}-\eta^{(t)} g_i^{(t)}),\ otherwise\\\\
-\end{cases}</script></li>
+\end{cases}
+\]</span></li>
 <li>可以看到这个几乎就是<strong>简单截断法</strong>和<strong>L1正则化</strong>法的结合。</li>
-</ul>
-</li>
-<li><h3 id="RDA算法"><a href="#RDA算法" class="headerlink" title="RDA算法"></a>RDA算法</h3><ul>
-<li>RDA算法的权重更新可表示为：<script type="math/tex; mode=display">
+</ul></li>
+<li><h3 id="rda算法">RDA算法</h3>
+<ul>
+<li>RDA算法的权重更新可表示为： <span class="math display">\[
   \mathbf{w}_{t+1}=argmin\ \{\frac{1}{t}\sum_{\tau=1}^t\langle \mathbf{g}_{\tau},\mathbf{w} \rangle
-  + \Psi(\mathbf{w})+\frac{\beta_{t}}{t}h(\mathbf{w})\}</script><ul>
-<li>其中$\langle \mathbf{a},\mathbf{b}\rangle$表示$\mathbf{a},\mathbf{b}$的点乘，<br>$\Psi(\mathbf{w})$是正则化项，$h(\mathbf{w})$是辅助的严格凸函数。$\beta_t$是非负非减函数，用来表征该算法的收敛特性。</li>
-</ul>
-</li>
-<li>令$\beta_t=\gamma\sqrt{t}，\Psi(\mathbf{w})=|\mathbf{w}|，h(\mathbf{w)=||w||_2}$ 则$L1正则化下的<code>element-wise</code>的更新可以表示为。<script type="math/tex; mode=display">
-  w_i^{(t+1)}=argmin\  \{\overline{g_i}^{(t)}w_i + \lambda|w_i|+\frac{\gamma}{\sqrt{t}}w_i^2\}</script></li>
-<li>经公式推导后可得：<script type="math/tex; mode=display">
+  + \Psi(\mathbf{w})+\frac{\beta_{t}}{t}h(\mathbf{w})\}
+\]</span>
+<ul>
+<li>其中<span class="math inline">\(\langle \mathbf{a},\mathbf{b}\rangle\)</span>表示<span class="math inline">\(\mathbf{a},\mathbf{b}\)</span>的点乘， <span class="math inline">\(\Psi(\mathbf{w})\)</span>是正则化项，<span class="math inline">\(h(\mathbf{w})\)</span>是辅助的严格凸函数。<span class="math inline">\(\beta_t\)</span>是非负非减函数，用来表征该算法的收敛特性。</li>
+</ul></li>
+<li>令<span class="math inline">\(\beta_t=\gamma\sqrt{t}，\Psi(\mathbf{w})=|\mathbf{w}|，h(\mathbf{w)=||w||_2}\)</span> 则$L1正则化下的<code>element-wise</code>的更新可以表示为。 <span class="math display">\[
+  w_i^{(t+1)}=argmin\  \{\overline{g_i}^{(t)}w_i + \lambda|w_i|+\frac{\gamma}{\sqrt{t}}w_i^2\}
+\]</span></li>
+<li>经公式推导后可得： <span class="math display">\[
   w_i^{(t+1)}=\begin{cases}
     0,\ if\ |g_i^{(t)}|\leq\lambda\\\\
     -\frac{\sqrt{t}}{\gamma}(\overline{g_i}^{(t)}-\lambda sgn(\overline{g_i}^{(t)})),\ otherwise
-  \end{cases}</script><ul>
-<li>直观上看，如果某个权重参数$w_i$的累计梯度均值的绝对值$|g_i^{(t)}|$小于等于一个给定的阈值$\lambda$，那么就置0。</li>
+  \end{cases}
+\]</span>
+<ul>
+<li>直观上看，如果某个权重参数<span class="math inline">\(w_i\)</span>的累计梯度均值的绝对值<span class="math inline">\(|g_i^{(t)}|\)</span>小于等于一个给定的阈值<span class="math inline">\(\lambda\)</span>，那么就置0。</li>
 <li>还有一点就是RDA算法置零的判断条件是根据<strong>累计梯度均值</strong>而非<strong>单次梯度</strong>来判断的，一定程度上避免了异常截断的问题。</li>
-<li>问题：<ul>
-<li>为什么RDA算法里要把第一项改为累计梯度和带求参数的点乘($\langle \mathbf{g}_{\tau},\mathbf{w} \rangle$)？</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><h3 id="FTRL算法"><a href="#FTRL算法" class="headerlink" title="FTRL算法"></a>FTRL算法</h3><ul>
-<li>FTRL算法综合考虑了FOBOS算法和RDA算法的优点，求解方程如下：<script type="math/tex; mode=display">
-\mathbf{w}^{(t+1)}=argmin\ \{\overline{g}^{(t)}\mathbf{w}+\lambda_1|\mathbf{w}|+\lambda_2\frac{1}{2}||\mathbf{w}||_2+\frac{1}{2}\sum_{s=1}^t\sigma^{(s)}||\mathbf{w}-\mathbf{w}^{(s)}||_2\}</script></li>
-<li>省略推导过程后，参数更新公式如下：<ul>
-<li>输入：$\alpha,\beta,\lambda_1,\lambda_2$</li>
-<li>初始化$\mathbf{w}\in R^n, \mathbf{z}\in R^n,\mathbf{Q}\in R^n$</li>
-<li>$for  t=1,2,3,…  do$<ul>
-<li>$\mathbf{g}=\nabla_{\mathbf{w}}L$&emsp;&emsp;#Calculate Gradient</li>
-<li>$for  i=1,2,3,…n  do$&emsp;#for each coordinate<ul>
-<li>$\sigma_i=\frac{1}{\alpha}\sqrt{q_i+g_i^2}-\sqrt{q_i}$</li>
-<li>$q_i=q_i+g_i^2$</li>
-<li>$z_i=z_i+g_i-\sigma_iw_i$</li>
-<li><script type="math/tex; mode=display">w_i=\begin{cases}
-  0,\ if\ |z_i^{(t)}|<\lambda_1\\\\
+<li>问题：
+<ul>
+<li>为什么RDA算法里要把第一项改为累计梯度和带求参数的点乘(<span class="math inline">\(\langle \mathbf{g}_{\tau},\mathbf{w} \rangle\)</span>)？</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><h3 id="ftrl算法">FTRL算法</h3>
+<ul>
+<li>FTRL算法综合考虑了FOBOS算法和RDA算法的优点，求解方程如下： <span class="math display">\[
+\mathbf{w}^{(t+1)}=argmin\ \{\overline{g}^{(t)}\mathbf{w}+\lambda_1|\mathbf{w}|+\lambda_2\frac{1}{2}||\mathbf{w}||_2+\frac{1}{2}\sum_{s=1}^t\sigma^{(s)}||\mathbf{w}-\mathbf{w}^{(s)}||_2\}
+\]</span></li>
+<li>省略推导过程后，参数更新公式如下：
+<ul>
+<li>输入：<span class="math inline">\(\alpha,\beta,\lambda_1,\lambda_2\)</span></li>
+<li>初始化<span class="math inline">\(\mathbf{w}\in R^n, \mathbf{z}\in R^n,\mathbf{Q}\in R^n\)</span></li>
+<li><span class="math inline">\(for\ \ t=1,2,3,...\ \ do\)</span>
+<ul>
+<li><span class="math inline">\(\mathbf{g}=\nabla_{\mathbf{w}}L\)</span>  #Calculate Gradient</li>
+<li><span class="math inline">\(for\ \ i=1,2,3,...n\ \ do\)</span> #for each coordinate
+<ul>
+<li><span class="math inline">\(\sigma_i=\frac{1}{\alpha}\sqrt{q_i+g_i^2}-\sqrt{q_i}\)</span></li>
+<li><span class="math inline">\(q_i=q_i+g_i^2\)</span></li>
+<li><span class="math inline">\(z_i=z_i+g_i-\sigma_iw_i\)</span></li>
+<li><span class="math display">\[w_i=\begin{cases}
+  0,\ if\ |z_i^{(t)}|&lt;\lambda_1\\\\
   -(\lambda_2+\frac{\beta+\sqrt{q_i}}{\alpha})^{-1}(z_i-\lambda_1sgn(z_i)),\ otherwise
-  \end{cases}</script></li>
+  \end{cases}
+\]</span></li>
+</ul></li>
+<li><span class="math inline">\(end\)</span></li>
+</ul></li>
+<li><span class="math inline">\(end\)</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-<li>$end$</li>
-</ul>
-</li>
-<li>$end$</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Ref-2"><a href="#Ref-2" class="headerlink" title="Ref: "></a>Ref: <br></h3><ol>
-<li>TG: <a target="_blank" rel="noopener" href="https://www.jmlr.org/papers/volume10/langford09a/langford09a.pdf">https://www.jmlr.org/papers/volume10/langford09a/langford09a.pdf</a></li>
+<h3 id="ref-2">Ref: <br></h3>
+<ol type="1">
+<li>TG: https://www.jmlr.org/papers/volume10/langford09a/langford09a.pdf</li>
 <li>《在线最优化求解》冯扬</li>
-<li><a target="_blank" rel="noopener" href="http://www.huaxiaozhuan.com/">http://www.huaxiaozhuan.com/</a> chapter 4</li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61724627">https://zhuanlan.zhihu.com/p/61724627</a></li>
-<li>FOBOS：<a target="_blank" rel="noopener" href="https://www.jmlr.org/papers/volume10/duchi09a/duchi09a.pdf">https://www.jmlr.org/papers/volume10/duchi09a/duchi09a.pdf</a></li>
-<li>RDA：<a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/xiao10JMLR.pdf">https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/xiao10JMLR.pdf</a></li>
-<li>FTRL(提出)：<a target="_blank" rel="noopener" href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/36483.pdf">https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/36483.pdf</a></li>
-<li>FTRL(工程实现)：<a target="_blank" rel="noopener" href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41159.pdf">https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41159.pdf</a></li>
-<li>FTRL(几种正则化比较)：<a target="_blank" rel="noopener" href="https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/37013.pdf">https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/37013.pdf</a></li>
+<li>http://www.huaxiaozhuan.com/ chapter 4</li>
+<li>https://zhuanlan.zhihu.com/p/61724627</li>
+<li>FOBOS：https://www.jmlr.org/papers/volume10/duchi09a/duchi09a.pdf</li>
+<li>RDA：https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/xiao10JMLR.pdf</li>
+<li>FTRL(提出)：https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/36483.pdf</li>
+<li>FTRL(工程实现)：https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41159.pdf</li>
+<li>FTRL(几种正则化比较)：https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/37013.pdf</li>
 </ol>
 
           
@@ -1778,26 +1866,24 @@ w_i^{(t)}-\eta g_i^{(t)}-\eta\lambda sgn(w_i^{(t)}-\eta^{(t)} g_i^{(t)}),\ other
         
           
             <ul>
-<li><p>关于写博客的初衷</p>
+<li>关于写博客的初衷
 <ul>
-<li>做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。<br>也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。<br>实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜，加粗等，<br>这些在手推时往往难以表示。后来发现写博客其实是一种比较高效而折中的方法。把看的内容加工一下，再写出来，虽然内容上整体大同小异，但理解和记忆<br>的效果要大于只是看一遍或者看几遍的情况。并且博客可以沉淀下来反复观看。</li>
-</ul>
-</li>
-<li><p>遇到公式太长太复杂记不住怎么办？</p>
+<li>做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜，加粗等， 这些在手推时往往难以表示。后来发现写博客其实是一种比较高效而折中的方法。把看的内容加工一下，再写出来，虽然内容上整体大同小异，但理解和记忆 的效果要大于只是看一遍或者看几遍的情况。并且博客可以沉淀下来反复观看。</li>
+</ul></li>
+<li>遇到公式太长太复杂记不住怎么办？
 <ul>
-<li>可以尝试从简单的地方入手，一步一步构建起复杂的公式模型。 比如针对交叉熵损失函数，我们先记住一个样本下的公式：<br>$$<br>  L_i(y_i, \hat{y_i}) = - (y_ilog(\hat{y_i}) + (1-y_i)*log(1-\hat))<br>$$<br>然后整个样本空间上的损失函数就是单个样本的简单累加和：<br>$$<br>  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) + (1-y_i)*log(1-\hat))<br>$$<br>其实没有别的方法，就是简单的反复和思考。</li>
-</ul>
-</li>
-<li><p>工作经验：</p>
+<li>可以尝试从简单的地方入手，一步一步构建起复杂的公式模型。 比如针对交叉熵损失函数，我们先记住一个样本下的公式： <span class="math display">\[
+  L_i(y_i, \hat{y_i}) = - (y_ilog(\hat{y_i}) + (1-y_i)*log(1-\hat))
+\]</span> 然后整个样本空间上的损失函数就是单个样本的简单累加和： <span class="math display">\[
+  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) + (1-y_i)*log(1-\hat))
+\]</span> 其实没有别的方法，就是简单的反复和思考。</li>
+</ul></li>
+<li>工作经验：
 <ul>
-<li><p>模型只是一方面，实际工作中，从<strong>问题发现，目标拆解，目标设计，数据分析，数据检查，假设验证，模型设计和选择</strong>，<br><strong>模型结构check和调整，最终上线观察验证</strong>，是一套整体的方法和实践过程。不是想到一个idea，<br>或者看到一个非常新颖或者感觉非常厉害的模型就直接怼上去。每次模型结构的改动或者特征工程上的设计或者优化都应该有逻辑上的出发点，<br>这些出发点有些是基于假设，有些是基于数据分布，但逻辑上必须有一个站脚的地方。不应该感觉上什么模型fancy或者复杂就无脑怼什么模型。<br>当然论文还是要多看，肚子里有货才能有选择，也更有利于出想法。看论文一个是看其方法，另一个是要想一下其方法是怎么构建出来的。<br>还有就是针对一个问题的解决方式可能有非常多的备选方案，这时候在实时计划之前，还应该考虑哪些备选方案是最优的，<br>即成本最低，风险最小，出成果的概率最大。很多时候，特征工程的建设带来的效果提升要远远大于模型结构的改动。</p>
-</li>
-<li><p>其实不管是深度学习也好，其他传统的机器学习也好，比如SVM，boost tree等一些方法。特征提取都是很重要的一步内容，其实广义上将，<br>特征提取的过程就是数据清洗的过程。数据清洗是筛掉噪声，坏数据，特征提取是人工提取出重要特征，算是一步提取到更高一层更好的数据上去了。<br>从更广义上讲，如果目标是学习一个映射的话，数据清洗和特征提取的过程其实就是人手动拟合映射的过程，这和最后交给模型去学习从本质上讲一样的。<br>前家公司大佬的经验就是能从业务上发现一些经典的手动提取的特征，最后喂到模型里面去的效果是总是要好于让模型去自己发现特征的。<br>不能一上深度学习后就数据往里面一扔就什么都不管了。目前的模型，就算是深度学习的模型，其实也是很傻比的，你喂进去的数据不好，指望它把重要特征筛出来，<br>次要特征筛下去根本不行。还是要手动的把粗活脏活和累活干好，好的特征，干净的数据，最后喂给模型，让它去做锦上添花的事情。</p>
-</li>
-<li><p>模型，样本，特征，数据分析</p>
-</li>
-</ul>
-</li>
+<li><p>模型只是一方面，实际工作中，从<strong>问题发现，目标拆解，目标设计，数据分析，数据检查，假设验证，模型设计和选择</strong>， <strong>模型结构check和调整，最终上线观察验证</strong>，是一套整体的方法和实践过程。不是想到一个idea， 或者看到一个非常新颖或者感觉非常厉害的模型就直接怼上去。每次模型结构的改动或者特征工程上的设计或者优化都应该有逻辑上的出发点， 这些出发点有些是基于假设，有些是基于数据分布，但逻辑上必须有一个站脚的地方。不应该感觉上什么模型fancy或者复杂就无脑怼什么模型。 当然论文还是要多看，肚子里有货才能有选择，也更有利于出想法。看论文一个是看其方法，另一个是要想一下其方法是怎么构建出来的。 还有就是针对一个问题的解决方式可能有非常多的备选方案，这时候在实时计划之前，还应该考虑哪些备选方案是最优的， 即成本最低，风险最小，出成果的概率最大。很多时候，特征工程的建设带来的效果提升要远远大于模型结构的改动。</p></li>
+<li><p>其实不管是深度学习也好，其他传统的机器学习也好，比如SVM，boost tree等一些方法。特征提取都是很重要的一步内容，其实广义上将， 特征提取的过程就是数据清洗的过程。数据清洗是筛掉噪声，坏数据，特征提取是人工提取出重要特征，算是一步提取到更高一层更好的数据上去了。 从更广义上讲，如果目标是学习一个映射的话，数据清洗和特征提取的过程其实就是人手动拟合映射的过程，这和最后交给模型去学习从本质上讲一样的。 前家公司大佬的经验就是能从业务上发现一些经典的手动提取的特征，最后喂到模型里面去的效果是总是要好于让模型去自己发现特征的。 不能一上深度学习后就数据往里面一扔就什么都不管了。目前的模型，就算是深度学习的模型，其实也是很傻比的，你喂进去的数据不好，指望它把重要特征筛出来， 次要特征筛下去根本不行。还是要手动的把粗活脏活和累活干好，好的特征，干净的数据，最后喂给模型，让它去做锦上添花的事情。</p></li>
+<li><p>模型，样本，特征，数据分析</p></li>
+</ul></li>
 </ul>
 
           
@@ -1918,10 +2004,7 @@ w_i^{(t)}-\eta g_i^{(t)}-\eta\lambda sgn(w_i^{(t)}-\eta^{(t)} g_i^{(t)}),\ other
       
         
           
-            <p>Ref：</p>
-<ol>
-<li><a target="_blank" rel="noopener" href="http://arxiv.org/abs/2010.03240">http://arxiv.org/abs/2010.03240</a></li>
-</ol>
+            <p>Ref： 1. http://arxiv.org/abs/2010.03240</p>
 
           
         
@@ -2041,87 +2124,94 @@ w_i^{(t)}-\eta g_i^{(t)}-\eta\lambda sgn(w_i^{(t)}-\eta^{(t)} g_i^{(t)}),\ other
       
         
           
-            <h2 id="基础Loss公式回顾"><a href="#基础Loss公式回顾" class="headerlink" title="基础Loss公式回顾"></a>基础Loss公式回顾</h2><h3 id="CrossEntropy损失："><a href="#CrossEntropy损失：" class="headerlink" title="CrossEntropy损失："></a>CrossEntropy损失：</h3><p>&emsp;&emsp; CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。<br>不然可能在论文里面很多<strong>显然</strong>的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。</p>
+            <h2 id="基础loss公式回顾">基础Loss公式回顾</h2>
+<h3 id="crossentropy损失">CrossEntropy损失：</h3>
+<p>   CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多<strong>显然</strong>的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。</p>
 <ul>
-<li>二分类标签为$\{0, 1\}$：<ul>
-<li>公式：<script type="math/tex; mode=display">
-  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) + (1-y_i)*log(1-\hat{y_i}))</script></li>
-<li>求导：<script type="math/tex; mode=display">
+<li>二分类标签为<span class="math inline">\(\{0, 1\}\)</span>：
+<ul>
+<li>公式： <span class="math display">\[
+  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) + (1-y_i)*log(1-\hat{y_i}))
+\]</span></li>
+<li>求导： <span class="math display">\[
   \nabla_{\hat{y}}L=\frac{\partial L}{\partial \hat{y}}=-\frac{y-\hat{y}}{\hat{y}(1-\hat{y})}
   =\begin{cases}
     -\frac{1}{\hat{y}}, \quad if\ y=1\\
     \frac{1}{1-\hat{y}}, \quad if\ y=0
-  \end{cases}</script><ul>
-<li>注意这里的是对预测值$\hat{y}$求导，$\hat{y} \in (0, 1)$</li>
-<li>直观上看 $y=1$时，$\hat{y}$ 越接近0, 梯度绝对值越大。$y=0$ 时，$\hat{y}$ 越接近1，梯度绝对值越大。</li>
-<li>$y=1$时，<strong>负</strong>梯度方向一定为正，旨在让模型往大了预估；$y=0$，<strong>负</strong>梯度方向一定为负，旨在让模型往小了预估。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+  \end{cases}
+\]</span>
 <ul>
-<li><p>二分类标签为$\{-1, 1\}$：</p>
+<li>注意这里的是对预测值<span class="math inline">\(\hat{y}\)</span>求导，<span class="math inline">\(\hat{y} \in (0, 1)\)</span></li>
+<li>直观上看 <span class="math inline">\(y=1\)</span>时，<span class="math inline">\(\hat{y}\)</span> 越接近0, 梯度绝对值越大。<span class="math inline">\(y=0\)</span> 时，<span class="math inline">\(\hat{y}\)</span> 越接近1，梯度绝对值越大。</li>
+<li><span class="math inline">\(y=1\)</span>时，<strong>负</strong>梯度方向一定为正，旨在让模型往大了预估；<span class="math inline">\(y=0\)</span>，<strong>负</strong>梯度方向一定为负，旨在让模型往小了预估。</li>
+</ul></li>
+</ul></li>
+<li>二分类标签为<span class="math inline">\(\{-1, 1\}\)</span>：
 <ul>
-<li>公式：<script type="math/tex; mode=display">
-L(y, s) = \sum_{i=1}^{N}log(1+e^{-y_is_i})</script></li>
-<li>求导：<script type="math/tex; mode=display">
+<li>公式： <span class="math display">\[
+L(y, s) = \sum_{i=1}^{N}log(1+e^{-y_is_i})
+\]</span></li>
+<li>求导： <span class="math display">\[
 \nabla_{s}L=\frac{\partial L}{\partial s}=-\frac{ye^{-ys}}{1+e^{-ys}}
   =\begin{cases}
     -\frac{e^{-s}}{1+e^{-s}}, \quad if\ y=1\\
     \frac{e^{s}}{1+e^{s}}, \quad if\ y=-1
-  \end{cases}</script><ul>
-<li>注意这里的是对$s$求导，其中$\hat{y} = sigmoid(s), s \in (-\infty, +\infty)$</li>
-<li>$y=1$时，$s$越小，梯度的绝对值越大；$y=-1$时，$s$越大，梯度的绝对值越大。</li>
-<li>$y=1$时，<strong>负</strong>梯度方向一定为正，旨在让$s$往$+\infty$跑；$y=-1$时，<strong>负</strong>梯度方向一定为负，旨在让$s$往$-\infty$跑。  </li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>基础$sigmoid$公式及其导函数也要熟悉才行：</p>
-<script type="math/tex; mode=display">
-  \begin{aligned}
-    &g(s) = \frac{1}{1+e^{-s}}\\
-    &\frac{\partial g}{\partial s}=g(1-g)
-  \end{aligned}</script><ul>
-<li>当$s\to \infty$，导函数趋向$0$；梯度消失问题。</li>
-</ul>
-</li>
-</ul>
-<h3 id="MSE损失："><a href="#MSE损失：" class="headerlink" title="MSE损失："></a>MSE损失：</h3><p>&emsp;&emsp; MSE公式主要用在回归问题里面，也是一个非常简单和直观的损失函数。<br>这里需要把握的点主要是树模型里针对回归问题的损失及求导过程。</p>
+  \end{cases}
+\]</span>
 <ul>
-<li><p>公式：</p>
-<script type="math/tex; mode=display">
-  L(y, \hat{y}) = \sum_{i}^{N}(y_i-\hat{y}_i)^2</script></li>
-<li><p>求导：</p>
-<script type="math/tex; mode=display">
+<li>注意这里的是对<span class="math inline">\(s\)</span>求导，其中<span class="math inline">\(\hat{y} = sigmoid(s),\ s \in (-\infty, +\infty)\)</span></li>
+<li><span class="math inline">\(y=1\)</span>时，<span class="math inline">\(s\)</span>越小，梯度的绝对值越大；<span class="math inline">\(y=-1\)</span>时，<span class="math inline">\(s\)</span>越大，梯度的绝对值越大。</li>
+<li><span class="math inline">\(y=1\)</span>时，<strong>负</strong>梯度方向一定为正，旨在让<span class="math inline">\(s\)</span>往<span class="math inline">\(+\infty\)</span>跑；<span class="math inline">\(y=-1\)</span>时，<strong>负</strong>梯度方向一定为负，旨在让<span class="math inline">\(s\)</span>往<span class="math inline">\(-\infty\)</span>跑。</li>
+</ul></li>
+</ul></li>
+<li>基础<span class="math inline">\(sigmoid\)</span>公式及其导函数也要熟悉才行： <span class="math display">\[
+  \begin{aligned}
+    &amp;g(s) = \frac{1}{1+e^{-s}}\\
+    &amp;\frac{\partial g}{\partial s}=g(1-g)
+  \end{aligned}
+\]</span>
+<ul>
+<li>当<span class="math inline">\(s\to \infty\)</span>，导函数趋向<span class="math inline">\(0\)</span>；梯度消失问题。</li>
+</ul></li>
+</ul>
+<h3 id="mse损失">MSE损失：</h3>
+<p>   MSE公式主要用在回归问题里面，也是一个非常简单和直观的损失函数。 这里需要把握的点主要是树模型里针对回归问题的损失及求导过程。</p>
+<ul>
+<li><p>公式： <span class="math display">\[
+  L(y, \hat{y}) = \sum_{i}^{N}(y_i-\hat{y}_i)^2
+\]</span></p></li>
+<li><p>求导： <span class="math display">\[
   \nabla_{\hat{y}}L=\frac{\partial L}{\partial \hat{y}} = 2(\hat{y}-y)
-  =-2(y-\hat{y})</script><ul>
+  =-2(y-\hat{y})
+\]</span></p>
+<ul>
 <li>梯度即为残差的相反数，负梯度即为残差。</li>
-<li>$\hat{y}$估大了，负梯度会往小了拉，估小了负梯度会往大了拉。  </li>
-</ul>
+<li><span class="math inline">\(\hat{y}\)</span>估大了，负梯度会往小了拉，估小了负梯度会往大了拉。<br />
 </li>
-<li>回归树中的应用问题：</li>
+</ul></li>
+<li><p>回归树中的应用问题：</p></li>
 </ul>
-<h3 id="SoftmaxCrossEntropy损失："><a href="#SoftmaxCrossEntropy损失：" class="headerlink" title="SoftmaxCrossEntropy损失："></a>SoftmaxCrossEntropy损失：</h3><p>&emsp;&emsp; 针对多分类问题，假如类别为$m$个类，即$\mathbf{y}\in R^m$，其中针对每一个样本$\mathbf{y}$是一个<code>one-hot</code>向量，类别为<code>j</code>则$\mathbf{y}=[0,…,1_j,…]$。即下角标为<code>j</code>的位置为$1$，其他位置为$0$。最后模型输出的<code>logits</code>为$\mathbf{u}\in R^m$，<br>则有：</p>
-<script type="math/tex; mode=display">
+<h3 id="softmaxcrossentropy损失">SoftmaxCrossEntropy损失：</h3>
+<p>   针对多分类问题，假如类别为<span class="math inline">\(m\)</span>个类，即<span class="math inline">\(\mathbf{y}\in R^m\)</span>，其中针对每一个样本<span class="math inline">\(\mathbf{y}\)</span>是一个<code>one-hot</code>向量，类别为<code>j</code>则<span class="math inline">\(\mathbf{y}=[0,...,1_j,...]\)</span>。即下角标为<code>j</code>的位置为<span class="math inline">\(1\)</span>，其他位置为<span class="math inline">\(0\)</span>。最后模型输出的<code>logits</code>为<span class="math inline">\(\mathbf{u}\in R^m\)</span>， 则有： <span class="math display">\[
   \begin{aligned}
-    \hat{\mathbf{y}}&=softmax(\mathbf{u})\\
-                    &=[\frac{e^{u_1}}{\sum_{k=1}^me^{u_k}},\ ...,\ \frac{e^{u_m}}{\sum_{k=1}^me^{u_k}}]\\
-                    &=[\hat{y}_1,\ ...,\ \hat{y}_m]\\
-    L(\mathbf{y},\hat{\mathbf{y}})&=\langle\mathbf{y},log(\hat{\mathbf{y}})\rangle\\
-    &=\sum_{i=1}^{N}I(i==j)log(\frac{e^{u_i}}{\sum_{k=1}^me^{u_k}})\\
-    &=-log(\frac{e^{u_j}}{\sum_{k=1}^me^{u_k}})=-log(\hat{y}_j)
-  \end{aligned}</script><ul>
-<li>若令$Z=\sum_{k=1}^me^{u_k}$，$\mathbf{a}=-log(\hat{\mathbf{y}})=[log(Z)-u_i]_i=[a_1,…,a_m]，$则求导公式：<script type="math/tex; mode=display">
+    \hat{\mathbf{y}}&amp;=softmax(\mathbf{u})\\
+                    &amp;=[\frac{e^{u_1}}{\sum_{k=1}^me^{u_k}},\ ...,\ \frac{e^{u_m}}{\sum_{k=1}^me^{u_k}}]\\
+                    &amp;=[\hat{y}_1,\ ...,\ \hat{y}_m]\\
+    L(\mathbf{y},\hat{\mathbf{y}})&amp;=\langle\mathbf{y},log(\hat{\mathbf{y}})\rangle\\
+    &amp;=\sum_{i=1}^{N}I(i==j)log(\frac{e^{u_i}}{\sum_{k=1}^me^{u_k}})\\
+    &amp;=-log(\frac{e^{u_j}}{\sum_{k=1}^me^{u_k}})=-log(\hat{y}_j)
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>若令<span class="math inline">\(Z=\sum_{k=1}^me^{u_k}\)</span>，<span class="math inline">\(\mathbf{a}=-log(\hat{\mathbf{y}})=[log(Z)-u_i]_i=[a_1,...,a_m]，\)</span>则求导公式： <span class="math display">\[
   \begin{aligned}
-  \frac{\partial L}{\partial \hat{y}_j}&=-\frac{1}{\hat{y}_j}
+  \frac{\partial L}{\partial \hat{y}_j}&amp;=-\frac{1}{\hat{y}_j}
   =-\frac{Z}{e^{u_j}}\\
-  \frac{\partial a_i}{\partial u_j}&=\begin{cases}
+  \frac{\partial a_i}{\partial u_j}&amp;=\begin{cases}
     \frac{e^{u_j}}{Z}-1=\hat{y}_i-1,\ if\ i==j\\
     \frac{e^{u_j}}{Z}=\hat{y}_j,\ if\ i\neq j
   \end{cases}\\
-  \nabla_{\mathbf{u}}L&=\frac{\partial L}{\partial \mathbf{u}}
+  \nabla_{\mathbf{u}}L&amp;=\frac{\partial L}{\partial \mathbf{u}}
   =\frac{\partial L}{\partial \mathbf{a}}\frac{\partial \mathbf{a}}{\partial \mathbf{u}}
   =\mathbf{y}\begin{bmatrix}
     \frac{\partial a_1}{\partial \mathbf{u}},\\
@@ -2130,66 +2220,76 @@ L(y, s) = \sum_{i=1}^{N}log(1+e^{-y_is_i})</script></li>
     ...,\\
     \frac{\partial a_m}{\partial \mathbf{u}}
   \end{bmatrix}\\
-  &=[\frac{\partial a_j}{\partial \mathbf{u}}]\\
-  &=[\frac{\partial a_j}{\partial u_1},...,\frac{\partial y_j}{\partial u_j},...,\frac{\partial y_j}{\partial u_m}]\\
-  &=[\hat{y}_1,...,\hat{y}_j-1,...\hat{y}_m]\\
-  &=\hat{\mathbf{y}}-\mathbf{y}\\
-  -\nabla_{\mathbf{u}}L&=\mathbf{y}-\hat{\mathbf{y}}
-  \end{aligned}</script><ul>
-<li>可以看到$L$关于<code>logits</code>: $\mathbf{u}$的导数非常简单漂亮。</li>
-<li>从负梯度角度来看，如果类别为$j$的话，$u_j$的负梯度为正，即会往大了预估，$u_i, i\neq j$的负梯度为负，即会往小了预估。</li>
-<li><code>word2vec</code>的非优化版本的数学基础就是上诉求导过程的进阶版，详见Embedding-word2vec篇。</li>
-</ul>
-</li>
-</ul>
-<h3 id="从概率论角度看损失函数："><a href="#从概率论角度看损失函数：" class="headerlink" title="从概率论角度看损失函数："></a>从概率论角度看损失函数：</h3><ul>
-<li>常见公式：<ul>
-<li>离散随机变量：<ul>
-<li>熵，假设$X\sim p(x), x\in \{x_1,…x_n\}$：<script type="math/tex; mode=display">
-H(X) = -\sum_{i}^{n}p(x_i)log_bp(x_i)</script></li>
-<li>条件熵：<script type="math/tex; mode=display">
-H(X|Y) = \sum_yp(y)H(X|Y=y)</script></li>
-<li>联合熵：<script type="math/tex; mode=display">
-\begin{aligned}
-&H(X,Y) = \sum_x\sum_yp(x, y)log_bp(x, y)\\
-&H(X, Y) = H(X) + H(X|Y) = H(Y) + H(Y|X)
-\end{aligned}</script></li>
-<li>相对熵(KL散度)：<script type="math/tex; mode=display">
-D(p||q) = \sum_xp(x)log(\frac{p(x)}{q(x)})</script></li>
-<li>交叉熵：<script type="math/tex; mode=display">
-\begin{aligned}
-  H(p,q) &= \sum_xp(x)log(\frac{1}{q(x)})\\
-        &= -\sum_xp(x)log(q(x))\quad //此即CrossEntropy损失函数的形式。\\
-        &= H(p) + D(p||q)
-\end{aligned}</script></li>
-</ul>
-</li>
-<li>连续随机变量：</li>
-</ul>
-</li>
-</ul>
+  &amp;=[\frac{\partial a_j}{\partial \mathbf{u}}]\\
+  &amp;=[\frac{\partial a_j}{\partial u_1},...,\frac{\partial y_j}{\partial u_j},...,\frac{\partial y_j}{\partial u_m}]\\
+  &amp;=[\hat{y}_1,...,\hat{y}_j-1,...\hat{y}_m]\\
+  &amp;=\hat{\mathbf{y}}-\mathbf{y}\\
+  -\nabla_{\mathbf{u}}L&amp;=\mathbf{y}-\hat{\mathbf{y}}
+  \end{aligned}
+\]</span>
 <ul>
-<li>从极大似然看损失函数：<ul>
-<li>二分类问题：CrossEntropy函数：<ul>
-<li>当$y\in \{1,0\}$时，令：<script type="math/tex; mode=display">
-\begin{aligned}
-  &P(y=1|s)=\hat{y}=sigmoid(s)=\frac{1}{1+e^{-s}}\\
-  &P(y=0|s)=1-\hat{y}=1-P(y=1|s)
-\end{aligned}</script><ul>
-<li>则有：<script type="math/tex; mode=display">
-  P(y|x)=\hat{y}^y(1-\hat{y})^{(1-y)}</script></li>
-<li>优化：<script type="math/tex; mode=display">
-\begin{aligned}
-  &argmax\ log(\prod_{i=1}^{N}P(y_i|x_i))=\sum_{i}^{N}ylog(\hat{y})+(1-y)log(1-\hat{y})\\
-  &\iff argmin\ L=-\sum_{i}^{N}ylog(\hat{y})+(1-y)log(1-\hat{y})
-\end{aligned}</script></li>
+<li>可以看到<span class="math inline">\(L\)</span>关于<code>logits</code>: <span class="math inline">\(\mathbf{u}\)</span>的导数非常简单漂亮。</li>
+<li>从负梯度角度来看，如果类别为<span class="math inline">\(j\)</span>的话，<span class="math inline">\(u_j\)</span>的负梯度为正，即会往大了预估，<span class="math inline">\(u_i,\ i\neq j\)</span>的负梯度为负，即会往小了预估。</li>
+<li><code>word2vec</code>的非优化版本的数学基础就是上诉求导过程的进阶版，详见Embedding-word2vec篇。</li>
+</ul></li>
 </ul>
-</li>
-<li>当$y\in \{1,-1\}$时，同理导出其对应的损失函数。</li>
-</ul>
-</li>
-<li>多分类问题：Softmax函数：<ul>
-<li>假设多分类问题的预估分布定义如下，其中$\hat{\mathbf{y}}=f(\mathbf{x};\mathbf{w}); f: R^n\rightarrow R^m$：<script type="math/tex; mode=display">
+<h3 id="从概率论角度看损失函数">从概率论角度看损失函数：</h3>
+<ul>
+<li>常见公式：
+<ul>
+<li>离散随机变量：
+<ul>
+<li>熵，假设<span class="math inline">\(X\sim p(x),\ x\in \{x_1,...x_n\}\)</span>： <span class="math display">\[
+H(X) = -\sum_{i}^{n}p(x_i)log_bp(x_i)
+\]</span></li>
+<li>条件熵： <span class="math display">\[
+H(X|Y) = \sum_yp(y)H(X|Y=y)
+\]</span></li>
+<li>联合熵： <span class="math display">\[
+\begin{aligned}
+&amp;H(X,Y) = \sum_x\sum_yp(x, y)log_bp(x, y)\\
+&amp;H(X, Y) = H(X) + H(X|Y) = H(Y) + H(Y|X)
+\end{aligned}
+\]</span></li>
+<li>相对熵(KL散度)： <span class="math display">\[
+D(p||q) = \sum_xp(x)log(\frac{p(x)}{q(x)})
+\]</span></li>
+<li>交叉熵： <span class="math display">\[
+\begin{aligned}
+  H(p,q) &amp;= \sum_xp(x)log(\frac{1}{q(x)})\\
+        &amp;= -\sum_xp(x)log(q(x))\quad //此即CrossEntropy损失函数的形式。\\
+        &amp;= H(p) + D(p||q)
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>连续随机变量：</li>
+</ul></li>
+<li>从极大似然看损失函数：
+<ul>
+<li>二分类问题：CrossEntropy函数：
+<ul>
+<li>当<span class="math inline">\(y\in \{1,0\}\)</span>时，令： <span class="math display">\[
+\begin{aligned}
+  &amp;P(y=1|s)=\hat{y}=sigmoid(s)=\frac{1}{1+e^{-s}}\\
+  &amp;P(y=0|s)=1-\hat{y}=1-P(y=1|s)
+\end{aligned}
+\]</span>
+<ul>
+<li>则有： <span class="math display">\[
+  P(y|x)=\hat{y}^y(1-\hat{y})^{(1-y)}
+\]</span></li>
+<li>优化： <span class="math display">\[
+\begin{aligned}
+  &amp;argmax\ log(\prod_{i=1}^{N}P(y_i|x_i))=\sum_{i}^{N}ylog(\hat{y})+(1-y)log(1-\hat{y})\\
+  &amp;\iff argmin\ L=-\sum_{i}^{N}ylog(\hat{y})+(1-y)log(1-\hat{y})
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>当<span class="math inline">\(y\in \{1,-1\}\)</span>时，同理导出其对应的损失函数。</li>
+</ul></li>
+<li>多分类问题：Softmax函数：
+<ul>
+<li>假设多分类问题的预估分布定义如下，其中<span class="math inline">\(\hat{\mathbf{y}}=f(\mathbf{x};\mathbf{w}); f: R^n\rightarrow R^m\)</span>： <span class="math display">\[
   \begin{bmatrix}
     P(y_1|\mathbf{x};\mathbf{w}),\\
     P(y_2|\mathbf{x};\mathbf{w}),\\
@@ -2201,192 +2301,77 @@ D(p||q) = \sum_xp(x)log(\frac{p(x)}{q(x)})</script></li>
     \hat{y_2},\\
     ...,\\
     \hat{y_m}
-  \end{bmatrix}</script></li>
-<li>则有第$i$个样本下的预估分类为$j$的概率为：<script type="math/tex; mode=display">
-  P(y^{(i)}=j|\mathbf{x}^{(i)};\mathbf{w}^{(i)})=\prod_{k=1}^m(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})^{I(k==j^{(i)})}</script></li>
-<li>其极大似然函数为：<script type="math/tex; mode=display">
+  \end{bmatrix}
+\]</span></li>
+<li>则有第<span class="math inline">\(i\)</span>个样本下的预估分类为<span class="math inline">\(j\)</span>的概率为： <span class="math display">\[
+  P(y^{(i)}=j|\mathbf{x}^{(i)};\mathbf{w}^{(i)})=\prod_{k=1}^m(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})^{I(k==j^{(i)})}
+\]</span></li>
+<li>其极大似然函数为： <span class="math display">\[
   \begin{aligned}
-    \mathbf{w}^{*}&=argmax\ \prod_{i=1}^NP(y^{(i)}|\mathbf{x}^{(i)};\mathbf{w}^{(i)})\\
-    &=argmax\ \sum_{i=1}^Nlog(\prod_{k=1}^m(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})^{I(k==j^{(i)})})\\
-    &=argmax\ \sum_{i=1}^N(\sum_{k=1}^m(I(k==j^{(i)})
+    \mathbf{w}^{*}&amp;=argmax\ \prod_{i=1}^NP(y^{(i)}|\mathbf{x}^{(i)};\mathbf{w}^{(i)})\\
+    &amp;=argmax\ \sum_{i=1}^Nlog(\prod_{k=1}^m(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})^{I(k==j^{(i)})})\\
+    &amp;=argmax\ \sum_{i=1}^N(\sum_{k=1}^m(I(k==j^{(i)})
     log(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})))\\
-  \end{aligned}</script></li>
-<li>如果令$\hat{y}_k=exp(u_k)$, 其中$u_k$是<code>logits</code>的第$k$个分量，那么上诉最外层大括号内的表达式就是<code>softmax_cross_entropy_with_logits</code>的形式。</li>
-<li>为什么要令$\hat{y}_k=exp(u_k)$，这样设计是为了求导方便，<code>softmax_cross_entropy_with_logits</code>的导数具有非常漂亮的形式，详见前面的损失函数的求导过程。</li>
-</ul>
-</li>
-<li>回归问题：MSE损失函数：<ul>
-<li>设模型预估和真实分布之前存在如下关系：<script type="math/tex; mode=display">
-  y = h(\mathbf{x};\mathbf{w})+\epsilon</script></li>
-<li>其中$\epsilon$是预估误差，我们假设$\epsilon \sim N(0,\sigma^2)$，<br>即$p(\epsilon)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{\epsilon^2}{2\sigma})$，可得：<script type="math/tex; mode=display">
-  p(\epsilon)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-h(\mathbf{x};\mathbf{w}))^2}{2\sigma})</script></li>
-<li>那么在样本空间$D$上，依据极大似然定理，有：<script type="math/tex; mode=display">
+  \end{aligned}
+\]</span></li>
+<li>如果令<span class="math inline">\(\hat{y}_k=exp(u_k)\)</span>, 其中<span class="math inline">\(u_k\)</span>是<code>logits</code>的第<span class="math inline">\(k\)</span>个分量，那么上诉最外层大括号内的表达式就是<code>softmax_cross_entropy_with_logits</code>的形式。</li>
+<li>为什么要令<span class="math inline">\(\hat{y}_k=exp(u_k)\)</span>，这样设计是为了求导方便，<code>softmax_cross_entropy_with_logits</code>的导数具有非常漂亮的形式，详见前面的损失函数的求导过程。</li>
+</ul></li>
+<li>回归问题：MSE损失函数：
+<ul>
+<li>设模型预估和真实分布之前存在如下关系： <span class="math display">\[
+  y = h(\mathbf{x};\mathbf{w})+\epsilon
+\]</span></li>
+<li>其中<span class="math inline">\(\epsilon\)</span>是预估误差，我们假设<span class="math inline">\(\epsilon \sim N(0,\sigma^2)\)</span>， 即<span class="math inline">\(p(\epsilon)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{\epsilon^2}{2\sigma})\)</span>，可得： <span class="math display">\[
+  p(\epsilon)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-h(\mathbf{x};\mathbf{w}))^2}{2\sigma})
+\]</span></li>
+<li>那么在样本空间<span class="math inline">\(D\)</span>上，依据极大似然定理，有： <span class="math display">\[
   \begin{aligned}
-    \mathbf{w}&=argmax\ \prod_i^Np(\epsilon_i)\\
-    &=argmax\ \sum_i^Nlog(\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y_i-h(\mathbf{x}_i;\mathbf{w}_i))^2}{2\sigma}))\\
-    &\iff argmin\ \sum_i^N(y_i-h(\mathbf{x}_i;\mathbf{w}_i))^2)
-  \end{aligned}\\</script></li>
+    \mathbf{w}&amp;=argmax\ \prod_i^Np(\epsilon_i)\\
+    &amp;=argmax\ \sum_i^Nlog(\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y_i-h(\mathbf{x}_i;\mathbf{w}_i))^2}{2\sigma}))\\
+    &amp;\iff argmin\ \sum_i^N(y_i-h(\mathbf{x}_i;\mathbf{w}_i))^2)
+  \end{aligned}\\
+\]</span></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Loss进阶"><a href="#Loss进阶" class="headerlink" title="Loss进阶"></a>Loss进阶</h2><p>&nbsp;&nbsp; Loss除了拟合模型预估分布到<code>Label</code>分布外，在样本选择，防止过拟合上也可以做很多文章。控制Loss是最直接的控制模型方向的一个方法。</p>
-<h3 id="Flooding-Loss"><a href="#Flooding-Loss" class="headerlink" title="Flooding Loss"></a>Flooding Loss</h3><p>&nbsp;&nbsp; $flooding loss$的方法非常简单，背后的思想也很朴素：通常随着训练次数的增加，<code>training_loss</code>由于过拟合将趋近于0，但<code>test_loss</code>由于过拟合会逐渐上涨。$flooding loss$通过损失函数的设计将<code>training loss</code>的值控制在一个常数附近来降低过过拟合。</p>
+<h2 id="loss进阶">Loss进阶</h2>
+<p>   Loss除了拟合模型预估分布到<code>Label</code>分布外，在样本选择，防止过拟合上也可以做很多文章。控制Loss是最直接的控制模型方向的一个方法。</p>
+<h3 id="flooding-loss">Flooding Loss</h3>
+<p>   <span class="math inline">\(flooding\ loss\)</span>的方法非常简单，背后的思想也很朴素：通常随着训练次数的增加，<code>training_loss</code>由于过拟合将趋近于0，但<code>test_loss</code>由于过拟合会逐渐上涨。<span class="math inline">\(flooding loss\)</span>通过损失函数的设计将<code>training loss</code>的值控制在一个常数附近来降低过过拟合。</p>
 <ul>
-<li>假设一般Loss函数为$J(\boldsymbol{\theta})$，$flooding loss$的损失函数为：<script type="math/tex; mode=display">
-\widetilde{J}(\boldsymbol{\theta})=|J(\boldsymbol{\theta})-b|+b</script></li>
-<li>假如$J(\boldsymbol{\theta})\geq b$，$\nabla_{\boldsymbol{\theta}}\widetilde{J}=\nabla_{\boldsymbol{\theta}}J$，损失函数降低。</li>
-<li>假如$J(\boldsymbol{\theta})\leq b$，$\nabla_{\boldsymbol{\theta}}\widetilde{J}=-\nabla_{\boldsymbol{\theta}}J$，损失函数升高。</li>
+<li>假设一般Loss函数为<span class="math inline">\(J(\boldsymbol{\theta})\)</span>，<span class="math inline">\(flooding\ loss\)</span>的损失函数为： <span class="math display">\[
+\widetilde{J}(\boldsymbol{\theta})=|J(\boldsymbol{\theta})-b|+b
+\]</span></li>
+<li>假如<span class="math inline">\(J(\boldsymbol{\theta})\geq b\)</span>，<span class="math inline">\(\nabla_{\boldsymbol{\theta}}\widetilde{J}=\nabla_{\boldsymbol{\theta}}J\)</span>，损失函数降低。</li>
+<li>假如<span class="math inline">\(J(\boldsymbol{\theta})\leq b\)</span>，<span class="math inline">\(\nabla_{\boldsymbol{\theta}}\widetilde{J}=-\nabla_{\boldsymbol{\theta}}J\)</span>，损失函数升高。</li>
 </ul>
-<h3 id="Focal-Loss"><a href="#Focal-Loss" class="headerlink" title="Focal Loss"></a>Focal Loss</h3><p>&nbsp;&nbsp; 样本不均衡问题在日常的模型训练中非常普遍。这篇论文主要是针对于CV领域里的目标检测问题提出来的损失函数的设计。但在搜索推荐领域，点击样本要远小于未点击样本，曝光样本远小于未曝光样本，正负样本不均衡也是非常突出的问题。<code>Focal Loss</code>设计的出发点是为了降低已经被<strong>很好分类</strong>的样本的权重。</p>
+<h3 id="focal-loss">Focal Loss</h3>
+<p>   样本不均衡问题在日常的模型训练中非常普遍。这篇论文主要是针对于CV领域里的目标检测问题提出来的损失函数的设计。但在搜索推荐领域，点击样本要远小于未点击样本，曝光样本远小于未曝光样本，正负样本不均衡也是非常突出的问题。<code>Focal Loss</code>设计的出发点是为了降低已经被<strong>很好分类</strong>的样本的权重。</p>
 <ul>
-<li>假如令：<script type="math/tex; mode=display">
+<li>假如令： <span class="math display">\[
 p_t=\begin{cases}
   p,\ if\ y=1\\
   1-p,\ if\ y=0
-\end{cases}</script></li>
-<li>那么交叉熵损失可以改写为$CE(p,y)=CE(p_t)=-log(p_t)$，<code>Focal Loss</code>公式为：$FL(p_t)=-\alpha_t(1-p_t)^{\gamma}log(p_t)$，这样写可能会比较迷糊，改写成分类形式即为：<script type="math/tex; mode=display">FL(p, y)=\begin{cases}
+\end{cases}
+\]</span></li>
+<li>那么交叉熵损失可以改写为<span class="math inline">\(CE(p,y)=CE(p_t)=-log(p_t)\)</span>，<code>Focal Loss</code>公式为：<span class="math inline">\(FL(p_t)=-\alpha_t(1-p_t)^{\gamma}log(p_t)\)</span>，这样写可能会比较迷糊，改写成分类形式即为： <span class="math display">\[FL(p, y)=\begin{cases}
 -\alpha(1-p)^{\gamma}log(p),\ if\ y=1\\
 -(1-\alpha)p^{\gamma}log(1-p),\ if\ y=0
-\end{cases}</script></li>
-<li>针对正样本，如果模型已经预估很好，那么$p\rightarrow 1$，则前面的<code>weight</code>趋向于0，即降低其权重。如果模型预估的比较差(难分类样本)，那么<code>weight</code>趋向于1。</li>
-<li>其中$\alpha$和$\gamma$是用来控制调整方式的过程，$\gamma$越大，降低得越快。</li>
+\end{cases}
+\]</span></li>
+<li>针对正样本，如果模型已经预估很好，那么<span class="math inline">\(p\rightarrow 1\)</span>，则前面的<code>weight</code>趋向于0，即降低其权重。如果模型预估的比较差(难分类样本)，那么<code>weight</code>趋向于1。</li>
+<li>其中<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(\gamma\)</span>是用来控制调整方式的过程，<span class="math inline">\(\gamma\)</span>越大，降低得越快。</li>
 </ul>
-<h3 id="WCE-Loss"><a href="#WCE-Loss" class="headerlink" title="WCE Loss"></a>WCE Loss</h3><h3 id="Hisc-Loss"><a href="#Hisc-Loss" class="headerlink" title="Hisc Loss"></a>Hisc Loss</h3><h3 id="Triplet-Loss"><a href="#Triplet-Loss" class="headerlink" title="(Triplet Loss)"></a>(Triplet Loss)</h3><h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><ol>
-<li>Flooding Loss: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2002.08709">https://arxiv.org/abs/2002.08709</a></li>
-<li>Focal Loss: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1708.02002.pdf">https://arxiv.org/pdf/1708.02002.pdf</a></li>
-<li>Triplet Loss: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Triplet_loss">https://en.wikipedia.org/wiki/Triplet_loss</a></li>
+<h3 id="wce-loss">WCE Loss</h3>
+<h3 id="hisc-loss">Hisc Loss</h3>
+<h3 id="triplet-loss">(Triplet Loss)</h3>
+<h3 id="ref">Ref:</h3>
+<ol type="1">
+<li>Flooding Loss: https://arxiv.org/abs/2002.08709</li>
+<li>Focal Loss: https://arxiv.org/pdf/1708.02002.pdf</li>
+<li>Triplet Loss: https://en.wikipedia.org/wiki/Triplet_loss</li>
 </ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/17/ctr/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="泽">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/04/17/ctr/" itemprop="url">ctr</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-17T19:17:00+08:00">
-                2021-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="FM"><a href="#FM" class="headerlink" title="FM"></a>FM</h2><p>&emsp;&emsp;FM的基本公式为：</p>
-<script type="math/tex; mode=display">y=w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n}\sum_{j=i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}</script><p>&emsp;&emsp;令 $\mathbf{x}=(x_1, x_2, … x_n)，\mathbf{v}=(v_1, v_2, v_3,…,v_n)， \mathbf{e}=(1,1,…,1)$ 为单位向量，$\mathbf{U}$为上三角矩阵， $\mathbf{E}$为单位阵，则其矩阵形式表示为：</p>
-<script type="math/tex; mode=display">
-y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
-\begin{bmatrix} x_1\mathbf{v_1}\\\\x_2\mathbf{v_2}\\\\x_3\mathbf{v_3}\\\\...\\\\x_n\mathbf{v_n}
-\end{bmatrix}
-\begin{bmatrix} x_1\mathbf{v_1^T},x_2\mathbf{v_2^T},x_3\mathbf{v_3^T}, ...,x_n\mathbf{v_n^T} 
-\end{bmatrix}
-\mathbf{e^T}\tag{2}</script><p>&emsp;&emsp;注意如果$\mathbf{x}$是一个one-hot向量，那么在一个样本$\{y_i, \mathbf{x_i} \}$下，公式(2)就退化成：</p>
-<script type="math/tex; mode=display">y=w_0+w_i*1+\mathbf{v_i}\mathbf{v_i^T} \tag{3}</script><p>这里的$\mathbf{v_i}$即可看成$x_i$的embedding表示。</p>
 
           
         
@@ -2506,211 +2491,352 @@ y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
       
         
           
-            <h1 id="提升树boost"><a href="#提升树boost" class="headerlink" title="提升树boost"></a>提升树boost</h1><p>假设样本空间为$\mathcal{D}=\{y_i, \mathbf{x}_i\}, i\in\{1,…,N\}$，提升树模型是以决策树模型为基础的加法集成模型，可以概括为</p>
-<script type="math/tex; mode=display">
-f(\mathbf{x})=f_M(\mathbf{x})=\sum_{m=1}^Mh_m(\mathbf{x; {\Theta}_m})</script><ul>
-<li>提升树模型采用前向分步算法：  <ol>
-<li>确定$f_0(\mathbf{x})=0$。</li>
-<li>第$m$步的表达式为$f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+h_m(\mathbf{x, {\Theta}_m})$。</li>
-</ol>
-</li>
-</ul>
-<p>假设第$m$步的树把样本空间划分成$J_m$个不相交$\{R_{1m},…,R_{J_mm}\}$个区域，在每个区域上输出常量$c_j$，则第$m$棵决策树可表示为</p>
-<script type="math/tex; mode=display">
-h_m(\mathbf{x},C_m)=\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})</script><h3 id="1-GBT"><a href="#1-GBT" class="headerlink" title="1. GBT"></a>1. GBT</h3><p>分类树叫做GBDT, 回归树叫做GBRT<br>对损失函数做一阶泰勒展开近似：  </p>
-<script type="math/tex; mode=display">
-L(y, f_m(\mathbf{x})) = L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}_m}))=L(y,f_{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})</script><p>则</p>
-<script type="math/tex; mode=display">
-\Delta L = L(y, f_m(\mathbf{x})) - L(y, f_{m-1}(\mathbf{x})) = \frac{\partial L}{\partial f_{m-1}(\mathbf{x})}h_m(\mathbf{x; {\Theta}_m})</script><p>要使得$\Delta L$降低，一种可选的方案为$h_m(\mathbf{x; {\Theta}_m})=-\frac{\partial L}{\partial f_{m-1}(\mathbf{x})}$，这样$\Delta L$就恒为负。当$L = L_{MSE}$时，$h_m=2(y-f_{m-1}(\mathbf{x}))=2r_{m-1}$，即前$m-1$棵树的预测的残差。  </p>
-<h4 id="GBRT算法："><a href="#GBRT算法：" class="headerlink" title="GBRT算法："></a>GBRT算法：</h4><p>算法：    </p>
+            <h1 id="提升树boost">提升树boost</h1>
+<p>假设样本空间为<span class="math inline">\(\mathcal{D}=\{y_i, \mathbf{x}_i\},\ i\in\{1,...,N\}\)</span>，提升树模型是以决策树模型为基础的加法集成模型，可以概括为 <span class="math display">\[
+f(\mathbf{x})=f_M(\mathbf{x})=\sum_{m=1}^Mh_m(\mathbf{x; {\Theta}_m})
+\]</span></p>
 <ul>
-<li>输入：    <ul>
-<li>样本空间$\mathcal{D}=\{y_i, \mathbf{x}_i\}, i\in\{1,…,N\}$  </li>
-<li>损失函数$L(y, \hat{y})$    </li>
+<li>提升树模型采用前向分步算法：
+<ol type="1">
+<li>确定<span class="math inline">\(f_0(\mathbf{x})=0\)</span>。</li>
+<li>第<span class="math inline">\(m\)</span>步的表达式为<span class="math inline">\(f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+h_m(\mathbf{x, {\Theta}_m})\)</span>。</li>
+</ol></li>
 </ul>
+<p>假设第<span class="math inline">\(m\)</span>步的树把样本空间划分成<span class="math inline">\(J_m\)</span>个不相交<span class="math inline">\(\{R_{1m},...,R_{J_mm}\}\)</span>个区域，在每个区域上输出常量<span class="math inline">\(c_j\)</span>，则第<span class="math inline">\(m\)</span>棵决策树可表示为 <span class="math display">\[
+h_m(\mathbf{x},C_m)=\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})
+\]</span></p>
+<h3 id="gbt">1. GBT</h3>
+<p>分类树叫做GBDT, 回归树叫做GBRT 对损失函数做一阶泰勒展开近似：<br />
+<span class="math display">\[
+L(y, f_m(\mathbf{x})) = L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}_m}))=L(y,f_{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})
+\]</span> 则 <span class="math display">\[
+\Delta L = L(y, f_m(\mathbf{x})) - L(y, f_{m-1}(\mathbf{x})) = \frac{\partial L}{\partial f_{m-1}(\mathbf{x})}h_m(\mathbf{x; {\Theta}_m})
+\]</span></p>
+<p>要使得<span class="math inline">\(\Delta L\)</span>降低，一种可选的方案为<span class="math inline">\(h_m(\mathbf{x; {\Theta}_m})=-\frac{\partial L}{\partial f_{m-1}(\mathbf{x})}\)</span>，这样<span class="math inline">\(\Delta L\)</span>就恒为负。当<span class="math inline">\(L = L_{MSE}\)</span>时，<span class="math inline">\(h_m=2(y-f_{m-1}(\mathbf{x}))=2r_{m-1}\)</span>，即前<span class="math inline">\(m-1\)</span>棵树的预测的残差。</p>
+<h4 id="gbrt算法">GBRT算法：</h4>
+<p>算法：</p>
+<ul>
+<li>输入：
+<ul>
+<li>样本空间<span class="math inline">\(\mathcal{D}=\{y_i, \mathbf{x}_i\},\ i\in\{1,...,N\}\)</span><br />
 </li>
-<li>输出：  <ul>
-<li>回归树簇$f_M$  </li>
-</ul>
+<li>损失函数<span class="math inline">\(L(y, \hat{y})\)</span><br />
 </li>
-<li>步骤：  <ul>
-<li>初始化$f_0(\mathbf{x})=argmin \sum_{i=1}^NL(y_i, c)$  </li>
-<li>$for   m  in  [1,…,M]$:  <ul>
-<li>$for  i  in  [1,…,N]$，计算：  <script type="math/tex; mode=display">
-r_{m,i}=-\frac{\partial L(y_i, f_{m-1}(\mathbf{x}_i))}{\partial f_{m-1}(\mathbf{x}_i)}</script></li>
-<li>对$\{r_{m,1},…,r_{m,N}\}$拟合一棵回归树，得到$J_m$个区域$\{R_{1m},…,R_{J_mm}\}$  </li>
-<li>$for  j_m  in  [1_m,…,J_m]$，计算：  <script type="math/tex; mode=display">
-c_{j_m}=arg\ \underset{c_{j_m}}{\operatorname{min}}\sum_{\mathbf{x}_i\in R_{j_mm}}L(y_i, f_{m-1}(\mathbf{x})+c_{j_m})</script></li>
-<li>更新$f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})$  </li>
-</ul>
+</ul></li>
+<li>输出：
+<ul>
+<li>回归树簇<span class="math inline">\(f_M\)</span><br />
 </li>
-<li>输出$f_M(\mathbf{x})$  </li>
-</ul>
+</ul></li>
+<li>步骤：
+<ul>
+<li>初始化<span class="math inline">\(f_0(\mathbf{x})=argmin \sum_{i=1}^NL(y_i, c)\)</span><br />
 </li>
+<li><span class="math inline">\(for \ \ m\ \ in\ \ [1,...,M]\)</span>:
+<ul>
+<li><span class="math inline">\(for\ \ i\ \ in\ \ [1,...,N]\)</span>，计算：<br />
+<span class="math display">\[
+r_{m,i}=-\frac{\partial L(y_i, f_{m-1}(\mathbf{x}_i))}{\partial f_{m-1}(\mathbf{x}_i)}
+\]</span><br />
+</li>
+<li>对<span class="math inline">\(\{r_{m,1},...,r_{m,N}\}\)</span>拟合一棵回归树，得到<span class="math inline">\(J_m\)</span>个区域<span class="math inline">\(\{R_{1m},...,R_{J_mm}\}\)</span><br />
+</li>
+<li><span class="math inline">\(for\ \ j_m\ \ in\ \ [1_m,...,J_m]\)</span>，计算：<br />
+<span class="math display">\[
+c_{j_m}=arg\ \underset{c_{j_m}}{\operatorname{min}}\sum_{\mathbf{x}_i\in R_{j_mm}}L(y_i, f_{m-1}(\mathbf{x})+c_{j_m})
+\]</span><br />
+</li>
+<li>更新<span class="math inline">\(f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})\)</span><br />
+</li>
+</ul></li>
+<li>输出<span class="math inline">\(f_M(\mathbf{x})\)</span></li>
+</ul></li>
 </ul>
-<p>其他优化：  </p>
-<ol>
-<li>正则化：  </li>
-<li>采样：  </li>
-</ol>
-<h3 id="2-XGboost"><a href="#2-XGboost" class="headerlink" title="2 XGboost"></a>2 XGboost</h3><h4 id="2-1-模型刻画："><a href="#2-1-模型刻画：" class="headerlink" title="2.1 模型刻画："></a>2.1 模型刻画：</h4><p>相对于GBT，XGboost主要有两点改动：1.损失函数做二阶泰勒展开。2. 引入正则项。</p>
-<script type="math/tex; mode=display">
+<p>其他优化：<br />
+1. 正则化：<br />
+2. 采样：</p>
+<h3 id="xgboost">2 XGboost</h3>
+<h4 id="模型刻画">2.1 模型刻画：</h4>
+<p>相对于GBT，XGboost主要有两点改动：1.损失函数做二阶泰勒展开。2. 引入正则项。 <span class="math display">\[
 \begin{aligned}
 L(y, f_m(\mathbf{x}))
-&=L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}_m}))\\
-&=L(y,f_{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})
-\end{aligned}</script><p>令： </p>
-<script type="math/tex; mode=display">
+&amp;=L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}_m}))\\
+&amp;=L(y,f_{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})
+\end{aligned}
+\]</span></p>
+<p>令： <span class="math display">\[
 g_i=\frac{\partial L(y_i, f_{m-1}(\mathbf{x}_i))}{\partial f_{m-1}(\mathbf{x}_i)}\\
-h_i=</script><p>引入正则项后，在样本空间$\mathcal D$上的损失函数为：</p>
-<script type="math/tex; mode=display">
+h_i=
+\]</span></p>
+<p>引入正则项后，在样本空间<span class="math inline">\(\mathcal D\)</span>上的损失函数为： <span class="math display">\[
 \begin{aligned}
 \mathcal{L}
-&=\Omega(h_m)
+&amp;=\Omega(h_m)
 +\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}L(y_i, f_m(\mathbf{x}_i))\\
-&=\Omega(h_m)
+&amp;=\Omega(h_m)
 +\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}L(y_i,f_{m-1}(\mathbf{x}_i))
 +g_ih_m(\mathbf{x}_i; \mathbf{\Theta}_m)
 +h_ih_m^2(\mathbf{x}_i; \mathbf{\Theta}_m) 
-\end{aligned}</script><p>定义正则项：</p>
-<script type="math/tex; mode=display">
-\Omega(h_m)=\gamma T+\frac{1}{2}\lambda \sum_{i=1}^Tw_j^2</script><p>其中$T$为叶节点的个数，$w_j$为每个叶节点的输出值。<br>则有：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}\left[ g_iw_{q(\mathbf{x}_i)}+h_iw_{q(\mathbf{x}_i)}^2\right] + \gamma T+\frac{1}{2}\lambda \sum_{j=1}^Tw_j^2+constant</script><p>若令划分到节点$j$的样本集合为$\mathbb{I}_j=\{i|q(\mathbf{x}_i)=j\}$，则上述公式等价于：</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=\sum_{j=1}^T[(\sum_{i \in \mathbb{I}_j}g_i)w_j+\frac{1}{2}(\sum_{i\in \mathbb{I}_j}h_i + \lambda )w_j^2]+\gamma T + constant</script><p>令$G_j=\sum_{i \in \mathbb{I}_j}g_i$，$H_j=\sum_{i \in \mathbb{I}_j}h_i$，则有:</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=\sum_{j=1}^T[G_jw_j+\frac{1}{2}(H_j+\lambda )w_j^2]+\gamma T + constant</script><ul>
-<li>其中$G_j$代表划分为$j$节点的所有样本的一阶偏导数之和</li>
-<li>其中$H_j$代表了划分为$j$节点的所有样本的二阶偏导数之和</li>
+\end{aligned}
+\]</span></p>
+<p>定义正则项： <span class="math display">\[
+\Omega(h_m)=\gamma T+\frac{1}{2}\lambda \sum_{i=1}^Tw_j^2
+\]</span></p>
+<p>其中<span class="math inline">\(T\)</span>为叶节点的个数，<span class="math inline">\(w_j\)</span>为每个叶节点的输出值。 则有： <span class="math display">\[
+\mathcal{L}=\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}\left[ g_iw_{q(\mathbf{x}_i)}+h_iw_{q(\mathbf{x}_i)}^2\right] + \gamma T+\frac{1}{2}\lambda \sum_{j=1}^Tw_j^2+constant
+\]</span></p>
+<p>若令划分到节点<span class="math inline">\(j\)</span>的样本集合为<span class="math inline">\(\mathbb{I}_j=\{i|q(\mathbf{x}_i)=j\}\)</span>，则上述公式等价于： <span class="math display">\[
+\mathcal{L}=\sum_{j=1}^T[(\sum_{i \in \mathbb{I}_j}g_i)w_j+\frac{1}{2}(\sum_{i\in \mathbb{I}_j}h_i + \lambda )w_j^2]+\gamma T + constant
+\]</span></p>
+<p>令<span class="math inline">\(G_j=\sum_{i \in \mathbb{I}_j}g_i\)</span>，<span class="math inline">\(H_j=\sum_{i \in \mathbb{I}_j}h_i\)</span>，则有: <span class="math display">\[
+\mathcal{L}=\sum_{j=1}^T[G_jw_j+\frac{1}{2}(H_j+\lambda )w_j^2]+\gamma T + constant
+\]</span></p>
+<ul>
+<li>其中<span class="math inline">\(G_j\)</span>代表划分为<span class="math inline">\(j\)</span>节点的所有样本的一阶偏导数之和</li>
+<li>其中<span class="math inline">\(H_j\)</span>代表了划分为<span class="math inline">\(j\)</span>节点的所有样本的二阶偏导数之和</li>
 </ul>
-<p>关于$w_j$的偏导为0，则有:</p>
-<script type="math/tex; mode=display">
-w_j^*=-\frac{G_j}{H_j+\lambda}</script><p>则有最小损失函数:</p>
-<script type="math/tex; mode=display">
-\mathcal{L}=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T+constant</script><h4 id="2-2-优化求解"><a href="#2-2-优化求解" class="headerlink" title="2.2 优化求解"></a>2.2 优化求解</h4><p>在每个叶节点上，假设进行分裂，新增划分左右子树集合分别为$\mathbb{I}_L=\{i|q(\mathbf{x}_i)=L\}$，$\mathbb{I}_R=\{i|q(\mathbf{x}_i)=R\}$，则可以定义：</p>
-<script type="math/tex; mode=display">
+<p>关于<span class="math inline">\(w_j\)</span>的偏导为0，则有: <span class="math display">\[
+w_j^*=-\frac{G_j}{H_j+\lambda}
+\]</span> 则有最小损失函数: <span class="math display">\[
+\mathcal{L}=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T+constant
+\]</span></p>
+<h4 id="优化求解">2.2 优化求解</h4>
+<p>在每个叶节点上，假设进行分裂，新增划分左右子树集合分别为<span class="math inline">\(\mathbb{I}_L=\{i|q(\mathbf{x}_i)=L\}\)</span>，<span class="math inline">\(\mathbb{I}_R=\{i|q(\mathbf{x}_i)=R\}\)</span>，则可以定义： <span class="math display">\[
 G_L=\sum_{i \in \mathbb{I}_L}g_i,\ H_L=\sum_{i \in \mathbb{I}_L}h_i\\
 G_R=\sum_{i \in \mathbb{I}_R}g_i,\ H_R=\sum_{i \in \mathbb{I}_R}h_i\\
-G=G_L+G_R, \ H=H_L + H_R</script><p>从而不难计算出损失增益$Gain$为：</p>
-<script type="math/tex; mode=display">
-Gain=\frac{1}{2}(\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})-\lambda</script><ul>
-<li>$\lambda$是正则项，表示叶节点增大1，则树的复杂度增加1。</li>
-<li>如果$Gain&gt;0$则进行分裂，否则不进行分裂。</li>
-</ul>
-<p>算法过程：    </p>
+G=G_L+G_R, \ H=H_L + H_R
+\]</span></p>
+<p>从而不难计算出损失增益<span class="math inline">\(Gain\)</span>为： <span class="math display">\[
+Gain=\frac{1}{2}(\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})-\lambda
+\]</span></p>
 <ul>
-<li>输入：<ul>
-<li>样本空间$\mathcal{D}=\{(\mathbf{x_1},y_1),…,(\mathbf{x_n}, y_n)\}$</li>
-<li>属于当前叶节点的样本下标 $index$ 的集合 $\mathbb{I}$</li>
-<li>假设输入 $\mathbf{x}$ 共 $K$ 个特征</li>
+<li><span class="math inline">\(\lambda\)</span>是正则项，表示叶节点增大1，则树的复杂度增加1。</li>
+<li>如果<span class="math inline">\(Gain&gt;0\)</span>则进行分裂，否则不进行分裂。</li>
 </ul>
-</li>
-<li>输出：<ul>
+<p>算法过程：</p>
+<ul>
+<li>输入：
+<ul>
+<li>样本空间<span class="math inline">\(\mathcal{D}=\{(\mathbf{x_1},y_1),...,(\mathbf{x_n}, y_n)\}\)</span></li>
+<li>属于当前叶节点的样本下标 <span class="math inline">\(index\)</span> 的集合 <span class="math inline">\(\mathbb{I}\)</span></li>
+<li>假设输入 <span class="math inline">\(\mathbf{x}\)</span> 共 <span class="math inline">\(K\)</span> 个特征</li>
+</ul></li>
+<li>输出：
+<ul>
 <li>当前叶节点的最佳分裂</li>
-</ul>
-</li>
-<li>过程：<ul>
-<li>计算$score\leftarrow 0, G\leftarrow \sum_{i \in \mathbb{I}}g_i$，$H\leftarrow \sum_{i \in \mathbb{I}}h_i$</li>
-<li>$for   k   in  \{1,…,K\}:$<ul>
-<li>初始化：$G_L\leftarrow 0, G_R\leftarrow 0$</li>
-<li>如果当前特征 $k$ 是连续型特征，则对所有样本在 $k$ 维度上进行排序，用 $i$ 去排序样本下标。有：<script type="math/tex; mode=display">
+</ul></li>
+<li>过程：
+<ul>
+<li>计算<span class="math inline">\(score\leftarrow 0,\ G\leftarrow \sum_{i \in \mathbb{I}}g_i\)</span>，<span class="math inline">\(H\leftarrow \sum_{i \in \mathbb{I}}h_i\)</span></li>
+<li><span class="math inline">\(for\ \  k \ \ in\ \ \{1,...,K\}:\)</span>
+<ul>
+<li>初始化：<span class="math inline">\(G_L\leftarrow 0,\ G_R\leftarrow 0\)</span></li>
+<li>如果当前特征 <span class="math inline">\(k\)</span> 是连续型特征，则对所有样本在 <span class="math inline">\(k\)</span> 维度上进行排序，用 <span class="math inline">\(i\)</span> 去排序样本下标。有： <span class="math display">\[
 \begin{aligned}
-&G_L\leftarrow G_L+g_i,\ H_L\leftarrow G_L+g_i \\
-&G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R \\
-&score\leftarrow max(score,\ \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})
-\end{aligned}</script></li>
-<li>如果当前特征 $k$ 是离散型特征 $\{a_{m_1},…a_{m_k}\}$，其中 $a_{m_1}&lt;…&lt;a_{m_k}$。 假设每个特征值$a_j$对应的样本集合为 $\mathbb{I}_j$, 则$for  j  in  \{1,…,m_k\}$, 计算: <script type="math/tex; mode=display">
+&amp;G_L\leftarrow G_L+g_i,\ H_L\leftarrow G_L+g_i \\
+&amp;G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R \\
+&amp;score\leftarrow max(score,\ \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})
+\end{aligned}
+\]</span></li>
+<li>如果当前特征 <span class="math inline">\(k\)</span> 是离散型特征 <span class="math inline">\(\{a_{m_1},...a_{m_k}\}\)</span>，其中 <span class="math inline">\(a_{m_1}&lt;...&lt;a_{m_k}\)</span>。 假设每个特征值<span class="math inline">\(a_j\)</span>对应的样本集合为 <span class="math inline">\(\mathbb{I}_j\)</span>, 则<span class="math inline">\(for\ \ j\ \ in\ \ \{1,...,m_k\}\)</span>, 计算: <span class="math display">\[
 \begin{aligned}
-&G_L\leftarrow G_L+\sum_{i \in \mathbb{I}_j}g_i,
+&amp;G_L\leftarrow G_L+\sum_{i \in \mathbb{I}_j}g_i,
 \ H_L\leftarrow H_L+\sum_{i \in \mathbb{I}_j}h_i\\
-&G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R\\
-&score\leftarrow max(score,\ 
+&amp;G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R\\
+&amp;score\leftarrow max(score,\ 
    \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})
-\end{aligned}</script></li>
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>选取最大的 <span class="math inline">\(score\)</span> 对应的维度和拆分点作为分裂节点</li>
+</ul></li>
 </ul>
-</li>
-<li>选取最大的 $score$ 对应的维度和拆分点作为分裂节点</li>
-</ul>
-</li>
-</ul>
-<p>几个需要弄清楚的点：    </p>
-<ol>
+<p>几个需要弄清楚的点：</p>
+<ol type="1">
 <li>针对每个叶节点每次只进行一次分裂，也就是说树一定是一棵二叉树而不是多叉树</li>
-<li>从两个方面做到每次只进行一次分裂，1. 最优维度：当前待选维度的最佳维度 $k$ ; 2. 最优维度下的最佳分裂点</li>
+<li>从两个方面做到每次只进行一次分裂，1. 最优维度：当前待选维度的最佳维度 <span class="math inline">\(k\)</span> ; 2. 最优维度下的最佳分裂点</li>
 <li>离散值的分裂点其实就可以看做连续值的分裂点的分桶情况，<strong>近似算法</strong>(对连续值/离散值进行分桶)其实相当于把连续值和离散值两种情况进行归一了。</li>
-<li>缺失值处理：   <ul>
-<li>在上诉算法每步 $k$ 的迭代过程中，分别计算默认将缺失值加入到 <em>左子树</em> 或 <em>右子树</em> 中的 $score$，然后计算 $score$ 的最大值。</li>
-</ul>
-</li>
-</ol>
-<p>关于近似算法分桶：    <br></p>
-<ol>
-<li>全局分桶 vs 局部分桶</li>
-</ol>
-<h5 id="2-2-1-系统设计-待续-："><a href="#2-2-1-系统设计-待续-：" class="headerlink" title="2.2.1 系统设计(待续)："></a>2.2.1 系统设计(待续)：</h5><p>几个加速训练的点：</p>
-<ol>
-<li><code>pre-sort</code>预排序 <ul>
-<li>可以并行 </li>
-<li>只排序样本 $index$, 每个 $index$ 保存指向样本的指针 </li>
-</ul>
-</li>
-<li><code>catch-aware</code>预取</li>
-<li><code>out-of-core</code>计算</li>
-</ol>
-<h3 id="3-lightGBM"><a href="#3-lightGBM" class="headerlink" title="3. lightGBM"></a>3. lightGBM</h3><p>&emsp;&emsp; <code>lightGBM</code>主要是创新点是来自对训练速度的提升上，主要有两点：1. 减少训练样本的基于梯度的采样-<code>GOSS(Gradient-based One-Side Sampling)</code>；2. 减少特征数量的互斥特征捆绑-<code>Exclusive Feature Bundling(EFB)</code> <br></p>
-<h4 id="GOSS"><a href="#GOSS" class="headerlink" title="GOSS "></a>GOSS <br></h4><ul>
-<li>输入：<ul>
-<li>样本 $\mathcal{D}$，假设样本个数为 $N$</li>
-<li>大梯度采样比 $a$</li>
-<li>小梯度采样比 $b$</li>
-<li>当前模型 $f(\mathbf{x})=\sum_{j=1}^{m-1}h_j(\mathbf{x})$</li>
-</ul>
-</li>
-<li><p>输出：</p>
+<li>缺失值处理：
 <ul>
-<li>下一个子树 $h_m$</li>
-</ul>
-</li>
-<li><p>过程：</p>
+<li>在上诉算法每步 <span class="math inline">\(k\)</span> 的迭代过程中，分别计算默认将缺失值加入到 <em>左子树</em> 或 <em>右子树</em> 中的 <span class="math inline">\(score\)</span>，然后计算 <span class="math inline">\(score\)</span> 的最大值。</li>
+</ul></li>
+</ol>
+<p>关于近似算法分桶： <br> 1. 全局分桶 vs 局部分桶</p>
+<h5 id="系统设计待续">2.2.1 系统设计(待续)：</h5>
+<p>几个加速训练的点： 1. <code>pre-sort</code>预排序 + 可以并行 + 只排序样本 <span class="math inline">\(index\)</span>, 每个 <span class="math inline">\(index\)</span> 保存指向样本的指针 2. <code>catch-aware</code>预取 3. <code>out-of-core</code>计算</p>
+<h3 id="lightgbm">3. lightGBM</h3>
+<p>   <code>lightGBM</code>主要是创新点是来自对训练速度的提升上，主要有两点：1. 减少训练样本的基于梯度的采样-<code>GOSS(Gradient-based One-Side Sampling)</code>；2. 减少特征数量的互斥特征捆绑-<code>Exclusive Feature Bundling(EFB)</code> <br></p>
+<h4 id="goss">GOSS <br></h4>
 <ul>
-<li>计算：<ul>
-<li>计算每个样本的损失梯度为 $\mathbf{g}=\{g_1,…,g_N\}$</li>
-<li>大梯度采样比例为 $topN=aN$</li>
-<li>小梯度的采样比例为 $randN=bN$</li>
-<li>修正因子 $factor=\frac{1-a}{b}$</li>
-</ul>
-</li>
-<li>采样：<ul>
-<li>根据 $\mathbf{g}$ 的从大到小的排列顺序，选取 $topN$ 的样本作为训练样本进入本轮训练。</li>
-<li>从剩下的样本里随机选取 $randN$ 的样本进入本轮训练。</li>
-</ul>
-</li>
-<li>更新数据集：<ul>
-<li>从 $topN$ 中选取的样本，其样本权重为 $1$</li>
-<li>从 $randN$ 中选取的样本，其样本权重为 $factor$，即修正梯度值</li>
-</ul>
-</li>
-<li>在新的数据集上拟合 $h_m$</li>
-</ul>
-</li>
-<li><p>几个值得注意的点：</p>
+<li>输入：
+<ul>
+<li>样本 <span class="math inline">\(\mathcal{D}\)</span>，假设样本个数为 <span class="math inline">\(N\)</span></li>
+<li>大梯度采样比 <span class="math inline">\(a\)</span></li>
+<li>小梯度采样比 <span class="math inline">\(b\)</span></li>
+<li>当前模型 <span class="math inline">\(f(\mathbf{x})=\sum_{j=1}^{m-1}h_j(\mathbf{x})\)</span></li>
+</ul></li>
+<li>输出：
+<ul>
+<li>下一个子树 <span class="math inline">\(h_m\)</span></li>
+</ul></li>
+<li>过程：
+<ul>
+<li>计算：
+<ul>
+<li>计算每个样本的损失梯度为 <span class="math inline">\(\mathbf{g}=\{g_1,...,g_N\}\)</span></li>
+<li>大梯度采样比例为 <span class="math inline">\(topN=aN\)</span></li>
+<li>小梯度的采样比例为 <span class="math inline">\(randN=bN\)</span></li>
+<li>修正因子 <span class="math inline">\(factor=\frac{1-a}{b}\)</span></li>
+</ul></li>
+<li>采样：
+<ul>
+<li>根据 <span class="math inline">\(\mathbf{g}\)</span> 的从大到小的排列顺序，选取 <span class="math inline">\(topN\)</span> 的样本作为训练样本进入本轮训练。</li>
+<li>从剩下的样本里随机选取 <span class="math inline">\(randN\)</span> 的样本进入本轮训练。</li>
+</ul></li>
+<li>更新数据集：
+<ul>
+<li>从 <span class="math inline">\(topN\)</span> 中选取的样本，其样本权重为 <span class="math inline">\(1\)</span></li>
+<li>从 <span class="math inline">\(randN\)</span> 中选取的样本，其样本权重为 <span class="math inline">\(factor\)</span>，即修正梯度值</li>
+</ul></li>
+<li>在新的数据集上拟合 <span class="math inline">\(h_m\)</span></li>
+</ul></li>
+<li>几个值得注意的点：
 <ul>
 <li>可以从数学上证明，随着样本数量的增加，该采样方法训练的模型和一般情况下的模型误差趋向于0</li>
-<li>$a=1, b=1$ 即为一般的随机采样</li>
+<li><span class="math inline">\(a=1,\ b=1\)</span> 即为一般的随机采样</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h4 id="EFB"><a href="#EFB" class="headerlink" title="EFB "></a>EFB <br></h4><p>传统的降低特征维度的方法是 $PCA$，即不同特征之间可能包含了某些重复的信息。<code>lightGBM</code>的思想是多个特征之间很可能有很多互斥的特征，这些特征不可能同时取得非0值，如果能将这些特征捆绑起来，那么特征数量将大大减少。于是就出现了两个问题：</p>
-<ol>
-<li>如何找到互斥的特征 <br></li>
-<li>如何捆绑 <br></li>
-</ol>
-<p>定义：<br></p>
-<ul>
-<li>打包特征集 := 该集合中的特征两两互斥 <br></li>
-<li>互斥定义：给定数据集 $\mathcal{D}=\{y_i, \mathbf{x}_i\}, i\in\{1,…,N\}$。其中 $\mathbf{x}_i=(x_{i_1},…x_{i_K})$。如果对于所有样本，$x_{i,j}\neq 0 and x_{i,k}\neq 0$ 都不会出现。则认为特征 $j$ 和特征 $k$ 互斥。<br></li>
-</ul>
+<h4 id="efb">EFB <br></h4>
+<p>传统的降低特征维度的方法是 <span class="math inline">\(PCA\)</span>，即不同特征之间可能包含了某些重复的信息。<code>lightGBM</code>的思想是多个特征之间很可能有很多互斥的特征，这些特征不可能同时取得非0值，如果能将这些特征捆绑起来，那么特征数量将大大减少。于是就出现了两个问题： 1. 如何找到互斥的特征 <br> 2. 如何捆绑 <br></p>
+<p>定义：<br> + 打包特征集 := 该集合中的特征两两互斥 <br> + 互斥定义：给定数据集 <span class="math inline">\(\mathcal{D}=\{y_i, \mathbf{x}_i\},\ i\in\{1,...,N\}\)</span>。其中 <span class="math inline">\(\mathbf{x}_i=(x_{i_1},...x_{i_K})\)</span>。如果对于所有样本，<span class="math inline">\(x_{i,j}\neq 0\ and\ x_{i,k}\neq 0\)</span> 都不会出现。则认为特征 <span class="math inline">\(j\)</span> 和特征 <span class="math inline">\(k\)</span> 互斥。<br></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/17/ctr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/04/17/ctr/" itemprop="url">ctr</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-17T19:17:00+08:00">
+                2021-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="fm">FM</h2>
+<p>  FM的基本公式为： <span class="math display">\[y=w_0+\sum_{i=1}^{n}w_ix_i+\sum_{i=1}^{n}\sum_{j=i+1}^{n}\langle v_i, v_j \rangle x_ix_j   \tag{1}\]</span>   令 <span class="math inline">\(\mathbf{x}=(x_1, x_2, ... x_n)，\mathbf{v}=(v_1, v_2, v_3,...,v_n)， \mathbf{e}=(1,1,...,1)\)</span> 为单位向量，<span class="math inline">\(\mathbf{U}\)</span>为上三角矩阵， <span class="math inline">\(\mathbf{E}\)</span>为单位阵，则其矩阵形式表示为： <span class="math display">\[
+y=w_0+\mathbf{w}\mathbf{x^T}+ \mathbf{e}(\mathbf{U}-\mathbf{E})
+\begin{bmatrix} x_1\mathbf{v_1}\\\\x_2\mathbf{v_2}\\\\x_3\mathbf{v_3}\\\\...\\\\x_n\mathbf{v_n}
+\end{bmatrix}
+\begin{bmatrix} x_1\mathbf{v_1^T},x_2\mathbf{v_2^T},x_3\mathbf{v_3^T}, ...,x_n\mathbf{v_n^T} 
+\end{bmatrix}
+\mathbf{e^T}\tag{2}
+\]</span>   注意如果<span class="math inline">\(\mathbf{x}\)</span>是一个one-hot向量，那么在一个样本<span class="math inline">\(\{y_i, \mathbf{x_i} \}\)</span>下，公式(2)就退化成： <span class="math display">\[y=w_0+w_i*1+\mathbf{v_i}\mathbf{v_i^T} \tag{3}\]</span> 这里的<span class="math inline">\(\mathbf{v_i}\)</span>即可看成<span class="math inline">\(x_i\)</span>的embedding表示。</p>
 
           
         
@@ -3085,5 +3211,5 @@ Gain=\frac{1}{2}(\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":-50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
 </html>

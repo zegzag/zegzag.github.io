@@ -333,69 +333,62 @@
       
         
           
-            <h2 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h2><ul>
-<li><strong>基本方法</strong>：<br>&emsp;&emsp;设词表大小为$V$，则每个样本(词)表示为$x_i=(0,…,1_{i},…0)$<br>&emsp;&emsp;两层神经网络: 从输入层到隐层: $A\in R^{V\times K}$，从隐层到输出层: $B\in R^{K\times V}$，<br>表示为embedding向量即为<br>$A=(\mathbf{a_1}, \mathbf{a_2}, …, \mathbf{a_V})^T, B=(\mathbf{b_1^T}, \mathbf{b_2^T}, …, \mathbf{b_V^T})$，<br>针对某个输入词$w_I$，令$u_j = \mathbf{a}_I\mathbf{b}_j^{T}$，<br>那么我们从输入词 $w_I$ 到输出词 $w_O$ 之间的条件概率$P(w_O|w_I)$为: <script type="math/tex; mode=display">
-\hat{y_O} = P(w_O|w_I) = \frac{exp(\mathbf{a}_I\mathbf{b}_O^T)}{\sum_{j=1}^{V}exp(\mathbf{a}_I\mathbf{b}_j^T)}=\frac{exp(u_O)}{\sum_{j=1}^{V}exp(u_j)} \tag{1}</script>&emsp;&emsp;根据极大似然概率我们有Loss函数：<script type="math/tex; mode=display">
-L = -log(P(w_O|w_I)) = -log(y_O)=log(\sum_{j^=1}^{V}exp(u_j))-u_O \tag{2}</script>&emsp;&emsp;那么样本空间 $\mathcal{D}$ 上的极大似然(Loss函数)为：<script type="math/tex; mode=display">
-\mathcal{L} = -\sum_{(w_O, w_I)\in \mathcal{D}}log(P(w_O|w_I)) \tag{3}</script>对输出隐向量求偏导，针对每一项$u_j$(每一个输出隐向量)的偏导为，这里的$e_j$可以看做是一种误差:<script type="math/tex; mode=display">
-\frac{\partial L}{\partial u_j}=\frac{exp(u_j)}{\sum_{j^{'}=1}^{V}exp(u_{j^{'}})}-\mathbb{I}_{j=O}=y_j-t_j:=e_j \tag{4}</script><script type="math/tex; mode=display">
-\frac{\partial L}{\partial \mathbf{b_j}}=\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{b_j}}=e_j*\mathbf{a_i} \tag{5}</script>参数更新，可以看到针对一对输入输出词对$ \{w_I, w_O\}$，都要更新全部的输出隐向量，计算量非常大：<script type="math/tex; mode=display">
-\mathbf{b_j}^{new} \leftarrow \mathbf{b_j}^{old}-\eta*e_j*\mathbf{a_i}\quad for \ j \ in \ \{1, ..., V\} \tag{6}</script><ul>
-<li>加入$b_j$, $a_j$都是正向量时，当$j==O$时，$e_j &lt; 0$，此时$b_j$各分量增大，当$j!=O$时，$e_j &gt; 0$, 此时$b_j$个分量减少。</li>
+            <h2 id="word2vec">word2vec</h2>
+<ul>
+<li><strong>基本方法</strong>：<br />
+  设词表大小为<span class="math inline">\(V\)</span>，则每个样本(词)表示为<span class="math inline">\(x_i=(0,...,1_{i},...0)\)</span>   两层神经网络: 从输入层到隐层: <span class="math inline">\(A\in R^{V\times K}\)</span>，从隐层到输出层: <span class="math inline">\(B\in R^{K\times V}\)</span>， 表示为embedding向量即为 <span class="math inline">\(A=(\mathbf{a_1}, \mathbf{a_2}, ..., \mathbf{a_V})^T, B=(\mathbf{b_1^T}, \mathbf{b_2^T}, ..., \mathbf{b_V^T})\)</span>， 针对某个输入词<span class="math inline">\(w_I\)</span>，令<span class="math inline">\(u_j = \mathbf{a}_I\mathbf{b}_j^{T}\)</span>， 那么我们从输入词 <span class="math inline">\(w_I\)</span> 到输出词 <span class="math inline">\(w_O\)</span> 之间的条件概率<span class="math inline">\(P(w_O|w_I)\)</span>为: <span class="math display">\[
+\hat{y_O} = P(w_O|w_I) = \frac{exp(\mathbf{a}_I\mathbf{b}_O^T)}{\sum_{j=1}^{V}exp(\mathbf{a}_I\mathbf{b}_j^T)}=\frac{exp(u_O)}{\sum_{j=1}^{V}exp(u_j)} \tag{1}
+\]</span>   根据极大似然概率我们有Loss函数： <span class="math display">\[
+L = -log(P(w_O|w_I)) = -log(y_O)=log(\sum_{j^=1}^{V}exp(u_j))-u_O \tag{2}
+\]</span>   那么样本空间 <span class="math inline">\(\mathcal{D}\)</span> 上的极大似然(Loss函数)为： <span class="math display">\[
+ \mathcal{L} = -\sum_{(w_O, w_I)\in \mathcal{D}}log(P(w_O|w_I)) \tag{3}
+ \]</span> 对输出隐向量求偏导，针对每一项<span class="math inline">\(u_j\)</span>(每一个输出隐向量)的偏导为，这里的<span class="math inline">\(e_j\)</span>可以看做是一种误差: <span class="math display">\[
+\frac{\partial L}{\partial u_j}=\frac{exp(u_j)}{\sum_{j^{&#39;}=1}^{V}exp(u_{j^{&#39;}})}-\mathbb{I}_{j=O}=y_j-t_j:=e_j \tag{4}
+\]</span> <span class="math display">\[
+\frac{\partial L}{\partial \mathbf{b_j}}=\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{b_j}}=e_j*\mathbf{a_i} \tag{5}
+\]</span> 参数更新，可以看到针对一对输入输出词对$ {w_I, w_O}$，都要更新全部的输出隐向量，计算量非常大： <span class="math display">\[
+\mathbf{b_j}^{new} \leftarrow \mathbf{b_j}^{old}-\eta*e_j*\mathbf{a_i}\quad for \ j \ in \ \{1, ..., V\} \tag{6}
+\]</span>
+<ul>
+<li>加入<span class="math inline">\(b_j\)</span>, <span class="math inline">\(a_j\)</span>都是正向量时，当<span class="math inline">\(j==O\)</span>时，<span class="math inline">\(e_j &lt; 0\)</span>，此时<span class="math inline">\(b_j\)</span>各分量增大，当<span class="math inline">\(j!=O\)</span>时，<span class="math inline">\(e_j &gt; 0\)</span>, 此时<span class="math inline">\(b_j\)</span>个分量减少。</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p>对输入隐向量求偏导，由链式法则得：</p>
-<script type="math/tex; mode=display">
+<p>对输入隐向量求偏导，由链式法则得： <span class="math display">\[
 \frac{\partial L(u_1, ..., u_V)}{\partial \mathbf{a}_I} 
 = \sum_{j=1}^V\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{a}_I}
-=\sum_{j=1}^{V}e_j\mathbf{b}_j \tag{7}</script><p>参数更新：</p>
-<script type="math/tex; mode=display">\mathbf{a}_I^{new} \leftarrow \mathbf{a}_I^{old}-\eta*\sum_{j=1}^Ve_j\mathbf{b_j} \tag{8}</script><h5 id="模型变种-CBOW模型："><a href="#模型变种-CBOW模型：" class="headerlink" title="[模型变种] CBOW模型："></a>[模型变种] CBOW模型：</h5><p>&emsp;&emsp;由多个词的上下文来预测一个词<br>$P(w_O|w_I) \rightarrow P(w_O|w_{I_1}, w_{I_2}, …, w_{I_C})$，<br>此时$u_j=\frac{1}{C}(\mathbf{a}_{I_1}+…+\mathbf{a}_{I_C})\mathbf{b}_j^T$，<br>剩下的参数更新就不写了。</p>
-<h5 id="模型变种-Skip-Gram模型："><a href="#模型变种-Skip-Gram模型：" class="headerlink" title="[模型变种] Skip-Gram模型："></a>[模型变种] Skip-Gram模型：</h5><p>&emsp;&emsp;一个词预测多个上下文$P(w_O|w_I) \rightarrow P(w_{O_1},…,w_{O_C}|w_I)=\prod_{o=1}^CP(w_o|w_I)$，<br>剩下的Loss函数和参数更新就不写了。</p>
-<h5 id="复杂度分析："><a href="#复杂度分析：" class="headerlink" title="复杂度分析："></a>复杂度分析：</h5><p>&emsp;&emsp;CBOW模型针对每个样本组合$(w_{I_1}, …, w_{I_C}, w_O)$需要更新$O(V)$个输出层的隐向量，Skip-Gram为$C*V$个，<br>而每个隐向量的计算涉及到$softmax$，复杂度为$O(V)$，总的复杂度为$O(V^2)$</p>
-<h5 id="加速训练-Hierarchical-Softmax"><a href="#加速训练-Hierarchical-Softmax" class="headerlink" title="[加速训练] Hierarchical Softmax:"></a>[加速训练] Hierarchical Softmax:</h5><p>&emsp;&emsp;分层Softmax的主要思想是降低$softmax$的复杂度$O(V) \rightarrow O(log(V))$。将词表$\mathbb{V}$构建成一棵二叉树(通常为哈夫曼树)，该树共有$V$个叶子节点，则有$V-1$个中间节点。</p>
-<ul>
-<li>定义：<ul>
-<li>$n(w, j)$为从$root$到单词$w$路径上的第$j$个<strong>节点</strong>，则$(w, 1)=root$</li>
-<li>$L(w)$为从$root$到单词$w$上的路径长度，则$n(w, L(w))=w$</li>
-<li>对于任意一个中间节点$\mathbf{v^{‘}}_t$，给定输入向量$w_I$后，从该节点往左走的概率为$\sigma(\mathbf{v}^{‘}_t\mathbf{v}_{w_I})$，<br>  那么往右走的概率为$\sigma(-\mathbf{v}^{‘}_t\mathbf{v}_{w_I})$</li>
-</ul>
-</li>
-<li>概率分布，由以上定义可知：<script type="math/tex; mode=display">
-P(w_O|w_I)=\prod_{j=1}^{L(w_O)-1}\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}_{n(w,j)}^{'}\mathbf{v}_{w_I}^T)</script><ul>
-<li>其中<script type="math/tex; mode=display">
-sig(x)=\begin{cases}
-1 \quad x\ is \ true \\
--1 \quad x\ is \ false
-\end{cases}</script></li>
-<li>$\sigma(x)=\frac{1}{1+e^{-x}}$</li>
-<li>$lc(n):= leftchild   node  of  n$</li>
-<li>可以证明$\sum_{O=1}^VP(w_O|w_I)=1$</li>
-</ul>
-</li>
-<li><p>由概率分布的Loss函数如下：</p>
-<script type="math/tex; mode=display">L
+=\sum_{j=1}^{V}e_j\mathbf{b}_j \tag{7}
+\]</span> 参数更新： <span class="math display">\[\mathbf{a}_I^{new} \leftarrow \mathbf{a}_I^{old}-\eta*\sum_{j=1}^Ve_j\mathbf{b_j} \tag{8}\]</span></p>
+<h5 id="模型变种-cbow模型">[模型变种] CBOW模型：</h5>
+<p>  由多个词的上下文来预测一个词 <span class="math inline">\(P(w_O|w_I) \rightarrow P(w_O|w_{I_1}, w_{I_2}, ..., w_{I_C})\)</span>， 此时<span class="math inline">\(u_j=\frac{1}{C}(\mathbf{a}_{I_1}+...+\mathbf{a}_{I_C})\mathbf{b}_j^T\)</span>， 剩下的参数更新就不写了。 ##### [模型变种] Skip-Gram模型：   一个词预测多个上下文<span class="math inline">\(P(w_O|w_I) \rightarrow P(w_{O_1},...,w_{O_C}|w_I)=\prod_{o=1}^CP(w_o|w_I)\)</span>， 剩下的Loss函数和参数更新就不写了。 ##### 复杂度分析：   CBOW模型针对每个样本组合<span class="math inline">\((w_{I_1}, ..., w_{I_C}, w_O)\)</span>需要更新<span class="math inline">\(O(V)\)</span>个输出层的隐向量，Skip-Gram为<span class="math inline">\(C*V\)</span>个， 而每个隐向量的计算涉及到<span class="math inline">\(softmax\)</span>，复杂度为<span class="math inline">\(O(V)\)</span>，总的复杂度为<span class="math inline">\(O(V^2)\)</span></p>
+<h5 id="加速训练-hierarchical-softmax">[加速训练] Hierarchical Softmax:</h5>
+<p>  分层Softmax的主要思想是降低<span class="math inline">\(softmax\)</span>的复杂度<span class="math inline">\(O(V) \rightarrow O(log(V))\)</span>。将词表<span class="math inline">\(\mathbb{V}\)</span>构建成一棵二叉树(通常为哈夫曼树)，该树共有<span class="math inline">\(V\)</span>个叶子节点，则有<span class="math inline">\(V-1\)</span>个中间节点。 + 定义： + <span class="math inline">\(n(w, j)\)</span>为从<span class="math inline">\(root\)</span>到单词<span class="math inline">\(w\)</span>路径上的第<span class="math inline">\(j\)</span>个<strong>节点</strong>，则<span class="math inline">\((w, 1)=root\)</span> + <span class="math inline">\(L(w)\)</span>为从<span class="math inline">\(root\)</span>到单词<span class="math inline">\(w\)</span>上的路径长度，则<span class="math inline">\(n(w, L(w))=w\)</span> + 对于任意一个中间节点<span class="math inline">\(\mathbf{v^{&#39;}}_t\)</span>，给定输入向量<span class="math inline">\(w_I\)</span>后，从该节点往左走的概率为<span class="math inline">\(\sigma(\mathbf{v}^{&#39;}_t\mathbf{v}_{w_I})\)</span>， 那么往右走的概率为<span class="math inline">\(\sigma(-\mathbf{v}^{&#39;}_t\mathbf{v}_{w_I})\)</span> + 概率分布，由以上定义可知： <span class="math display">\[
+P(w_O|w_I)=\prod_{j=1}^{L(w_O)-1}\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}_{n(w,j)}^{&#39;}\mathbf{v}_{w_I}^T)
+\]</span> + 其中 <span class="math display">\[
+  sig(x)=\begin{cases}
+    1 \quad x\ is \ true \\
+    -1 \quad x\ is \ false
+  \end{cases}
+  \]</span> + <span class="math inline">\(\sigma(x)=\frac{1}{1+e^{-x}}\)</span> + <span class="math inline">\(lc(n):= leftchild \ \ node\ \ of\ \ n\)</span> + 可以证明<span class="math inline">\(\sum_{O=1}^VP(w_O|w_I)=1\)</span> + 由概率分布的Loss函数如下： <span class="math display">\[L
 =-log(P(w_O|w_I))
-=-\sum_{j=1}^{L(w_O)-1}log(\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}_{n(w,j)}^{'}\mathbf{v}_{w_I}^{T})</script></li>
-<li><p>参数更新：</p>
+=-\sum_{j=1}^{L(w_O)-1}log(\sigma(sig(n(w,j+1)==lc(n(w,j)))\mathbf{v}_{n(w,j)}^{&#39;}\mathbf{v}_{w_I}^{T})
+\]</span></p>
 <ul>
-<li>针对一对$(w_O, w_I)$样本下的更新如下：</li>
+<li>参数更新：
+<ul>
+<li>针对一对<span class="math inline">\((w_O, w_I)\)</span>样本下的更新如下：</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h5 id="加速训练-Negative-Sampling"><a href="#加速训练-Negative-Sampling" class="headerlink" title="[加速训练] Negative Sampling:"></a>[加速训练] Negative Sampling:</h5><p>&emsp;&emsp;传统的参数更新针对每一个$(w_O, w_I)$对都要更新全部词表的emb向量(softmax中分母)，负采样的思想是从全部词表中随机采样一批负向单元，仅仅利用这批负向单元来更新。<br>&emsp;&emsp;令$\mathcal{W}_{neg}=\{j_{neg_1}, j_{neg_2}, …, j_{neg_K}\}$，对于真实的输出分布，我们有：</p>
-<script type="math/tex; mode=display">
-\hat{y_j} = P(w_j|w_I)=\frac{exp(u_j)}{\sum_{j^{'}=1}^Vexp(u_{j^{'}})}</script><p>那么在负采样的情况下，我们有：</p>
-<script type="math/tex; mode=display">
+<h5 id="加速训练-negative-sampling">[加速训练] Negative Sampling:</h5>
+<p>  传统的参数更新针对每一个<span class="math inline">\((w_O, w_I)\)</span>对都要更新全部词表的emb向量(softmax中分母)，负采样的思想是从全部词表中随机采样一批负向单元，仅仅利用这批负向单元来更新。   令<span class="math inline">\(\mathcal{W}_{neg}=\{j_{neg_1}, j_{neg_2}, ..., j_{neg_K}\}\)</span>，对于真实的输出分布，我们有： <span class="math display">\[
+\hat{y_j} = P(w_j|w_I)=\frac{exp(u_j)}{\sum_{j^{&#39;}=1}^Vexp(u_{j^{&#39;}})}
+\]</span> 那么在负采样的情况下，我们有： <span class="math display">\[
 \hat{y_j}=P(w_j|w_I)=\begin{cases}
-  \frac{exp(u_j)}{\sum_{j^{'}\in \mathcal{W}_{neg} \cup \{O\}}exp(u_{j^{'}})}, \quad if\ j \in \mathcal{W}_{neg}\cup\{O\}\\
+  \frac{exp(u_j)}{\sum_{j^{&#39;}\in \mathcal{W}_{neg} \cup \{O\}}exp(u_{j^{&#39;}})}, \quad if\ j \in \mathcal{W}_{neg}\cup\{O\}\\
   0, \quad else
-\end{cases}</script><p>论文直接从对数损失的角度给出了Loss函数：</p>
-<script type="math/tex; mode=display">
-L = -log(\sigma(\mathbf{a}_I\mathbf{b}_O^T)) - \sum_{j\in \mathcal{W}_{neg}}log(\sigma(-\mathbf{a}_I\mathbf{b}_O^T))</script><h5 id="提问："><a href="#提问：" class="headerlink" title="提问："></a>提问：</h5><ol>
-<li>由以上的分析，为什么语义相近的word其embedding向量的距离更近？</li>
-<li>经验有，出现频率更高的词其embedding向量的L2长度更长，为什么？</li>
-</ol>
+\end{cases}
+\]</span> 论文直接从对数损失的角度给出了Loss函数： <span class="math display">\[
+L = -log(\sigma(\mathbf{a}_I\mathbf{b}_O^T)) - \sum_{j\in \mathcal{W}_{neg}}log(\sigma(-\mathbf{a}_I\mathbf{b}_O^T))
+\]</span> ##### 提问： 1. 由以上的分析，为什么语义相近的word其embedding向量的距离更近？ 2. 经验有，出现频率更高的词其embedding向量的L2长度更长，为什么？</p>
 
           
         
@@ -515,69 +508,71 @@ L = -log(\sigma(\mathbf{a}_I\mathbf{b}_O^T)) - \sum_{j\in \mathcal{W}_{neg}}log(
       
         
           
-            <p>&emsp;&emsp;Deep模型的可解释性也是深度学习领域内的一大研究方向。可以用在工程实践上的大概可以分为以下三种</p>
+            <p>  Deep模型的可解释性也是深度学习领域内的一大研究方向。可以用在工程实践上的大概可以分为以下三种 + 积分梯度 + MLP前向分域法(Energy) + Attention Score</p>
+<h2 id="igintegral-gradient">IG(Integral Gradient)</h2>
 <ul>
-<li>积分梯度</li>
-<li>MLP前向分域法(Energy)</li>
-<li>Attention Score</li>
-</ul>
-<h2 id="IG-Integral-Gradient"><a href="#IG-Integral-Gradient" class="headerlink" title="IG(Integral Gradient)"></a>IG(Integral Gradient)</h2><ul>
-<li><p>特征重要度(分数)应该满足两条公理：</p>
+<li>特征重要度(分数)应该满足两条公理：
 <ul>
-<li>公理一: <code>Sensitivity</code><ul>
+<li>公理一: <code>Sensitivity</code>
+<ul>
 <li>(a). 如果某个样本的某个特征有变(相对于基线值<code>baseline</code>)导致了预测值的变化，那么该特征维度的归因(重要度)应该非零<code>non-zero</code>。</li>
 <li>(b). 如果深度网络的映射(数学上<code>mathmematically</code>)不依赖于某些变量，这些变量的重要度应该持续为零(<code>always zero</code>)</li>
-</ul>
-</li>
-<li>公理二: <code>Implementation Invariance</code><ul>
+</ul></li>
+<li>公理二: <code>Implementation Invariance</code>
+<ul>
 <li>如果两个模型针对全体样本，都有同样的输出，那么这两个模型等价(<code>functionally equivalent</code>)。</li>
 <li>该特征归因(重要度)应该在两个等价模型上的值一样。</li>
-<li>如果不满足<em>公理二</em>，重要度的度量有可能会对模型不太重要的方面敏感。比如，如果一个模型的自由度较高(高于潜在映射所要求的自由度)，<br>那么模型可能因为不同的初始化或者别的什么因素收敛到两个不同的参数集上，结果这两个参数集下的模型预测输出一样。</li>
-</ul>
-</li>
-<li>公理三: <code>linearity</code><ul>
-<li>如果把两个模型 $f_1$ $f_2$ 的输出进行线性组合: $a\times f_1+b\times f_2$，那么对于线性组合后的输出的某个特征重要性应该也是其<br>组合前两个输出的特征重要度的线性组合。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>方法：</p>
+<li>如果不满足<em>公理二</em>，重要度的度量有可能会对模型不太重要的方面敏感。比如，如果一个模型的自由度较高(高于潜在映射所要求的自由度)， 那么模型可能因为不同的初始化或者别的什么因素收敛到两个不同的参数集上，结果这两个参数集下的模型预测输出一样。</li>
+</ul></li>
+<li>公理三: <code>linearity</code>
 <ul>
-<li>考虑样本空间上的两点 $x_{‘}$ 和 $x$ 之间的直线路径(<code>straightline path</code>)点上的所有梯度。积分梯度(<code>Integrated gradients</code>)<br>把这些所有梯度累积起来(<code>cumulating</code>)。事实上，积分梯度相当该路径的<code>路径积分</code>。</li>
-<li>定义：<ul>
-<li>$F: R^n \rightarrow [0,1]$</li>
-<li>第 $i$ 维特征的积分梯度为:<br>$$<br>IntegratedGrads_i(x):= (x_i - x_i^{‘})\times \int_{\alpha =0}^1<br>\frac{\partial F(\mathbf{x}’+\alpha(\mathbf{x}-\mathbf{x’}))}{\partial x_i} d\alpha<br>$$ </li>
-</ul>
-</li>
+<li>如果把两个模型 <span class="math inline">\(f_1\)</span> <span class="math inline">\(f_2\)</span> 的输出进行线性组合: <span class="math inline">\(a\times f_1+b\times f_2\)</span>，那么对于线性组合后的输出的某个特征重要性应该也是其 组合前两个输出的特征重要度的线性组合。</li>
+</ul></li>
+</ul></li>
+<li>方法：
+<ul>
+<li>考虑样本空间上的两点 <span class="math inline">\(x_{&#39;}\)</span> 和 <span class="math inline">\(x\)</span> 之间的直线路径(<code>straightline path</code>)点上的所有梯度。积分梯度(<code>Integrated gradients</code>) 把这些所有梯度累积起来(<code>cumulating</code>)。事实上，积分梯度相当该路径的<code>路径积分</code>。</li>
+<li>定义：
+<ul>
+<li><span class="math inline">\(F: R^n \rightarrow [0,1]\)</span></li>
+<li>第 <span class="math inline">\(i\)</span> 维特征的积分梯度为: <span class="math display">\[
+IntegratedGrads_i(x):= (x_i - x_i^{&#39;})\times \int_{\alpha =0}^1
+\frac{\partial F(\mathbf{x}&#39;+\alpha(\mathbf{x}-\mathbf{x&#39;}))}{\partial x_i} d\alpha
+\]</span></li>
+</ul></li>
 <li></li>
+</ul></li>
 </ul>
-</li>
+<h3 id="mlp前向分域法energy">MLP前向分域法(Energy)</h3>
+<ul>
+<li>针对由<span class="math inline">\(k\)</span>个域<code>concat</code>后过<code>Dense</code>层的结构来说(比如一般DNN模型的最后一层)，<span class="math inline">\(energy\)</span> 定义：
+<ul>
+<li>假设针对一个样本有 <span class="math inline">\(\mathbf{x} = (\mathbf{x}_1, \mathbf{x}_2,...,\mathbf{x}_k)\)</span>，即 <span class="math inline">\(k\)</span> 个分域<code>concat</code>， 每个分域的维度分别为 <span class="math inline">\(\mathbf{d} = (d_1, d_2,...,d_k); d_x = \sum_{i=1}^kd_i\)</span>，即<span class="math inline">\(\mathbf{x}\in R^{d_x}\)</span>。网络最后<code>MLP</code>部分的第一层<code>Dense</code>的<code>kernel</code>维度为 <span class="math inline">\(W \in R^{d_x\times d_0}\)</span></li>
+<li>第一层的<code>Matmul</code>可以做一下分解，其中<span class="math inline">\(w_i\in R^{d_i\times d_0}\)</span>: <span class="math display">\[
+  \begin{aligned}
+    \mathbf{v}&amp;=\mathbf{x} W\\
+    &amp;= (\mathbf{x}_1, \mathbf{x}_2,...,\mathbf{x}_k)
+        \begin{bmatrix}
+              \mathbf{w}_1,\\
+              \mathbf{w}_2,\\
+              ...,\\
+              \mathbf{w}_k
+        \end{bmatrix}\\
+    &amp;=\sum_{i=1}^k\mathbf{x}_i\mathbf{w}_i\\
+    &amp;=\sum_{i=1}^k\mathbf{v}_i
+  \end{aligned}
+\]</span></li>
+<li>那么可以令<span class="math inline">\(energy=||\mathbf{v}_i||_2\)</span>作为第<span class="math inline">\(i\)</span>个分域的特征重要度度量。</li>
+<li><span class="math inline">\(energy\)</span>综合考虑了特征和特征权重的贡献度。</li>
+</ul></li>
 </ul>
-<h3 id="MLP前向分域法-Energy"><a href="#MLP前向分域法-Energy" class="headerlink" title="MLP前向分域法(Energy)"></a>MLP前向分域法(Energy)</h3><ul>
-<li>针对由$k$个域<code>concat</code>后过<code>Dense</code>层的结构来说(比如一般DNN模型的最后一层)，$energy$ 定义：<ul>
-<li>假设针对一个样本有 $\mathbf{x} = (\mathbf{x}_1, \mathbf{x}_2,…,\mathbf{x}<em>k)$，即 $k$ 个分域<code>concat</code>，<br>每个分域的维度分别为 $\mathbf{d} = (d_1, d_2,…,d_k); d_x = \sum</em>{i=1}^kd_i$，即$\mathbf{x}\in R^{d_x}$。网络最后<code>MLP</code>部分的第一层<code>Dense</code>的<code>kernel</code>维度为 $W \in R^{d_x\times d_0}$</li>
-<li>第一层的<code>Matmul</code>可以做一下分解，其中$w_i\in R^{d_i\times d_0}$:<br>$$<br>  \begin{aligned}<pre><code>\mathbf&#123;v&#125;&amp;=\mathbf&#123;x&#125; W\\
-&amp;= (\mathbf&#123;x&#125;_1, \mathbf&#123;x&#125;_2,...,\mathbf&#123;x&#125;_k)
-    \begin&#123;bmatrix&#125;
-          \mathbf&#123;w&#125;_1,\\
-          \mathbf&#123;w&#125;_2,\\
-          ...,\\
-          \mathbf&#123;w&#125;_k
-    \end&#123;bmatrix&#125;\\
-&amp;=\sum_&#123;i=1&#125;^k\mathbf&#123;x&#125;_i\mathbf&#123;w&#125;_i\\
-&amp;=\sum_&#123;i=1&#125;^k\mathbf&#123;v&#125;_i
-</code></pre>
-  \end{aligned}<br>$$</li>
-<li>那么可以令$energy=||\mathbf{v}_i||_2$作为第$i$个分域的特征重要度度量。</li>
-<li>$energy$综合考虑了特征和特征权重的贡献度。</li>
-</ul>
-</li>
-</ul>
-<h3 id="Attention-Score"><a href="#Attention-Score" class="headerlink" title="Attention Score"></a>Attention Score</h3><ul>
+<h3 id="attention-score">Attention Score</h3>
+<ul>
 <li>具有attention结构的可以通过各个域的<code>attention score</code>作为辅助判断，不过如果attention具有<code>ResNet</code>结构，很可能很大一部分的重要度从<code>残差连接</code>结构中流走了。</li>
 </ul>
-<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><ol>
-<li>IG: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1703.01365.pdf">https://arxiv.org/pdf/1703.01365.pdf</a></li>
+<h3 id="ref">Ref:</h3>
+<ol type="1">
+<li>IG: https://arxiv.org/pdf/1703.01365.pdf</li>
 </ol>
 
           
@@ -953,5 +948,5 @@ L = -log(\sigma(\mathbf{a}_I\mathbf{b}_O^T)) - \sum_{j\in \mathcal{W}_{neg}}log(
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":-50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
 </html>
