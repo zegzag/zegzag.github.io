@@ -87,7 +87,7 @@
 <meta property="og:description" content="word2vec 基本方法：&amp;emsp;&amp;emsp;设词表大小为$V$，则每个样本(词)表示为$x_i&#x3D;(0,…,1_{i},…0)$&amp;emsp;&amp;emsp;两层神经网络: 从输入层到隐层: $A\in R^{V\times K}$，从隐层到输出层: $B\in R^{K\times V}$，表示为embedding向量即为$A&#x3D;(\mathbf{a_1}, \mathbf{a_2}, …, \m">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-04-17T11:17:00.000Z">
-<meta property="article:modified_time" content="2021-06-26T15:27:47.826Z">
+<meta property="article:modified_time" content="2021-06-26T15:28:19.011Z">
 <meta property="article:author" content="Z">
 <meta property="article:tag" content="Deep Learning">
 <meta property="article:tag" content="NLP">
@@ -340,7 +340,7 @@
         <h2 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h2><ul>
 <li><strong>基本方法</strong>：<br>&emsp;&emsp;设词表大小为$V$，则每个样本(词)表示为$x_i=(0,…,1_{i},…0)$<br>&emsp;&emsp;两层神经网络: 从输入层到隐层: $A\in R^{V\times K}$，从隐层到输出层: $B\in R^{K\times V}$，<br>表示为embedding向量即为<br>$A=(\mathbf{a_1}, \mathbf{a_2}, …, \mathbf{a_V})^T, B=(\mathbf{b_1^T}, \mathbf{b_2^T}, …, \mathbf{b_V^T})$，<br>针对某个输入词$w_I$，令$u_j = \mathbf{a}_I\mathbf{b}_j^{T}$，<br>那么我们从输入词 $w_I$ 到输出词 $w_O$ 之间的条件概率$P(w_O|w_I)$为: <script type="math/tex; mode=display">
 \hat{y_O} = P(w_O|w_I) = \frac{exp(\mathbf{a}_I\mathbf{b}_O^T)}{\sum_{j=1}^{V}exp(\mathbf{a}_I\mathbf{b}_j^T)}=\frac{exp(u_O)}{\sum_{j=1}^{V}exp(u_j)} \tag{1}</script>&emsp;&emsp;根据极大似然概率我们有Loss函数：<script type="math/tex; mode=display">
-L = -log(P(w_O|w_I)) = -log(y_O)=log(\sum_{j^=1}^{V}exp(u_j))-u_O \tag{2}</script>&emsp;&emsp;那么样本空间$\mathcal{D}$上的极大似然(Loss函数)为：<script type="math/tex; mode=display">
+L = -log(P(w_O|w_I)) = -log(y_O)=log(\sum_{j^=1}^{V}exp(u_j))-u_O \tag{2}</script>&emsp;&emsp;那么样本空间 $\mathcal{D}$ 上的极大似然(Loss函数)为：<script type="math/tex; mode=display">
 \mathcal{L} = -\sum_{(w_O, w_I)\in \mathcal{D}}log(P(w_O|w_I)) \tag{3}</script>对输出隐向量求偏导，针对每一项$u_j$(每一个输出隐向量)的偏导为，这里的$e_j$可以看做是一种误差:<script type="math/tex; mode=display">
 \frac{\partial L}{\partial u_j}=\frac{exp(u_j)}{\sum_{j^{'}=1}^{V}exp(u_{j^{'}})}-\mathbb{I}_{j=O}=y_j-t_j:=e_j \tag{4}</script><script type="math/tex; mode=display">
 \frac{\partial L}{\partial \mathbf{b_j}}=\frac{\partial L}{\partial u_j}\frac{\partial u_j}{\partial \mathbf{b_j}}=e_j*\mathbf{a_i} \tag{5}</script>参数更新，可以看到针对一对输入输出词对$ \{w_I, w_O\}$，都要更新全部的输出隐向量，计算量非常大：<script type="math/tex; mode=display">
