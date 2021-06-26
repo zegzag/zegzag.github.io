@@ -1,37 +1,931 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="classification tree,boost," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="提升树boost假设样本空间为$\mathcal{D}&#x3D;{y_i, \mathbf{x}i},\ i\in{1,…,N}$，提升树模型是以决策树模型为基础的加法集成模型，可以概括为$$f(\mathbf{x})&#x3D;f_M(\mathbf{x})&#x3D;\sum{m&#x3D;1}^Mh_m(\mathbf{x; {\Theta}_m})$$  提升树模型采用前向分步算法：   确定$f_0(\mathbf{x})&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集成学习">
+<meta property="og:url" content="http://example.com/2021/04/17/boost/index.html">
+<meta property="og:site_name" content="��">
+<meta property="og:description" content="提升树boost假设样本空间为$\mathcal{D}&#x3D;{y_i, \mathbf{x}i},\ i\in{1,…,N}$，提升树模型是以决策树模型为基础的加法集成模型，可以概括为$$f(\mathbf{x})&#x3D;f_M(\mathbf{x})&#x3D;\sum{m&#x3D;1}^Mh_m(\mathbf{x; {\Theta}_m})$$  提升树模型采用前向分步算法：   确定$f_0(\mathbf{x})&#x3D;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-04-17T11:17:00.000Z">
+<meta property="article:modified_time" content="2021-06-26T14:27:16.712Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="classification tree">
+<meta property="article:tag" content="boost">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/04/17/boost/"/>
+
+
+
+
+
+  <title>集成学习 | ��</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">��</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">��ӭ�����ҵĲ���</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/17/boost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="��">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">集成学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-17T19:17:00+08:00">
+                2021-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> �Ķ���
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="提升树boost"><a href="#提升树boost" class="headerlink" title="提升树boost"></a>提升树boost</h1><p>假设样本空间为$\mathcal{D}={y_i, \mathbf{x}<em>i},\ i\in{1,…,N}$，提升树模型是以决策树模型为基础的加法集成模型，可以概括为<br>$$<br>f(\mathbf{x})=f_M(\mathbf{x})=\sum</em>{m=1}^Mh_m(\mathbf{x; {\Theta}_m})<br>$$</p>
+<ul>
+<li>提升树模型采用前向分步算法：  <ol>
+<li>确定$f_0(\mathbf{x})=0$。</li>
+<li>第$m$步的表达式为$f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+h_m(\mathbf{x, {\Theta}_m})$。</li>
+</ol>
+</li>
+</ul>
+<p>假设第$m$步的树把样本空间划分成$J_m$个不相交${R_{1m},…,R_{J_mm}}$个区域，在每个区域上输出常量$c_j$，则第$m$棵决策树可表示为<br>$$<br>h_m(\mathbf{x},C_m)=\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})<br>$$</p>
+<h3 id="1-GBT"><a href="#1-GBT" class="headerlink" title="1. GBT"></a>1. GBT</h3><p>分类树叫做GBDT, 回归树叫做GBRT<br>对损失函数做一阶泰勒展开近似：<br>$$<br>L(y, f_m(\mathbf{x})) = L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}<em>m}))=L(y,f</em>{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}<em>m})<br>$$<br>则<br>$$<br>\Delta L = L(y, f_m(\mathbf{x})) - L(y, f</em>{m-1}(\mathbf{x})) = \frac{\partial L}{\partial f_{m-1}(\mathbf{x})}h_m(\mathbf{x; {\Theta}_m})<br>$$  </p>
+<p>要使得$\Delta L$降低，一种可选的方案为$h_m(\mathbf{x; {\Theta}<em>m})=-\frac{\partial L}{\partial f</em>{m-1}(\mathbf{x})}$，这样$\Delta L$就恒为负。当$L = L_{MSE}$时，$h_m=2(y-f_{m-1}(\mathbf{x}))=2r_{m-1}$，即前$m-1$棵树的预测的残差。  </p>
+<h4 id="GBRT算法："><a href="#GBRT算法：" class="headerlink" title="GBRT算法："></a>GBRT算法：</h4><p>算法：    </p>
+<ul>
+<li>输入：    <ul>
+<li>样本空间$\mathcal{D}={y_i, \mathbf{x}_i},\ i\in{1,…,N}$  </li>
+<li>损失函数$L(y, \hat{y})$    </li>
+</ul>
+</li>
+<li>输出：  <ul>
+<li>回归树簇$f_M$  </li>
+</ul>
+</li>
+<li>步骤：  <ul>
+<li>初始化$f_0(\mathbf{x})=argmin \sum_{i=1}^NL(y_i, c)$  </li>
+<li>$for \ \ m\ \ in\ \ [1,…,M]$:  <ul>
+<li>$for\ \ i\ \ in\ \ [1,…,N]$，计算：<br>$$<br>r_{m,i}=-\frac{\partial L(y_i, f_{m-1}(\mathbf{x}<em>i))}{\partial f</em>{m-1}(\mathbf{x}_i)}<br>$$  </li>
+<li>对${r_{m,1},…,r_{m,N}}$拟合一棵回归树，得到$J_m$个区域${R_{1m},…,R_{J_mm}}$  </li>
+<li>$for\ \ j_m\ \ in\ \ [1_m,…,J_m]$，计算：<br>$$<br>c_{j_m}=arg\ \underset{c_{j_m}}{\operatorname{min}}\sum_{\mathbf{x}<em>i\in R</em>{j_mm}}L(y_i, f_{m-1}(\mathbf{x})+c_{j_m})<br>$$  </li>
+<li>更新$f_m(\mathbf{x})=f_{m-1}(\mathbf{x})+\sum_{j_m=1}^{J_m}c_{j_m}\mathbb{I}(\mathbf{x}\in R_{j_m})$  </li>
+</ul>
+</li>
+<li>输出$f_M(\mathbf{x})$  </li>
+</ul>
+</li>
+</ul>
+<p>其他优化：  </p>
+<ol>
+<li>正则化：  </li>
+<li>采样：  </li>
+</ol>
+<h3 id="2-XGboost"><a href="#2-XGboost" class="headerlink" title="2 XGboost"></a>2 XGboost</h3><h4 id="2-1-模型刻画："><a href="#2-1-模型刻画：" class="headerlink" title="2.1 模型刻画："></a>2.1 模型刻画：</h4><p>相对于GBT，XGboost主要有两点改动：1.损失函数做二阶泰勒展开。2. 引入正则项。<br>$$<br>\begin{aligned}<br>L(y, f_m(\mathbf{x}))<br>&amp;=L(y, f_{m-1}(\mathbf{x})+h_m(\mathbf{x;{\Theta}<em>m}))\\<br>&amp;=L(y,f</em>{m-1}(\mathbf{x})) + \frac{\partial L}{\partial f_{m-1}}h_m(\mathbf{x; {\Theta}_m})<br>\end{aligned}<br>$$</p>
+<p>令：<br>$$<br>g_i=\frac{\partial L(y_i, f_{m-1}(\mathbf{x}<em>i))}{\partial f</em>{m-1}(\mathbf{x}_i)}\\<br>h_i=<br>$$</p>
+<p>引入正则项后，在样本空间$\mathcal D$上的损失函数为：<br>$$<br>\begin{aligned}<br>\mathcal{L}<br>&amp;=\Omega(h_m)<br>+\sum_{(\mathbf{x}_i, y_i)\in \mathcal{D}}L(y_i, f_m(\mathbf{x}<em>i))\\<br>&amp;=\Omega(h_m)<br>+\sum</em>{(\mathbf{x}<em>i, y_i)\in \mathcal{D}}L(y_i,f</em>{m-1}(\mathbf{x}_i))<br>+g_ih_m(\mathbf{x}_i; \mathbf{\Theta}_m)<br>+h_ih_m^2(\mathbf{x}_i; \mathbf{\Theta}_m)<br>\end{aligned}<br>$$</p>
+<p>定义正则项：<br>$$<br>\Omega(h_m)=\gamma T+\frac{1}{2}\lambda \sum_{i=1}^Tw_j^2<br>$$</p>
+<p>其中$T$为叶节点的个数，$w_j$为每个叶节点的输出值。<br>则有：<br>$$<br>\mathcal{L}=\sum_{(\mathbf{x}<em>i, y_i)\in \mathcal{D}}\left[ g_iw</em>{q(\mathbf{x}<em>i)}+h_iw</em>{q(\mathbf{x}<em>i)}^2\right] + \gamma T+\frac{1}{2}\lambda \sum</em>{j=1}^Tw_j^2+constant<br>$$</p>
+<p>若令划分到节点$j$的样本集合为$\mathbb{I}<em>j={i|q(\mathbf{x}<em>i)=j}$，则上述公式等价于：<br>$$<br>\mathcal{L}=\sum</em>{j=1}^T[(\sum</em>{i \in \mathbb{I}<em>j}g_i)w_j+\frac{1}{2}(\sum</em>{i\in \mathbb{I}_j}h_i + \lambda )w_j^2]+\gamma T + constant<br>$$</p>
+<p>令$G_j=\sum_{i \in \mathbb{I}<em>j}g_i$，$H_j=\sum</em>{i \in \mathbb{I}<em>j}h_i$，则有:<br>$$<br>\mathcal{L}=\sum</em>{j=1}^T[G_jw_j+\frac{1}{2}(H_j+\lambda )w_j^2]+\gamma T + constant<br>$$</p>
+<ul>
+<li>其中$G_j$代表划分为$j$节点的所有样本的一阶偏导数之和</li>
+<li>其中$H_j$代表了划分为$j$节点的所有样本的二阶偏导数之和</li>
+</ul>
+<p>关于$w_j$的偏导为0，则有:<br>$$<br>w_j^*=-\frac{G_j}{H_j+\lambda}<br>$$<br>则有最小损失函数:<br>$$<br>\mathcal{L}=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T+constant<br>$$</p>
+<h4 id="2-2-优化求解"><a href="#2-2-优化求解" class="headerlink" title="2.2 优化求解"></a>2.2 优化求解</h4><p>在每个叶节点上，假设进行分裂，新增划分左右子树集合分别为$\mathbb{I}_L={i|q(\mathbf{x}_i)=L}$，$\mathbb{I}_R={i|q(\mathbf{x}<em>i)=R}$，则可以定义：<br>$$<br>G_L=\sum</em>{i \in \mathbb{I}<em>L}g_i,\ H_L=\sum</em>{i \in \mathbb{I}<em>L}h_i\\<br>G_R=\sum</em>{i \in \mathbb{I}<em>R}g_i,\ H_R=\sum</em>{i \in \mathbb{I}_R}h_i\\<br>G=G_L+G_R, \ H=H_L + H_R<br>$$</p>
+<p>从而不难计算出损失增益$Gain$为：<br>$$<br>Gain=\frac{1}{2}(\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})-\lambda<br>$$</p>
+<ul>
+<li>$\lambda$是正则项，表示叶节点增大1，则树的复杂度增加1。</li>
+<li>如果$Gain&gt;0$则进行分裂，否则不进行分裂。</li>
+</ul>
+<p>算法过程：    </p>
+<ul>
+<li>输入：<ul>
+<li>样本空间$\mathcal{D}={(\mathbf{x_1},y_1),…,(\mathbf{x_n}, y_n)}$</li>
+<li>属于当前叶节点的样本下标 $index$ 的集合 $\mathbb{I}$</li>
+<li>假设输入 $\mathbf{x}$ 共 $K$ 个特征</li>
+</ul>
+</li>
+<li>输出：<ul>
+<li>当前叶节点的最佳分裂</li>
+</ul>
+</li>
+<li>过程：<ul>
+<li>计算$score\leftarrow 0,\ G\leftarrow \sum_{i \in \mathbb{I}}g_i$，$H\leftarrow \sum_{i \in \mathbb{I}}h_i$</li>
+<li>$for\ \  k \ \ in\ \ {1,…,K}:$<ul>
+<li>初始化：$G_L\leftarrow 0,\ G_R\leftarrow 0$</li>
+<li>如果当前特征 $k$ 是连续型特征，则对所有样本在 $k$ 维度上进行排序，用 $i$ 去排序样本下标。有：<br>$$<br>\begin{aligned}<br>&amp;G_L\leftarrow G_L+g_i,\ H_L\leftarrow G_L+g_i \\<br>&amp;G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R \\<br>&amp;score\leftarrow max(score,\ \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})<br>\end{aligned}<br>$$</li>
+<li>如果当前特征 $k$ 是离散型特征 ${a_{m_1},…a_{m_k}}$，其中 $a_{m_1}&lt;…&lt;a_{m_k}$。 假设每个特征值$a_j$对应的样本集合为 $\mathbb{I}<em>j$, 则$for\ \ j\ \ in\ \ {1,…,m_k}$, 计算:<br>$$<br>\begin{aligned}<br>&amp;G_L\leftarrow G_L+\sum</em>{i \in \mathbb{I}<em>j}g_i,<br>\ H_L\leftarrow H_L+\sum</em>{i \in \mathbb{I}_j}h_i\\<br>&amp;G_R\leftarrow G-G_L,\ H_R\leftarrow H-H_R\\<br>&amp;score\leftarrow max(score,\<br>   \frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H^2+\lambda})<br>\end{aligned}<br>$$</li>
+</ul>
+</li>
+<li>选取最大的 $score$ 对应的维度和拆分点作为分裂节点</li>
+</ul>
+</li>
+</ul>
+<p>几个需要弄清楚的点：    </p>
+<ol>
+<li>针对每个叶节点每次只进行一次分裂，也就是说树一定是一棵二叉树而不是多叉树</li>
+<li>从两个方面做到每次只进行一次分裂，1. 最优维度：当前待选维度的最佳维度 $k$ ; 2. 最优维度下的最佳分裂点</li>
+<li>离散值的分裂点其实就可以看做连续值的分裂点的分桶情况，<strong>近似算法</strong>(对连续值/离散值进行分桶)其实相当于把连续值和离散值两种情况进行归一了。</li>
+<li>缺失值处理：   <ul>
+<li>在上诉算法每步 $k$ 的迭代过程中，分别计算默认将缺失值加入到 <em>左子树</em> 或 <em>右子树</em> 中的 $score$，然后计算 $score$ 的最大值。</li>
+</ul>
+</li>
+</ol>
+<p>关于近似算法分桶：    <br></p>
+<ol>
+<li>全局分桶 vs 局部分桶</li>
+</ol>
+<h5 id="2-2-1-系统设计-待续-："><a href="#2-2-1-系统设计-待续-：" class="headerlink" title="2.2.1 系统设计(待续)："></a>2.2.1 系统设计(待续)：</h5><p>几个加速训练的点：</p>
+<ol>
+<li><code>pre-sort</code>预排序 <ul>
+<li>可以并行 </li>
+<li>只排序样本 $index$, 每个 $index$ 保存指向样本的指针 </li>
+</ul>
+</li>
+<li><code>catch-aware</code>预取</li>
+<li><code>out-of-core</code>计算</li>
+</ol>
+<h3 id="3-lightGBM"><a href="#3-lightGBM" class="headerlink" title="3. lightGBM"></a>3. lightGBM</h3><p>&emsp;&emsp; <code>lightGBM</code>主要是创新点是来自对训练速度的提升上，主要有两点：1. 减少训练样本的基于梯度的采样-<code>GOSS(Gradient-based One-Side Sampling)</code>；2. 减少特征数量的互斥特征捆绑-<code>Exclusive Feature Bundling(EFB)</code> <br></p>
+<h4 id="GOSS"><a href="#GOSS" class="headerlink" title="GOSS "></a>GOSS <br></h4><ul>
+<li><p>输入：</p>
+<ul>
+<li>样本 $\mathcal{D}$，假设样本个数为 $N$</li>
+<li>大梯度采样比 $a$</li>
+<li>小梯度采样比 $b$</li>
+<li>当前模型 $f(\mathbf{x})=\sum_{j=1}^{m-1}h_j(\mathbf{x})$</li>
+</ul>
+</li>
+<li><p>输出：</p>
+<ul>
+<li>下一个子树 $h_m$</li>
+</ul>
+</li>
+<li><p>过程：</p>
+<ul>
+<li>计算：<ul>
+<li>计算每个样本的损失梯度为 $\mathbf{g}={g_1,…,g_N}$</li>
+<li>大梯度采样比例为 $topN=aN$</li>
+<li>小梯度的采样比例为 $randN=bN$</li>
+<li>修正因子 $factor=\frac{1-a}{b}$</li>
+</ul>
+</li>
+<li>采样：<ul>
+<li>根据 $\mathbf{g}$ 的从大到小的排列顺序，选取 $topN$ 的样本作为训练样本进入本轮训练。</li>
+<li>从剩下的样本里随机选取 $randN$ 的样本进入本轮训练。</li>
+</ul>
+</li>
+<li>更新数据集：<ul>
+<li>从 $topN$ 中选取的样本，其样本权重为 $1$</li>
+<li>从 $randN$ 中选取的样本，其样本权重为 $factor$，即修正梯度值</li>
+</ul>
+</li>
+<li>在新的数据集上拟合 $h_m$</li>
+</ul>
+</li>
+<li><p>几个值得注意的点：</p>
+<ul>
+<li>可以从数学上证明，随着样本数量的增加，该采样方法训练的模型和一般情况下的模型误差趋向于0</li>
+<li>$a=1,\ b=1$ 即为一般的随机采样</li>
+</ul>
+</li>
+</ul>
+<h4 id="EFB"><a href="#EFB" class="headerlink" title="EFB "></a>EFB <br></h4><p>传统的降低特征维度的方法是 $PCA$，即不同特征之间可能包含了某些重复的信息。<code>lightGBM</code>的思想是多个特征之间很可能有很多互斥的特征，这些特征不可能同时取得非0值，如果能将这些特征捆绑起来，那么特征数量将大大减少。于是就出现了两个问题：</p>
+<ol>
+<li>如何找到互斥的特征 <br></li>
+<li>如何捆绑 <br></li>
+</ol>
+<p>定义：<br></p>
+<ul>
+<li>打包特征集 := 该集合中的特征两两互斥 <br></li>
+<li>互斥定义：给定数据集 $\mathcal{D}={y_i, \mathbf{x}<em>i},\ i\in{1,…,N}$。其中 $\mathbf{x}<em>i=(x</em>{i_1},…x</em>{i_K})$。如果对于所有样本，$x_{i,j}\neq 0\ and\ x_{i,k}\neq 0$ 都不会出现。则认为特征 $j$ 和特征 $k$ 互斥。<br></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/classification-tree/" rel="tag"># classification tree</a>
+          
+            <a href="/tags/boost/" rel="tag"># boost</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/17/embedding/" rel="next" title="Embedding">
+                <i class="fa fa-chevron-left"></i> Embedding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/04/17/ctr/" rel="prev" title="ctr">
+                ctr <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          </div>
+          
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E6%A0%91boost"><span class="nav-number">1.</span> <span class="nav-text">提升树boost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-GBT"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. GBT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GBRT%E7%AE%97%E6%B3%95%EF%BC%9A"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">GBRT算法：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-XGboost"><span class="nav-number">1.0.2.</span> <span class="nav-text">2 XGboost</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E6%A8%A1%E5%9E%8B%E5%88%BB%E7%94%BB%EF%BC%9A"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">2.1 模型刻画：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E4%BC%98%E5%8C%96%E6%B1%82%E8%A7%A3"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">2.2 优化求解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1-%E5%BE%85%E7%BB%AD-%EF%BC%9A"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">2.2.1 系统设计(待续)：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-lightGBM"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. lightGBM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GOSS"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">GOSS 
+</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EFB"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">EFB 
+</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> ��������
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> �ܷ�����
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
