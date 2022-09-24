@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C++,Concurrency," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C++ 必读书籍 《深入理解 C++：C++11 新特性解析与应用》 《Cplusplus Concurrency in Action》 《深入探索 C++ 对象模型》 《C++ template 完全解读》 C++ 移动语义与右值 C++ 程序里面的变量可以归为三类：  左值(lvalue):  通俗的讲，带有变量名称的值。  纯右值(prvalue):  形如：1+3的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++">
+<meta property="og:url" content="http://example.com/2021/11/01/C++/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="C++ 必读书籍 《深入理解 C++：C++11 新特性解析与应用》 《Cplusplus Concurrency in Action》 《深入探索 C++ 对象模型》 《C++ template 完全解读》 C++ 移动语义与右值 C++ 程序里面的变量可以归为三类：  左值(lvalue):  通俗的讲，带有变量名称的值。  纯右值(prvalue):  形如：1+3的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-11-01T11:17:00.000Z">
+<meta property="article:modified_time" content="2021-11-01T11:17:00.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Concurrency">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/11/01/C++/"/>
+
+
+
+
+
+  <title>C++ | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/01/C++/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-11-01T19:17:00+08:00">
+                2021-11-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-11-01T19:17:00+08:00">
+                2021-11-01
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="c-必读书籍">C++ 必读书籍</h2>
+<p>《深入理解 C++：C++11 新特性解析与应用》 《Cplusplus Concurrency in
+Action》 《深入探索 C++ 对象模型》 《C++ template 完全解读》</p>
+<h2 id="c-移动语义与右值">C++ 移动语义与右值</h2>
+<p>C++ 程序里面的变量可以归为三类：</p>
+<ul>
+<li>左值(<code>lvalue</code>):
+<ul>
+<li>通俗的讲，带有变量名称的值。</li>
+</ul></li>
+<li>纯右值(<code>prvalue</code>):
+<ul>
+<li>形如：<code>1+3</code>的表达式的值</li>
+<li>形如：<code>1, 'c', true</code>不跟对象关联的值</li>
+<li>形如：非引用返回的临时变量值。
+<ul>
+<li>由于函数的返回值(非引用类型)的临时变量是右值，移动语义实现时，我们可以通过构造函数进行传参（std中各种emplace的实现）。</li>
+</ul></li>
+</ul></li>
+<li>将亡值(<code>xvalue</code>)，和<strong>右值引用</strong>相关:
+<ul>
+<li>返回值类型为 <code>T&amp;&amp;</code> 的值</li>
+<li><code>std::move()</code>的值</li>
+<li>转换为 <code>T&amp;&amp;</code> 类型转换函数的返回值。</li>
+</ul></li>
+</ul>
+<p>废话不多讲，直接上代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// construct 0</span></span><br><span class="line">    <span class="built_in">A</span>() : <span class="built_in">val_ptr</span>(<span class="keyword">new</span> <span class="built_in">int</span>(<span class="number">0</span>)) &#123; </span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Construct do: &quot;</span>&lt;&lt;++construct_num&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">A</span>(<span class="type">int</span> val) : <span class="built_in">val_ptr</span>(<span class="keyword">new</span> <span class="built_in">int</span>(val)) &#123; </span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Construct do: &quot;</span>&lt;&lt;++construct_num&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// construct 1</span></span><br><span class="line">    <span class="built_in">A</span>(<span class="type">const</span> A&amp; a) &#123;</span><br><span class="line">        val_ptr = <span class="keyword">new</span> <span class="built_in">int</span>(*a.val_ptr);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;CopyConstruct do: &quot;</span>&lt;&lt;++copy_construct_num&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// construct 2</span></span><br><span class="line">    <span class="built_in">A</span>(A&amp;&amp; a) : <span class="built_in">val_ptr</span>(a.val_ptr) &#123;</span><br><span class="line">        a.val_ptr = <span class="literal">nullptr</span>;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;MoveConstruct do: &quot;</span>&lt;&lt;++move_construct_num&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">A</span>() &#123;</span><br><span class="line">        <span class="keyword">delete</span> val_ptr;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;Deconstruct do: &quot;</span>&lt;&lt;++destruct_num&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span>* val_ptr;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> construct_num;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> copy_construct_num;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> move_construct_num;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> destruct_num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> A::construct_num = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> A::copy_construct_num = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> A::move_construct_num = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> A::destruct_num = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">A <span class="title">buildA</span><span class="params">()</span> </span>&#123; <span class="comment">//注意此处的返回值是右值</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;Begin to buildA&quot;</span>&lt;&lt;endl;</span><br><span class="line">    A a;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Ref1</span><span class="params">(<span class="type">int</span>&amp;)</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Ref2</span><span class="params">(<span class="type">const</span> <span class="type">int</span>&amp;)</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ComplexRef1</span><span class="params">(A&amp;)</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ComplexRef2</span><span class="params">(<span class="type">const</span> A&amp;)</span></span>&#123;&#125;;</span><br><span class="line"><span class="comment">/*----&gt; 从 Ref 到 ComplexRef 的区别来看，就逐渐可以明白std中各种容器的emplace</span></span><br><span class="line"><span class="comment">的操作了，进而明白右值引用的适用场景了。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// case 0</span></span><br><span class="line">    A a1 = <span class="built_in">buildA</span>();</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;-----------&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// case 1</span></span><br><span class="line">    A&amp;&amp; a2 = <span class="built_in">buildA</span>(); <span class="comment">// 延长buildA()临时变量的生命周期至a2</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;-----------&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// case 2</span></span><br><span class="line">    <span class="type">const</span> A&amp; a3 = <span class="built_in">buildA</span>(); <span class="comment">//常量左值引用可以绑定右值，可以通过编译</span></span><br><span class="line">    <span class="built_in">Ref2</span>(<span class="number">1</span>); <span class="comment">// 常量左值引用绑定右值，可以通过编译</span></span><br><span class="line">    <span class="built_in">ComplexRef2</span>(<span class="built_in">A</span>()); <span class="comment">// 常量左值引用绑定右值，可以通过编译</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// A&amp; a3 = buildA(); //左值引用无法绑定右值，无法通过编译</span></span><br><span class="line">    <span class="comment">// Ref1(1); // 左值引用无法绑定右值，无法通过编译</span></span><br><span class="line">    <span class="comment">// ComplexRef1(A()); // 无法通过编译</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g++ -std=c++<span class="number">11</span> demo.cpp -fno-elide-constructors</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>现代C++编译器太聪明了，会帮我们做很多的优化操作，为了更加看清中间结果的情况，把一些编译优化给去掉。在去掉编译器优化的结果下</p>
+<ul>
+<li>如果没有定义<code>construct 2</code>：
+<ul>
+<li><p>case 0的结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Begin to buildA</span><br><span class="line">Construct <span class="keyword">do</span>: 1</span><br><span class="line">CopyConstruct <span class="keyword">do</span>: 1</span><br><span class="line">Deconstruct <span class="keyword">do</span>: 1</span><br><span class="line">CopyConstruct <span class="keyword">do</span>: 2</span><br><span class="line">Deconstruct <span class="keyword">do</span>: 2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>1次直接构造，2次复制构造。</li>
+<li>首先创建一个临时变量（该临时变量是一个纯右值）用于储存buildA()的返回值，此时有一次复制构造；然后再将该临时变量赋值给
+a1(左值)，此时又有一次复制构造。</li>
+</ul></li>
+<li><p>case 1的结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Begin to buildA</span><br><span class="line">Construct <span class="keyword">do</span>: 2</span><br><span class="line">CopyConstruct <span class="keyword">do</span>: 3</span><br><span class="line">Deconstruct <span class="keyword">do</span>: 3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>1次直接构造，1次复制构造。</li>
+</ul></li>
+</ul></li>
+<li>如果定义了<code>construct 2</code>:
+<ul>
+<li><p>case 0 的结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Begin to buildA</span><br><span class="line">Construct <span class="keyword">do</span>: 1</span><br><span class="line">MoveConstruct <span class="keyword">do</span>: 1</span><br><span class="line">Deconstruct <span class="keyword">do</span>: 1</span><br><span class="line">MoveConstruct <span class="keyword">do</span>: 2</span><br><span class="line">Deconstruct <span class="keyword">do</span>: 2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>1次直接构造，2次移动构造。</li>
+</ul></li>
+<li><p>case 1 的结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Begin to buildA</span><br><span class="line">Construct <span class="keyword">do</span>: 2</span><br><span class="line">MoveConstruct <span class="keyword">do</span>: 3</span><br><span class="line">Deconstruct <span class="keyword">do</span>: 3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>1次直接构造，1次移动构造。</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>上面各种case的组合和运行结果值得细细揣摩，对理解右值引用有着非常好的促进作用。</p>
+<h2 id="c-memory">C++ Memory</h2>
+<ul>
+<li><p>代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">print</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derive</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Derive</span>() = <span class="keyword">default</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        std::cout&lt;&lt;<span class="string">&quot;this is a derived class&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">printFunc</span><span class="params">(Derive&amp; dd)</span> </span>&#123;</span><br><span class="line">  std::shared_ptr&lt;Derive&gt; p = std::<span class="built_in">shared_ptr</span>&lt;Derive&gt;(&amp;dd);</span><br><span class="line">  std::cout&lt;&lt;p.<span class="built_in">get</span>()&lt;&lt;std::endl;</span><br><span class="line">  p-&gt;<span class="built_in">print</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    shared_ptr&lt;<span class="type">int</span>&gt; p1 = <span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">10</span>);</span><br><span class="line">    shared_ptr&lt;<span class="type">int</span>&gt; p2 = <span class="built_in">make_shared</span>&lt;<span class="type">int</span>&gt;(<span class="number">100</span>);</span><br><span class="line">    <span class="keyword">auto</span> p3 = p1;</span><br><span class="line">    <span class="keyword">auto</span> p4 = std::<span class="built_in">move</span>(p2);</span><br><span class="line"></span><br><span class="line">    shared_ptr&lt;Derive&gt; b = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">auto</span> c = b;</span><br><span class="line">    <span class="keyword">auto</span> d = std::<span class="built_in">shared_ptr</span>&lt;Derive&gt;(c.<span class="built_in">get</span>()); <span class="comment">// 有了这句之后，main 函数结束时会 core</span></span><br><span class="line">    std::cout&lt;&lt;&amp;*b&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;c.<span class="built_in">get</span>()&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;d.<span class="built_in">get</span>()&lt;&lt;std::endl; <span class="comment">// 所有 shared_ptr 共用同一内存</span></span><br><span class="line">    std::cout&lt;&lt;b.<span class="built_in">use_count</span>()&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;c.<span class="built_in">use_count</span>()&lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt;d.<span class="built_in">use_count</span>()&lt;&lt;std::endl; <span class="comment">// 输出为2 2 1</span></span><br><span class="line"></span><br><span class="line">    std::shared_ptr&lt;Derive&gt; p = std::<span class="built_in">make_shared</span>&lt;Derive&gt;(); <span class="comment">// 构造函数，两块内存</span></span><br><span class="line">    std::shared_ptr&lt;Derive&gt; p = std::<span class="built_in">make_shared</span>&lt;Derive&gt;(dd); <span class="comment">// 复制构造函数，两块内存，p的内存不同于dd</span></span><br><span class="line">    </span><br><span class="line">    Derive dd;</span><br><span class="line">    <span class="built_in">printFunc</span>(dd); </span><br><span class="line">    dd.<span class="built_in">print</span>(); <span class="comment">// 出错，内存泄漏，dd的在printFunc()结束后被析构掉。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    cout&lt;&lt; p1.<span class="built_in">use_count</span>() &lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt; p3.<span class="built_in">use_count</span>() &lt;&lt;endl; <span class="comment">// 所有 shared_ptr 共享引用计数</span></span><br><span class="line">    cout&lt;&lt; p2.<span class="built_in">use_count</span>() &lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt; p4.<span class="built_in">use_count</span>() &lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt; (p2.<span class="built_in">get</span>() == <span class="literal">nullptr</span>) &lt;&lt;<span class="string">&quot; &quot;</span>&lt;&lt; (p4.<span class="built_in">get</span>() == <span class="literal">nullptr</span>)&lt;&lt; endl; <span class="comment">// move 后移交控制权，内部指针为空，此时再引用该指针就会引发内存泄漏</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">0x0 0x0 0x0</span><br><span class="line">0 0 1</span><br><span class="line">2 2</span><br><span class="line">0 1</span><br><span class="line">1 0</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从第一行输出可以看到，所有</li>
+</ul></li>
+</ul>
+<h2 id="c-多线程">C++ 多线程</h2>
+<p>  稍微复杂一些的环境和模型几乎无法绕开并发编程。典型的场景有</p>
+<ul>
+<li>消息队列模型 (生产者消费者模型)</li>
+<li>GUI编程。</li>
+<li>搜索引擎。一个引擎的整个处理过程，从分词，召回，粗排，精排，重排，每一步中各个模块逻辑上能并行处理的
+(比如待排doc的特征assign)，异步处理的(比如各特征来源的获取，如果一个特征请求时间很长，就可以在逻辑上在一开始处执行，最后处返回结果，中间的时间多核CPU可以同时来处理其他的逻辑)。如果单以单线程运行的话，那么整个链路的耗时将是难以忍受之长。</li>
+</ul>
+<p>  此文对多线程的并发和异步编程做一些归纳总结
+  一个程序的运行，总体上是由 <strong>数据(<code>data</code>)</strong>
+以及 <strong>对数据的操作(<code>func</code>)</strong> 组成的。操作是需要
+<strong>一定的时间<code>duration</code></strong>
+执行完成的。操作可以被拆分成多个简单的子操作的（最简单的子操作即CPU指令，编译过程就是把复杂操作拆分成单个CPU指令的过程）。单线程程序即：对<strong>同一块数据</strong>同一时刻<code>timestamp</code>仅有<strong>一个操作</strong>进行，多线程即有<strong>多个操作</strong>进行。要保证操作之间的同步协调，即需要对<strong>操作</strong>进行<strong>原子化</strong>。</p>
+<ul>
+<li>原子化操作：
+<ul>
+<li>最基础的操作就是<strong>CPU指令</strong>，它本身就是原子化的。</li>
+<li>针对<code>data</code>的最基础的两个操作：
+<strong>读操作(<code>read</code>)</strong> 和
+<strong>写操作(<code>write</code>)</strong>，可以被语言设计打包成原子性的操作，这就是
+C++ <code>&lt;atomic&gt;</code> 库的内容。<em>《C++ Concurrency in
+Action》第5, 7章</em></li>
+<li>对于更复杂的用户自定义的各种操作(<code>function</code>)，较为简单的原子化的手段是
+<strong>锁机制(<code>&lt;mutex&gt;</code>)</strong>
+头文件的内容，涉及到<code>mutex, lock_guard, unique_lock, conditional_variable</code>等概念。
+其本质是
+<strong>通过锁机制来让线程可以挂起（等待）从而实现对同一数据操作的原子化</strong>
+的目的。<em>《C++ Concurrency in Action》第3,4,6章</em></li>
+<li>通过设计<strong>原子化的数据</strong>（即对该数据基础的<strong>读操作</strong>和<strong>写操作</strong>进行原子化），保证用户自定义函数内部每一步操作的原子性和同步性，我们可以<strong>绕过</strong>锁机制来设计<code>concurrent funcion</code>，从而实现更高效的并发。<em>《C++
+Concurrency in Action》第7, 8章</em></li>
+</ul></li>
+</ul>
+<h3 id="应用">应用</h3>
+<p>C++官方Reference已经对各种接口有详细的介绍。这里不多BB，直接通过一些应用来学习C++的多线程库和编程。</p>
+<ul>
+<li><p>应用1：线程安全队列(带锁)</p></li>
+<li><p>应用2：线程池</p></li>
+<li><p>应用3：定时任务(时钟)</p></li>
+<li><p>应用4：针对同一块内存区域的并发读写</p></li>
+</ul>
+<h2 id="c-模板">C++ 模板</h2>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/Concurrency/" rel="tag"># Concurrency</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/26/Bert/" rel="next" title="Bert">
+                <i class="fa fa-chevron-left"></i> Bert
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/25/LTR/" rel="prev" title="LTR">
+                LTR <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E5%BF%85%E8%AF%BB%E4%B9%A6%E7%B1%8D"><span class="nav-number">1.</span> <span class="nav-text">C++ 必读书籍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%E4%B8%8E%E5%8F%B3%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">C++ 移动语义与右值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-memory"><span class="nav-number">3.</span> <span class="nav-text">C++ Memory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">C++ 多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">4.1.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E6%A8%A1%E6%9D%BF"><span class="nav-number">5.</span> <span class="nav-text">C++ 模板</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

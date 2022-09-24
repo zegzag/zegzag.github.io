@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Engineering,Spark,Map Reduce," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="工作中被一个分布式排序任务给整了，这里记录一下坑和经验。  pyspark 自定义python环境  首先下载anaconda，然后用anaconda里的pip把依赖的python包下载下来，然后整体打包anaconda.zip并上传到hdfs上，假设其上传的地址为PYTHON_DIST 然后运行spark脚本，其命令如下，分别配置driver和executor端的python环境。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark">
+<meta property="og:url" content="http://example.com/2021/09/14/Spark/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="工作中被一个分布式排序任务给整了，这里记录一下坑和经验。  pyspark 自定义python环境  首先下载anaconda，然后用anaconda里的pip把依赖的python包下载下来，然后整体打包anaconda.zip并上传到hdfs上，假设其上传的地址为PYTHON_DIST 然后运行spark脚本，其命令如下，分别配置driver和executor端的python环境。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-14T11:17:00.000Z">
+<meta property="article:modified_time" content="2022-01-11T10:02:00.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Engineering">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="Map Reduce">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/09/14/Spark/"/>
+
+
+
+
+
+  <title>Spark | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/14/Spark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spark</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-14T19:17:00+08:00">
+                2021-09-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2022-01-11T18:02:00+08:00">
+                2022-01-11
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>工作中被一个分布式排序任务给整了，这里记录一下坑和经验。</li>
+</ul>
+<h3 id="pyspark-自定义python环境">pyspark 自定义python环境</h3>
+<ul>
+<li>首先下载anaconda，然后用anaconda里的pip把依赖的python包下载下来，然后整体打包anaconda.zip并上传到hdfs上，假设其上传的地址为<code>PYTHON_DIST</code></li>
+<li>然后运行spark脚本，其命令如下，分别配置<code>driver</code>和<code>executor</code>端的python环境。anaconda将动态库依赖全部装在自己的目录下，所以还要将<code>LD_LIBRARY_PATH</code>设置成anaconda目录
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">spark-submit \</span><br><span class="line">    --master $MASTER\</span><br><span class="line">    --deploy-mode cluster \</span><br><span class="line">    --queue $QUEUE \</span><br><span class="line">    --num-executors 500 \</span><br><span class="line">    --archives $PYTHON_DIST \</span><br><span class="line">    --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./anaconda3.zip/anaconda3/bin/python \</span><br><span class="line">    --conf spark.yarn.appMasterEnv.PYSPARK_DRIVER_PYTHON=./anaconda3.zip/anaconda3/bin/python \</span><br><span class="line">    --conf spark.yarn.appMasterEnv.LD_LIBRARY_PATH=./anaconda3.zip/anaconda3/lib \</span><br><span class="line">    --conf spark.executorEnv.PYSPARK_PYTHON=./anaconda3.zip/anaconda3/bin/python \</span><br><span class="line">    --conf spark.executorEnv.LD_LIBRARY_PATH=./anaconda3.zip/anaconda3/lib \</span><br><span class="line">    --conf spark.executor.heartbeatInterval=60s \</span><br><span class="line">    --conf spark.network.timeout=3600s \</span><br><span class="line">    --conf spark.executor.memory=4g \</span><br><span class="line">    --conf spark.executor.cores=4 \</span><br><span class="line">    --files $FILE_PATH \</span><br><span class="line">    $EXEC_FILE $MODE $PATH_save_ngram $PATH_save_sim</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="经典topk问题的分布式算法">经典topK问题的分布式算法</h3>
+<ol type="1">
+<li>单类问题的topK: <code>(key, val)</code>
+<ol type="1">
+<li><p><code>rdd.sortByKey().take(K)</code>。关于这条命令的底层逻辑参见
+<em>Ref:1</em>。</p>
+<ul>
+<li>过程：1.
+首先spark会对所有数据做shuffle以保证不同partition之间有序，即分区。2.
+然后每个partition内部进行排序。其实就是桶排序原理。</li>
+<li>时间复杂度：令<span class="math inline">\(u=\frac{N}{k},\
+p=\frac{k}{c};\ \ O(N) + O(p*u*log(u))\)</span>；
+第一项为分桶，第二项为桶内排序，<span class="math inline">\(k\)</span>
+为repartition 数量, <span class="math inline">\(c\)</span> 为分配的核数,
+<span class="math inline">\(u\)</span> 即实际执行的并行度, <span
+class="math inline">\(p\)</span> 每个 partition 的大小。</li>
+</ul></li>
+<li><p>伪代码如下： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rdd.mapPartition(top_K_func) \</span><br><span class="line">   .repartition(1) \</span><br><span class="line">   .mapPartition(top_K_func)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>过程：分别在每个 partition
+内部小顶堆取topK，collect数据后再小顶堆取topK。<code>topK_func</code>
+为小顶堆取 topK 解法。</li>
+<li>时间复杂度：<span class="math inline">\(O(p*(u +
+k*log(k))+k*log(k))\)</span></li>
+<li>2.还可以加速，因为K是全局的，所以每个partition只需取<span
+class="math inline">\(\lceil K/k \rceil\)</span>个数就可以了。</li>
+</ul></li>
+</ol>
+<ul>
+<li>对比1.1, 1.2的时间复杂度可以发现，假设N为十亿(<span
+class="math inline">\(10^{10})\)</span>量级，K为千量级(<span
+class="math inline">\(10^{3}\)</span>)。那么1.的整体时间复杂度差不多为<span
+class="math inline">\(10^{10}\)</span>，2.的整体时间复杂度为<span
+class="math inline">\(\frac{1}{c}*10^{10}\)</span>，差不多有多少个核，就会加快多少倍。</li>
+</ul></li>
+<li>多类问题的topK:
+<code>(key_1, key_2, ..., key_T, val)</code>。<code>val</code>分别相对于<code>key_i</code>排序返回
+topK 并整合结果。
+<ol type="1">
+<li><p><code>T*rdd.sortByKey().take(K)</code>，时间复杂度为<span
+class="math inline">\(O(T*(N + p*u*log(u)))\)</span></p></li>
+<li><p>伪代码如下： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rdd.mapPartition(T*topK_func) \</span><br><span class="line">   .repartition(1) \</span><br><span class="line">   .mapPartition(T*topK_func)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>时间复杂度<span class="math inline">\(O(T*p*(u + k*log(k)) +
+T*k*log(k))\)</span></li>
+</ul></li>
+</ol>
+<ul>
+<li>同1.
+的对比，差不多分配多少个核就会加快多少倍，如果每个在每个parition内部采用多线程并发执行<code>T</code>次的排序，则速度还可以加倍。</li>
+</ul></li>
+</ol>
+<ul>
+<li>Ref:
+<ol type="1">
+<li>https://www.zhihu.com/question/34771277</li>
+</ol></li>
+</ul>
+<h3 id="一些spark-apiconf的总结">一些spark api/conf的总结</h3>
+<p>spark接口和配置非常多，这里做些总结方便以后查阅</p>
+<ul>
+<li>spark <code>sortByKey()</code>会进行repartition操作。
+如果<code>locally</code>
+sort，即每个partition进行sort，用<code>repartitionAndSortWithinPartition()</code>操作</li>
+<li><code>spark.sql.shuffle.partitions</code>: sparkSQL
+做join或aggregation等shuffle时的配置，大表join的时候，如果设置过低，可能存在内存溢出。<code>df.repartition()</code>在sql
+shuffle场景下(比如join)不管用。</li>
+<li><code>spark.executor.memory</code>: executor的内存</li>
+<li><code>spark.executor.cores</code>:
+executor的核数，计算密集型任务时可以把这个调大些</li>
+<li><code>spark.network.timeout</code>:
+连接超时时间，碰到一个partition计算时间较长的时候，这个需要设置大一些，不然可能会被<code>driver</code>端判断<code>dead</code></li>
+<li><code>spark.sql.adaptive.enabled=true</code>: 自动设置SQL Shuffle
+Reduce的个数</li>
+<li><code>spark.sql.function.udf</code>:
+定义udf函数时，函数实际的返回值一定要和<code>udf</code>注册时设置的返回值类型相同，不然全程可以跑通，但是结果会全部返回<code>null</code>(巨坑)。</li>
+</ul>
+<h3 id="sparkhive-sql-高级用法">Spark/Hive SQL 高级用法</h3>
+<ul>
+<li>spark SQL <code>SELECT a.xxx</code> 后出来的列名为 <code>xxx</code>
+而非 <code>a.xxx</code></li>
+<li>explode</li>
+<li>lateral view</li>
+<li>collect as map:
+https://stackoverflow.com/questions/41819275/how-to-use-groupby-to-collect-rows-into-a-map</li>
+</ul>
+<h3 id="section"></h3>
+<h3 id="关于用java-spark还是pyspark的问题">关于用java
+spark还是pyspark的问题</h3>
+<ul>
+<li><code>pyspark</code>几个长处：1.代码量短，常规的任务用pyspark开发速度要比java
+spark更快。
+2.python生态圈对于数据处理的支持要远远超过java，涉及到一些较复杂的科学计算，机器学习或深度学习pyspark的支持更好。</li>
+<li><code>java spark</code>：由于大数据处理生态圈几乎全是(类)java语言开发，比如kafka,
+flink, spark，以及jdbc等的存在，当涉及到
+复杂的外部交互读写存储时，此时pyspark就显得力不从心了。并且用java语言开发spark的运行速度要更快。</li>
+</ul>
+<h3 id="关于写spark的一些经验">关于写spark的一些经验</h3>
+<ul>
+<li>写spark任务开始前，就要把可能的坑给考虑进来，把这种考量带进代码结构的设计中去。完成目标的方法可能有多种，但是哪种是最鲁棒，
+调试最方便，失败重启代价最低，运行速度最快，资源消耗最小的方案。这个真是要不停的实践才能总结出来。
+<ul>
+<li>一般而言，如果对执行过程成功率不自信的话，比较建议将一次大的spark任务分stage执行，并把每个stage的中间结果存起来。这样在调试更方便，重启代价也更低。</li>
+<li>如果执行耗时很长，且对数据完全性没有要求的话，在最后一个save之前不要repartition再save，这样前面的task执行多少，就会有多少个part被save下来。不然可能failed
+task过多后，最后一丁点结果也看不到。</li>
+</ul></li>
+<li>写逻辑时，就要考虑的集群的稳定性，以及运行速度的问题。</li>
+<li>spark
+读取文件时候的初始task数量并不一定等于文件partition数量的，如果原始hdfs储存的文件是大量分散的小文件，那么spark的初始task会自动的进行合并到比较合理的初始task数量上。</li>
+<li>如果针对每条执行的 map_function 准备时间较长(比如加载model,
+client等)，那么采用mapPartition()能够大大缩减执行时间，以及提升运行的健壮性。</li>
+<li>用spark做join的时候，一定要注意【<strong>数据重复问题</strong>】</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Engineering/" rel="tag"># Engineering</a>
+          
+            <a href="/tags/Spark/" rel="tag"># Spark</a>
+          
+            <a href="/tags/Map-Reduce/" rel="tag"># Map Reduce</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/09/Blog/" rel="next" title="博客踩坑">
+                <i class="fa fa-chevron-left"></i> 博客踩坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/09/14/Engineering/" rel="prev" title="Engineering">
+                Engineering <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#pyspark-%E8%87%AA%E5%AE%9A%E4%B9%89python%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">pyspark 自定义python环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8topk%E9%97%AE%E9%A2%98%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">经典topK问题的分布式算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9Bspark-apiconf%E7%9A%84%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">一些spark api&#x2F;conf的总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sparkhive-sql-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">Spark&#x2F;Hive SQL 高级用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section"><span class="nav-number">5.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%94%A8java-spark%E8%BF%98%E6%98%AFpyspark%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">关于用java
+spark还是pyspark的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%86%99spark%E7%9A%84%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C"><span class="nav-number">7.</span> <span class="nav-text">关于写spark的一些经验</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

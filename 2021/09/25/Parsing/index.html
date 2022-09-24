@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,Dependency/Continucy Parsing,Computational Semantics," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文大多整理翻译自斯坦福大学《Speech and Language Processing》书籍手稿。 Constituency Parsing 基础概念  选区 (constituency)  语法选区(constituency)产生于一组词可以表征单一单元(single units)，比如英语里面的：  名词短语 (noun phrase):  名词短语一般出现在动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Parsing">
+<meta property="og:url" content="http://example.com/2021/09/25/Parsing/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="本文大多整理翻译自斯坦福大学《Speech and Language Processing》书籍手稿。 Constituency Parsing 基础概念  选区 (constituency)  语法选区(constituency)产生于一组词可以表征单一单元(single units)，比如英语里面的：  名词短语 (noun phrase):  名词短语一般出现在动">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/images/figure_14_7.png">
+<meta property="og:image" content="http://example.com/images/fiture_14_9.png">
+<meta property="og:image" content="http://example.com/images/figure_14_10.png">
+<meta property="article:published_time" content="2021-09-25T03:34:08.000Z">
+<meta property="article:modified_time" content="2021-09-25T03:34:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Dependency&#x2F;Continucy Parsing">
+<meta property="article:tag" content="Computational Semantics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/figure_14_7.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/09/25/Parsing/"/>
+
+
+
+
+
+  <title>Parsing | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/25/Parsing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Parsing</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-25T11:34:08+08:00">
+                2021-09-25
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-09-25T11:34:08+08:00">
+                2021-09-25
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  
+本文大多整理翻译自斯坦福大学《<code>Speech and Language Processing</code>》书籍手稿。</p>
+<h1 id="constituency-parsing">Constituency Parsing</h1>
+<h2 id="基础概念">基础概念</h2>
+<ul>
+<li>选区 (<code>constituency</code>)
+<ul>
+<li>语法选区(<code>constituency</code>)产生于一组词可以表征单一单元(<code>single units</code>)，比如英语里面的：
+<ul>
+<li>名词短语 (<code>noun phrase</code>):
+<ul>
+<li>名词短语一般出现在动词(<code>verb</code>)之前。<em>"Noun Phrases
+<strong>can</strong> occur before verbs"</em></li>
+</ul></li>
+<li>前置/后置结构 (<code>preposed/postposed constructions</code>)等</li>
+</ul></li>
+</ul></li>
+<li>上下文无关语法 (<code>CFG: context-free grammars</code>)
+<ul>
+<li>CFG
+表征为一组语言<em>符号</em>(<code>synmbols of the language</code>)
+以及符号上的一组生成规则。例如： <span class="math display">\[
+\begin{aligned}
+  NP &amp; \rightarrow Det\ Nominal\\
+     &amp; \ \ \ |\ \  ProperNoun \\
+  Nominal &amp; \rightarrow Noun\ |\ Nominal\ Noun\\
+  Det &amp; \rightarrow a\ |\ the \\
+  Noun &amp; \rightarrow flight \\
+  S &amp; \rightarrow NP\ VP \\
+  VP &amp; \rightarrow Verb\ NP \\
+     &amp; \ \ \  |\ \  Verb\ NP\ PP \\
+     &amp; \ \ \  |\ \  Verb\ PP \\
+  PP &amp; \rightarrow Preposition\ PP \\
+\end{aligned}
+\]</span></li>
+<li>其中符号分为两种，一种为终结符(<code>terminal symbols</code>)，一种为非终结符(<code>non terminal symbols</code>)。上述规则中
+<span class="math inline">\(\rightarrow\)</span>
+左侧均为非终结符，右侧为终结符或非终结符。</li>
+<li>CFG 可以从两个角度来看：
+<ol type="1">
+<li>语言生成机器。</li>
+<li>语言结构指派机器。</li>
+</ol></li>
+<li>由 CFG 生成的语言通常由一个指定的符号开始生成，通常为 <span
+class="math inline">\(S\)</span>。</li>
+</ul></li>
+<li>CFG 的数学表示：<br />
+   如果以符号 <span class="math inline">\(G\)</span>
+来代指上下文无关语法
+(<code>Context Free Gramma</code>)，那么它可以由一个四元组来表示，即
+<span class="math display">\[
+  G = (\Sigma, N, R, S)
+\]</span> 其中:
+<ul>
+<li><span class="math inline">\(\Sigma\)</span> 表示终止符；<span
+class="math inline">\(N\)</span>表示终止符；<span
+class="math inline">\(R\)</span>表示映射关系集 <span
+class="math inline">\(A\rightarrow \beta\)</span>；<span
+class="math inline">\(S\)</span> 表示指定的初始符号。</li>
+<li>一般用 <span class="math inline">\(\epsilon\)</span>
+来指代空字符。</li>
+<li>如果 <span class="math inline">\(A\rightarrow \beta\)</span> 是
+<span class="math inline">\(R\)</span> 中的一个规则，且<span
+class="math inline">\(\alpha, \ \gamma \in(\Sigma \cup
+N)^*\)</span>，那么有 <span class="math inline">\(\alpha A\gamma
+\Rightarrow \alpha\beta\gamma\)</span>，其中 <span
+class="math inline">\(\Rightarrow\)</span> 表示直接派生
+(<code>directly derive</code>)</li>
+<li>如果 <span class="math inline">\(a_1,...,a_n \in (\Sigma \cup
+N)^*\)</span>，且有 <span class="math inline">\(a_1\Rightarrow
+a_2,...,a_{n-1}\Rightarrow a_n\)</span>，那么有 <span
+class="math inline">\(a_1 \overset{*}{\Rightarrow}a_n\)</span>，其中
+<span class="math inline">\(\overset{*}{\Rightarrow}\)</span>
+表示派生(<code>derive</code>)</li>
+<li>那么可以得出，由 <span class="math inline">\(G\)</span>
+生成的形式语言可以这样表述: <span class="math display">\[
+  \mathcal{L}_G = \{w|w\in\Sigma^*, S\overset{*}{\Rightarrow}w\}
+\]</span></li>
+</ul></li>
+<li><span class="math inline">\(\epsilon\text{-free}\)</span> 语法定义:
+<ul>
+<li>http://www.cs.um.edu.mt/gordon.pace/Research/Software/Relic/Transformations/RG/</li>
+<li>http://www.cs.um.edu.mt/gordon.pace/Research/Software/Relic/Transformations/RG/epsilon-free.html</li>
+</ul></li>
+</ul>
+<h2 id="算法">算法</h2>
+<h3
+id="cyk算法cockeyoungerkasami-algorithm">CYK算法(Cocke–Younger–Kasami
+algorithm)</h3>
+<p>   由 <em>上下文无关</em> 可以联想到 <em>动态规划</em>
+四个字。CYK算法对生成规则 <span class="math inline">\(R\)</span>
+做了限定，即仅靠如下规则生成 <span class="math inline">\(A\rightarrow B\
+C\ or\ A\rightarrow
+w\)</span>，即一个非终结符要么生成两个非终结符，要么生成一个终结符，没有其他生成方式。并且它是
+<span class="math inline">\(\epsilon \text{-free}\)</span>
+的。这种约定被称作 <em>乔姆斯基范式</em>
+(<code>Chomsky normal form: CNF</code>)。这种限定将解析树
+(<code>Parse Tree</code>)
+限定为一颗二叉树。注意此约定并不会最最终结果有任何损失，因为任意的的生成规则都可以被转化成
+CNF 形式。</p>
+<ul>
+<li>CFG 向 CNF 转换：
+<ul>
+<li><span class="math inline">\(A\rightarrow B\ w\)</span> 转换为 <span
+class="math inline">\(A\rightarrow B\ X;\ X\rightarrow w\)</span></li>
+<li><span class="math inline">\(A\rightarrow B\ C\ D\)</span> 转换为
+<span class="math inline">\(A\rightarrow X\ D; X\rightarrow B\
+C\)</span></li>
+<li><span class="math inline">\(A\rightarrow
+B\)</span>，该形式称为单一派生(<code>unit production</code>)。如果有
+<span class="math inline">\(A\overset{*}{\Rightarrow}B; B\rightarrow
+w\)</span>，且<span
+class="math inline">\(\overset{*}{\Rightarrow}\)</span>
+均为<code>unit production</code>。那么将该规则替换为 <span
+class="math inline">\(A\rightarrow w\)</span> 并消除 <span
+class="math inline">\(A\overset{*}{\Rightarrow}B\)</span>。</li>
+</ul></li>
+<li>CYK算法步骤：
+<ul>
+<li>输入：一个长度为 <span class="math inline">\(n\)</span>
+的句子，每个单词为<span class="math inline">\(word[j]\)</span>。一个 CNF
+语法 <span class="math inline">\(G\)</span></li>
+<li>过程：
+<ul>
+<li>构造一个 <span class="math inline">\((n+1)\times(n+1)\)</span>
+的矩阵，其中每个矩阵单元格 <span
+class="math inline">\(cell[i,j]\)</span> 代表了可能生成 <span
+class="math inline">\(constituent[i, j]\)</span> 的非终结符号。</li>
+<li>步骤： <span class="math display">\[
+  \begin{aligned}
+    &amp; \text{for}\ j\ \text{from}\ 1\ \text{to}\ n:\\
+    &amp;\qquad \text{for}\ \text{all}\ \{A|A\rightarrow word[j]\in
+R\}\\
+    &amp;\qquad\qquad cell[j-1, j]\leftarrow cell[j-1,j]\cup A\\
+    &amp;\qquad \text{for}\ i\ \text{from}\ j-2\ \text{to}\ 0:\\
+    &amp;\qquad\qquad \text{for}\ k\ \text{from}\ i+1\ \text{to}\ j-1:\\
+    &amp;\qquad\qquad\qquad \text{for}\ \text{all}\ \{A|A\rightarrow
+BC\in R\ and\ B\in cell[i,k]\ \text{and}\ C\in cell[k,j]\}\\
+    &amp;\qquad\qquad\qquad\qquad cell[i,j]\leftarrow cell[i,j]\cup A
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+<li>CYK 解析 (<code>CYK Parsing</code>)：<br />
+  
+上诉算法只能生成一个<code>recognizer</code>，如何由该表得出所有可能的解析树出来？</li>
+</ul>
+<h3 id="neural-cyk">Neural CYK</h3>
+<p>   有了 <span class="math inline">\(cell[i,j]\)</span> 代表的选区单元
+(<code>span/constituency</code>)，以及该单元对应的
+<code>non-terminal symbol</code> <span
+class="math inline">\(l\)</span>，很容易构建出一个三元组 <span
+class="math inline">\(s(i,j,l)\)</span> 用来表征每个单元下对不同 <span
+class="math inline">\(l\)</span> 的分数。<br />
+   假设某棵树 <span class="math inline">\(T\)</span> 对应的
+<code>span</code> 个数有 <span class="math inline">\(|T|\)</span> 个。第
+<span class="math inline">\(t\)</span> 个 <code>span</code>
+下对应的跨度索引和标签为 <span class="math inline">\((i_t, j_t,
+l_t)\)</span>，那么该树 <span class="math inline">\(T\)</span>
+及其分数可以如下表示： <span class="math display">\[
+  \begin{aligned}
+    T &amp; = \{(i_t,j_t,l_t):t=1,...,|T|\} \\
+    s(T) &amp; = \sum_{(i,j,l)\in T}s(i,j,l) \\
+    \hat{T} &amp; = \underset{T}{\operatorname{argmax}}\ s(T)
+  \end{aligned}
+\]</span> <span class="math inline">\(\operatorname{argmax}\)</span>
+的求解可以使用贪心算法 (<em>Ref2</em>)： <span class="math display">\[
+  \begin{aligned}
+    s_{best}(i, i+1) =\ &amp;\underset{l}{\operatorname{max}}\
+s(i,i+1,l)\\
+    s_{best}(i, j) =\ &amp; \underset{l}{\operatorname{max}}\ s(i,j,l)\\
+                  &amp; + \underset{k}{\operatorname{max}}\
+[s_{best}(i,k) + s_{best}(k,l)]
+  \end{aligned}
+\]</span> 如何构建 <span class="math inline">\(s(i,j,l)\)</span>
+有许多中方法，具体参考论文。</p>
+<ul>
+<li>Ref:
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://aclanthology.org/P19-1340.pdf">Multilingual
+Constituency Parsing with Self-Attention and Pre-Training</a></li>
+<li><a target="_blank" rel="noopener" href="https://aclanthology.org/P18-1249.pdf">Constituency parsing
+with a self-attentive encoder</a></li>
+</ol></li>
+</ul>
+<h1 id="dependency-parsing">Dependency Parsing</h1>
+<h2 id="基础概念-1">基础概念</h2>
+<p>   不同于 constituency parsing 里面的上下文无关语法
+(CFG)，依赖解析领域里面主要由 <code>dependency grammars</code>
+语法来描述。它通常表现，为一个连接 <code>head</code> 和
+<code>dependency</code> 的带有标签的有向边 (<em>"directed, labeled arcs
+from <strong>heads</strong> to
+<strong>dependents</strong>"</em>)。其标签目前一个针对各语言的标准依赖关系标签集的<a
+target="_blank" rel="noopener" href="https://universaldependencies.org/">项目</a>。<code>Dependency Parsing</code>可以更有效的挖掘出短语结构更为复杂的，词汇顺序更加随意的语言的语法关系。<br />
+   一个句子的依赖结构可以由一个图 <span class="math inline">\(G = (V,
+A)\)</span> 表示。假设图中有 <span class="math inline">\(n\)</span>
+个节点和 <span class="math inline">\(m\)</span> 条边，则 <span
+class="math inline">\(V = \{v_1,...v_n\}\)</span>，<span
+class="math inline">\(A = \{(v_{i_1},
+v_{j_1}),...,(v_{i_m},v_{j_m})\}\)</span>。其中 <span
+class="math inline">\(v_i\)</span> 代表句中的第 <span
+class="math inline">\(i\)</span>
+个单词。这是一个有向图，需满足一下约束： 1. 有个根节点，其入度为0。 2.
+除了根节点外，每个节点入度为1。 3. 从根节点到其他节点的路径唯一。</p>
+<ul>
+<li>投影性(<code>projectivity</code>)：<br />
+有一条边，如果从该边的 <code>head</code> 到其 <code>dependency</code>
+中间的每一个词，都存在从 <code>head</code>
+到该词的路径。那么该边就具有投影性 (<em>the arc is
+projective</em>)。如果树中的所有边都具有投影性，那么该树就称为具有投影性
+(<em>the tree is projective</em>)。</li>
+</ul>
+<h2 id="算法-1">算法</h2>
+<h3 id="transition-based-dependency-parsing">Transition-Based Dependency
+Parsing</h3>
+<ul>
+<li>算法过程：
+<ul>
+<li>  
+基于转换的依存分析主要由三部分组成：一是用来储存暂时被分析的两个词的栈(<code>stack</code>)；一个缓存区(<code>buffer</code>)，其实就是句子本身；一个带有预报(<code>oracle</code>)功能的解析器(<code>parser</code>)。算法步骤如下：<br />
+  
+每次迭代，<code>parser</code>从左往右扫描<code>buffer</code>区域的单词并入栈，检查栈顶两个元素，并有由<code>oracle</code>给出该两个元素的关系(即谁是<code>head</code>，谁是<code>dependency</code>)，如果存在<code>head-depanency</code>的依赖关系，那么就移除为<code>dependency</code>的栈内的单词(为栈顶元素或者栈顶的下一个元素)并添加相应的依赖关系。直至栈空。比较像有限状态机<br />
+   每次迭代时，<code>parse</code>会产生三个动作：
+<ul>
+<li><code>LEFTARC</code>:
+栈顶元素为<code>head</code>，第二位元素为<code>dependency</code>，移除第二位元素(向左指)。</li>
+<li><code>RIGHTARC</code>:
+第二位元素为<code>head</code>，栈顶元素为<code>dependency</code>，移除栈顶元素(向右指)。</li>
+<li><code>SHIFT</code>: 直接单词入栈。</li>
+</ul></li>
+<li>例：
+<ul>
+<li>针对 <em>"book me the morning flight"</em>
+这个句子，整个算法过程如下： <img src="/images/figure_14_7.png" /></li>
+<li>针对 <em>"book the flight through houston</em> 算法过程如下： <img
+src="/images/figure_14_8.png" /></li>
+</ul></li>
+<li>数学描述： <span class="math display">\[
+  \begin{aligned}
+    &amp; function\ \text{DependencyParse(words)}\ returns\
+\text{dependency-tree}\\
+    &amp;\quad state\leftarrow \{[root],[words],[]\};\ \text{initial
+configuration}\\
+    &amp;\quad \text{while}\ state\ \text{not\ final}\\
+    &amp;\quad\quad t\leftarrow Oracle(state);\ \text{choose a
+transition operator to apply}\\
+    &amp;\quad\quad state\leftarrow Apply(t, state);\ \text{apply it,
+creating a new state}\\
+    &amp;\quad \text{return}\ state
+  \end{aligned}
+\]</span>
+<ul>
+<li>这里 <span class="math inline">\(state\)</span> 里的三个 <span
+class="math inline">\([]\)</span> 分别指代：<code>stack</code>,
+<code>buffer</code>, <code>relations</code></li>
+<li><span class="math inline">\(Oracle(state)\)</span>
+相当于一个分类器，可以由监督模型取构建。</li>
+</ul></li>
+</ul></li>
+<li>如何构建 <code>oracle</code>：
+<ul>
+<li><p>基于特征的分类器：<br />
+   <span class="math inline">\(Oracle(state)\)</span> 的 <span
+class="math inline">\((\mathbf{x}, y)\)</span> 的 <span
+class="math inline">\(\mathbf{x}\)</span> 实际上是由 <code>stack</code>
+和 <code>buffer</code> 部分构成；<span class="math inline">\(y\)</span>
+的话指代 <span class="math inline">\(\text{action}\ t\)</span>，即
+<code>RIGHTARC/LEFTARC/SHIFT</code>。如果有：<span
+class="math inline">\(s = \text{stack}, b = \text{buffer},
+l=\text{lemmas},t=\text{part-of-speech},
+op=\text{action}\)</span>。那么样本可以这样表示： <span
+class="math display">\[
+  (s_1.w, op),\ (s_2.w, op),\ (s_1.t, op),\ (s2.t, op)\\
+  (b_1.w, op),\ (b_1.t, op),\ (s_1.wt, op)
+\]</span> 有了样本后，就可以训练训练器了。</p></li>
+<li><p>基于神经网络的分类器：<br />
+<img src="/images/fiture_14_9.png" /> 句子先过一个 encoder ，然后以
+<code>stack</code> 的前两个单词 <span class="math inline">\(s_1,
+s_2\)</span> 和 <code>buffer</code> 的第一个单词 <span
+class="math inline">\(b_1\)</span> 作为输入来预测。具体参考 <em>Ref
+1,2</em></p></li>
+</ul></li>
+<li>算法改进：
+<ul>
+<li>前面的转换过程被称作
+<code>arc-standard transition system</code>。这种方法会产生一些问题，比如在
+<em>"book the flight through houston"</em> 的例子中，第 <code>4</code>
+步时，<em>"book"</em> 和 <em>"flight"</em>
+已经可以判断关系了，但是要等到第 <code>8</code>
+步时才能赋予关系。这种推迟赋予现象在遇到长句子的时候可能会造成一定的错误。对此改进的有一个称为
+<code>arc-eager transition system</code>。</li>
+<li><code>Arc-eager transition system</code>:
+<ul>
+<li><code>LEFTARC</code>:
+将<code>buffer</code>前端判断为<code>head</code>，栈顶判断为<code>dependency</code>；出栈。</li>
+<li><code>RIGHTARC</code>:
+将栈顶判断为<code>head</code>，<code>buffer</code>前端判断为<code>dependency</code>；<code>buffer</code>前端元素入栈。</li>
+<li><code>SHIFT</code>: <code>buffer</code>前端元素入栈。</li>
+<li><code>REDUCE</code>: 出栈。</li>
+<li>针对 <em>"book the flight through Houston"</em> 的例子过程如图：
+<img src="/images/figure_14_10.png" /></li>
+<li>针对 <code>transitioin system</code> 的改进衍生出许多中不同的
+<code>transition system</code>。</li>
+</ul></li>
+<li>Beam Search (束搜索)</li>
+</ul></li>
+</ul>
+<h3 id="graph-based-dependency-parsing-基于图的依存分析">Graph-Based
+Dependency Parsing (基于图的依存分析)</h3>
+<p>  
+基于图的依存分析比基于转移的依存分析更精确，在长句子上情景下尤为如此。基于图的解析器通过搜索一个句子上所有可能的树空间中分数最高的树结构来进行解析。令
+<span class="math inline">\(S\)</span> 代表句子，该句子上的树空间为
+<span class="math inline">\(\mathscr{G}_S\)</span>，Graph-Based
+Dependency Parsing 目标如下： <span class="math display">\[
+  \hat{T}(S)=\underset{t\in \mathscr{G}_S}{\operatorname{argmax}}\
+Score(t, S)
+\]</span> 可以将 <span class="math inline">\(\hat{T}(S)\)</span>
+简化为各条边之和： <span class="math display">\[
+  \hat{T}(S) = \sum_{e\in t} Score(e)
+\]</span></p>
+<ul>
+<li>通过寻找最大生成树进行解析：<br />
+   给定句子 <span class="math inline">\(S\)</span>，<span
+class="math inline">\(G\)</span> 为 <span
+class="math inline">\(S\)</span>
+上的一张<strong>全连接带权重的有向图</strong>，它代表了所有可能的依存关系。那么寻找
+<span class="math inline">\(S\)</span> 的最佳解析可以转化为寻找 <span
+class="math inline">\(G\)</span> 上（由 <span
+class="math inline">\(ROOT\)</span>
+开始的）最大生成树问题。有向图的最大(小)生成树问题的经典算法为
+<code>Chu-Liu Edmonds algorithm</code> 算法，步骤如下： <span
+class="math display">\[
+    \begin{aligned}
+      &amp; \text{function MaxSpanningTree}(G=(V,E),root,score)\
+\text{returns}\ spanning\_tree \\
+      &amp; \qquad F\leftarrow [] \\
+      &amp; \qquad T&#39;\leftarrow [] \\
+      &amp; \qquad score&#39;\leftarrow [] \\
+      &amp; \qquad \text{for each}\ v\in V\ do \\
+      &amp; \qquad \qquad bestInEdge\leftarrow \text{argmax}_{e=(u,v)\in
+E} score[e] \\
+      &amp; \qquad\qquad F\leftarrow F \cup bestInEdge \\
+      &amp; \qquad \text{if}\ T=(V,F)\ \text{is a spanning tree than
+return it}\\
+      &amp; \qquad \text{else}\\
+      &amp; \qquad\qquad C\leftarrow \text{a cycle in}\ F\\
+      &amp; \qquad\qquad G&#39;\leftarrow \text{Contract}(G,C)\\
+      &amp; \qquad\qquad T&#39;\leftarrow \text{MaxSpanningTree}(G&#39;,
+root, score) \\
+      &amp; \qquad\qquad T\leftarrow \text{Expand}(T&#39;, C)\\
+      &amp; \qquad\qquad \text{return}\ T \\
+      &amp;\text{function Contract}(G,C)\ \text{returns}\ contracted\
+graph\\
+      &amp;\text{function Expand}(T,C)\ \text{returns}\ expanded\ graph
+    \end{aligned}
+  \]</span>
+<ul>
+<li>这里 <span class="math inline">\(\text{Contract}\)</span>
+代表把成环的节点集视作同一个(假)节点并返回新图； <span
+class="math inline">\(\text{Expand}\)</span>
+表示把原先(假)节点还原。</li>
+</ul></li>
+<li>各条边的分数可以通过各种监督学习方法取做，这里给出书中的2017年的ICLR的一篇参考论文：
+<ul>
+<li><a target="_blank" rel="noopener" href="https://nlp.stanford.edu/pubs/dozat2017deep.pdf">Deep
+biaffine attention for neural dependency parsing</a></li>
+</ul></li>
+<li>关于 <code>Chu-Liu Edmonds algorithm</code>
+算法的一篇比较好的介绍博文：
+<ul>
+<li>https://wendy-xiao.github.io/blog/2020/chuliuemdond_algorithm/</li>
+</ul></li>
+<li>Ref:</li>
+</ul>
+<ol type="1">
+<li><a
+target="_blank" rel="noopener" href="https://direct.mit.edu/tacl/article/doi/10.1162/tacl_a_00101/43362/Simple-and-Accurate-Dependency-Parsing-Using">Simple
+and Accurate Dependency Parsing Using Bidirectional LSTM Feature
+Representations</a></li>
+<li><a target="_blank" rel="noopener" href="https://aclanthology.org/D19-1277/">Deep contextualized
+word embeddings in transition-based and graph-based dependency parsing -
+a tale of two parsers revisited</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/Dependency-Continucy-Parsing/" rel="tag"># Dependency/Continucy Parsing</a>
+          
+            <a href="/tags/Computational-Semantics/" rel="tag"># Computational Semantics</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/23/TopicModel/" rel="next" title="Topic Model">
+                <i class="fa fa-chevron-left"></i> Topic Model
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/09/26/OpenSource/" rel="prev" title="AI OpenSource">
+                AI OpenSource <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#constituency-parsing"><span class="nav-number">1.</span> <span class="nav-text">Constituency Parsing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cyk%E7%AE%97%E6%B3%95cockeyoungerkasami-algorithm"><span class="nav-number">1.2.1.</span> <span class="nav-text">CYK算法(Cocke–Younger–Kasami
+algorithm)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#neural-cyk"><span class="nav-number">1.2.2.</span> <span class="nav-text">Neural CYK</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dependency-parsing"><span class="nav-number">2.</span> <span class="nav-text">Dependency Parsing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5-1"><span class="nav-number">2.1.</span> <span class="nav-text">基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95-1"><span class="nav-number">2.2.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#transition-based-dependency-parsing"><span class="nav-number">2.2.1.</span> <span class="nav-text">Transition-Based Dependency
+Parsing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#graph-based-dependency-parsing-%E5%9F%BA%E4%BA%8E%E5%9B%BE%E7%9A%84%E4%BE%9D%E5%AD%98%E5%88%86%E6%9E%90"><span class="nav-number">2.2.2.</span> <span class="nav-text">Graph-Based
+Dependency Parsing (基于图的依存分析)</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

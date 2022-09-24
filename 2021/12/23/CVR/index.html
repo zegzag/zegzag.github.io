@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CVR," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CVR: Conversion Rate，即 转化率，不同于 CTR: Click Rate，CVR主要衡量一个item是否真正被”转化“，转化（CVR里的分子）的定义有多种，比如：  某一商品是否被购买 是否被订阅 是否注册 是否下载  是比CTR更加业务化的一个指标。CVR领域里和CTR一个非常显著的不同点和难点在于延迟问题(Delayed Feedback Probl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVR">
+<meta property="og:url" content="http://example.com/2021/12/23/CVR/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="CVR: Conversion Rate，即 转化率，不同于 CTR: Click Rate，CVR主要衡量一个item是否真正被”转化“，转化（CVR里的分子）的定义有多种，比如：  某一商品是否被购买 是否被订阅 是否注册 是否下载  是比CTR更加业务化的一个指标。CVR领域里和CTR一个非常显著的不同点和难点在于延迟问题(Delayed Feedback Probl">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-12-23T11:17:00.000Z">
+<meta property="article:modified_time" content="2021-12-27T08:46:00.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="CVR">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/12/23/CVR/"/>
+
+
+
+
+
+  <title>CVR | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/23/CVR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CVR</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-23T19:17:00+08:00">
+                2021-12-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-12-27T16:46:00+08:00">
+                2021-12-27
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>   <code>CVR: Conversion Rate</code>，即
+<strong>转化率</strong>，不同于
+<code>CTR: Click Rate</code>，<code>CVR</code>主要衡量一个<code>item</code>是否真正被”转化“，转化（<code>CVR</code>里的分子）的定义有多种，比如：</p>
+<ul>
+<li>某一商品是否被购买</li>
+<li>是否被订阅</li>
+<li>是否注册</li>
+<li>是否下载</li>
+</ul>
+<p>是比CTR更加业务化的一个指标。CVR领域里和CTR一个非常显著的不同点和难点在于<strong>延迟问题</strong>(<code>Delayed Feedback Problem</code>)，<code>转化</code>可能发生在用户<code>点击</code>广告的一分钟，几小时甚至几天之后，而模型学习中最新的数据又最有价值，如果不加以特别建模和处理，那么最新的数据的<code>label</code>全部都是<code>negative</code>的。如何建模和把握这两者直接的
+<code>trade off</code> 便是问题关键所在。</p>
+<hr />
+<h2 id="modeling-delayed-feedback-in-display-advertising">Modeling
+Delayed Feedback in Display Advertising</h2>
+<p>   这是一篇很经典的文章 (2014
+KDD)，想想如果这个问题是你，你该怎么去解决？首先问题的主要矛盾在于当我拿到样本
+<span class="math inline">\((\mathbf{x}, y)\)</span> 时，当前未转化，即
+<span class="math inline">\(y = 0\)</span> 并不代表是真正的负样本，即
+<code>fakely negative</code>。样本是否转化跟距离点击/展现的时间间隔高度相关。拿到样本后，我们有哪些信息：特征
+<span class="math inline">\(\mathbf{x}\)</span>，如果样本已经转化，即
+<span class="math inline">\(y =
+1\)</span>，我们可以得到转化时间距离点击/展现的时间间隔 <span
+class="math inline">\(d\)</span>；如果样本还未转化，我们仍有当前时间距离点击/展现的流逝时间
+<span
+class="math inline">\(e\)</span>，这些是已经发生的样本，它们的数值组合构成一个分布。我们的目标是极大似然这个分布。<br />
+   一些随机变量的含义</p>
+<ul>
+<li><span class="math inline">\(X\)</span>：特征集</li>
+<li><span class="math inline">\(Y\in \{0,
+1\}\)</span>：转化是否<strong>已经</strong>发生</li>
+<li><span class="math inline">\(C\in \{0,
+1\}\)</span>：转化是否<strong>最终</strong>发生</li>
+<li><span
+class="math inline">\(D\)</span>：点击/曝光和(已)转化之间的时间间隔（如果<span
+class="math inline">\(C= 0\)</span>，<span class="math inline">\(D =
+\inf\)</span>)</li>
+<li><span
+class="math inline">\(E\)</span>：点击/曝光距离当前时间戳的事件间隔</li>
+</ul>
+<p>  
+定义完这些随机变量后，我们可以定义一些<strong>事件</strong>的等价关系</p>
+<ul>
+<li><span class="math inline">\(Y = 0 \Leftrightarrow C = 0\ or\
+E&lt;D\)</span>
+<ul>
+<li>即转化还未发生，等价于最终不会转化 或者
+当前时间还未到转化时间点(转化时间距离点击时的时间间隔 &gt;
+截止到当前时间的时间间隔)</li>
+</ul></li>
+<li><span class="math inline">\(Y = 1 \Leftrightarrow C = 1\)</span>
+<ul>
+<li>即 转化已经发生，则 转化最终肯定会发生。</li>
+</ul></li>
+</ul>
+<p>   独立性假设</p>
+<ul>
+<li><span class="math inline">\(P(C, D|X, E) = P(C, D| X)\)</span>
+<ul>
+<li>即给定 <span class="math inline">\(X\)</span>
+后，最终是否会转化，最终转化距离当前的时间间隔独立于当前的时间流逝。这个假设是合理的，因为
+<span class="math inline">\(E\)</span> 只会影响到 <span
+class="math inline">\(Y\)</span>，而对 <strong>最终</strong>
+是否会转化没有影响。</li>
+</ul></li>
+</ul>
+<p>   一些概率分布建模：</p>
+<ul>
+<li><span class="math inline">\(P(C|X) =
+f(\mathbf{x};\boldsymbol{\theta})\)</span>：即我们用模型去预估是否最终转化。</li>
+<li><span class="math inline">\(h(D=d|X=\mathbf{x}, C=1)\)</span>：
+最终会转化的情况下，给定样本 <span
+class="math inline">\(\mathbf{x}\)</span>
+后，转化时间距离当前点击(当然这里也可以是曝光)的时间间隔为 <span
+class="math inline">\(d\)</span> 的概率服从
+<strong>指数分布</strong>，即：<span
+class="math inline">\(h(D=d|X=\mathbf{x},
+C=1)=\lambda(\mathbf{x})\text{exp}(-\lambda(\mathbf{x})d)\)</span>
+<ul>
+<li><span class="math inline">\(\lambda(\mathbf{x})\)</span>
+在<code>Survival Analysis</code>里面被称作<code>hazard function</code>，一般保证为正，令
+<span class="math inline">\(\lambda(\mathbf{x}) =
+\text{exp}(\mathbf{w}\cdot\mathbf{x})\)</span></li>
+<li>注意这里 <span class="math inline">\(D=d\)</span>
+是一瞬间，需要用<strong>概率密度</strong>，所以这里用 <span
+class="math inline">\(h\)</span> 来表示，论文上没有做区分。</li>
+</ul></li>
+<li>给定特征 <span class="math inline">\(X =
+\mathbf{x}\)</span>下，且距离点击/曝光时间已经过去 <span
+class="math inline">\(E = e\)</span>
+的情况下，已经发生转化，且转化距离点击/曝光的概率为： <span
+class="math display">\[
+  \begin{aligned}
+    h(Y=1, D=d|X=\mathbf{x}, E = e)&amp;= h(C = 1, D = d|X = \mathbf{x},
+E = e)\\
+     &amp;= h(C = 1, D = d|X = \mathbf{x})\\
+     &amp;= h(D = d|X=\mathbf{x}, C = 1)P(C = 1|X = \mathbf{x})\\
+     &amp;=\lambda(\mathbf{x})\text{exp}(-\lambda(\mathbf{x})d)f(\mathbf{x};\boldsymbol{\theta})
+  \end{aligned}
+\]</span></li>
+<li>给定特征 <span class="math inline">\(X =
+\mathbf{x}\)</span>，且时间已经过去 <span class="math inline">\(E =
+e\)</span>，且最终一定会转化的情况 <span class="math inline">\(C =
+1\)</span>的情况下下，当前尚未转化的概率为： <span
+class="math display">\[
+\begin{aligned}
+  P(Y=0|C=1, X=\mathbf{x}, E = e) &amp;= P(D&gt;E|C=1, X = \mathbf{x}, E
+= e)\\
+&amp;=
+\int_{e}^{\infty}\lambda(\mathbf{x})\text{exp}(-\lambda(\mathbf{x})t)dt\\
+&amp;=\text{exp}(-\lambda(\mathbf{x})e)   
+\end{aligned}
+\]</span></li>
+<li>显然有： <span class="math display">\[
+P(Y=0|C=0, X = \mathbf{x}, E = e) = 1
+\]</span></li>
+<li>于是有： <span class="math display">\[
+  \begin{aligned}
+      P(Y=0|X=\mathbf{x}, E = e) &amp;= P(C=0|X=\mathbf{x}, E =
+e)P(Y=0|C=0, X=\mathbf{x}, E = e)\\
+      &amp;+ P(C=1|X=\mathbf{x}, E = e)P(Y=0|C=1,X = \mathbf{x}, E =
+e)\\
+      &amp; =
+(1-f(\mathbf{x};\boldsymbol{\theta}))+f(\mathbf{x};\boldsymbol{\theta})\text{exp}(-\lambda(\mathbf{x})e)
+  \end{aligned}
+  \]</span></li>
+</ul>
+<h3 id="优化算法">优化算法</h3>
+<ol type="1">
+<li>EM算法：
+<ul>
+<li>Expectation Step:<br />
+<span class="math inline">\(C\)</span> 相当于隐变量，给定一个数据点
+<span class="math inline">\((\mathbf{x}_i, y_i, d_i, e_i)\)</span> <span
+class="math display">\[
+       P(C = 1|X = \mathbf{x}_i, Y = y_i, D = d_i) = w_i\\
+   \]</span> <span class="math display">\[
+       \begin{aligned}
+       P(C = 1|X = \mathbf{x}_i, Y = 0, E = e_i)&amp;= P(Y = 0|C = 1, X
+=\mathbf{x}_i, E = e_i)P(C = 1|X = \mathbf{x}_i)\\
+       &amp;=
+\text{exp}(-\lambda(\mathbf{x})e_i)f(\mathbf{x};\boldsymbol{\theta})  
+       \end{aligned}
+   \]</span></li>
+<li>Maximization Step: <span class="math display">\[
+  \begin{aligned}
+  L &amp;= \sum_{i, y_i = 1}logP(Y=1, D = d_i|X = \mathbf{x}_i, E =
+e_i)\\
+  &amp;+\sum_{i, y = 0}[(1-w_i)logP(Y=0, C = 0|X = \mathbf{x}_i, E =
+e_i)\\
+  &amp;+ w_ilogP(Y=0, C = 1|X=\mathbf{x}_i, E = e_i)\\
+  &amp; =\sum_{i}w_ilog\ p(\mathbf{x}_i) +
+(1-w_i)log(1-p(\mathbf{x}_i))\\
+  &amp;+\sum_{i}log(\lambda(\mathbf{x}_i))y_i -
+\lambda(\mathbf{x}_i)t_iw_i\\
+&amp;t_i = \begin{cases}
+      e_i, if\ y_i = 0\\
+      d_i, if\ y_i = 1
+  \end{cases}
+  \end{aligned}
+\]</span></li>
+</ul></li>
+<li>极大似然法：<br />
+  令 <span class="math inline">\(I_{1}\)</span> 表示 <span
+class="math inline">\(y = 1\)</span> 的样本，其个数为 <span
+class="math inline">\(|I_{1}|\)</span>， <span
+class="math inline">\(I_{0}\)</span> 表示<span class="math inline">\(y =
+0\)</span>的样本，其个数为<span
+class="math inline">\(|I_{0}|\)</span>。则整个样本空间<span
+class="math inline">\(\mathbb{D} = \{(\mathbf{x}, y, d, e)\}\)</span>
+的似然为： <span class="math display">\[
+\begin{aligned}
+     L(\mathbf{w},\boldsymbol{\theta}) &amp;= log\prod_{I}P(Y=1, D = d|X
+= \mathbf{x}, E = e)^{|I_{1}|}P(Y=0|X=\mathbf{x}, E=e)^{|I_{0}|}\\
+&amp;=\sum_{y_i=1,\mathbf{x}_i}log\ f(\mathbf{x}_i)+log\
+\lambda(\mathbf{x}_i) - \lambda(\mathbf{x}_i)d_i\\
+&amp;+\sum_{y_i = 0,
+\mathbf{x}_i}log[1-f(\mathbf{x}_i;\boldsymbol{\theta})+f(\mathbf{x}_i;\boldsymbol{\theta})\text{exp}(-\lambda(\mathbf{x}_i)e_i)]   
+\end{aligned}
+\]</span> 然后就可以用梯度下降法去优化了。</li>
+</ol>
+<hr />
+<h2
+id="a-nonparametric-delayed-feedback-model-for-conversion-rate-prediction">A
+Nonparametric Delayed Feedback Model for Conversion Rate Prediction</h2>
+<p>   如前所述，一个样本所含的信息为：<span
+class="math inline">\((\mathbf{x}_i, y_i, d_i, e_i)\)</span>，若 <span
+class="math inline">\(y_i = 1\)</span>，我们有 <span
+class="math inline">\(d_i, e_i\)</span> 信息，若 <span
+class="math inline">\(y_i = 0\)</span>，我们有 <span
+class="math inline">\(e_i\)</span> 信息。<span
+class="math inline">\(d_i\)</span> 为点击 or
+展现时间距离转化的时间间隔，<span class="math inline">\(e_i\)</span>
+为点击 or 展现时间距离"当前"的时间间隔(<code>time elapse</code>)。</p>
+<ul>
+<li><strong>Survival Analysis</strong><br />
+<span class="math inline">\(F(t) = \int_0^{t}f(x)dx = P(X\leq
+t)\)</span>，即某事件发生的时间间隔在 <span
+class="math inline">\(t\)</span>
+时间内的概率(连续概率分布)。定义<code>survival function</code>：<span
+class="math inline">\(s(t) = 1 - F(t)\)</span> ，可知 <span
+class="math inline">\(s(t) = P(X&gt;t)\)</span>，即截止到 <span
+class="math inline">\(t\)</span> 时事件还未发生的概率。注意有：<span
+class="math inline">\(\frac{ds}{dt} = -f(t),\ s(0) =
+1\)</span>。定义<code>hazard function</code>：<span
+class="math inline">\(h(t) = \frac{f(t)}{s(t)}\)</span>，从公式上理解
+<span class="math inline">\(h(t)\)</span> 为：<span
+class="math inline">\(t\)</span> 时刻事件发生的概率密度/截止到 <span
+class="math inline">\(t\)</span> 时刻事件还未发生的概率 = <span
+class="math inline">\(t\)</span> 时刻的危险系数(危险概率密度)
+<ul>
+<li>比如针对指数分布：<span class="math inline">\(f(t) = \lambda
+e^{-\lambda t}\)</span>， <span class="math inline">\(s(t) = e^{-\lambda
+x}\)</span>，<span class="math inline">\(h(t) =
+\lambda\)</span>，即指数分布的<code>hazard</code>
+为不随时间变化的常量。随着时间推移，事件发生的概率密度在降低，截止到当前时间事件尚未发生的概率也在降低，它们的比值为常量。</li>
+<li>关于 <span class="math inline">\(s(t)\)</span> 和 <span
+class="math inline">\(h(t)\)</span> 的关系 <span class="math display">\[
+  \int_{0}^{t} h(x)dx = \int_0^{t} \frac{f(x)}{s(x)}dx = -log\
+s(x)|_0^{t}\\
+  s(t) = \text{exp}(-\int_0^t h(x)dx)
+\]</span>
+<ul>
+<li>这个是对论文里公式 <span class="math inline">\((2)\)</span>
+的推导</li>
+</ul></li>
+</ul></li>
+<li><strong>方法</strong>：
+<ul>
+<li><p><strong>hazard function &amp; survival analysis</strong><br />
+假设在 <span class="math inline">\(d\)</span> 所处的时间轴上，有 <span
+class="math inline">\(L\)</span>
+个等距间隔点，我们对<code>hazard function</code> <span
+class="math inline">\(h\)</span> 建模： <span class="math display">\[
+  h(d_i;\mathbf{x}_i, \mathbf{V}) =
+\sum_{i=1}^L\alpha_l(\mathbf{x}_i;\mathbf{V})k(t_l, d_i)
+\]</span></p>
+<ul>
+<li>这里的 <span class="math inline">\(k\)</span>
+是核函数，用于衡量时间轴上两个点 <span class="math inline">\(t_l,
+d_i\)</span> 的”相似性“，<span class="math inline">\(\alpha_l\)</span>
+是权重系数。整个 <code>hazard function</code> 是对 <span
+class="math inline">\(L\)</span>
+个核函数加权求和。论文里的一张图很好的反映了三者的关系。<img
+src="/images/cvr_nodef_00.png" /></li>
+<li>至于为什么要提出这种形式，论文里没说，这里猜测是这样： <span
+class="math inline">\(L\)</span> 个点是人为划定的，但是延迟时间 <span
+class="math inline">\(d_i\)</span> 是任意的，某个时间节点 <span
+class="math inline">\(d_i\)</span> 相当于 <span
+class="math inline">\(L\)</span>
+个时间节点相似性的”叠加“，正如图中所示。</li>
+<li>关于这个式子作者有和 <a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Kernel_density_estimation"><code>KDE (Kernel density estimation)</code></a>
+做了一系列比较</li>
+</ul>
+<p>有了 <span class="math inline">\(h(d_i;\mathbf{x}_i,
+\mathbf{V})\)</span>， 就可以得到 <code>survival function</code> 为：
+<span class="math display">\[
+  \begin{aligned}
+    s(d_i;\mathbf{x}_i, \mathbf{V}) =
+\text{exp}(-\int_0^{d_i}h(\tau);\mathbf{x}_i, \mathbf{V})d{\tau})\\
+    =
+\text{exp}(-\sum_{l=1}^L\alpha_l(\mathbf{x}_i;\mathbf{V})\int_0^{d_i}k(t_l,
+\tau)d\tau)
+  \end{aligned}
+\]</span></p></li>
+<li><p><strong>Probability Defination</strong><br />
+有了 <code>hazard function</code> 和 <code>survival function</code>
+后，作者这样定义概率： <span class="math display">\[
+  \begin{aligned}
+    p(d_i|\mathbf{x}_i, c_i = 1) &amp; = f(d_i;\mathbf{x}_i, \mathbf{V})
+= s(d_i;\mathbf{x}_i, \mathbf{V})h(d_i;\mathbf{x}_i, \mathbf{V})\\
+    p(c_i = 1|\mathbf{x}_i;\mathbf{w}) &amp; =
+\text{model}(\mathbf{x}_i;\mathbf{w})\\
+    p(c_i = 0|\mathbf{x}_i;\mathbf{w}) &amp; = 1 -
+\text{model}(\mathbf{x}_i;\mathbf{w})
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>似然： <span class="math display">\[
+  \begin{aligned}
+    p(\mathbb{D};\mathbb{\Theta}) = &amp;\prod_{i=1}^N\sum_{c_i\in\{0,
+1\}}p(y_i|\mathbf{x}_i, c_i, e_i)p(c_i\mathbf{x}_i)p(d_i|\mathbf{x}_i,
+c_i = 1)\\
+    = &amp; \prod_{i\in I_{1}}p(c_i = 1|\mathbf{x}_i)p(d_i|y_i = 1,
+\mathbf{x}_i)\\
+    &amp;\times\prod_{i\in I_{0}}\sum_{c_i\in\{0, 1\}}p(y_i =
+0|\mathbf{x}_i, c_, e_i)p(c_i|\mathbf{x}_i)
+  \end{aligned}
+\]</span>
+<ul>
+<li>注意到有： <span class="math display">\[
+  \begin{aligned}
+    p(y_i = 0|\mathbf{x}_i, c_i = 0, e_i) &amp;= 1\\
+    p(y_i = 1|\mathbf{x}_i, c_i = 0, e_i) &amp;= 0 \\
+    p(y_i = 0|\mathbf{x}_i, c_i = 1, e_i) &amp;=
+p(d_i&gt;e_i|\mathbf{x}_i, c_i = 1, e_i)\\
+    &amp;= 1 - \int_0^{e_i}p(d_i = \tau |c_i = 1, \mathbf{x}_i)d\tau\\
+    &amp;= s(e_i;\mathbf{x}_i, \mathbf{V})
+  \end{aligned}
+\]</span></li>
+</ul></li>
+<li>对数似然：</li>
+</ul></li>
+<li><p><strong>学习算法(EM算法)</strong></p></li>
+<li><p><strong>预估</strong><br />
+模型学习出来后可以进行两项预估：</p>
+<ul>
+<li>该样本是否最终会被转化: <span class="math display">\[
+  p(c_i|\mathbf{x}_i;\mathbf{w},\mathbf{V})
+\]</span></li>
+<li>点击 or 展现后的 <span class="math inline">\(e\)</span>
+个时间时，样本是否会转化 <span class="math display">\[
+  \begin{aligned}
+  p(y=1|\mathbf{x}, c = 1, e) &amp; = p(c = 1|\mathbf{x})p(d&lt;E|c = 1,
+\mathbf{x})\\
+  &amp; = p(c = 1|\mathbf{x})\int_0^{e}p(t|c = 1, \mathbf{x})dt \\
+  &amp; = p(c = 1|\mathbf{x})(1 - s(e;\mathbf{x},\mathbf{V}))
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<hr />
+<h2
+id="addressing-delayed-feedback-for-continuous-training-with-neural-networks-in-ctr-prediction">Addressing
+Delayed Feedback for Continuous Training with Neural Networks in CTR
+prediction</h2>
+<p>   这是一篇 twitter 公司在 2019年提出一个针对解决
+<code>Delayed Feedback Problem</code> 的论文，其结果实现了
+<code>state-of-art RCE</code> 3% 的提升，RPMq
+(<code>gain in revenue per thousand requests</code>) 指标提升了
+55%。可见其效果是非常巨大的。该论文先对以往的方法做了下总结，总共可大致分为五类
+1. Importance Sampling. 2. Inverse Propensity Weighting. 3.
+Positive-Unlabeled Learning. 4. Delayed Feedback Models. 5. Delayed
+Bandits。水平有限，只能解读一下1，4相关的论文。</p>
+<ol type="1">
+<li><p><strong>Importance Sampling</strong><br />
+我们知道，如果把模型预估看做是一个条件分布 <span
+class="math inline">\(f(\mathbf{w};\boldsymbol{\theta}) =
+p(y|\mathbf{x})\)</span>，如果样本空间的联合分布为 <span
+class="math inline">\(p\)</span>，即<span
+class="math inline">\(p(\mathbf{x}, y)\sim p\)</span>。那么在样本空间
+<span class="math inline">\(\mathbb{D} = \{(\mathbf{x}, y)\}\)</span>
+上的似然函数为： <span class="math display">\[
+     \begin{aligned}
+         - L(\boldsymbol{\theta}) &amp;=
+log\prod_{i=1}^Np(y|\mathbf{x_i})^{\overset{\sim}{p}(\mathbf{x_i},
+y_i)}\\
+         &amp;= -\sum_{i=1}^{N}\overset{\sim}{p}(\mathbf{x}_i,
+y_i)log(p(y_i|\mathbf{x}_i))\\
+         &amp;= -\sum_{i=1}^{N}\overset{\sim}{p}(\mathbf{x}_i,
+y_i)log(f(\mathbf{x}_i;\boldsymbol{\theta}))\\
+         &amp;= -\mathbb{E}_{(\mathbf{x}_i, y_i)\sim
+p}[log(f(\mathbf{x}_i;\boldsymbol{\theta}))] \\
+         &amp; = -\mathbb{E}_p[log(f(\mathbf{x};\boldsymbol{\theta}))]
+     \end{aligned}
+\]</span> 由于最新样本会被<strong>错误地标记成Negative(Falsely
+Negative)</strong>，所以模型不是从 <span
+class="math inline">\(p\)</span> 学得，而是从一个错误的分布，我们假定为
+<span class="math inline">\(b\)</span> 学得。我们将上式改写一下： <span
+class="math display">\[
+     \begin{aligned}
+         \mathbb{E}_p[log(f(\mathbf{x};\boldsymbol{\theta}))] &amp;=
+-\sum_{i=1}^{N}\overset{\sim}{p}(\mathbf{x}_i,
+y_i)log(f(\mathbf{x}_i;\boldsymbol{\theta}))\\
+     &amp;= -\sum_{i=1}^{N}\overset{\sim}{b}(\mathbf{x}_i,
+y_i)\frac{\overset{\sim}{p}(\mathbf{x}_i,
+y_i)}{\overset{\sim}{b}(\mathbf{x}_i,
+y_i)}log(f(\mathbf{x}_i;\boldsymbol{\theta}))\\
+     &amp;= \mathbb{E}_b[\frac{p(\mathbf{x}, y)}{b(\mathbf{x},
+y)}log(f(\mathbf{x};\boldsymbol{\theta}))]\\
+     &amp;=\mathbb{E}_b[w(\mathbf{x},
+y)log(f(\mathbf{x};\boldsymbol{\theta}))]\\
+     \end{aligned}
+\]</span> 其中 <span
+class="math inline">\(\overset{\sim}{w}(\mathbf{x}_i, y_i) =
+\frac{\overset{\sim}{p}(\mathbf{x}_i,
+y_i)}{\overset{\sim}{b}(\mathbf{x}_i, y_i)}\)</span>
+表示了每个样本的重要度，用于纠偏。</p></li>
+<li><p>Inverse Propensity Weighting</p></li>
+<li><p>Positive-Unlabeled Learning</p></li>
+<li><p>Delayed Feedback Models</p></li>
+<li><p>Delayed Bandits</p></li>
+</ol>
+<h3 id="proposed-approach">Proposed Approach</h3>
+<p>   作者提出的方法核心相当于是在 <code>Loss</code>
+上对上诉几种方法的联合建模。模型上作者选择了传统的 Logistic Model
+和经典的 Wide &amp; Deep Model。</p>
+<ol type="1">
+<li>Delayed Feedback Loss <span class="math display">\[
+  \begin{aligned}
+L_{DF}(\boldsymbol{\theta}) = &amp; -\sum_{y=1,\mathbf{x}}log\
+f(\mathbf{x};\boldsymbol{\theta}) + log\ \lambda(\mathbf{x}) -
+\lambda(\mathbf{x})d\\
+  &amp;-\sum_{y=0, \mathbf{x}}
+log[1-f(\mathbf{x};\boldsymbol{\theta})+f(\mathbf{x};\boldsymbol{\theta})\text{exp}(-\lambda(\mathbf{x})e)]  
+  \end{aligned}
+\]</span> <span class="math display">\[
+  \begin{aligned}
+L_{DF}(\boldsymbol{\theta}) = &amp;-\sum_{\mathbf{x}, y}log\
+f(\mathbf{x};
+\boldsymbol{\theta}) - \sum_{y =
+1,\mathbf{x}}\mathbf{w}_d\cdot\mathbf{x} - \lambda(\mathbf{x})d\\
+&amp; -\sum_{y=0,
+\mathbf{x}}log[\text{exp}(-f(\mathbf{x};\boldsymbol{\theta}))+\text{exp}(-\lambda(\mathbf{x})e)]
+  \end{aligned}
+\]</span></li>
+<li>Positive-Unlabeled Loss <span class="math display">\[
+  \begin{aligned}
+L_{PU}(\boldsymbol{\theta}) = &amp;-\sum_{y=1, \mathbf{x}}[log\
+f(\mathbf{x};\boldsymbol{\theta}) -
+log(1-f(\mathbf{x};\boldsymbol{\theta}))]\\
+&amp;-\sum_{y=0, \mathbf{x}}log(1-f(\mathbf{x};\boldsymbol{\theta}))  
+  \end{aligned}
+\]</span></li>
+<li>Fake Negative Weighted Loss <span class="math display">\[
+  \begin{aligned}
+L_{IS}(\boldsymbol{\theta}) = -\sum_{y,
+\mathbf{x}}[b(y=1|\mathbf{x})(1+p(y=1|\mathbf{x}))log\
+f(\mathbf{x};\boldsymbol{\theta})\\+
+b(y=0|\mathbf{x})p(y=0|\mathbf{x})(1+p(y=1|\mathbf{x}))log\
+f(\mathbf{x};\boldsymbol{\theta})]
+  \end{aligned}
+\]</span></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CVR/" rel="tag"># CVR</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/18/CTR/" rel="next" title="CTR">
+                <i class="fa fa-chevron-left"></i> CTR
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/01/07/Shell/" rel="prev" title="Shell">
+                Shell <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#modeling-delayed-feedback-in-display-advertising"><span class="nav-number">1.</span> <span class="nav-text">Modeling
+Delayed Feedback in Display Advertising</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">优化算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#a-nonparametric-delayed-feedback-model-for-conversion-rate-prediction"><span class="nav-number">2.</span> <span class="nav-text">A
+Nonparametric Delayed Feedback Model for Conversion Rate Prediction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#addressing-delayed-feedback-for-continuous-training-with-neural-networks-in-ctr-prediction"><span class="nav-number">3.</span> <span class="nav-text">Addressing
+Delayed Feedback for Continuous Training with Neural Networks in CTR
+prediction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#proposed-approach"><span class="nav-number">3.1.</span> <span class="nav-text">Proposed Approach</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

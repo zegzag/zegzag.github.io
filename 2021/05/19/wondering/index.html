@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Work Experience," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于写博客的初衷  做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于算法工程的一些思考">
+<meta property="og:url" content="http://example.com/2021/05/19/wondering/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="关于写博客的初衷  做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-05-19T03:34:08.000Z">
+<meta property="article:modified_time" content="2021-05-19T03:34:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Work Experience">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/05/19/wondering/"/>
+
+
+
+
+
+  <title>关于算法工程的一些思考 | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/19/wondering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于算法工程的一些思考</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-19T11:34:08+08:00">
+                2021-05-19
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-05-19T11:34:08+08:00">
+                2021-05-19
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>关于写博客的初衷
+<ul>
+<li>做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。
+也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。
+实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜，加粗等，
+这些在手推时往往难以表示。后来发现写博客其实是一种比较高效而折中的方法。把看的内容加工一下，再写出来，虽然内容上整体大同小异，但理解和记忆
+的效果要大于只是看一遍或者看几遍的情况。并且博客可以沉淀下来反复观看。</li>
+</ul></li>
+<li>遇到公式太长太复杂记不住怎么办？
+<ul>
+<li>可以尝试从简单的地方入手，一步一步构建起复杂的公式模型。
+比如针对交叉熵损失函数，我们先记住一个样本下的公式： <span
+class="math display">\[
+  L_i(y_i, \hat{y_i}) = - (y_ilog(\hat{y_i}) +
+(1-y_i)*log(1-\hat))
+\]</span> 然后整个样本空间上的损失函数就是单个样本的简单累加和： <span
+class="math display">\[
+  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) +
+(1-y_i)*log(1-\hat))
+\]</span> 其实没有别的方法，就是简单的反复和思考。</li>
+</ul></li>
+<li>工作经验：
+<ul>
+<li><p>模型只是一方面，实际工作中，从<strong>问题发现，目标拆解，目标设计，数据分析，数据检查，假设验证，模型设计和选择</strong>，
+<strong>模型结构check和调整，最终上线观察验证</strong>，是一套整体的方法和实践过程。不是想到一个idea，
+或者看到一个非常新颖或者感觉非常厉害的模型就直接怼上去。每次模型结构的改动或者特征工程上的设计或者优化都应该有逻辑上的出发点，
+这些出发点有些是基于假设，有些是基于数据分布，但逻辑上必须有一个站脚的地方。不应该感觉上什么模型fancy或者复杂就无脑怼什么模型。
+当然论文还是要多看，肚子里有货才能有选择，也更有利于出想法。看论文一个是看其方法，另一个是要想一下其方法是怎么构建出来的。
+还有就是针对一个问题的解决方式可能有非常多的备选方案，这时候在实时计划之前，还应该考虑哪些备选方案是最优的，
+即成本最低，风险最小，出成果的概率最大。很多时候，特征工程的建设带来的效果提升要远远大于模型结构的改动。</p></li>
+<li><p>其实不管是深度学习也好，其他传统的机器学习也好，比如SVM，boost
+tree等一些方法。特征提取都是很重要的一步内容，其实广义上将，
+特征提取的过程就是数据清洗的过程。数据清洗是筛掉噪声，坏数据，特征提取是人工提取出重要特征，算是一步提取到更高一层更好的数据上去了。
+从更广义上讲，如果目标是学习一个映射的话，数据清洗和特征提取的过程其实就是人手动拟合映射的过程，这和最后交给模型去学习从本质上讲一样的。
+前家公司大佬的经验就是能从业务上发现一些经典的手动提取的特征，最后喂到模型里面去的效果是总是要好于让模型去自己发现特征的。
+不能一上深度学习后就数据往里面一扔就什么都不管了。目前的模型，就算是深度学习的模型，其实也是很傻比的，你喂进去的数据不好，指望它把重要特征筛出来，
+次要特征筛下去根本不行。还是要手动的把粗活脏活和累活干好，好的特征，干净的数据，最后喂给模型，让它去做锦上添花的事情。</p></li>
+<li><p>关于<strong>数据治理</strong>：</p>
+<ul>
+<li>算法离不开数据，比如样本生成，样本分布分析等。数据处理主要涉及到如下方面：数据的采集，清洗，分析。主要的技术栈是
+SQL，spark，flink
+等。后端开发的一个错误，可能在编译阶段的编译错误，执行阶段出core
+错误日志打印等，单点清晰地给暴露出来。但是<strong>数据处理相关的代码，错误非常隐蔽，即时错了也没有足够"solid"的信息可以参考，有时候一个逻辑的错误，就会导致数据分布这那样的区别。最后结果的数据分布可能和写代码逻辑
+时候的数据分布有出入</strong>。这就要求涉及到数据相关的代码的时候必须要小心，不能急于求成，多个方面不断地检验，哪些方法可以看出是允许内的噪声，哪些方法可以一眼就看出是代码逻辑出了问题。避免
+garbage in, garbage out。</li>
+<li>数据处理前，作为算法人员，<strong>必不能</strong>对上游数据（比如各种hive表，埋点，以及由此衍生出的数据等）产生充分信任。首先搞清楚源数据的产出逻辑，然后是一些基础的分析，比如分布分析，样本重复率分析等，通过检验后才能开始算法流程开发，而不能拿到数据就一股脑就直接模型怼起来。</li>
+<li>整体算法流程跑通后，如果取得预期效果而上线，也不是一步上线后就万事大吉了。因为整套算法流程涉及的链路非常之长，所以<strong>在一些节点上必要加入监控以及检查判断就非常有必要</strong>。如果出现问题（隐蔽的数据问题），<strong>直接终止流程比把错误的数据和结果带到线上要好得多</strong>。</li>
+</ul></li>
+<li><p>关于<strong>数据分析</strong>：</p>
+<ul>
+<li>算法的实验效果不是你想的怎样就是怎样。论文中的数据都是干净的，静态的数据，当模型ready后，结果往往不会太差。但是生产环境中的数据是动态的，涉及到的上下游链路非常之长，甚至很多的数据都是有毛病的，很多时候不到问题曝出来根本发现不了问题。当算法效果不及预期时，就要靠数据分析出场了。数据分析的维度可以任意展开任意组合，<strong>关键是分析前，如何发现问题，定义问题，拆解问题，针对该问题和子问题需要什么样的分析数据，然后开始做数据分析，拿到数据分析结果后，能产出什么样的结论</strong>。重在不是分析，而是<strong>出发点</strong>和<strong>结论点</strong>。</li>
+</ul></li>
+<li><p>关于<strong>单元测试</strong>：</p>
+<ul>
+<li>一个超大型的项目是由许多个小模块构成的，而在开发小模块时，是按照业务逻辑来写代码的。很多情况下只是满足了业务逻辑，但是隐藏的各种情况，边界条件等。都很难在写主代码的时候给考虑到。写单元测试代码的时候是从测试的角度逻辑去写代码
+(例如
+GoogleTest)，在写测试代码的同时(甚至测试还未开始)，就可以暴露出很多主代码的各种细节问题，从而提高程序的健壮性。所以，开发人员写单元测试代码并不是浪费时间，磨刀不误砍柴工。5%的单元测试代码开发时间可以减少70%的线上debug时间。</li>
+</ul></li>
+</ul></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Work-Experience/" rel="tag"># Work Experience</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/18/Debias/" rel="next" title="Debias">
+                <i class="fa fa-chevron-left"></i> Debias
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/05/20/Attention/" rel="prev" title="Attention">
+                Attention <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

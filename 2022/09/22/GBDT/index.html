@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GBDT,XGBoost,LightGBM," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Decision Tree 映射表示   对于寻找 \((\mathbf{x}, y),\ x\in R^m,\ y\in R\) (即 \(m\) 维特征) 之间的映射关系 \(f\)，决策树进行如下建模： \[     f(\mathbf{x};\mathbf{b}) &#x3D; tree(\mathbf{x}; \mathbf{b}) &#x3D; \sum_{j&#x3D;1}^J b_j\text{I}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Decision Tree到LightGBM">
+<meta property="og:url" content="http://example.com/2022/09/22/GBDT/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="Decision Tree 映射表示   对于寻找 \((\mathbf{x}, y),\ x\in R^m,\ y\in R\) (即 \(m\) 维特征) 之间的映射关系 \(f\)，决策树进行如下建模： \[     f(\mathbf{x};\mathbf{b}) &#x3D; tree(\mathbf{x}; \mathbf{b}) &#x3D; \sum_{j&#x3D;1}^J b_j\text{I}">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/images/xgboost_approximate_rank_function.jpg">
+<meta property="article:published_time" content="2022-09-22T12:38:00.000Z">
+<meta property="article:modified_time" content="2022-12-18T12:38:00.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="GBDT">
+<meta property="article:tag" content="XGBoost">
+<meta property="article:tag" content="LightGBM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/xgboost_approximate_rank_function.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2022/09/22/GBDT/"/>
+
+
+
+
+
+  <title>从Decision Tree到LightGBM | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/22/GBDT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从Decision Tree到LightGBM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-09-22T20:38:00+08:00">
+                2022-09-22
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2022-12-18T20:38:00+08:00">
+                2022-12-18
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="decision-tree">Decision Tree</h2>
+<h3 id="映射表示">映射表示</h3>
+<p>  对于寻找 <span class="math inline">\((\mathbf{x}, y),\ x\in R^m,\
+y\in R\)</span> (即 <span class="math inline">\(m\)</span> 维特征)
+之间的映射关系 <span
+class="math inline">\(f\)</span>，决策树进行如下建模： <span
+class="math display">\[
+    f(\mathbf{x};\mathbf{b}) = tree(\mathbf{x}; \mathbf{b}) =
+\sum_{j=1}^J b_j\text{I}(\mathbf{x}\in R^m_j)
+\]</span> 其中 <span class="math inline">\(R_j^m\)</span> 是 <span
+class="math inline">\(m\)</span> 为空间中的第 <span
+class="math inline">\(j\)</span> 块划分，划分方式即树的结构。</p>
+<h3 id="cart-算法">CART 算法</h3>
+<p>  </p>
+<hr />
+<h2 id="gradient-boosting-gb">Gradient Boosting (GB)</h2>
+<h3 id="映射表示-1">映射表示</h3>
+<p>  我们有输入样本空间 <span class="math inline">\(D=\{ (\mathbf{x}_i,
+y_i)\},\ \ |D|=n,\  \mathbf{x}\in R^m,\ y\in R\)</span>， 即 <span
+class="math inline">\(\mathbf{x}\)</span> 有 <span
+class="math inline">\(m\)</span> 个 feature, 共 <span
+class="math inline">\(n\)</span> 个样本。我们要学习一个复杂的映射 <span
+class="math inline">\(F(\mathbf{x})\)</span>，如何学习呢？集成模型的建模思路如下：
+<span class="math display">\[
+    \hat{y} = F_K(\mathbf{x}) = \sum_{k=1}^K\rho_k f_k(\mathbf{x}) =
+F_{K-1}(\mathbf{x}) + \rho_kf_k(\mathbf{x})
+\]</span> 即 <span class="math inline">\(F(\mathbf{x})\)</span>
+由一系列弱学习器 <span class="math inline">\(f_k(\mathbf{x})\)</span>
+组成，<span class="math inline">\(\rho_k\)</span>
+为每个弱学习器的权重，而 <span class="math inline">\(f_k\)</span>
+一般是一些参数化的模型 (<code>parameterized function</code>)
+来表示，比如神经网络，SVM，决策树等。我们表示为 <span
+class="math inline">\(f_k(\mathbf{x};
+\mathbf{w})\)</span>。损失可以表示为： <span class="math display">\[
+    L = \sum_{i=1}^nl(y_i, F_k(\mathbf{x})) = \sum_{i=1}^nl(y_i,
+F_{k-1}(\mathbf{x}) + \rho_kf_k(\mathbf{x};\mathbf{w}))
+\]</span> 当函数形式 (<code>function</code>) 确定时，确定了<span
+class="math inline">\(\mathbf{w}_k\)</span> 可以唯一确定一个映射<span
+class="math inline">\(f_k\)</span>，则函数拟合
+(<code>function estimation</code>)问题可以转化成参数拟合
+(<code>parameter estimation</code>)问题。</p>
+<h3 id="学习过程-gradient-boosting">学习过程 (Gradient Boosting)</h3>
+<p>  可以看到，损失函数中只有两类未知值：<span
+class="math inline">\(\rho, \
+\mathbf{w}\)</span>。假设我们已经迭代到了第 <span
+class="math inline">\(k\)</span> 步，那么第 <span
+class="math inline">\(k\)</span> 步的两类未知值的计算方法如下： <span
+class="math display">\[
+    \mathbf{w}_k = \underset{\mathbf{w}_k}{\text{arg min}} \sum_{i=1}^n
+[g_i-\beta f(\mathbf{x}_k;\mathbf{w})]^2\\
+    g_i = -\frac{\partial l(y_i, F_{m-1}(\mathbf{x}_i))}{\partial
+F_{m-1}(\mathbf{x}_i)}\\
+    \rho_k = \underset{\rho}{\text{arg min}}\sum_{i=1}^nl(y_i,
+F_{k-1}(\mathbf{x})+\rho f_k(\mathbf{x};\mathbf{w}_k)) \\
+\]</span> 得到第 <span class="math inline">\(k\)</span>
+步的模型为：<span
+class="math inline">\(F_k(\mathbf{x})=F_{k-1}(\mathbf{x})+\rho_k
+f_k(\mathbf{x};\mathbf{w}_k)\)</span>。<br />
+  可以看到，第 <span class="math inline">\(k\)</span> 步的弱学习器 <span
+class="math inline">\(f_k\)</span> 拟合的是损失函数 <span
+class="math inline">\(l\)</span> 在 <span
+class="math inline">\(F_{k-1}\)</span>的负梯度 （怎么感觉有点 EM
+的味道)。<br />
+GB算法： <span class="math display">\[
+\begin{aligned}
+&amp;F_0(\mathbf{x}) = \underset{\rho}{\text{arg min}} \sum_{i=1}^n
+l(y_i, \rho)\\
+&amp;\text{for m = 1...K do}:\\
+&amp;\quad g_i=-\frac{\partial l(y_i, F_{m-1}(\mathbf{x}_i))}{\partial
+F_{m-1}(\mathbf{x}_i)}\\
+&amp;\quad \mathbf{w}_k = \underset{\mathbf{w}_k}{\text{arg min}}
+\sum_{i=1}^n [g_i-\beta f(\mathbf{x}_k;\mathbf{w})]^2\\
+&amp;\quad \rho_k = \underset{\rho}{\text{arg min}}\sum_{i=1}^nl(y_i,
+F_{k-1}(\mathbf{x})+\rho f_k(\mathbf{x};\mathbf{w}_k)) \\
+&amp;\quad F_k(\mathbf{x})=F_{k-1}(\mathbf{x})+\rho
+f_k(\mathbf{x};\mathbf{w}_k)
+\end{aligned}\\
+\]</span></p>
+<h3 id="gradient-boosting-desicion-tree-gbdt">Gradient Boosting Desicion
+Tree (GBDT)</h3>
+<p>  当 <span class="math inline">\(f = tree\)</span>
+时，即弱学习器为树模型时，<span class="math inline">\(F_k(\mathbf{x}) =
+F_{k-1}(\mathbf{x})+\rho_k\sum_{j=1}^Jb_{jk}\text{I}(x\in R_{jk}) =
+F_{k-1}(\mathbf{x})+\sum_{j=1}^J\gamma_{jk}\text{I}(\mathbf{x}\in
+R_{jk})\)</span>。 <span class="math display">\[
+\begin{aligned}
+    &amp;F_0(\mathbf{x}) = \underset{\rho}{\text{arg min}} \sum_{i=1}^n
+l(y_i, \gamma)\\
+    &amp;\text{for m = 1...K do}: \\
+    &amp;\quad g_{im}=-\frac{\partial l(y_i,
+F_{m-1}(\mathbf{x}_i))}{\partial F_{m-1}(\mathbf{x}_i)}\\
+    &amp;\quad 以 {g_{im}} 为目标去拟合一颗树 tree_i = \{R_{jm}\}\\
+    &amp;\quad \gamma_{jm} = \underset{\gamma_{jm}}{\text{arg
+min}}\sum_{\mathbf{x}_i\in R_{jm}}l(y_i, \gamma_{jm})\quad (即第 m
+颗树的第 j 个叶子节点的输出值)
+\end{aligned}
+\]</span> 可以看到，GBDT 本身非常简单，拟合树的过程一般是 CART
+算法，损失函数 <span class="math inline">\(l\)</span> 回归问题一般用
+<span class="math inline">\(MSE = (y - \hat{y})^2/2\)</span>，二分类用
+<span class="math inline">\(LogLoss =
+log(1+e^{-y\hat{y}})\)</span>，多分类一般用 <span
+class="math inline">\(LogSoftmax =
+-\sum_{k=1}^Ky_klog(\hat{y}_k)\)</span></p>
+<hr />
+<h2 id="xgboost">XGBoost</h2>
+<p>  正如论文标题 (A Scalable Tree Boosting System)
+说描述，该论文提出了基于梯度提升的一套完整的系统方法论。理论只是一方面，还有很多工程上的设计点。</p>
+<h3 id="理论">理论</h3>
+<p>  按照论文中的表示发 <span class="math inline">\(F=\{f(\mathbf{x}) =
+w_{q(\mathbf{x})}\},\ q(\mathbf{x}): R^m\rightarrow T,\ \mathbf{w}\in
+R^T\)</span>，<span class="math inline">\(T\)</span>
+是叶子节点的个数，<span class="math inline">\(\mathbf{w}\)</span>
+是所有叶子节点集合，<span class="math inline">\(w_i\)</span> 代表了第
+<span class="math inline">\(i\)</span> 个叶子结点上的值，<span
+class="math inline">\(q\)</span> 即树的结构，<span
+class="math inline">\(q_i\)</span> 即第 <span
+class="math inline">\(i\)</span> 颗树的结构。每轮迭代生成一棵树 <span
+class="math inline">\(q_t\)</span>。<br />
+  假设我们已经迭代了 <span class="math inline">\(t-1\)</span>
+轮，迭代至第 <span class="math inline">\(t-1\)</span> 轮时的模型
+(<code>model</code>) 针对第 <span class="math inline">\(i\)</span>
+个样本的预测值为 <span
+class="math inline">\(\hat{y}_i^{(t-1)}\)</span>，那么第 <span
+class="math inline">\(t\)</span> 轮迭代时的目标 <span
+class="math inline">\(L\)</span> 为： <span class="math display">\[
+    L^{(t)} = \sum_{i=1}^n l(y_i,
+\hat{y}_i^{(t-1)}+f_t(\mathbf{x}_i))+\Omega(f_t)
+\]</span> 在 <span class="math inline">\((y_i,
+\hat{y}_i^{(t-1)})\)</span> 处做二阶泰勒展开有： <span
+class="math display">\[
+\begin{aligned}
+    L^{(t)} &amp;= \sum_{i=1}^nl(y_i,
+\hat{y}_i^{(t-1)})+g_if_t(\mathbf{x}_i)+\frac{1}{2}h_if_t^2(\mathbf{x}_i)
++ \Omega(f_t)\\
+    &amp;=\sum_{i=1}^n[g_if_t(\mathbf{x}_i)+\frac{1}{2}h_if_t^2(\mathbf{x}_i)]
++ \Omega(f_t)\\
+    &amp;=
+\sum_{i=1}^n[g_if_t(\mathbf{x}_i)+\frac{1}{2}h_if_t^2(\mathbf{x}_i)] +
+\gamma T + \frac{1}{2}\lambda \sum_{j=1}^Tw_j^2\\
+    g_i &amp;= \frac{\partial l(y_i, \hat{y}_i^{(t-1)})}{\partial
+\hat{y}_i^{(t-1)}}\\
+    h_i &amp;= \frac{\partial^2 l(y_i, \hat{y}_i^{(t-1)})}{\partial
+\hat{y}_i^{(t-1)}}
+\end{aligned}
+\]</span> 定义 <span class="math inline">\(I_j = \{i|q(\mathbf{x}_i) =
+j\}\)</span>，即属于第 <span class="math inline">\(j\)</span> 个叶子节点
+(第 <span class="math inline">\(t\)</span> 轮) 的样本集合。
+那么按照叶子节点 <span class="math inline">\(j\)</span> 归并损失函数，
+<span class="math inline">\(L^{(t)}\)</span> 可以化为： <span
+class="math display">\[
+    L^{(t)} = \sum_{j=1}^T[(\sum_{i\in I_j}g_i)w_j +
+\frac{1}{2}(\sum_{i\in I_j}h_i+\lambda)w_j^2]+\lambda T
+\]</span> 这是一个简单的二次函数，极值点在： <span
+class="math display">\[
+    w_j^*=-\frac{\sum_{i\in I_j}g_i}{\sum_{i\in I_j}h_i+\lambda}
+\]</span> 损失函数的极值为： <span class="math display">\[
+    L^{(t)} = -\frac{1}{2}\sum_{j}^T\frac{(\sum_{i\in
+I_j}g_i)^2}{\sum_{i\in I_j}h_i + \lambda} + \gamma T
+\]</span> 针对某个分裂节点 <span
+class="math inline">\(j\)</span>，算出分裂前后的损失函数的变动为： <span
+class="math display">\[
+    \Delta L_j = \frac{1}{2}[\frac{(\sum_{i\in I_L}g_i)^2}{\sum_{i\in
+I_L}h_i + \lambda} + \frac{(\sum_{i\in I_R}g_i)^2}{\sum_{i\in I_R}h_i +
+\lambda} - \frac{(\sum_{i\in I}g_i)^2}{\sum_{i\in I}h_i +
+\lambda}]-\gamma
+\]</span></p>
+<h3 id="精确贪心算法">精确贪心算法</h3>
+<p><img src = "/images/xgboost_exact_greedy_algorithm.png" width=480><br />
+这个算法好像有点问题，<span class="math inline">\(I\)</span>
+表示只是当前节点的样本集合，但是 <span class="math inline">\(k\)</span>
+又是遍历所有
+<code>Feature</code>，该过程似乎只是描述了一次分裂的过程，并没有给出整个树的构建过程。而且算法中的
+<span class="math inline">\(gain\)</span> 初始化之后就再也没用了。</p>
+<h3 id="近似算法-weighted-quantile-sketch">近似算法 (Weighted Quantile
+Sketch)</h3>
+<p>  近似算法的核心是依据各个<code>feature</code>的分位数进行采样，采样出
+<span class="math inline">\(l\)</span> 个点，然后分裂算法只在这 <span
+class="math inline">\(l\)</span>
+个点上进行。那么<strong>如何计算分位数</strong>变成了核心所在，也是本文的<strong>亮点</strong>所在。假设全体样本的第
+<span class="math inline">\(k\)</span> 维特征值及样本对应二阶偏导数的
+<span class="math inline">\(h_i\)</span> 对应的集合为: <span
+class="math inline">\(D_k = \{(x_{1k}, h_1), ..., (x_{nk},
+h_n)\}\)</span>。给定分位数的抽取标准 (<code>rank function</code>):
+<span class="math display">\[
+    r_k(z) = \frac{\sum_{(x, h)\in D_k, x&lt;z}h}{\sum_{(x, h)\in D_k}h}
+\]</span> 找出这样一系列的 <span class="math inline">\(l\)</span> 个点
+<span class="math inline">\(\{s_{k1}, ...,
+s_{kl}\}\)</span>，满足一下约束： <span class="math display">\[
+    |r_k(s_{k,j}) - r_k(s_{k,j-1})|&lt;\epsilon,\
+s_{k,1}=\underset{i}{min}\ x_{i,k},\ s_{k,l}=\underset{i}{max}\ x_{i,k}
+\]</span> 一图胜千言，即类似下图这样的采样。
+<img src="/images/xgboost_approximate_rank_function.jpg" width=480></p>
+<p>  可以看到由于 <span class="math inline">\(r_k(z)\)</span>
+是基于二阶导数 <span class="math inline">\(h\)</span>
+计算的，该采样过程每个样本的权重为 <span
+class="math inline">\(h_i\)</span>。如果相邻点的 <span
+class="math inline">\(x\)</span> 累加的 <span
+class="math inline">\(h\)</span>
+变动小，那么该点附近的采样就会比较稀疏，反之则比较密集。至于如何采样，能够适应<strong>大规模数据</strong>，作者将算法
+(Weighted Quantile Sketch) 放在了附录，此处不展开。<br />
+  当我们知道<strong>找分位数</strong>的标准以及<strong>如何找分位数</strong>后，就可以上近似算法了，近似算法找到
+<span class="math inline">\(l\)</span> 个分位点后，根据 <span
+class="math inline">\(l\)</span>
+个分位点进行分桶，对桶内的所有数据计算其 <span class="math inline">\(G,
+H\)</span> 之和 (即把一个桶当做“一个点”来算)，然后对 <span
+class="math inline">\(l\)</span> 个“点”重复
+<code>Exact Greedy Algorithm</code>。</p>
+<p>Approximate Algorithm for Split Finding
+<img src = "/images/xgboost_approximate_algorithm.png" width=480></p>
+<ul>
+<li><p>一开始选好，然后每次树切分都不变，<span
+class="math inline">\(min_i\ x_{i,k},\ max_i\
+x_{i,k}\)</span>也就是说是在总体样本里选，这就是我们之前定义的
+<code>global proposal</code></p></li>
+<li><p>每次确定好切分点的分割后样本也需要进行分割， <span
+class="math inline">\(min_i\ x_{i,k},\ max_i\ x_{i,k}\)</span>
+来自子树的样本集 <span class="math inline">\(D_k\)</span> ，这就是
+<code>local proposal</code></p></li>
+</ul>
+<h3 id="其他优化">其他优化</h3>
+<ul>
+<li><p>缺失值处理</p>
+<ol type="1">
+<li>缺损值，2. 很多0值，以及 3. one-hot 编码等都会造成 <span
+class="math inline">\(\mathbf{x}\)</span> 的稀疏性。</li>
+</ol>
+<ul>
+<li>训练过程：
+<ul>
+<li>对于第 <span class="math inline">\(k\)</span>
+维的特征值，先找出全部非缺损值样本 <span
+class="math inline">\(I_k\)</span> 下的最佳分裂点</li>
+<li>然后将有缺损值的样本全部添加到左子树，计算出 <span
+class="math inline">\(L_{split}\)</span>。重复该过程至右子树，计算出
+<span class="math inline">\(L_{split}&#39;\)</span>。比较较大者，作为第
+<span class="math inline">\(k\)</span> 维特征的默认缺损方向
+(<code>default direction</code>)</li>
+</ul></li>
+<li>预测过程：
+<ul>
+<li>对于缺损值样本，如果训练过程有记录
+<code>default direction</code>，则按照 <code>default direction</code>
+划分预测样本。</li>
+<li>若没有，则 <code>default direction</code> 默认为左侧。</li>
+</ul></li>
+<li>原算法过程如下：
+<img src = "/images/xgboost_algorithm3.png" width=480></li>
+</ul></li>
+<li><p>并行优化</p>
+<p>  算法中最耗时的过程就是按照各个列的值对 <span
+class="math inline">\(\mathbf{x}\)</span>
+进行排序。针对这个情况，作者提出了一个叫做 <code>Column Block</code>
+的数据结构。论文中讲得感觉不是很清楚，但是根据其名字直译
+<code>列块</code> 和 论文中的图示大概可以推断。这种结构应该是预排序
+<span class="math inline">\(x\)</span> 的 <code>index</code>，然后该
+<code>index</code> 作为指针指向一个样本，<span
+class="math inline">\(m\)</span> 个列对应于 <span
+class="math inline">\(m\)</span> 个 <code>Column Block</code><br />
+  这种数据结构对 <code>Exact Greedy Algorithm</code> 和
+<code>Approximate Algorithm</code> 都有用。近似算法的采样过程可以在所有
+<code>Column</code> 上并行</p></li>
+<li><p>缓存优化</p>
+<p>  提出 <code>Column Block</code>
+数据结构后，又有新的问题出现。算法中每次梯度迭代时会累加更新，而每个<code>Column Block</code>是根据特征值排序的，跟原始的样本的梯度存储顺序不同，内存的更新不是连续的。针对此，作者提出了
+<code>Cache-Aware Prefetch Algorithm</code>，在每个线程内部开辟一个内存缓冲区
+(<code>internal buffer</code>)，缓冲区上按照 <code>mini-batch</code>
+的方式分批次一批一批地更新梯度。</p></li>
+<li><p>缓存外计算</p>
+<p>  将数据进行分块存在磁盘上，然后运行时并行地去拉去数据。但是这样还不够，因为读磁盘是高耗时行为。</p>
+<ul>
+<li><p>Block Compression</p>
+<p>将分块数据按照<strong>列</strong>进行压缩，先加载进内存再进行解压，用减少的数据量来
+trade off 解压时间。</p></li>
+<li><p>Block Sharding</p>
+<p>将数据存在多个可用磁盘上</p></li>
+</ul></li>
+<li><p>Dart技术</p>
+<p>dart
+技术论文里没有提，但是库里面有实现，主要是一种防止过拟合的技术。Ref: <a
+target="_blank" rel="noopener" href="http://proceedings.mlr.press/v38/korlakaivinayak15.pdf">DART:
+Dropouts meet Multiple Additive Regression Trees</a></p></li>
+</ul>
+<hr />
+<h2 id="lightgbm">LightGBM</h2>
+<p>   GBDT
+是一整套演进的方法论，随着数据量的爆炸式增长，对基础的算法原理的实现方式提出更大的挑战。XGBoost是一套完整的实现方案
+(<code>Implementation</code>)。LightGBM
+更是进一步的集大成者，由微软研究并开源其库，其基础的改进主要在提升训练速度上，当然库里面的改进点不仅仅只有论文里的原理。这里先整理一下论文里的原理，再逐步剖析
+<code>LightGBM</code> 库里的亮点 <code>Feature</code>。<br />
+   LightGBM论文新提出的思想很简单，都是针对训练优化加速的。分别是
+<code>Gradient Based One-Side Sampling (GOSS)</code> 和
+<code>Exclusive Feature Bundling (EFB)</code>。LightGBM
+还顺便提了一下直方图算法 <code>Histogram Algorithm</code>，其实就是
+XGBoost 里面的近似算法。<br />
+  
+除了论文里所说的加速优化算法之外，<code>LightGBM</code>还有很多别的优化点论文里没提。这个在其官方文档里面有说明，这里也一并归纳一下。</p>
+<h3 id="goss">GOSS</h3>
+<p>   <code>GOSS</code>的想法也不复杂，每次迭代时选出比率为 <span
+class="math inline">\(a\)</span>
+的<strong>大梯度的样本</strong>，然后再随机选出 <span
+class="math inline">\(b\)</span>
+比率的小梯度的样本作为<strong>随机样本</strong>。为了保证精度一致性，对<strong>随机样本</strong>进行一个
+<span class="math inline">\(\frac{1-a}{b}\)</span>
+地加权。用这部分样本进行训练，从而大大减少训练样本的数量进而进行加速。算法如下：
+<img src = "/images/lightGBM_GOSS.png" width=480><br />
+论文从理论上证明了这样采样的后的训练精度渐进趋近与使用全样本进行训练的训练精度差。</p>
+<h3 id="efb">EFB</h3>
+<p>  
+<code>EFB</code>分为两个阶段，阶段一：将“几乎”互斥的特征捆绑在一起形成一个
+<code>bundle</code>；阶段二：将同一个<code>bundle</code>内的特征值进行合并使之成为一个真正可用的
+"<code>feature</code>"。</p>
+<ul>
+<li><p>阶段一：Greedy Bundling</p>
+<p><img src = "/images/lightGBM_EFB1.png" width=480></p>
+<p>别看算法截图挺唬人，论文里已经非常详细地说清楚了算法的实现过程。这边直译一下：“第一步：构图，图的节点是每个
+<code>Feature Column</code>，边是带权重边，其权重为两个 Feature
+的冲突数量。第二步：将节点按照其度 (<code>degree</code>)
+进行降序排序；第三步：依次检查每个
+<code>Feature</code>，计算跟已经存在的 <code>bundle</code>
+的冲突数量，如果小于一个阈值 <span
+class="math inline">\(\gamma\)</span>，那么就将该 <code>Feature</code>
+加入这个 <code>bundle</code>。反之，则添加一个新的
+<code>bundle</code></p></li>
+<li><p>阶段二：Merge Exclusive Features</p>
+<p><img src = "/images/lightGBM_EFB2.png" width=480></p>
+<p>算法看着也挺唬人，论文里面举了个很好的例子来说明该算法，可以自己手动举例来感受一下。这里直接贴原话：“Originally,
+feature A takes value from [0; 10) and feature B takes value [0; 20). We
+then add an offset of 10 to the values of feature B so that the refined
+feature takes values from [10; 30). After that, it is safe to merge
+features A and B, and use a feature bundle with range [0; 30] to replace
+the original features A and B.”</p></li>
+</ul>
+<h3 id="leaf-wise-learning">Leaf-wise Learning</h3>
+<p>  基于叶子节点的生长策略。许多决策树的生长策略是 level(depth)-wise
+的，每次分裂同等地对待每个节点。而 LightGBM 是 leaf-wise
+的，每次分裂选择 loss 降低最大的叶子节点进行分裂。原理详见 <a
+target="_blank" rel="noopener" href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.149.2862&amp;rep=rep1&amp;type=pdf">Best-First
+Decision Learning</a></p>
+<ul>
+<li>level-wise
+<img src = "/images/lightGBM_level-wise.png" width = 480></li>
+<li>leaf-wise
+<img src = "/images/lightGBM_leaf-wise.png" width = 480></li>
+</ul>
+<h3 id="histogram-substraction">Histogram Substraction</h3>
+<p>  在计算直方图时，一个节点的直方图可以由其父节点的直方图减去邻居节点的直方图算得。所以每次只需要计算一个具有少量数据的节点的直方图，其邻居节点的直方图可以直接得出。从而减少计算量。</p>
+<h3 id="feature-parallel">Feature Parallel</h3>
+<p>  并行算法主要是适应大数据情况下的<strong>分布式训练任务</strong>。 +
+传统特征并行： 1. 垂直(按列)分割数据
+(每个机器有不同的特征子集和全量样本) 2. 每个 <code>Worker</code>
+基于本地的分割数据找到本地的最佳分割点 (<code>best split point</code>)
+3. 所有 <code>Worker</code> 交换最佳分裂点，得到全局最佳分裂点。 4.
+有全局最佳分裂点的 <code>Worker</code> 进行分裂，并将分裂结果分发至其他
+<code>Worker</code> (这一步网络最耗时，因为涉及到样本的分发) 5. 其他
+<code>Worker</code> 基于接收到的结果进行再次分裂</p>
+<ul>
+<li><p>LightGBM特征并行：</p>
+<p>为了解决上诉第 4 步的高网络耗时问题，LightGBM 让每个
+<code>Worker</code> 持有全量数据。这样网络开销就只有第 3 步，即所有
+<code>Worker</code> 交换最佳分裂节点的信息。然后分裂就在本地执行了。</p>
+<ol type="1">
+<li>每个 <code>Worker</code> 基于本地数据找到最佳分裂点。</li>
+<li>所有 <code>Worker</code> 交换最佳分裂点，得到全局最佳分裂点。</li>
+<li>进行全局最佳分裂</li>
+</ol></li>
+</ul>
+<h3 id="data-parallel">Data Parallel</h3>
+<ul>
+<li><p>传统数据并行：</p>
+<ol type="1">
+<li>水平(按行)分割数据 (每个机器有全部的特征和部分样本)</li>
+<li>每个 <code>Worker</code> 基于本地数据建立直方图</li>
+<li>所有 <code>Worker</code> 交换直方图信息，得到全局直方图
+(最耗时)</li>
+<li>基于全局直方图得到最佳分裂点</li>
+</ol>
+<p>传统的数据并行，如果采用 <code>point-to-point</code>
+算法，则时间复杂度为 <span class="math inline">\(O(n_{machine}\cdot
+n_{feature} \cdot n_{bin})\)</span>。如果采用 <code>All-Reduce</code>
+算法，则时间复杂度为 <span class="math inline">\(O(2\cdot n_{feature}
+\cdot n_{bin})\)</span></p></li>
+<li><p>LightGBM数据并行：</p>
+<ul>
+<li>针对上诉第 3 步，LightGBM 采用了一个名为 <code>Reduce Scatter</code>
+的算子来从不同的 <code>Worker</code> 上合并不同 <code>Feature</code>
+的直方图。至于这个算子到底是啥，就只能看源码了</li>
+<li>如前言的 <code>Histogram Substraction</code>
+算法，交换直方图时可以只交换一个叶子节点的直方图，其邻居节点的直方图可以直接减法得到。</li>
+</ul></li>
+</ul>
+<h3 id="voting-parallel">Voting Parallel</h3>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GBDT/" rel="tag"># GBDT</a>
+          
+            <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
+          
+            <a href="/tags/LightGBM/" rel="tag"># LightGBM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/05/11/DesignPattern/" rel="next" title="设计模式">
+                <i class="fa fa-chevron-left"></i> 设计模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#decision-tree"><span class="nav-number">1.</span> <span class="nav-text">Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.1.</span> <span class="nav-text">映射表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart-%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">CART 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradient-boosting-gb"><span class="nav-number">2.</span> <span class="nav-text">Gradient Boosting (GB)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E8%A1%A8%E7%A4%BA-1"><span class="nav-number">2.1.</span> <span class="nav-text">映射表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B-gradient-boosting"><span class="nav-number">2.2.</span> <span class="nav-text">学习过程 (Gradient Boosting)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradient-boosting-desicion-tree-gbdt"><span class="nav-number">2.3.</span> <span class="nav-text">Gradient Boosting Desicion
+Tree (GBDT)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost"><span class="nav-number">3.</span> <span class="nav-text">XGBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-number">3.1.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">精确贪心算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95-weighted-quantile-sketch"><span class="nav-number">3.3.</span> <span class="nav-text">近似算法 (Weighted Quantile
+Sketch)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96"><span class="nav-number">3.4.</span> <span class="nav-text">其他优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lightgbm"><span class="nav-number">4.</span> <span class="nav-text">LightGBM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goss"><span class="nav-number">4.1.</span> <span class="nav-text">GOSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#efb"><span class="nav-number">4.2.</span> <span class="nav-text">EFB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#leaf-wise-learning"><span class="nav-number">4.3.</span> <span class="nav-text">Leaf-wise Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#histogram-substraction"><span class="nav-number">4.4.</span> <span class="nav-text">Histogram Substraction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feature-parallel"><span class="nav-number">4.5.</span> <span class="nav-text">Feature Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-parallel"><span class="nav-number">4.6.</span> <span class="nav-text">Data Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#voting-parallel"><span class="nav-number">4.7.</span> <span class="nav-text">Voting Parallel</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Probability Theory,Statistic,Statistical Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这个专题主要涉及统计机器学习基础的介绍。  常见分布  正太分布： \[ f(x) &#x3D; \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \] 指数正太分布： \[ f(x; \mu, \sigma) &#x3D; \frac{1}{x\sigma \sqrt{2\pi}}e^{-(ln\ x - \mu)^2&#x2F;2\s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Statistics">
+<meta property="og:url" content="http://example.com/2021/12/07/Statistic/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="这个专题主要涉及统计机器学习基础的介绍。  常见分布  正太分布： \[ f(x) &#x3D; \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}} \] 指数正太分布： \[ f(x; \mu, \sigma) &#x3D; \frac{1}{x\sigma \sqrt{2\pi}}e^{-(ln\ x - \mu)^2&#x2F;2\s">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/images/statistic_em_0.png">
+<meta property="article:published_time" content="2021-12-07T12:00:08.000Z">
+<meta property="article:modified_time" content="2021-12-07T12:00:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Probability Theory">
+<meta property="article:tag" content="Statistic">
+<meta property="article:tag" content="Statistical Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/statistic_em_0.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/12/07/Statistic/"/>
+
+
+
+
+
+  <title>Statistics | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/07/Statistic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Statistics</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-07T20:00:08+08:00">
+                2021-12-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-12-07T20:00:08+08:00">
+                2021-12-07
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  这个专题主要涉及统计机器学习基础的介绍。</p>
+<hr />
+<h2 id="常见分布">常见分布</h2>
+<ul>
+<li><p>正太分布： <span class="math display">\[ f(x) =
+\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\]</span></p></li>
+<li><p>指数正太分布： <span class="math display">\[ f(x; \mu, \sigma) =
+\frac{1}{x\sigma \sqrt{2\pi}}e^{-(ln\ x - \mu)^2/2\sigma^2}
+\]</span></p></li>
+<li><p>01分布： <span class="math display">\[P(X=k;p) =
+p^k(1-p)^{1-k}\]</span></p></li>
+<li><p>二项分布：</p>
+<ul>
+<li><span class="math inline">\(n\)</span>次实验中, <span
+class="math inline">\(2\)</span>面硬币一面(正面)朝上次数为<span
+class="math inline">\(k\)</span>次的概率 <span
+class="math display">\[P(X=k;n,p) = C_n^kp^k(1-p)^{1-k}\]</span></li>
+</ul></li>
+<li><p>Multinomial分布(多项式分布)：</p>
+<ul>
+<li><span class="math inline">\(n\)</span>次实验中, <span
+class="math inline">\(K\)</span>面骰子各个面次数为<span
+class="math inline">\((x_1,...,x_k)\)</span>的概率 <span
+class="math display">\[
+  \begin{aligned}
+    P(X_1=x_1, X_2=x_2,...X_k=x_k;n,p_1,...,p_k )
+    &amp;=\frac{n!}{\prod_{i=1}^Kx_i!}\prod_{i=1}^Kp_i^{x_i}\\
+    &amp;=\frac{\Gamma(\sum_{i=1}^Kx_i+1)}{\prod_{i=1}^K\Gamma(x_i+1)}
+    \prod_{i=1}^Kp_i^{x_i}\\
+    其中\ \sum_{i=1}^Kx_i=n;
+  \end{aligned}
+\]</span></li>
+</ul></li>
+<li><p>指数分布： <span class="math display">\[
+  f(x;\lambda)=\begin{cases}
+    \lambda e^{-\lambda x},\ x&gt;=0\\
+    0,\ x&lt;0\\
+  \end{cases}
+\]</span></p></li>
+<li><p>Gamma分布： <span class="math display">\[
+  f(x; \alpha, \beta)=\frac{\beta^{\alpha}x^{\alpha -1}e^{-\beta
+x}}{\Gamma(\alpha)}\\
+  \Gamma(\alpha)=\int_0^{\infty}x^{\alpha -1}e^{-x}dx
+\]</span></p></li>
+<li><p>均匀分布: <span class="math display">\[
+  f(x) = \begin{cases}
+    \frac{1}{b-a},\quad x\in [a,b]\\
+    0,\quad else
+  \end{cases}
+\]</span></p></li>
+<li><p>beta分布： <span class="math display">\[
+  f(x; \alpha, \beta) = \frac{x^{\alpha -1}(1-x)^{\beta -1}}{B(\alpha,
+\beta)}, x\in (0, 1) \\
+  B(\alpha, \beta)=\int_0^1x^{\alpha -1}(1-x)^{\beta
+-1}dx=\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha + \beta)}
+\]</span></p></li>
+<li><p>Dirichlet分布： <span class="math display">\[
+  f(\mathbf{x};\boldsymbol{\alpha})=\frac{\prod_{i=1}^Kx_i^{\alpha_i
+-1}}{B(\boldsymbol{\alpha})}, \sum_{i=1}^Kx_i=1, x_i\geq0\ for\
+i\in\{1,...K\}\\
+  B(\boldsymbol{\alpha})=\int \prod_{i=1}^Ku_i^{\alpha_i}d\mathbf{u}
+=\frac{\prod_{i=1}^K\Gamma(\alpha_i)}{\Gamma(\sum_{i=1}^{K}\alpha_i)}
+\]</span></p>
+<ul>
+<li>对比多项式分布和Dirichlet分布公式，可以发现其实Dirichlet分布就是多项式分布在连续情况下的推广。</li>
+</ul></li>
+<li><p>Logistic分布： <span class="math display">\[
+  F(x) = P(X\leq x) = \frac{1}{1+e^{\frac{-(x-\mu)}{\gamma}}} \\
+  f(x) = F&#39;(x) = \frac{e^{\frac{-(x-\mu)}{\gamma}}}{\gamma
+{(1+e^{-\frac{x-\mu}{\gamma}})}^2 }
+\]</span></p></li>
+<li><p>卡方分布：</p></li>
+<li><p>Ref:</p>
+<ol type="1">
+<li><a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet
+Distribution (wiki)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/34866983">如何理解Gamma分布？(知乎)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103854460">什么是共轭分布(知乎)</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.datalearner.com/blog/1051459673766843">Dirichlet
+Distribution 与 Dirichlet Process</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Beta_function#Relationship_to_the_gamma_function">beta
+function</a></li>
+</ol></li>
+</ul>
+<hr />
+<h2 id="独立性假设">独立性假设</h2>
+<ul>
+<li>相互独立：</li>
+<li>条件独立：</li>
+<li>马尔科夫性：</li>
+</ul>
+<hr />
+<h2 id="显著性检验">显著性检验</h2>
+<p>  
+显著性检验一般用在AB实验平台，对各种策略的指标差异上是否具有统计学上的显著性的检验方法。</p>
+<h2 id="熵的表示">熵的表示</h2>
+<ul>
+<li>离散随机变量：
+<ul>
+<li>熵，假设<span class="math inline">\(X\sim p(x),\ x\in
+\{x_1,...x_n\}\)</span>： <span class="math display">\[
+  \begin{aligned}
+    H(X)&amp; = -\sum_{i}^{n}p(x_i)log_bp(x_i)\\
+        &amp; = \mathbb{E}[\frac{1}{log(P(X))}]
+  \end{aligned}
+\]</span>
+<ul>
+<li>可以这样粗略地理解熵，如果 <span
+class="math inline">\(b=2\)</span>，即以二进制编码所有可能的事件，假如每个事件的概率为
+<span class="math inline">\(1/8\)</span>，即有8个事件，那么编码 <span
+class="math inline">\(8\)</span> 个事件需要 <span
+class="math inline">\(log_2(8)=3\)</span> bit的信息量。即编码概率为
+<span class="math inline">\(p(x)\)</span> 的事件需要 <span
+class="math inline">\(log(\frac{1}{p(x)})\)</span>
+的信息量，平均编码长度即熵的表达式。</li>
+<li>熵的表达式基于熵的规范性要求可以严格的推导出来，具体可可跳转<a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/30828247">为什么香农要将信息熵公式要定义成
+-Σp·log₂(p) 或 -∫p·log₂(p)dp？</a></li>
+</ul></li>
+<li>条件熵： <span class="math display">\[
+  H(X|Y) = \sum_yp(y)H(X|Y=y)
+\]</span></li>
+<li>联合熵： <span class="math display">\[
+\begin{aligned}
+  &amp;H(X,Y) = \sum_x\sum_yp(x, y)log_bp(x, y)\\
+  &amp;H(X, Y) = H(X) + H(X|Y) = H(Y) + H(Y|X)
+\end{aligned}
+\]</span></li>
+<li>相对熵(KL散度)： <span class="math display">\[
+  \begin{aligned}
+    D(p||q) &amp; = \sum_xp(x)log(\frac{p(x)}{q(x)})\\
+            &amp; = \sum_x p(x)(-log(q(x)) - (-log(p(x))))\\
+            &amp; =
+\mathbb{E}[\frac{1}{log(Q(X))}-(\frac{1}{log(P(X))})]
+  \end{aligned}
+\]</span> 用 <span class="math inline">\(q\)</span> 分布来近似 <span
+class="math inline">\(p\)</span> 分布时的信息损失
+(需要多出来的编码信息量)。</li>
+<li>交叉熵： <span class="math display">\[
+\begin{aligned}
+  H(p,q) &amp;= \sum_xp(x)log(\frac{1}{q(x)})\\
+        &amp;= -\sum_xp(x)log(q(x))\quad
+此即CrossEntropy损失函数的形式。\\
+        &amp;= H(p) + D(p||q) \\
+        &amp;=\mathbb{E}[\frac{1}{log(Q(X))}]
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>连续随机变量：</li>
+</ul>
+<hr />
+<h2 id="采样">采样</h2>
+<p>  采样的本质问题是已知一个复杂分布<span
+class="math inline">\(p(x)\)</span>，我们希望得到一批服从于<span
+class="math inline">\(p(x)\)</span>的样本集<span
+class="math inline">\(\mathbb{X}=\{x_1,...,x_n\}\)</span>。而计算机只能非常方便的生成<span
+class="math inline">\(U(0,1)\)</span>的样本集。如何利用这个特点构造出我们想要的服从<span
+class="math inline">\(p(x)\)</span>的样本集便是采样的关键所在。</p>
+<h3 id="常见分布采样">常见分布采样</h3>
+<ul>
+<li><span class="math inline">\(U(0,1)\)</span></li>
+<li><span class="math inline">\(\mathcal{N}(0,1)\)</span></li>
+</ul>
+<h3 id="复杂分布采样">复杂分布采样</h3>
+<ul>
+<li>反函数采样：
+<ul>
+<li>过程：
+<ul>
+<li>假如分布<span
+class="math inline">\(p(x)\)</span>的累计分布函数为<span
+class="math inline">\(F(x)=\int_{-\infty}^xp(x)dx\)</span>。</li>
+<li>基于均匀分布<span class="math inline">\(U(0,1)\)</span>采样得到<span
+class="math inline">\(z_i\)</span>，令<span
+class="math inline">\(z_i=F(x_i)\)</span>。</li>
+<li>则<span class="math inline">\(x_i=F^{-1}(z_i)\)</span>。其中<span
+class="math inline">\(F^{-1}\)</span>是<span
+class="math inline">\(F\)</span>的反函数。</li>
+</ul></li>
+</ul></li>
+<li>接受-拒绝采样：
+<ul>
+<li>如果<span
+class="math inline">\(p(x)\)</span>的分布复杂到难以求其反函数，可以采用接受-拒绝采样。</li>
+<li>拒绝接受采样应用之一详见<code>LeetCode-470</code></li>
+</ul></li>
+<li><strong>MCMC(Markov Chain Monte Carlo)采样</strong>:<br />
+  MC(Monte
+Carlo)法是通过依概率分布(密度)生成样本来对一些任务(如求积分，求期望)进行预估计算。而MCMC采样是根据概率分布(密度)，通过构造马尔科夫链/过程并来生成样本的一簇方法。(Markov
+Chain Monte Carlo (MCMC) techniques are methods for sampling from
+probability distributions using Markov chains)。<br />
+  假设<span
+class="math inline">\(\pi(\cdot)\)</span>为该马尔科夫链的平稳分布(<code>stationary distribution</code>)，则经过足够长时间后，样本的分布收敛于<span
+class="math inline">\(\pi(\cdot)\)</span>。MCMC采样的核心是构造该马尔科夫过程，使得其平稳分布为<span
+class="math inline">\(\pi(\cdot)\)</span>。
+<ul>
+<li><strong>M-H采样</strong>：
+<ul>
+<li>输入：
+<ul>
+<li>待采样<strong>概率分布(密度)</strong>：<span
+class="math inline">\(\pi(\cdot)\)</span>，假设<span
+class="math inline">\(\pi(\cdot)\)</span>对应的密度函数为<span
+class="math inline">\(\pi_u(\cdot)\)</span>。即： <span
+class="math display">\[
+  \pi(A)=\frac{\int_A\pi_u(x)dx}{\int_S\pi_u(x)dx}
+\]</span>
+<ul>
+<li>可以看到<span class="math inline">\(\pi_u(\cdot)\propto
+\pi(\cdot)\)</span></li>
+</ul></li>
+<li>任意马尔科夫过程<span
+class="math inline">\(Q(x,\cdot)\)</span>，其状态转移概率为：<span
+class="math inline">\(Q(x,dy)\propto p(x,y)dy\)</span></li>
+</ul></li>
+<li>过程：
+<ul>
+<li>随机生成<span class="math inline">\(x_0\)</span></li>
+<li><span class="math inline">\(for\ t=0,...\)</span>，依据<span
+class="math inline">\(Q(x_t,\cdot)\)</span>生成<span
+class="math inline">\(x_{t+1}&#39;\)</span></li>
+<li>计算： <span class="math display">\[
+  \begin{aligned}
+    &amp;\alpha(x_t,x&#39;_{t+1})=min\
+\{1,\frac{\pi_u(x&#39;_{t+1})p(x&#39;_{t+1},x)}{\pi_u(x)p(x,x&#39;_{t+1})}\}\\\\
+    &amp;\alpha(i,j)=min\
+\{1,\frac{K_1\pi_jK_2A_{j,i}}{K_1\pi_iK_2A_{i,j}}\}=min\
+\{1,\frac{\pi_jA_{j,i}}{\pi_iA_{i,j}}\}\
+//离散情况，其中K_1,K_2为比例缩放系数\\\\
+  \end{aligned}
+\]</span>
+<ul>
+<li>然后以<span
+class="math inline">\(\alpha(x_t,x&#39;_{t+1})\)</span>的概率接受样本<span
+class="math inline">\(x&#39;_{t+1}\)</span>。具体操作如下：
+<ul>
+<li>依据均匀分布<span class="math inline">\(U(0,1)\)</span>采样得到<span
+class="math inline">\(u\)</span>，如果<span class="math inline">\(u\leq
+\alpha(x_t,x&#39;_{t+1})\)</span>，则接受<span
+class="math inline">\(x&#39;_{t+1}\)</span>，即<span
+class="math inline">\(x_{t+1}=x&#39;_{t+1}\)</span>。否则，拒绝<span
+class="math inline">\(x&#39;_{t+1}\)</span>，即<span
+class="math inline">\(x_{t+1}=x_{t}\)</span>。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>性质：
+<ul>
+<li>M-H算法生成一个常返马尔科夫过程，即满足细致平衡条件： <span
+class="math display">\[
+  \pi(dx)P(x,dy)=\pi(dy)P(y,dx)
+\]</span>
+<ul>
+<li>证明：
+<ul>
+<li>令<span class="math inline">\(c=\int_S\pi_u(x)dx\)</span> <span
+class="math display">\[
+\begin{aligned}
+  \pi(dx)P(x,dy)&amp;=\frac{1}{c}\pi_u(x)dx*p(x,y)\alpha(x,y)dy\\\\
+  &amp;=c^{-1}(min\ \{\pi_u(y)p(y,x),\pi_u(x)p(x,y)\})dxdy\
+//关于x,y对称。\\\\
+  &amp;=\pi(dy)P(x,dx)
+\end{aligned}
+\]</span></li>
+<li>通过证明过程，也能知道为什么要这么定义<span
+class="math inline">\(\alpha\)</span></li>
+</ul></li>
+</ul></li>
+<li>由细致平衡条件和平稳分布的关系，可以知道M-H算法产生的马尔科夫过程最终收敛于待采样的概率(密度)分布<span
+class="math inline">\(\pi\)</span></li>
+</ul></li>
+</ul></li>
+<li><strong>Gibbs采样</strong>：
+<ul>
+<li>吉布斯采样方法为多维随机变量情况下的一种MCMC方法。假如我们有多变量联合概率密度分布<span
+class="math inline">\(p(\mathbf{x})=f(x_1,...,x_d)\)</span>，状态空间
+<span class="math inline">\(S\subseteq R^d\)</span></li>
+<li>依据条件分布进行边际采样通常比边际化联合分布(通过积分)求得边际分布后再进行采样要容易得多(<a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gibbs_sampling">wiki</a>)。</li>
+<li>算法：
+<ul>
+<li>输入：<span class="math inline">\(p(\mathbf{x})\)</span></li>
+<li>输出：服从<span class="math inline">\(p\)</span>的一批样本<span
+class="math inline">\(\{\mathbf{x}_1,...\mathbf{x}_n\}\)</span></li>
+<li>过程：
+<ul>
+<li>随机生成：<span class="math inline">\(\mathbf{x}^{(0)}\)</span></li>
+<li><span class="math inline">\(for\ t=0,...\)</span>
+<ul>
+<li><span class="math inline">\(for\ i\ in\ \{1,...,d\}\)</span>
+<ul>
+<li>依据<span
+class="math inline">\(p(x_i^{(t+1)}|x_1^{(t)},...,x^{(t)}_{i-1},x^{(t)}_{i+1},...x^{(t)}_d)\)</span>进行采样得到i坐标轴下的<span
+class="math inline">\(x^{(t+1)}_i\)</span>的值。</li>
+</ul></li>
+<li>得到：<span class="math inline">\(\mathbf{x}^{(t+1)}\)</span></li>
+</ul></li>
+<li>当 <span class="math inline">\(t\geq t_{spec}\)</span>时，<span
+class="math inline">\(\mathbf{x}^{(t+1)}\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Ref：
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/math/0404033.pdf">General state space
+Markov chains and MCMC algorithms</a></li>
+<li>https://www.webpages.uidaho.edu/~stevel/565/lectures/5d%20MCMC.pdf</li>
+<li>https://www.colorado.edu/amath/sites/default/files/attached-files/2_28_2018.pdf</li>
+<li>https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo</li>
+<li>https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm</li>
+<li>《百面机器学习》</li>
+</ol></li>
+</ul>
+<hr />
+<h2 id="em算法">EM算法</h2>
+<p>  EM算法的全程是<code>Expectation-maximization algorithm</code>，即期望最大值算法，主要用于估计依赖于隐变量的样本的最大似然参数。
+(PS:
+一般针对无隐变量的估计用最大似然估计法)。算法通过不断求解E步(<code>Expectation</code>)和M步(<code>Maximize Likelyhood</code>)来预估变量(含隐变量)
+的分布。<br />
+  假如有两个分布<span class="math inline">\(Y\)</span>和<span
+class="math inline">\(Z\)</span>，一个能被观测到<span
+class="math inline">\(Y\)</span>，一个不能被观测到<span
+class="math inline">\(Z\)</span>(隐变量)，其中观测变量<span
+class="math inline">\(Y\)</span>依赖于隐变量<span
+class="math inline">\(Z\)</span>，分布参数为<span
+class="math inline">\(\boldsymbol{\theta}\)</span>。现在我们能够
+观测到一批观测变量样本<span
+class="math inline">\(\mathbb{Y}=\{y_1,...,y_N\}\)</span></p>
+<h3 id="基础知识">基础知识</h3>
+<ul>
+<li>凸函数：<br />
+令 <span class="math inline">\(f(x)\)</span> 是定义在实数区间 <span
+class="math inline">\(I=[a,b]\)</span> 上的实函数，如果 <span
+class="math inline">\(f(x)\)</span> 是(下)凸函数，则有： <span
+class="math display">\[
+  \forall x_1, x_2\in I, \lambda\in[0,1]\\
+  f(\lambda x_1+(1-\lambda)x_2)\leq \lambda f(x_1) + (1-\lambda)f(x_2)
+\]</span></li>
+<li>Jensen 不等式:<br />
+如果 <span class="math inline">\(f(x)\)</span> 是凸函数，<span
+class="math inline">\(\sum_{i=1}^n\lambda_i = 1\)</span> 则有： <span
+class="math display">\[
+  f(\sum_{i=1}^n \lambda_i x_i)\leq \sum_{i=1}^n\lambda_i f(x_i)
+\]</span> 由于 <span class="math inline">\(f(x) = ln(x)\)</span>
+是凹函数，则有： <span class="math display">\[
+  ln(\sum_{i=1}^n \lambda_i x_i)\geq \sum_{i=1}^n\lambda_i ln(x_i)
+\]</span></li>
+</ul>
+<h3 id="em算法过程">EM算法过程</h3>
+<p>  我们先来回顾基础的极大似然估计，假设有多维随机变量 <span
+class="math inline">\(\mathbf{X}\in
+R^d\sim\mu(\theta)\)</span>，我们想要估计 <span
+class="math inline">\(\theta\)</span>，一般的，我们有： <span
+class="math display">\[
+  L(\theta) = ln(P(\mathbf{X}|\theta)) = ln(\sum_{i =
+1}^nP(\mathbf{x}_i|\theta))
+\]</span> 如果我们以迭代来计算 <span
+class="math inline">\(\theta\)</span>，假设第 <span
+class="math inline">\(n\)</span> 步计算的 <span
+class="math inline">\(\theta\)</span> 为 <span
+class="math inline">\(\theta_n\)</span>，我们希望随着迭代次数增加，概率能够逼近似然，即：
+<span class="math display">\[
+  L(\theta) &gt; L(\theta_n)
+\]</span> 等价地，我们希望最大化： <span class="math display">\[
+  L(\theta) - L(\theta_n) = lnP(\mathbf{X}|\theta) -
+lnP(\mathbf{X}|\theta_n)
+\]</span> 如果 <span class="math inline">\(\mathbf{X}\)</span>
+依赖于隐随机变量 <span class="math inline">\(\mathbf{Z}\)</span>
+的生成，用 <span class="math inline">\(\mathbf{z}\)</span>
+表示其值的实现，则有： <span class="math display">\[
+  \begin{aligned}
+      P(\mathbf{X}|\theta)&amp; =
+\sum_{\mathbf{z}}P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)\\
+  L(\theta) - L(\theta_n)
+&amp;=ln\sum_{\mathbf{z}}P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)
+- lnP(\mathbf{X}|\theta_n)\\
+  &amp; =
+ln\sum_{\mathbf{z}}P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)(\frac{P(\mathbf{z}|\mathbf{X},\theta_n)}{P(\mathbf{z}|\mathbf{X},\theta_n)})-lnP(\mathbf{X}|\theta_n)\\
+  &amp;=ln\sum_{\mathbf{z}}P(\mathbf{z}|\mathbf{X},\theta_n)(\frac{P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)}{P(\mathbf{z}|\mathbf{X},\theta_n)})-lnP(\mathbf{X}|\theta_n)\\
+  &amp;\geq
+\sum_{\mathbf{z}}P(\mathbf{z}|\mathbf{X},\theta_n)ln(\frac{P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)}{P(\mathbf{z}|\mathbf{X},\theta_n)})-lnP(\mathbf{X}|\theta_n)\\
+  &amp;=\sum_{\mathbf{z}}P(\mathbf{z}|\mathbf{X},\theta_n)ln(\frac{P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)}{P(\mathbf{z}|\mathbf{X},\theta_n)P(\mathbf{X}|\theta_n)})\\
+  &amp;\triangleq \Delta(\theta|\theta_n)
+  \end{aligned}
+\]</span> 不妨令: <span class="math display">\[
+  l(\theta|\theta_n) = L(\theta_n) + \Delta(\theta|\theta_n)
+\]</span> 易得： <span class="math display">\[
+  l(\theta_n|\theta_n) = L(\theta_n)
+\]</span> 关于 <span class="math inline">\(l(\theta_n|\theta_n)\)</span>
+和 <span class="math inline">\(L(\theta)\)</span>
+的关系有个很好的示意图： <img src="/images/statistic_em_0.png" /> 求解
+<span class="math inline">\(\theta_n\)</span>： <span
+class="math display">\[
+  \begin{aligned}
+      \theta_n &amp;= \underset{\theta}{\operatorname{argmax}}\
+l(\theta|\theta_n)\\
+      &amp; = \underset{\theta}{\operatorname{argmax}}\ \{L(\theta_n)+
+\sum_{\mathbf{z}}P(\mathbf{z}|\mathbf{X},\theta_n)ln(\frac{P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta)}{P(\mathbf{z}|\mathbf{X},\theta_n)P(\mathbf{X}|\theta_n)})\}\\
+      &amp; = \underset{\theta}{\operatorname{argmax}}\
+\{\sum_{\mathbf{z}}P(\mathbf{z|\mathbf{X},\theta_n})ln(P(\mathbf{X}|\mathbf{z},\theta)P(\mathbf{z}|\theta))
+\}\\
+      &amp; = \underset{\theta}{\operatorname{argmax}}\
+\{\sum_{\mathbf{z}}P(\mathbf{z|\mathbf{X},\theta_n})ln(\frac{P(\mathbf{X},\mathbf{z},\theta)}{P(\mathbf{z},
+\theta)}\frac{P(\mathbf{z}, \theta)}{P(\theta)}) \}\\
+      &amp; = \underset{\theta}{\operatorname{argmax}}\
+\{\sum_{\mathbf{z}}P(\mathbf{z|\mathbf{X},\theta_n})lnP(\mathbf{X},\mathbf{z}|\theta)\}\\
+      &amp; = \underset{\theta}{\operatorname{argmax}}\
+\{\mathbb{E}_{\mathbf{z}|\mathbf{X},\theta_n}[lnP(\mathbf{X},\mathbf{z}|\theta_n)]
+\}
+  \end{aligned}
+\]</span> 于是 EM 算法就显然了：</p>
+<ol type="1">
+<li><code>E</code>步：计算第 <span class="math inline">\(n\)</span>
+步的期望 <span
+class="math inline">\(\mathbb{E}_{\mathbf{z}|\mathbf{X},\theta_n}[lnP(\mathbf{X},\mathbf{z}|\theta_n)]\)</span></li>
+<li><code>M</code>步：求解 <span
+class="math inline">\(\theta_{n+1}\)</span> 使得该期望最大。</li>
+</ol>
+<p>算法过程：</p>
+<ul>
+<li>输入：
+<ul>
+<li>观测样本<span
+class="math inline">\(\mathbb{X}=\{\mathbf{x}_1,...,\mathbf{x}_n\}\)</span></li>
+<li>联合分布<span
+class="math inline">\(P(\mathbf{X},\mathbf{Z};\theta)\)</span>，条件分布<span
+class="math inline">\(P(\mathbf{Z}|\mathbf{X};\theta)\)</span></li>
+</ul></li>
+<li>输出：
+<ul>
+<li>模型参数：<span
+class="math inline">\(\boldsymbol{\theta}\)</span></li>
+</ul></li>
+<li>步骤：
+<ul>
+<li>选择参数初始值：<span
+class="math inline">\(\boldsymbol{\theta}^{(0)}\)</span>。</li>
+<li><code>E</code>步：计算： <span class="math display">\[
+\begin{aligned}
+   Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})&amp;=
+   \sum_{j=1}^N\mathbb{E}_{P(\mathbf{Z}|\mathbf{X}=\mathbf{x}_j;\boldsymbol{\theta}^{(i)})}log(P(\mathbf{X}=\mathbf{x}_i,\mathbf{Z};\boldsymbol{\theta}))\\\\
+   &amp;=\sum_{j=1}^N(\sum_ZP(\mathbf{Z}|\mathbf{Y}=\mathbf{x}_i;\boldsymbol{\theta}^{(i)})log(P(\mathbf{X}=\mathbf{x}_j,Z;\boldsymbol{\theta}))
+\end{aligned}
+\]</span></li>
+<li><code>M</code>步： <span class="math display">\[
+\boldsymbol{\theta}^{(i+1)}=\underset{\boldsymbol{\theta}}{\operatorname{argmax}}\quad
+Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{(i)})
+\]</span></li>
+<li>重复上面两步，直至收敛。</li>
+</ul></li>
+</ul>
+<h3 id="em算法应用">EM算法应用</h3>
+<ul>
+<li><p>EM算法与高斯混合模型</p></li>
+<li><p>EM算法与隐马尔可夫模型</p></li>
+<li><p>Ref:</p>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="https://www.lri.fr/~sebag/COURS/EM_algorithm.pdf">The
+Expectation Maximization Algorithm: A short tutorial</a></li>
+<li>http://www.huaxiaozhuan.com/统计学习/chapters/13_EM.html</li>
+</ol></li>
+</ul>
+<hr />
+<h2 id="最大熵模型">最大熵模型</h2>
+<h3 id="背景">背景</h3>
+<ul>
+<li>最大熵原理：
+<ul>
+<li>在已知约束下，所有可能的模型中，熵最大的模型为最好的模型</li>
+</ul></li>
+</ul>
+<p>   针对一个分布 <span class="math inline">\(P(\mathbf{X})\sim
+\mu\)</span>，其熵为 <span class="math inline">\(H(\mu) =
+-\sum_{\mathbf{X}}P(\mathbf{X})logP(\mathbf{X})\)</span>。如果没有任何约束，可以证明当
+<span class="math inline">\(\mu = U\)</span> 即，<span
+class="math inline">\(\mathbf{X}\)</span>
+服从均匀分布时，其熵最大。<br />
+   针对样本空间 <span class="math inline">\(\mathbb{D} =
+\{(\mathbf{x}_1, \mathbf{y}_1),...,(\mathbf{x}_N,
+\mathbf{y}_N)\}\)</span>，我们的模型是一个条件概率分布 <span
+class="math inline">\(P(\mathbf{Y}|\mathbf{X})\)</span>。由大数定理可知，联合分布
+<span class="math inline">\(P(\mathbf{X}, \mathbf{Y})\)</span> 和
+边缘概率分布 <span class="math inline">\(P(\mathbf{X})\)</span>
+可以如下表示： <span class="math display">\[
+  \overset{\sim}{P}(\mathbf{X} = \mathbf{x}, \mathbf{Y} = \mathbf{y}) =
+\frac{v(\mathbf{X} = \mathbf{x}, \mathbf{Y} = \mathbf{y})}{N} \\
+  \overset{\sim}{P}(\mathbf{X} = \mathbf{x}) = \frac{v(\mathbf{X} =
+\mathbf{x})}{N}
+\]</span> 条件熵为： <span class="math display">\[
+  H = -\sum_{\mathbf{x},
+\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})log(P(\mathbf{y}|\mathbf{x}))
+\]</span> 引入特征函数(<code>feature function</code>) <span
+class="math inline">\(f_i(\mathbf{x}, \mathbf{y})\)</span> 用于描述
+<span class="math inline">\(\mathbf{X}\)</span> 和 <span
+class="math inline">\(\mathbf{Y}\)</span> 之间的某一种事实。 <span
+class="math display">\[
+  f_i(\mathbf{x}, \mathbf{y}) = \begin{cases}
+    1,\quad \mathbf{x} \text{和}\mathbf{y}\text{之间满足第}\ i\
+\text{种事实}\\
+    0,\quad \text{否则}
+  \end{cases}
+\]</span></p>
+<p>那么可以得到 <span class="math inline">\(f_i\)</span>
+关于两种分布的期望：</p>
+<ul>
+<li><p>基于联合分布 <span class="math inline">\(P(\mathbf{X},
+\mathbf{Y})\)</span> 的期望： <span class="math display">\[
+  \mathbb{E}_{\overset{\sim}{P}}[f_i] =
+\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},
+\mathbf{y})f(\mathbf{x}, \mathbf{y})
+\]</span></p></li>
+<li><p>基于模型分布 <span
+class="math inline">\(P(\mathbf{Y}|\mathbf{X})\)</span> 和边缘分布 <span
+class="math inline">\(P(\mathbf{X})\)</span> 的期望： <span
+class="math display">\[
+  \mathbb{E}_{P}[f_i] =
+\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})f(\mathbf{x},
+\mathbf{y})
+\]</span>
+既然样本是可以用模型去建模和指导的，即模型可以获取数据中的信息，那么有理由相信数据分布满足这两个期望值相等的约束，即：
+<span class="math display">\[
+\mathbb{E}_{\overset{\sim}{P}}[f_i] = \mathbb{E}_{P}[f_i]
+\]</span></p>
+<ul>
+<li>这一约束条件的含义就是：“所建模型的概率分布应该与已知样本中的概率分布相吻合”
+的数学表达。</li>
+</ul></li>
+</ul>
+<h3 id="建模">建模：</h3>
+<p>   基于最大熵理论背景假设下，模型的求解建模为如下的约束极值优化问题：
+<span class="math display">\[
+    \begin{aligned}
+      &amp; \underset{\mathbf{\theta}}{\operatorname{min}} -H(P) =
+\sum_{\mathbf{x},
+\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})log(P(\mathbf{y}|\mathbf{x}))\\
+     &amp; s.t: \\
+     &amp; \qquad \sum_{\mathbf{y}}P(\mathbf{y}|\mathbf{x}) = 1 \\
+     &amp; \qquad \mathbb{E}_{\overset{\sim}{P}}[f_k] =
+\mathbb{E}_{P}[f_k],\quad k = 1,...,K
+    \end{aligned}
+  \]</span></p>
+<ul>
+<li>其中 <span class="math inline">\(\mathbf{\theta}\)</span> 是 <span
+class="math inline">\(P(\mathbf{y}|\mathbf{x})\)</span> 的参数。</li>
+</ul>
+<h3 id="求解">求解</h3>
+<p>   求解过程和约束极值优化问题求解过程一样。</p>
+<ul>
+<li><p>构建拉格朗日乘子 <span class="math inline">\(\mathbf{w} = (w_0,
+w_1,...,w_K)\)</span>： <span class="math display">\[
+  L(P, \mathbf{w}) = \sum_{\mathbf{x},
+\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})log(P(\mathbf{y}|\mathbf{x}))
+  + w_0(\sum_{\mathbf{y}}P(\mathbf{y}|\mathbf{x})-1)
+  +
+\sum_{k=1}^Kw_k(\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},
+\mathbf{y})f_k(\mathbf{x}, \mathbf{y}) -
+\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})f_k(\mathbf{x},
+\mathbf{y}))
+\]</span></p>
+<ul>
+<li><p>由于 <span class="math inline">\(L\)</span> 是凸函数，有：</p>
+<p><span class="math display">\[
+  \underset{P}{\operatorname{min}}\
+\underset{\mathbf{w}}{\operatorname{max}}\ L(P, \mathbf{w}) =
+\underset{\mathbf{w}}{\operatorname{max}}\
+\underset{P}{\operatorname{min}}\ L(P,\mathbf{w})
+\]</span></p></li>
+<li><p>先求 <span
+class="math inline">\(\underset{P}{\operatorname{min}}\
+L(P,\mathbf{w})\)</span>，令 <span
+class="math inline">\(\theta_D(\mathbf{w}) =
+\underset{P}{\operatorname{min}}\ L(P,\mathbf{w})\)</span>：<br />
+由 <span class="math display">\[
+  \begin{aligned}
+  \frac{\partial L(P,\mathbf{w})}{\partial P(\mathbf{y}|\mathbf{x})}
+&amp;= 0\\
+  \end{aligned}
+\]</span> 得： <span class="math display">\[
+  P_{\mathbf{w}}(\mathbf{y}|\mathbf{x}) = \frac{exp(\sum_{k=1}^Kw_k
+f_k(\mathbf{x}, \mathbf{y}))}{exp(1-w_0)}\\
+\]</span> 再由： <span class="math display">\[
+  \sum_{\mathbf{y}}P(\mathbf{y}|\mathbf{x}) = 1\\
+\]</span> 得: <span class="math display">\[
+  Z(\mathbf{x}) = \sum_{\mathbf{y}}exp \left( \sum_{k=1}^Kw_k
+f_k(\mathbf{x}, \mathbf{y}) \right) = exp(1-w_0)
+\]</span> 将结果带入 <span
+class="math inline">\(\underset{P}{\operatorname{min}}\
+L(P,\mathbf{w})\)</span> 得:<br />
+$$</p>
+<span class="math display">\[\begin{aligned}
+    \theta_D(\mathbf{w}) &amp;=
+\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},
+\mathbf{y})\sum_{k=1}^Kw_kf_k(\mathbf{x}, \mathbf{y}) +
+
+    \sum_{\mathbf{x},
+\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})
+    \left( log(P(\mathbf{y}|\mathbf{x})) -
+\sum_{k=1}^Kw_kf_k(\mathbf{x},\mathbf{y})\right)\\
+    &amp;=\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},
+\mathbf{y})\sum_{k=1}^Kw_kf_k(\mathbf{x}, \mathbf{y})
+    - \sum_{\mathbf{x},
+\mathbf{y}}\overset{\sim}{P}(\mathbf{x})P(\mathbf{y}|\mathbf{x})
+log\left( Z(\mathbf{x}) \right)\\
+    &amp;=\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},
+\mathbf{y})\sum_{k=1}^Kw_kf_k(\mathbf{x}, \mathbf{y})
+    - \sum_{\mathbf{x}}\overset{\sim}{P}(\mathbf{x}) log\left(
+Z(\mathbf{x}) \right)
+  \end{aligned}\]</span>
+<p>$$</p></li>
+<li><p>再求 <span class="math inline">\(\mathbf{w}^* = \text{argmax}\
+\theta_D(\mathbf{w})\)</span></p>
+<ul>
+<li>从极大似然看求解过程 <span class="math inline">\(\mathbf{w}^* =
+\text{argmax}\ \theta_D(\mathbf{w})\)</span>：<br />
+基于经验分布 <span class="math inline">\(\overset{\sim}{P}(X,Y)\)</span>
+的条件分布 <span class="math inline">\(P(Y|X)\)</span> 的对数似然为：
+<span class="math display">\[
+  \begin{aligned}
+    L_{\overset{\sim}{P}}(P_\mathbf{w}) &amp; = log
+\prod_{\mathbf{x},\mathbf{y}}P(\mathbf{y}|\mathbf{x})^{\overset{\sim}{P}(X,Y)}\\
+    &amp; =
+\sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},\mathbf{y})P(\mathbf{x},
+\mathbf{y}) \\
+    &amp; = \sum_{\mathbf{x},\mathbf{y}}\overset{\sim}{P}(\mathbf{x},
+\mathbf{y})\sum_{k=1}^Kw_kf_k(\mathbf{x}, \mathbf{y})
+      - \sum_{\mathbf{x}}\overset{\sim}{P}(\mathbf{x}) log\left(
+Z(\mathbf{x}) \right)
+  \end{aligned}
+\]</span>
+<ul>
+<li>发现似然函数和对偶函数相等，即<span
+class="math inline">\(L_{\overset{\sim}{P}}(P_{\mathbf{w}})=\theta_D(\mathbf{w})\)</span></li>
+</ul></li>
+<li>IIS方法：</li>
+<li>拟牛顿法：</li>
+</ul></li>
+</ul></li>
+<li><p>关于求解算法，所谓(拟)牛顿法不过是梯度下降法的高阶方法，这样收敛速度会更快。IIS方法则是从另一个角度(优化下界)去迭代参数。</p></li>
+</ul>
+<h3 id="应用">应用</h3>
+<hr />
+<h2 id="贝叶斯分类器">贝叶斯分类器</h2>
+<p>  贝叶斯定理<span
+class="math inline">\(P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)*P(B|A)}{P(B)}\)</span>。假设样本属性为<span
+class="math inline">\(\mathbf{x}\in R^m\)</span>，类别<span
+class="math inline">\(c\in R\)</span>，贝叶斯分类器如下： <span
+class="math display">\[
+\begin{aligned}
+  P(c|\mathbf{x})&amp;=\frac{P(c)*P(\mathbf{x}|c)}{P(\mathbf{x})}\\\\
+  &amp;=\frac{P(c)}{P(\mathbf{x})}\prod_{i=1}^mP(x_i|c)\
+//如果\mathbf{x}中个属性分量x_i相互独立\\\\
+\hat{c}&amp;=h(\mathbf{x})\\\\
+  &amp;= argmax\ P(c)\prod_{i=1}^mP(x_i|c)
+\end{aligned}
+\]</span></p>
+<ul>
+<li>学习：根据大数定理，其中<span
+class="math inline">\(P(c)=\frac{|D_c|}{|D|}\)</span>，即类别为<span
+class="math inline">\(c\)</span>的样本数除以总样本数。 <span
+class="math inline">\(P(x_i|c)=\frac{|D_{c,
+x_i}|}{|D|}\)</span>，即类别为<span
+class="math inline">\(c\)</span>且属性为<span
+class="math inline">\(x_i\)</span>的样本数除以总样本数。</li>
+<li>推断：基于测试样本<span
+class="math inline">\(\mathbf{x}_c\)</span>，基于学习到的概率分别计算各类别的概率值，再取最大值。</li>
+<li>为了应对样本不充分问题导致未出现的属性值的概率为<span
+class="math inline">\(0\)</span>，一般计算后验概率的时候取平滑。</li>
+</ul>
+<h2 id="贝叶斯网">贝叶斯网</h2>
+<ul>
+<li>定义：给定一个<strong>有向无环图</strong><span
+class="math inline">\(G=\langle D, E\rangle\)</span>，<span
+class="math inline">\(D\)</span>是点集，假设点的个数为<span
+class="math inline">\(m\)</span>，<span
+class="math inline">\(E\)</span>是边集。<span
+class="math inline">\(D\)</span>上的每个点<span
+class="math inline">\(i\)</span>代表了一个随机变量<span
+class="math inline">\(X_i\)</span>，每个<span
+class="math inline">\(X_i\)</span>的父节点集为<span
+class="math inline">\(\boldsymbol{\pi}_i\)</span>，则一个网络的联合分布为：
+<span class="math display">\[
+  P(\mathbf{X})=\prod_{i=1}^mP(X_i|\boldsymbol{\pi}_i)
+\]</span>
+<ul>
+<li>网络中每个节点及其父节点组成的结构<span class="math inline">\((i,
+\boldsymbol{\pi}_i)\)</span>都代表了一个条件概率分布。</li>
+</ul></li>
+<li>学习：
+<ul>
+<li>假如网络结构已知，则<span
+class="math inline">\(P(X_i|\boldsymbol{\pi}_i)=\frac{P(X_i,
+\boldsymbol{\pi}_i)}{P(\boldsymbol{\pi}_i)}=\frac{|D_{X_i,
+\boldsymbol{\pi}_i}|}{|D|}*\frac{|D|}{|D_{\boldsymbol{\pi}_i}|}\)</span></li>
+</ul></li>
+<li>推断：
+<ul>
+<li>对于一个已知的贝叶斯网，如果我们已知某些节点集<span
+class="math inline">\(\mathbf{A}\)</span>的值<span
+class="math inline">\(\mathbf{a}\)</span>，想要推断剩下的节点集<span
+class="math inline">\(\mathbf{B}=\mathbf{\overline{A}}\)</span>的值<span
+class="math inline">\(\mathbf{b}\)</span>的概率。一种近似推理算法是Gibbs采样算法。</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="马尔科夫链markov-chain">马尔科夫链(Markov chain)</h2>
+<p>  马尔科夫链，也称作马尔科夫过程(Markov
+process)。现有随机变量序列<span
+class="math inline">\(X=(X_1,...X_t)\)</span>，则第<span
+class="math inline">\(t\)</span>时刻的状态依赖于其前<span
+class="math inline">\(t-1\)</span>时刻的状态。若序列具有<strong>马尔科夫性质</strong>，即：
+<span class="math display">\[
+  P(X_t|X_{t-1},...,X_1)=P(X_t|X_{t-1})
+\]</span>
+则该过程构成一个一阶马尔科夫链。(一阶)马尔科夫链由其状态转移概率<span
+class="math inline">\(P(X&#39;|X)\)</span>唯一确定。</p>
+<p>  <strong>离散时间间隔</strong>下的马尔科夫链通有以下两个分类(连续时间不在这里讨论)：</p>
+<ul>
+<li><code>Discret-time Markov chain on discret state space</code>：离散时间，离散状态空间下的马尔科夫链(最常见的定义形式)
+<ul>
+<li>状态空间：<span
+class="math inline">\(S=\{s_0,s_1,...s_j,...\}\)</span>，可以是可数无穷多个。</li>
+<li>马尔科夫性质：<span
+class="math inline">\(P(X_t=s_j|X_{t-1}=s_{t-1},...,X_1=s_1)=P(X_t=s_j|X_{t-1}=s_{t-1})\)</span>，这里<span
+class="math inline">\(s_i\)</span>为离散值。</li>
+<li>转移概率：<span
+class="math inline">\(P(X_{t+1}=s_j|X_{t}=s_i)=A_{i,j}\)</span>，<span
+class="math inline">\(A\)</span>即状态转移概率矩阵。</li>
+<li>n步转移概率：<span
+class="math inline">\(P^{(n)}_{i,j}=A^n_{i,j}\)</span>。即n步转移概率为方阵<span
+class="math inline">\(A\)</span>的<span
+class="math inline">\(n\)</span>次阶乘。</li>
+<li>平稳分布(<code>stationary distribution</code>)：
+<ul>
+<li><span class="math inline">\(\boldsymbol{\pi}^{*}=
+\boldsymbol{\pi}^{*}A\)</span></li>
+<li>即到达平稳分布<span
+class="math inline">\(\boldsymbol{\pi}^*\)</span>后，再经过一次转移，仍然回到该分布。</li>
+<li>平稳分布在一定条件下满足唯一性。</li>
+</ul></li>
+<li>细致平衡条件(<code>detailed balance</code>)：
+<ul>
+<li>如果存在分布<span
+class="math inline">\(\boldsymbol{\pi}\)</span>，使得<span
+class="math inline">\(\pi_iA_{i,j}=\pi_jA_{j,i}\)</span>，则该<code>Markov chain</code>满足细致平衡条件。</li>
+<li>如果一个马尔科夫链满足细致平衡，则该马尔科夫链具有常返性<code>Reversibility</code>，即为常返马尔科夫链<code>reversible Markov chain</code></li>
+<li>可以证明<span class="math inline">\(\boldsymbol{\pi}^* =
+\boldsymbol{\pi}\)</span></li>
+</ul></li>
+</ul></li>
+<li><code>Discret-time Markov chain on continuous state</code>：离散时间，连续状态空间下的马尔科夫链(通常和MCMC算法放在一起讨论)。
+<ul>
+<li>状态空间：<span class="math inline">\(S\subseteq R\)</span></li>
+<li>马尔科夫性质：<span class="math inline">\(P(X_t\in
+A|X_{t-1}=s_{t-1},...,X_1=s_1)=P(X_t\in
+A|X_{t-1}=s_{t-1})\)</span>，这里<span
+class="math inline">\(s_i\)</span>为连续值。</li>
+<li>转移核(<code>transition kernel</code>)：<span
+class="math inline">\(P(x,\cdot)\ for\ x\in S\)</span></li>
+<li>转移核密度(<code>transition kernel density</code>)：<span
+class="math inline">\(p(x,y)\)</span>。
+<ul>
+<li>则有<span
+class="math inline">\(P(x,A)=\int_Ap(x,y)dy\)</span>，注意有<span
+class="math inline">\(P(x, S)=\int_Sp(x,y)dy=1\)</span></li>
+<li>注意这里的<code>transition kernel density</code>不是多维概率密度函数，这两者不要搞混了。这里<span
+class="math inline">\(p(x,y)\)</span>可以看做是看做带有参数<span
+class="math inline">\(x\)</span>的变量<span
+class="math inline">\(y\)</span>的概率密度函数。比如<span
+class="math inline">\(p(x,y)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-x)^2}{2\sigma^2})\)</span>，即均值为<span
+class="math inline">\(x\)</span>的高斯分布，而不是多维高斯分布。</li>
+</ul></li>
+<li>2步转移核密度： <span class="math display">\[
+  p^{(2)}(x,y)=\int_Sp(x,z)p(z,y)dz
+\]</span>
+<ul>
+<li>可以这么理解，先以一定的概率(密度)转移到<span
+class="math inline">\(z\)</span>，再从<span
+class="math inline">\(z\)</span>转移到<span
+class="math inline">\(y\)</span>。完全就是矩阵乘法法则的连续型表示。</li>
+</ul></li>
+<li>n步转移核密度：对于任意<span class="math inline">\(0\leq m\leq n \in
+N\)</span> <span class="math display">\[
+  p^{(n)}=\int_Sp^{(m)}(x,z)p^{(n-m)}(z,y)dz
+\]</span></li>
+<li>平稳分布(<code>stationary distribution</code>)，我们可以类比离散平稳分布定义：
+<span class="math display">\[
+  \begin{aligned}
+    \pi^*(dy)&amp;=\int_{x\in S}\pi^*(dx)p(x,dy)\\\\
+    \pi^*(y)dy&amp;=\int_{x\in S}\pi^*(x)dxp(x,y)dy\\\\
+    \pi^*(y)dy&amp;=dy\int_{S}\pi^*(x)p(x,y)dx\\\\
+    \pi^*(y)&amp;=\int_S\pi^*(x)p(x,y)dx
+  \end{aligned}
+\]</span>
+<ul>
+<li>平稳分布在一定条件下满足唯一性。</li>
+<li>比较离散和连续的平稳分布的定义，可以发现两者其实同一性质的两种表述语言罢了。</li>
+</ul></li>
+<li>细致平衡条件(<code>detailed balance</code>)：
+<ul>
+<li>如果存在分布 <span
+class="math inline">\(\pi(dy)P(y,dx)=\pi(dx)P(x,dy)\)</span>，则说明该马尔科夫链满足细致平衡条件。等价满足<span
+class="math inline">\(\pi(y)p(y,x)=\pi(x)p(x,y)\)</span>条件。</li>
+<li>可以证明: <span class="math inline">\(\pi^*= \pi\)</span>
+<ul>
+<li>证明也很简单： <span class="math display">\[
+  \begin{aligned}
+    \int_S\pi(x)p(x,y)dx&amp;=\int_S\pi(y)p(y,x)dx\\\\
+    &amp;=\pi(y)\int_Sp(y,x)dx\\\\
+    &amp;=\pi(y)*1=\pi(y)
+  \end{aligned}
+\]</span></li>
+</ul></li>
+<li>比较离散和连续状态的细致平衡条件的描述，可以看到两者的描述其实是一样的。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="蒙特卡洛法">蒙特卡洛法：</h3>
+<p>  MC(Monte
+Carlo)法是通过依概率分布(密度)生成样本来对一些任务(如求积分，求期望)进行预估计算的方法。</p>
+<ul>
+<li>求积分：
+<ul>
+<li>如果我们要求一个复杂函数的积分<span
+class="math inline">\(I(x)=\int_a^bf(x)dx\)</span>。如果我们有一分布<span
+class="math inline">\(p(x)\)</span>，那么该式子可改写为<span
+class="math inline">\(I(x)=\int_a^b\frac{f(x)}{p(x)}p(x)dx\)</span></li>
+<li>可以看到式子就是<span
+class="math inline">\(g(x)=\frac{f(x)}{p(x)}\)</span>的期望，那么我们就可以用样本均值来进行估计。即<span
+class="math inline">\(I(x)=E_{X\sim p(x)}[\frac{f(x)}{p(x)}]\approx
+\frac{1}{n}\sum_{i=1}^n\frac{f(x_i)}{p(x_i)}\)</span>，而<span
+class="math inline">\(x_i\in \{x_1,...x_n\}\)</span>是依据概率分布<span
+class="math inline">\(p(x)\)</span>采样出来得到的样本。</li>
+</ul></li>
+<li>求期望：
+<ul>
+<li>如果我们要求一个函数<span class="math inline">\(f:
+\mathcal{X}\rightarrow R\)</span> 基于分布<span
+class="math inline">\(\pi(\cdot)\)</span>的期望<span
+class="math inline">\(\mathbf{E}_{\pi}[f(\mathbf{X})]\)</span>。可以基于分布<span
+class="math inline">\(\pi(\cdot)\)</span>生成一系列样本<span
+class="math inline">\(\{x_1,...,x_N\}\)</span>，则: <span
+class="math display">\[
+\begin{aligned}
+  \mathbf{E}_{\pi}[f(X)]&amp;=f(\mathbf{E}_{\pi}[X])\\\\
+  &amp;\approx f(\frac{1}{N}\sum_{i=1}^{N}x_i)=
+\frac{1}{N}\sum_{i=1}^{N}f(x_i)
+\end{aligned}
+\]</span></li>
+</ul></li>
+</ul>
+<h2 id="隐马尔科夫过程">隐马尔科夫过程</h2>
+<p>  隐马尔可夫模型可以由一个五元组描述：<span class="math inline">\(\mu
+= (S, O, \mathbf{A}, \mathbf{B}, \pi)\)</span>。<span
+class="math inline">\(S=\{s_1,...,s_m\}\)</span>是隐状态集，<span
+class="math inline">\(O=\{o_1,...,o_n\}\)</span>是观测集，<span
+class="math inline">\(A\)</span>是隐状态转移矩阵(条件概率分布)，<span
+class="math inline">\(B\)</span>是从隐状态到观测状态的条件概率分布，<span
+class="math inline">\(\pi\)</span>是初始隐状态概率分布。隐马尔可夫链有三个典型的问题。</p>
+<h3 id="计算概率">计算概率</h3>
+<ul>
+<li>给定一个模型<span class="math inline">\(\mu\)</span>和观测序列<span
+class="math inline">\(\mathbf{O}=(o_1,...,o_T)\)</span>，如何求出该序列的概率？
+<ul>
+<li>对于给定的状态序列<span
+class="math inline">\(\mathbf{S}=(s_1,...,s_t)\)</span> <span
+class="math display">\[
+  \begin{aligned}
+    P(\mathbf{O}|\mu)&amp;=\sum_{\mathbf{S}}P(\mathbf{O},\mathbf{S}|\mu)\\\\
+    &amp;=\sum_{\mathbf{S}}P(\mathbf{O}|\mathbf{S},\mu)P(\mathbf{S}|\mu)\\\\
+    &amp;=\sum_{(s_1,...s_T)}b_{s_1}(o_1)...b_{s_t}(o_t)\pi_{s_1}a_{s_1,s_2}...a_{s_{T-1},s_T}
+  \end{aligned}
+\]</span>
+<ul>
+<li>该算法的时间复杂度为<span class="math inline">\(O(T^m)\)</span></li>
+</ul></li>
+<li>前向算法：
+<ul>
+<li>令<span
+class="math inline">\(\alpha_t(i):=P(o_1,...o_t,s_t=s_i|\mu)\)</span>，即给定前<span
+class="math inline">\(t\)</span>次观测序列，<span
+class="math inline">\(t\)</span>时刻状态为<span
+class="math inline">\(s_i\)</span>的概率，则有：</li>
+<li><span
+class="math inline">\(\alpha_t(j)a_{j,i}:=\)</span>t时刻状态为j，且t+1时刻状态为s_i的概率</li>
+<li><span
+class="math inline">\(\sum_j^S\alpha_t(j)a_{j,i}:=\)</span>给定观测序列<span
+class="math inline">\(\mathbf{O}=(o_1,...o_t)\)</span>，t+1时刻状态为s_i的概率。</li>
+<li><span
+class="math inline">\(\alpha_{t+1}(i)=(\sum_j^S\alpha_t(j)a_{j,i})b_i(o_{t+1})\)</span></li>
+<li>步骤：
+<ul>
+<li>输入：观测序列<span
+class="math inline">\(O=(o_1,...o_t)\)</span>，模型<span
+class="math inline">\(\mu\)</span></li>
+<li>计算：<span class="math inline">\(\alpha_1(i)=\pi_ib_i(o_1)\ for\
+i=1,...,m\)</span></li>
+<li>for t=2,...,T：
+<ul>
+<li>计算<span
+class="math inline">\(\alpha_t(i)=(\sum_j^S\alpha_{t-1}(j)a_{j,i})b_i(o_{t})\
+for\ j=1,...,m\)</span></li>
+</ul></li>
+<li>终止：<span
+class="math inline">\(P(O|\mu)=\sum_i^S\alpha_T(i)\)</span></li>
+</ul></li>
+<li>该算法的时间复杂度为<span
+class="math inline">\(O(Tm^2)\)</span></li>
+<li>前向算法每<span
+class="math inline">\(t+1\)</span>步的计算是有第<span
+class="math inline">\(t\)</span>步的共<span
+class="math inline">\(m\)</span>个状态转移过来，在第<span
+class="math inline">\(t\)</span>步计算好<span
+class="math inline">\(m\)</span>个状态的定义概率<span
+class="math inline">\(\alpha_t(i)\)</span>然后往后推导。</li>
+</ul></li>
+<li>后向算法：
+<ul>
+<li>令<strong>后向概率</strong><span
+class="math inline">\(\beta_t(i)=P(o_{t+1},...o_{T}|s_t=s_i,\mu)\)</span>，即<span
+class="math inline">\(t\)</span>时刻系统状态为<span
+class="math inline">\(s_i\)</span>的时候，后续的观测序列为当前观测序列的概率，注意后向概率里面的观测序列并不包括当前时刻<span
+class="math inline">\(t\)</span>。</li>
+<li>已知<span class="math inline">\(\beta_t(i)\)</span>，则当前时刻<span
+class="math inline">\(t\)</span>的观测概率为：<span
+class="math inline">\(P(o_{t},...o_{T}|s_t=s_i,\mu)=\beta_t(i)b_i(o_t)\)</span>。</li>
+<li>假设当前时刻是由上一时刻状态为<span
+class="math inline">\(s_j\)</span>转移过来的，则有： <span
+class="math display">\[
+  \beta_{t-1}(i)=\sum_j^Sa_{i,j}\beta_t(j)b_j(o_t)
+\]</span></li>
+<li>步骤：
+<ul>
+<li>输入：观测序列<span
+class="math inline">\(O=(o_1,...o_t)\)</span>，模型<span
+class="math inline">\(\mu\)</span></li>
+<li>计算：<span class="math inline">\(\beta_T(j)=1\ for\
+j=1,...,m\)</span></li>
+<li>for t=T-1,...,1：
+<ul>
+<li>计算<span
+class="math inline">\(\beta_t(i)=\sum_j^Sa_{i,j}\beta_{t+1}(j)b_j(o_{t+1})\
+for\ i=1,...m\)</span></li>
+</ul></li>
+<li>终止：<span
+class="math inline">\(P(O|\mu)=\sum_j^S\pi_j\beta_1(j)b_j(o_1)\)</span></li>
+<li>该算法时间复杂度为<span class="math inline">\(O(Tm^2)\)</span></li>
+<li>后向算法每次计算好<span class="math inline">\(t\)</span>时刻的<span
+class="math inline">\(m\)</span>个状态的定义概率，然后假设从前一时刻<span
+class="math inline">\(t-1\)</span>的第<span
+class="math inline">\(i\)</span>个状态转移过来计算前一时刻的定义概率并保存<span
+class="math inline">\(m\)</span>个状态。</li>
+</ul></li>
+<li>前向后向算法统一: <span class="math display">\[
+  \begin{aligned}
+    P(\mathbf{O}|\mu)&amp;=\sum_i^SP(o_1,...,o_t,s_t=s_i|\mu)P(o_{t+1},...o_T,s_t=s_i|\mu)\\\\
+    &amp;=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...T\\\\
+    P(\mathbf{O}|\mu)&amp;=\sum_i^S\sum_j^S\alpha_t(i)a_{i,j}b_j(o_{t+1})\beta_{t+1}(j)\quad
+t=1,...,T-1\\\\
+    &amp;=\sum_j^S(\sum_i^S\alpha_t(i)a_{i,j}b_j(o_{t+1}))\beta_{t+1}(j)\\\\
+    &amp;=\sum_j^S\alpha_{t+1}(j)\beta_{t+1}(j)\quad t=1,...T-1\\\\
+    &amp;=\sum_i^S\alpha_t(i)\beta_t(i)\quad t=1,...,T\\\\
+    P(s_t=s_i,\mathbf{O}|\mu)&amp;=\alpha_t(i)\beta_t(i)\\\\
+    &amp;=P(s_t=s_i|\mathbf{O},\mu)P(\mathbf{O}|\mu)\\\\
+    \gamma_t(i)&amp;=P(s_t=s_i|\mathbf{O},\mu)\\\\
+    &amp;=\frac{P(s_t=s_i,\mathbf{O}|\mu)}{P(\mathbf{O}|\mu)}=\frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}
+  \end{aligned}
+\]</span>
+<ul>
+<li>其中<span
+class="math inline">\(P(\mathbf{O}|\mu):=\)</span>已知模型<span
+class="math inline">\(\mu\)</span>，出现观测序列<span
+class="math inline">\(\mathbf{O}\)</span>的概率。</li>
+<li><span class="math inline">\(P(s_t=s_i,
+\mathbf{O}|\mu):=\)</span>已知模型<span
+class="math inline">\(\mu\)</span>，出现观测序列<span
+class="math inline">\(\mathbf{O}\)</span>且第<span
+class="math inline">\(t\)</span>时刻的隐状态为<span
+class="math inline">\(s_i\)</span>的概率。</li>
+<li><span
+class="math inline">\(P(s_t=s_i|\mathbf{O},\mu):=\)</span>已知模型<span
+class="math inline">\(\mu\)</span>和观测序列<span
+class="math inline">\(\mathbf{O}\)</span>，第<span
+class="math inline">\(t\)</span>时刻隐状态为<span
+class="math inline">\(s_i\)</span>的概率。</li>
+</ul></li>
+</ul></li>
+<li>注意前向后向算法对对概率的定义的巧妙之处。</li>
+<li>注意边界。</li>
+</ul></li>
+</ul>
+<h3 id="预测算法">预测算法</h3>
+<ul>
+<li>给定一个模型<span class="math inline">\(\mu\)</span>和观测序列<span
+class="math inline">\(\mathbf{O}=(o_1,...,o_t)\)</span>，如何求出<strong>最优</strong>隐状态序<span
+class="math inline">\(\mathbf{S}^*=(s_1^*,...s_t^*)\)</span>能够<strong>最好地解释</strong>观测序列？
+<ul>
+<li>近似算法： <span class="math display">\[
+  \gamma_t(i)=\underset{i}{\operatorname{argmax}}\ \  
+  \frac{\alpha_t(i)\beta_t(i)}{\sum_i^S\alpha_t(i)\beta_t(i)}\quad for\
+t=1,...,T
+\]</span>
+<ul>
+<li><span class="math inline">\(for\ t=1,...,T\)</span>
+做前向算法，后向算法。</li>
+<li><span class="math inline">\(for\ t=1,...,T\)</span> 求 <span
+class="math inline">\(\operatorname{argmax}\)</span></li>
+</ul></li>
+<li>维特比算法：
+<ul>
+<li>定义：<span
+class="math inline">\(\delta_t(i)=\underset{s_1,...s_{t-1}}{max}P(s_t=s_i,s_{t-1},..,s_1,o_t,...,o_1|\mu)\)</span>
+即从各个路径 <span class="math inline">\((s_1,...,s_{t-1})\)</span>
+中到达<span
+class="math inline">\(s_t=s_i\)</span>时概率最大的那条路径。、</li>
+<li>递推： <span class="math display">\[
+  \begin{aligned}
+    \delta_{t+1}(i)&amp;=\underset{s_1,...s_{t}}{max}\
+P(s_{t+1}=s_i,s_t,...,s_1,o_{t+1},...,o_1|\mu)\\\\
+    &amp;=\underset{j}{max}\ \delta_{t}(j)a_{j,i}b_i(o_{t+1})
+  \end{aligned}
+\]</span></li>
+<li>算法：
+<ul>
+<li>输入：模型<span
+class="math inline">\(\mu=(S,O,\mathbf{A},\mathbf{B},\pi)\)</span>，观测序列<span
+class="math inline">\(\mathbf{O}\)</span></li>
+<li>输出：最佳隐状态序列<span
+class="math inline">\(\mathbf{S}^*=(s_1^*,...s_T^*)\)</span></li>
+<li>过程：
+<ul>
+<li>计算：由于<span
+class="math inline">\(t=1\)</span>之前没有路径，<span
+class="math inline">\(\delta_1(i)=P(s_1=s_i,o_1|\mu)=\pi_ib_i(o_1)\)</span></li>
+<li>递推：<span class="math inline">\(\delta_{t+1}(i)=\underset{j}{max}\
+\delta_{t}(j)a_{j,i}b_i(o_{t+1})\)</span></li>
+<li>终止：<span
+class="math inline">\(P(s_T^*,...s_1^*,O|\mu)=\underset{i}{max}\
+\delta_T(i)\)</span>，得到<span
+class="math inline">\(s_T^*\)</span>。</li>
+<li>回溯：根据<span class="math inline">\(s_T^*\)</span>
+依次往前回溯得到最佳序列<span
+class="math inline">\((s_1^*,...s_T^*)\)</span></li>
+</ul></li>
+</ul></li>
+<li>维特比算法是采用动态规划算法，其状态函数的定义可以和<code>LeetCode</code>这种动态规划题结合起来思考比较。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="学习算法">学习算法</h3>
+<ul>
+<li>给定一个观测序列<span
+class="math inline">\(O=(o_1,...,o_t)\)</span>，如何估计模型参数？
+<ul>
+<li>若隐状态也能被观测到
+<ul>
+<li>给定观测序列样本</li>
+</ul></li>
+<li>若隐状态不能被观测到</li>
+</ul></li>
+<li>Ref:
+<ol type="1">
+<li>http://www.huaxiaozhuan.com/统计学习/chapters/15_HMM.html</li>
+</ol></li>
+</ul>
+<hr />
+<h2 id="条件随机场">条件随机场</h2>
+<h3 id="概率无向图模型">概率无向图模型</h3>
+<p>   有一个无向图 <span class="math inline">\(G = (V,
+E)\)</span>，其中有 <span class="math inline">\(|V|\)</span> 个节点，和
+<span class="math inline">\(|E|\)</span> 条边，每个节点代表了
+一个随机变量 <span class="math inline">\(X_v\)</span>。则 <span
+class="math inline">\(G\)</span> 表述了一个联合概率分布 <span
+class="math inline">\(P(X_1,..., X_{|V|})\)</span>。 <span
+class="math inline">\(e = (u, v)\)</span> 表示了两个随机 <span
+class="math inline">\(X_u, X_v\)</span> 之间的条件概率关系，即 <span
+class="math inline">\(P(X_u|X_v)\)</span> 或 <span
+class="math inline">\(P(X_v|X_u)\)</span></p>
+<ul>
+<li>概率无向图的马尔马尔科夫性：
+<ul>
+<li>成对马尔科夫性：<br />
+假设 <span class="math inline">\(u, v\)</span>
+是图中没有边连接的两个点，剩余节点用 <span
+class="math inline">\(\mathbf{O}\)</span> 表示，它们代表的随机变量分别为
+<span class="math inline">\(X_u, X_v, \mathbf{X_O}\)</span>，则有：
+<span class="math display">\[
+  P(X_u, X_v|\mathbf{X_O}) = P(X_u|\mathbf{X_O})P(X_v|\mathbf{X_O})
+\]</span></li>
+<li>局部马尔科夫性：<br />
+假设 <span class="math inline">\(v\)</span> 是 <span
+class="math inline">\(G\)</span> 中的任意节点，<span
+class="math inline">\(\mathbf{W}\)</span> 是与 <span
+class="math inline">\(v\)</span> 相连的节点集，<span
+class="math inline">\(\mathbf{O}\)</span>
+是剩下的节点集。它们代表的随机变量分别用 <span
+class="math inline">\(X_v, \mathbf{X_W}, \mathbf{X_O}\)</span>
+表示，则有： <span class="math display">\[
+  P(X_v, \mathbf{X_O}|\mathbf{X_W}) =
+P(X_v|\mathbf{X_W})P(\mathbf{X_O}|\mathbf{X_W})
+\]</span></li>
+<li>全局马尔科夫性：<br />
+用三个节点集 <span
+class="math inline">\(\mathbf{A},\mathbf{B},\mathbf{C}\)</span> 来划分
+<span class="math inline">\(G\)</span>，假设 <span
+class="math inline">\(\mathbf{A}, \mathbf{B}\)</span> 被 <span
+class="math inline">\(\mathbf{C}\)</span>
+分隔开来，它们所代表的随机变量分别用 <span
+class="math inline">\(\mathbf{X_A, X_B, X_C}\)</span> 表示，则有： <span
+class="math display">\[
+  P(\mathbf{X_A, X_B|X_C}) = P(\mathbf{X_A|X_C})P(\mathbf{X_B|X_C})
+\]</span></li>
+<li>简言之，概率无向图上的马尔科夫性可以概括为，不相互连接的点相互独立。</li>
+<li>成对、局部、全局马尔科夫性等价</li>
+<li>如果概率无向图满足成对/局部/全局马尔科夫性，则称作<strong>马尔科夫随机场</strong>。</li>
+</ul></li>
+<li>概率无向图的因子分解：
+<ul>
+<li>概率无向图的联合概率分布 <span
+class="math inline">\(P(\mathbf{X})\)</span> 可以如下表示： <span
+class="math display">\[
+  P(\mathbf{X}) = \frac{1}{Z}\prod_{C}\phi(\mathbf{X_C})\\
+  Z = \sum_{\mathbf{X}}\prod_{\mathbf{C}}\phi(\mathbf{X_C})
+\]</span>
+<ul>
+<li><span class="math inline">\(\mathbf{C}\)</span> 是 <span
+class="math inline">\(G\)</span> 上的最大团，<span
+class="math inline">\(\phi\)</span> 是势函数，通常为严格正函数。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="条件随机场-1">条件随机场</h3>
+<p>   有两<strong>组</strong>随机变量 <span
+class="math inline">\(\mathbf{X, Y}\)</span>。若 <span
+class="math inline">\(Y\)</span> 构成由图 <span class="math inline">\(G
+= (V, E)\)</span> 构成的<strong>马尔科夫随机场</strong>，即 <span
+class="math display">\[
+  P(\mathbf{Y}|\mathbf{X}, \mathbf{Y_W}, \mathbf{W}\neq v) =
+P(\mathbf{Y}|\mathbf{X}, \mathbf{Y_W}, \mathbf{W}\sim v)
+\]</span> 对于图中任意节点 <span class="math inline">\(v\)</span>
+成立，则称条件分布 P(Y|X) 为条件随机场。其中 <span
+class="math inline">\(W\neq v\)</span> 表示不等于节点 <span
+class="math inline">\(v\)</span> 的节点集，<span
+class="math inline">\(W\sim v\)</span> 表示和 <span
+class="math inline">\(v\)</span> 相邻的节点集。 如果 <span
+class="math inline">\(G\)</span> 是一条线性链结构，则 <span
+class="math inline">\(P(Y|X)\)</span> 称作线性条件随机场。</p>
+<ul>
+<li><p><strong>条件随机场的参数化形式</strong>：<br />
+   设 P(Y|X) 为线性条件随机场，则有: <span class="math display">\[
+  \begin{aligned}
+  P(\mathbf{y}|\mathbf{x}) &amp;= P(\mathbf{Y=y}|\mathbf{X=x}) \\
+  &amp; = \frac{1}{Z(\mathbf{x})}exp(\sum_{i,k}\lambda_kt_k(y_{i-1},
+y_i, \mathbf{x}, i) + \sum_{i, l}u_ls_l(y_i, \mathbf{x}, i))\\
+  Z(\mathbf{x}) &amp;=
+\sum_\mathbf{y}exp(\sum_{i,k}\lambda_kt_k(y_{i-1}, y_i, \mathbf{x}, i) +
+\sum_{i, l}u_ls_l(y_i, \mathbf{x}, i))
+  \end{aligned}
+\]</span> 这玩意乍一看很唬人，我们来一点点拆解里面的因子。</p>
+<ul>
+<li><strong>节点上的特征</strong>表示用函数 <span
+class="math inline">\(s_l\)</span> 表示， 各特征权重用 <span
+class="math inline">\(u_l\)</span> 表示： <span class="math display">\[
+  s_l(y_i, \mathbf{x}, i),\ l=1,...,L
+\]</span> 其中 <span class="math inline">\(L\)</span> 表示共有 <span
+class="math inline">\(L\)</span> 个特征。</li>
+<li><strong>边上的特征</strong>用函数 <span
+class="math inline">\(t_k\)</span>表示，各特征权重用 <span
+class="math inline">\(\lambda_k\)</span> 表示： <span
+class="math display">\[
+  t_k(y_{i-1}, y_i, \mathbf{x}, i),\ k = 1,...,K
+\]</span>
+<ul>
+<li>边上的特征只与当前节点 <span class="math inline">\(y_i\)</span>
+和前一节点 <span class="math inline">\(y_{i-1}\)</span> 有关，<span
+class="math inline">\(K\)</span> 表示共 <span
+class="math inline">\(K\)</span> 组特征。</li>
+</ul></li>
+<li>这里的 <span class="math inline">\(\sum_{\mathbf{y}}\)</span> 是对
+<span class="math inline">\(\mathbf{y}\)</span>
+的全排列的所有可能性的结果求和。</li>
+<li>如果对把 <span class="math inline">\(k, l\)</span> 合并，分别先求和
+<span class="math inline">\(\sum_i\)</span> 或者 <span
+class="math inline">\(\sum_k\)</span>，则可以分别得到
+<strong>简化形式</strong> 和 <strong>矩阵形式</strong> 的表示。</li>
+</ul></li>
+<li><p><strong>条件随机场的简化表示</strong>：<br />
+如果把特征函数 <span class="math inline">\(t\)</span> 和 <span
+class="math inline">\(s\)</span> 统一起来，针对某一节点 <span
+class="math inline">\(i\)</span>，共 <span class="math inline">\(K = K_1
++ K_2\)</span> 个特征，其中前 <span class="math inline">\(K_1\)</span>
+个表示<strong>边</strong>特征函数 <span
+class="math inline">\(t\)</span>， 后 <span
+class="math inline">\(K_2\)</span> 个表示<strong>点</strong>特征函数
+<span class="math inline">\(s\)</span>，即有： <span
+class="math display">\[
+  \begin{aligned}
+    f_k(y_{i-1}, y_i, \mathbf{x}, i) &amp;= \begin{cases}
+      t_k(y_i, y_i, \mathbf{x}, i),\quad k=1,...,K_1\\
+      s_k(y_i, \mathbf{x}, i),\quad k=K_1+1,...,K\\
+    \end{cases}\\
+    w_k &amp;= \begin{cases}
+      \lambda_k,\quad k = 1,...,K_1\\
+      u_k,\quad k = K_1+1,...,K\\
+    \end{cases}\\
+    f_k(\mathbf{y},\mathbf{x}) &amp;= \sum_{i=1}^nf_k(y_{i-1}, y_i,
+\mathbf{x}, i)
+    \end{aligned}
+\]</span> 这里的 <span class="math inline">\(\mathbf{y}\)</span>
+表示序列上各个位置上的取值，则有：</p>
+<p><span class="math display">\[
+  \begin{aligned}
+    Z(\mathbf{x}) &amp;=
+\sum_{\mathbf{y}}exp(\sum_{k=1}^Kw_kf_k(\mathbf{y},\mathbf{x}))\\
+    &amp;= \sum_{\mathbf{y}}exp(\mathbf{w}\cdot \mathbf{F}(\mathbf{y},
+\mathbf{x}))\\
+    P(\mathbf{y}|\mathbf{x}) &amp; =
+\frac{1}{Z(\mathbf{x})}exp(\sum_{k=1}^Kw_kf_k(\mathbf{y}, \mathbf{x}))\\
+    &amp;= \frac{exp(\mathbf{w}\cdot
+\mathbf{F(y,x)})}{\sum_{\mathbf{y}}exp(\mathbf{w}\cdot \mathbf{F(y,x)})}
+  \end{aligned}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\mathbf{F(y,x)} = (f_1(\mathbf{y},
+\mathbf{x}),...,f_k(\mathbf{y}, \mathbf{x}))\)</span></li>
+</ul></li>
+<li><p><strong>条件随机场的矩阵形式表示</strong><br />
+如果令: <span class="math display">\[
+  \begin{aligned}
+    h(y_{i-1}, y_i, \mathbf{x}, i) &amp;= \sum_{k=1}^Kw_kf_k(y_{i-1},
+y_i, \mathbf{x}, i)\\
+    m_{y_{i-1},y_i}^{(i)}(\mathbf{x}) &amp;= exp(h(y_{i-1}, y_i,
+\mathbf{x}, i))\\
+    M_i(\mathbf{x}) &amp; = [m_{y_{i-1}, y_i}^{(i)}(\mathbf{x})]
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>其中 <span class="math inline">\(M\)</span> 是 <span
+class="math inline">\(m\)</span> 阶矩阵， <span
+class="math inline">\(m\)</span> 是 <span
+class="math inline">\(y\)</span> 的取值个数 则有: <span
+class="math display">\[
+  \begin{aligned}
+    P(\mathbf{y}|\mathbf{x}) =
+\frac{1}{Z(\mathbf{x})}\prod_{i=1}^nm_{y_{i-1}, y_i}^{(i)}(\mathbf{x})\\
+    Z(\mathbf{x}) = M_0(\mathbf{x})\cdots M_{n+1}(\mathbf{x})
+  \end{aligned}
+\]</span>
+<ul>
+<li>其中 <span class="math inline">\(M_0(\mathbf{x})\)</span> 和 <span
+class="math inline">\(M_{n+1}(\mathbf{x})\)</span>
+为起始状态和终止状态的概率矩阵。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="线性条件随机场的概率计算">(线性)条件随机场的概率计算</h4>
+<ul>
+<li>前向后向算法：<br />
+令 <span class="math inline">\(\alpha_{i}(y_i|\mathbf{x})\)</span> :=
+从位置 0 开始，到达第 <span class="math inline">\(i\)</span>
+个位置时，观测状态为 <span class="math inline">\(y_i\)</span>
+的概率。则到达位置 <span class="math inline">\(i\)</span>
+时，各个状态的观测概率为 <span
+class="math inline">\(\boldsymbol{\alpha}_i^T(\mathbf{y}_i|\mathbf{x})\)</span>
+<span class="math display">\[
+  \begin{aligned}
+        \alpha_{i+1}(y_{i+1}|\mathbf{x}) &amp;=
+\sum_{y_i}\alpha_i(y_i|\mathbf{x})m_{y_i, y_{i+1}}^{(i+1)}(\mathbf{x})
+\\
+  \boldsymbol{\alpha}_0^T(\mathbf{y}_0|\mathbf{x}) &amp;= \begin{cases}
+    1,\quad y = \text{start}\\
+    0, \quad else
+  \end{cases}\\
+  \boldsymbol{\alpha}_i^T(\mathbf{y}_i|\mathbf{x}) &amp;=
+\boldsymbol{\alpha}_{i-1}^T(\mathbf{y}_{i-1}|\mathbf{x})M_{i}(\mathbf{x})
+  \end{aligned}
+\]</span> 令 <span
+class="math inline">\(\beta_{i}(y_i|\mathbf{x})\)</span> := 当第 <span
+class="math inline">\(i\)</span> 个位置为 <span
+class="math inline">\(y_i\)</span> 时，从 <span
+class="math inline">\(i+1\)</span> 到 <span
+class="math inline">\(n\)</span> 的所有可能的状态的概率。则从 <span
+class="math inline">\(i\)</span>
+位置的各个状态开始，往后所有可能的概率为 <span
+class="math inline">\(\boldsymbol{\beta}_i(\mathbf{y}_{i}|\mathbf{x})\)</span>：
+<span class="math display">\[
+  \begin{aligned}
+    \beta_{i}(y_i|\mathbf{x}) &amp; = \sum_{y_{i+1}}m_{y_i,
+y_{i+1}}^{(i+1)}(\mathbf{x})\beta_{i+1}(y_{i+1}|\mathbf{x})\\
+    \boldsymbol{\beta}_{n+1}(\mathbf{y}_{n+1}|\mathbf{x}) &amp;=
+\begin{cases}
+      1,\quad y_{n+1} = \text{stop}\\
+      0,\quad \text{else}
+    \end{cases}\\
+  \boldsymbol{\beta}_i(\mathbf{y}_i|\mathbf{x}) &amp;=
+M_{i}(\mathbf{x})\boldsymbol{\beta}_{i+1}(\mathbf{y}_{i+1}|\mathbf{x})
+  \end{aligned}
+\]</span> 易得： <span class="math display">\[
+  \begin{aligned}
+    Z(\mathbf{x}) = \boldsymbol{\alpha}_n^T(\mathbf{x})\cdot \mathbf{1}
+    = \mathbf{1}^T\cdot \boldsymbol{\beta}_1(\mathbf{x})
+  \end{aligned}
+\]</span> 有了前向后向概率，我们很容易得到： <span
+class="math display">\[
+  P(Y_i = y_i|\mathbf{x}) =
+\frac{\boldsymbol{\alpha}_i^T(\mathbf{x})\boldsymbol{\beta}_i(\mathbf{x})}{Z(\mathbf{x})}\\
+  P(Y_{i-1} = y_{i-1}, Y_i = y_i|\mathbf{x}) =
+\frac{\boldsymbol{\alpha}_{i-1}^T(\mathbf{x})M_i(\mathbf{x})\boldsymbol{\beta}_{i}(\mathbf{x})}{Z(\mathbf{x})}
+\]</span></li>
+<li>期望计算：<br />
+我们可以得到第 <span class="math inline">\(k\)</span> 个特征函数 <span
+class="math inline">\(f_k(\mathbf{y}|\mathbf{x})=\sum_{i=1}^nf_k(y_{i-1},
+y_i, \mathbf{x}, i)\)</span> 的关于条件概率 <span
+class="math inline">\(P(\mathbf{Y}|\mathbf{X})\)</span> 和 联合概率
+<span class="math inline">\(P(\mathbf{Y}, \mathbf{X})\)</span> 的期望：
+<span class="math display">\[
+  \begin{aligned}
+    E_{\mathbf{Y}|\mathbf{X}}[f_k] &amp; =
+\sum_{\mathbf{y}}P(\mathbf{y}|\mathbf{x})f_k(\mathbf{y}|\mathbf{x}) \\
+    &amp; = \sum_{i=1}^{n+1}\sum_{y_{i-1}, y_i} f_k(y_{i-1}, y_{i},
+\mathbf{x},
+i)\frac{\boldsymbol{\alpha}_{i-1}^T(\mathbf{x})M_i(\mathbf{x})\boldsymbol{\beta}_{i}(\mathbf{x})}{Z(\mathbf{x})}\\
+    E_{\mathbf{Y}, \mathbf{X}}[f_k] &amp;=
+\sum_{\mathbf{x},\mathbf{y}}P(\mathbf{y},\mathbf{x})f_k(\mathbf{y}|\mathbf{x})\\
+    &amp;=\sum_{\mathbf{x}}P(\mathbf{x})\sum_{\mathbf{y}}P(\mathbf{y}|\mathbf{x})f_k(\mathbf{y}|\mathbf{x})\\
+    &amp;=\sum_{\mathbf{x}}P(\mathbf{x})\sum_{i=1}^{n+1}\sum_{y_{i-1},
+y_i} f_k(y_{i-1}, y_{i}, \mathbf{x},
+i)\frac{\boldsymbol{\alpha}_{i-1}^T(\mathbf{x})M_i(\mathbf{x})\boldsymbol{\beta}_{i}(\mathbf{x})}{Z(\mathbf{x})}
+  \end{aligned}
+\]</span>
+<ul>
+<li>这里的 <span class="math inline">\(\sum_{\mathbf{x}}\)</span> 或者
+<span class="math inline">\(\sum_{\mathbf{y}}\)</span> 是指对 <span
+class="math inline">\(\mathbf{x}\)</span> 或 <span
+class="math inline">\(\mathbf{y}\)</span>
+的值的所有可能的组合求和。比如，若 <span class="math inline">\(x\in
+\{1,2\}\)</span>，序列长度为 <span
+class="math inline">\(3\)</span>，那么所有可能的组合为 <span
+class="math inline">\((1,1,1),(1,1,2),(1,2,1),(1,2,2),(2,1,1),(2,1,2),(2,2,1),(2,2,2)\)</span>，对所有这些组合求和。</li>
+<li>若 <span class="math inline">\(x\ \text{or}\ y\)</span>
+的取值范围的个数为 <span class="math inline">\(m\)</span>，序列长度为
+<span class="math inline">\(n\)</span>，则一共有 <span
+class="math inline">\(m^n\)</span> 种组合。</li>
+<li>给定某一观测序列 <span
+class="math inline">\(\mathbf{x}\)</span>，和全部的特征函数 <span
+class="math inline">\(f_k,
+k=1,...,K\)</span>，可以求得基于该观测序列的<strong>各个</strong>特征函数的期望
+<span class="math inline">\(E_{\mathbf{Y}|\mathbf{X}}[f_k]\)</span></li>
+<li>只给定全部的特征函数 <span class="math inline">\(f_k,
+k=1,...,K\)</span>，可以求得<strong>各个</strong>特征函数的联合期望
+<span class="math inline">\(E_{\mathbf{Y},
+\mathbf{X}}[f_k]\)</span></li>
+</ul></li>
+</ul>
+<h4 id="线性条件随机场的学习算法">(线性)条件随机场的学习算法</h4>
+<p>   现在我们有一批样本 <span class="math inline">\(\mathbb{D} =
+\{(\mathbf{x}_1, \mathbf{y}_1), ...,(\mathbf{x}_N,
+\mathbf{y}_N)\}\)</span>。假设 <span class="math inline">\(x\)</span>
+的取值范围为 <span class="math inline">\(m_1\)</span> 个，<span
+class="math inline">\(y\)</span> 的取值范围为 <span
+class="math inline">\(m_2\)</span>个，则 <span
+class="math inline">\((\mathbf{x},\mathbf{y})\)</span> 的全部组合个数为
+<span class="math inline">\(U\times V=m_1^n\times
+m_2^n\)</span>，假设某个序列组合为 <span
+class="math inline">\((\mathbf{x}_u,
+\mathbf{y}_v)\)</span>，在样本中出现的次数为 <span
+class="math inline">\(n_{u,v}\)</span>，我们有整个样本的似然为： <span
+class="math display">\[
+  P(\mathbb{D}) =
+\prod_{\mathbf{x}_u,\mathbf{y}_v}P(\mathbf{x}_u,\mathbf{y}_v)^{n_{u,v}}
+\]</span> 由于我们要建模 <span
+class="math inline">\(P(\mathbf{y}|\mathbf{x})\)</span>，所以我们将
+<span class="math inline">\(P(\mathbb{D})\)</span> 进行如下拆分： <span
+class="math display">\[
+  \begin{aligned}
+    P(\mathbb{D}) &amp;=
+\prod_{\mathbf{x}_u,\mathbf{y}_v}(\overset{\sim}{P}(\mathbf{x}_u)P(\mathbf{y}_v|\mathbf{x}_u))^{n_{u,v}}\\
+  n_{u,v} &amp;= N\cdot \overset{\sim}{P}(\mathbf{y}_v,\mathbf{x}_u)\\
+  L(\mathbb{D}) &amp;=
+log\prod_{\mathbf{x}_u,\mathbf{y}_v}(\overset{\sim}{P}(\mathbf{x}_u)P(\mathbf{y}_v|\mathbf{x}_u))^{N\cdot
+\overset{\sim}{P}(\mathbf{y}_v,\mathbf{x}_u)}\\
+  &amp;=\sum_{\mathbf{x}_u,\mathbf{y}_v}\overset{\sim}{P}(\mathbf{y}_v,
+\mathbf{x}_u)logP(\mathbf{y}_v|\mathbf{x_u})
+  \end{aligned}
+\]</span>
+此即书中给出出的似然函数，笔者在这里困惑了良久。将<strong>简化表示</strong>里的
+<span class="math inline">\(P(\mathbf{y}|\mathbf{x})\)</span>
+带入继续展开： <span class="math display">\[
+  \begin{aligned}
+    L(\mathbb{D}) &amp; =
+\sum_{\mathbf{x}_u,\mathbf{y}_v}\overset{\sim}{P}(\mathbf{y}_v,\mathbf{x}_u)(\sum_{k=1}^Kw_kf_k(\mathbf{y}_v|\mathbf{x}_u)
+- log(Z(\mathbf{x}_u)))\\
+    &amp; =
+\sum_{\mathbf{x}_u,\mathbf{y}_v}\overset{\sim}{P}(\mathbf{y}_v,\mathbf{x}_u)\sum_{k=1}^Kw_kf_k(\mathbf{y}_v|\mathbf{x}_u)
+-
+\sum_{\mathbf{x}_u,\mathbf{y}_v}\overset{\sim}{P}(\mathbf{y}_v,\mathbf{x}_u)log(Z(\mathbf{x}_u))\\
+    &amp; =
+\sum_{\mathbf{x}_u,\mathbf{y}_v}\overset{\sim}{P}(\mathbf{y}_v,\mathbf{x}_u)\sum_{k=1}^Kw_kf_k(\mathbf{y}_v|\mathbf{x}_u)
+- \sum_{\mathbf{x}_u}\overset{\sim}{P}(\mathbf{x}_u)log(Z(\mathbf{x}_u))
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>IIS方法：</li>
+<li>拟牛顿法：</li>
+</ul>
+<h4 id="线性条件随机场的预测算法">(线性)条件随机场的预测算法</h4>
+<h3 id="条件随机场和hmm模型">条件随机场和HMM模型</h3>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Probability-Theory/" rel="tag"># Probability Theory</a>
+          
+            <a href="/tags/Statistic/" rel="tag"># Statistic</a>
+          
+            <a href="/tags/Statistical-Learning/" rel="tag"># Statistical Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/11/26/ML/" rel="next" title="ML">
+                <i class="fa fa-chevron-left"></i> ML
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/08/Optimization/" rel="prev" title="Optimization">
+                Optimization <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%88%86%E5%B8%83"><span class="nav-number">1.</span> <span class="nav-text">常见分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8B%AC%E7%AB%8B%E6%80%A7%E5%81%87%E8%AE%BE"><span class="nav-number">2.</span> <span class="nav-text">独立性假设</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E8%91%97%E6%80%A7%E6%A3%80%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">显著性检验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%86%B5%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">4.</span> <span class="nav-text">熵的表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%87%E6%A0%B7"><span class="nav-number">5.</span> <span class="nav-text">采样</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%88%86%E5%B8%83%E9%87%87%E6%A0%B7"><span class="nav-number">5.1.</span> <span class="nav-text">常见分布采样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E5%88%86%E5%B8%83%E9%87%87%E6%A0%B7"><span class="nav-number">5.2.</span> <span class="nav-text">复杂分布采样</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#em%E7%AE%97%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">EM算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">6.1.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#em%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="nav-number">6.2.</span> <span class="nav-text">EM算法过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#em%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8"><span class="nav-number">6.3.</span> <span class="nav-text">EM算法应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%86%B5%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.</span> <span class="nav-text">最大熵模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">7.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E6%A8%A1"><span class="nav-number">7.2.</span> <span class="nav-text">建模：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3"><span class="nav-number">7.3.</span> <span class="nav-text">求解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">7.4.</span> <span class="nav-text">应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8"><span class="nav-number">8.</span> <span class="nav-text">贝叶斯分类器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%BD%91"><span class="nav-number">9.</span> <span class="nav-text">贝叶斯网</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E9%93%BEmarkov-chain"><span class="nav-number">10.</span> <span class="nav-text">马尔科夫链(Markov chain)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%B3%95"><span class="nav-number">10.1.</span> <span class="nav-text">蒙特卡洛法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E8%BF%87%E7%A8%8B"><span class="nav-number">11.</span> <span class="nav-text">隐马尔科夫过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%A6%82%E7%8E%87"><span class="nav-number">11.1.</span> <span class="nav-text">计算概率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8B%E7%AE%97%E6%B3%95"><span class="nav-number">11.2.</span> <span class="nav-text">预测算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">11.3.</span> <span class="nav-text">学习算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA"><span class="nav-number">12.</span> <span class="nav-text">条件随机场</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E6%97%A0%E5%90%91%E5%9B%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">12.1.</span> <span class="nav-text">概率无向图模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA-1"><span class="nav-number">12.2.</span> <span class="nav-text">条件随机场</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E7%9A%84%E6%A6%82%E7%8E%87%E8%AE%A1%E7%AE%97"><span class="nav-number">12.2.1.</span> <span class="nav-text">(线性)条件随机场的概率计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">12.2.2.</span> <span class="nav-text">(线性)条件随机场的学习算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E7%9A%84%E9%A2%84%E6%B5%8B%E7%AE%97%E6%B3%95"><span class="nav-number">12.2.3.</span> <span class="nav-text">(线性)条件随机场的预测算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E9%9A%8F%E6%9C%BA%E5%9C%BA%E5%92%8Chmm%E6%A8%A1%E5%9E%8B"><span class="nav-number">12.3.</span> <span class="nav-text">条件随机场和HMM模型</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

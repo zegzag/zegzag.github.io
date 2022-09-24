@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Loss,Infomation Theory,Probability Theory," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基础Loss公式回顾 CrossEntropy损失：    CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多显然的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。  二分类标签为\(\{0, 1\}\)：  公式： \[   L(y,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Loss">
+<meta property="og:url" content="http://example.com/2021/05/18/Loss%20copy/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="基础Loss公式回顾 CrossEntropy损失：    CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多显然的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。  二分类标签为\(\{0, 1\}\)：  公式： \[   L(y,">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-05-18T03:34:08.000Z">
+<meta property="article:modified_time" content="2021-05-18T03:34:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Loss">
+<meta property="article:tag" content="Infomation Theory">
+<meta property="article:tag" content="Probability Theory">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/05/18/Loss copy/"/>
+
+
+
+
+
+  <title>Loss | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/18/Loss%20copy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Loss</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-18T11:34:08+08:00">
+                2021-05-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-05-18T11:34:08+08:00">
+                2021-05-18
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基础loss公式回顾">基础Loss公式回顾</h2>
+<h3 id="crossentropy损失">CrossEntropy损失：</h3>
+<p>  
+CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。
+不然可能在论文里面很多<strong>显然</strong>的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。</p>
+<ul>
+<li>二分类标签为<span class="math inline">\(\{0, 1\}\)</span>：
+<ul>
+<li>公式： <span class="math display">\[
+  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) +
+(1-y_i)*log(1-\hat{y_i}))
+\]</span></li>
+<li>求导： <span class="math display">\[
+  \nabla_{\hat{y}}L=\frac{\partial L}{\partial
+\hat{y}}=-\frac{y-\hat{y}}{\hat{y}(1-\hat{y})}
+  =\begin{cases}
+    -\frac{1}{\hat{y}}, \quad if\ y=1\\
+    \frac{1}{1-\hat{y}}, \quad if\ y=0
+  \end{cases}
+\]</span>
+<ul>
+<li>注意这里的是对预测值<span
+class="math inline">\(\hat{y}\)</span>求导，<span
+class="math inline">\(\hat{y} \in (0, 1)\)</span></li>
+<li>直观上看 <span class="math inline">\(y=1\)</span>时，<span
+class="math inline">\(\hat{y}\)</span> 越接近0, 梯度绝对值越大。<span
+class="math inline">\(y=0\)</span> 时，<span
+class="math inline">\(\hat{y}\)</span> 越接近1，梯度绝对值越大。</li>
+<li><span
+class="math inline">\(y=1\)</span>时，<strong>负</strong>梯度方向一定为正，旨在让模型往大了预估；<span
+class="math inline">\(y=0\)</span>，<strong>负</strong>梯度方向一定为负，旨在让模型往小了预估。</li>
+</ul></li>
+</ul></li>
+<li>二分类标签为<span class="math inline">\(\{-1, 1\}\)</span>：
+<ul>
+<li>公式： <span class="math display">\[
+L(y, s) = \sum_{i=1}^{N}log(1+e^{-y_is_i})
+\]</span></li>
+<li>求导： <span class="math display">\[
+\nabla_{s}L=\frac{\partial L}{\partial s}=-\frac{ye^{-ys}}{1+e^{-ys}}
+  =\begin{cases}
+    -\frac{e^{-s}}{1+e^{-s}}, \quad if\ y=1\\
+    \frac{e^{s}}{1+e^{s}}, \quad if\ y=-1
+  \end{cases}
+\]</span>
+<ul>
+<li>注意这里的是对<span class="math inline">\(s\)</span>求导，其中<span
+class="math inline">\(\hat{y} = sigmoid(s),\ s \in (-\infty,
++\infty)\)</span></li>
+<li><span class="math inline">\(y=1\)</span>时，<span
+class="math inline">\(s\)</span>越小，梯度的绝对值越大；<span
+class="math inline">\(y=-1\)</span>时，<span
+class="math inline">\(s\)</span>越大，梯度的绝对值越大。</li>
+<li><span
+class="math inline">\(y=1\)</span>时，<strong>负</strong>梯度方向一定为正，旨在让<span
+class="math inline">\(s\)</span>往<span
+class="math inline">\(+\infty\)</span>跑；<span
+class="math inline">\(y=-1\)</span>时，<strong>负</strong>梯度方向一定为负，旨在让<span
+class="math inline">\(s\)</span>往<span
+class="math inline">\(-\infty\)</span>跑。</li>
+</ul></li>
+</ul></li>
+<li>基础<span
+class="math inline">\(sigmoid\)</span>公式及其导函数也要熟悉才行： <span
+class="math display">\[
+  \begin{aligned}
+    &amp;g(s) = \frac{1}{1+e^{-s}}\\
+    &amp;\frac{\partial g}{\partial s}=g(1-g)
+  \end{aligned}
+\]</span>
+<ul>
+<li>当<span class="math inline">\(s\to \infty\)</span>，导函数趋向<span
+class="math inline">\(0\)</span>；梯度消失问题。</li>
+</ul></li>
+</ul>
+<h3 id="mse损失">MSE损失：</h3>
+<p>   MSE公式主要用在回归问题里面，也是一个非常简单和直观的损失函数。
+这里需要把握的点主要是树模型里针对回归问题的损失及求导过程。</p>
+<ul>
+<li><p>公式： <span class="math display">\[
+  L(y, \hat{y}) = \sum_{i}^{N}(y_i-\hat{y}_i)^2
+\]</span></p></li>
+<li><p>求导： <span class="math display">\[
+  \nabla_{\hat{y}}L=\frac{\partial L}{\partial \hat{y}} = 2(\hat{y}-y)
+  =-2(y-\hat{y})
+\]</span></p>
+<ul>
+<li>梯度即为残差的相反数，负梯度即为残差。</li>
+<li><span
+class="math inline">\(\hat{y}\)</span>估大了，负梯度会往小了拉，估小了负梯度会往大了拉。<br />
+</li>
+</ul></li>
+<li><p>回归树中的应用问题：</p></li>
+</ul>
+<h3 id="softmaxcrossentropy损失">SoftmaxCrossEntropy损失：</h3>
+<p>   针对多分类问题，假如类别为<span
+class="math inline">\(m\)</span>个类，即<span
+class="math inline">\(\mathbf{y}\in
+R^m\)</span>，其中针对每一个样本<span
+class="math inline">\(\mathbf{y}\)</span>是一个<code>one-hot</code>向量，类别为<code>j</code>则<span
+class="math inline">\(\mathbf{y}=[0,...,1_j,...]\)</span>。即下角标为<code>j</code>的位置为<span
+class="math inline">\(1\)</span>，其他位置为<span
+class="math inline">\(0\)</span>。最后模型输出的<code>logits</code>为<span
+class="math inline">\(\mathbf{u}\in R^m\)</span>， 则有： <span
+class="math display">\[
+  \begin{aligned}
+    \hat{\mathbf{y}}&amp;=softmax(\mathbf{u})\\
+                    &amp;=[\frac{e^{u_1}}{\sum_{k=1}^me^{u_k}},\ ...,\
+\frac{e^{u_m}}{\sum_{k=1}^me^{u_k}}]\\
+                    &amp;=[\hat{y}_1,\ ...,\ \hat{y}_m]\\
+    L(\mathbf{y},\hat{\mathbf{y}})&amp;=\langle\mathbf{y},log(\hat{\mathbf{y}})\rangle\\
+    &amp;=\sum_{i=1}^{N}I(i==j)log(\frac{e^{u_i}}{\sum_{k=1}^me^{u_k}})\\
+    &amp;=-log(\frac{e^{u_j}}{\sum_{k=1}^me^{u_k}})=-log(\hat{y}_j)+K
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>若令<span
+class="math inline">\(Z=\sum_{k=1}^me^{u_k}\)</span>，<span
+class="math inline">\(\mathbf{a}=-log(\hat{\mathbf{y}})=[log(Z)-u_i]_i=[a_1,...,a_m]，\)</span>则求导公式：
+<span class="math display">\[
+  \begin{aligned}
+  \frac{\partial L}{\partial \hat{y}_j}&amp;=-\frac{1}{\hat{y}_j}
+  =-\frac{Z}{e^{u_j}}\\
+  \frac{\partial a_i}{\partial u_j}&amp;=\begin{cases}
+    \frac{e^{u_j}}{Z}-1=\hat{y}_i-1,\ if\ i==j\\
+    \frac{e^{u_j}}{Z}=\hat{y}_j,\ if\ i\neq j
+  \end{cases}\\
+  \nabla_{\mathbf{u}}L&amp;=\frac{\partial L}{\partial \mathbf{u}}
+  =\frac{\partial L}{\partial \mathbf{a}}\frac{\partial
+\mathbf{a}}{\partial \mathbf{u}}
+  =\mathbf{y}\begin{bmatrix}
+    \frac{\partial a_1}{\partial \mathbf{u}},\\
+    ...,\\
+    \frac{\partial a_j}{\partial \mathbf{u}},\\
+    ...,\\
+    \frac{\partial a_m}{\partial \mathbf{u}}
+  \end{bmatrix}\\
+  &amp;=[\frac{\partial a_j}{\partial \mathbf{u}}]\\
+  &amp;=[\frac{\partial a_j}{\partial u_1},...,\frac{\partial
+y_j}{\partial u_j},...,\frac{\partial y_j}{\partial u_m}]\\
+  &amp;=[\hat{y}_1,...,\hat{y}_j-1,...\hat{y}_m]\\
+  &amp;=\hat{\mathbf{y}}-\mathbf{y}\\
+  -\nabla_{\mathbf{u}}L&amp;=\mathbf{y}-\hat{\mathbf{y}}
+  \end{aligned}
+\]</span>
+<ul>
+<li>可以看到<span
+class="math inline">\(L\)</span>关于<code>logits</code>: <span
+class="math inline">\(\mathbf{u}\)</span>的导数非常简单漂亮。</li>
+<li>从负梯度角度来看，如果类别为<span
+class="math inline">\(j\)</span>的话，<span
+class="math inline">\(u_j\)</span>的负梯度为正，即会往大了预估，<span
+class="math inline">\(u_i,\ i\neq
+j\)</span>的负梯度为负，即会往小了预估。</li>
+<li><code>word2vec</code>的非优化版本的数学基础就是上诉求导过程的进阶版，详见Embedding-word2vec篇。</li>
+</ul></li>
+</ul>
+<h3 id="从概率论角度看损失函数">从概率论角度看损失函数：</h3>
+<ul>
+<li>从极大似然看损失函数：
+<ul>
+<li>二分类问题：CrossEntropy函数：
+<ul>
+<li>当<span class="math inline">\(y\in \{1,0\}\)</span>时，令： <span
+class="math display">\[
+\begin{aligned}
+  &amp;P(y=1|s)=\hat{y}=sigmoid(s)=\frac{1}{1+e^{-s}}\\
+  &amp;P(y=0|s)=1-\hat{y}=1-P(y=1|s)
+\end{aligned}
+\]</span>
+<ul>
+<li>则有： <span class="math display">\[
+  P(y|x)=\hat{y}^y(1-\hat{y})^{(1-y)}
+\]</span></li>
+<li>优化： <span class="math display">\[
+\begin{aligned}
+  &amp;\operatorname{argmax}\
+log(\prod_{i=1}^{N}P(y_i|x_i))=\sum_{i}^{N}ylog(\hat{y})+(1-y)log(1-\hat{y})\\
+  &amp;\iff \operatorname{argmin}\
+L=-\sum_{i}^{N}ylog(\hat{y})+(1-y)log(1-\hat{y})
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>当<span class="math inline">\(y\in
+\{1,-1\}\)</span>时，同理导出其对应的损失函数。</li>
+</ul></li>
+<li>多分类问题：Softmax函数：
+<ul>
+<li>假设多分类问题的预估分布定义如下，其中<span
+class="math inline">\(\hat{\mathbf{y}}=f(\mathbf{x};\mathbf{w}); f:
+R^n\rightarrow R^m\)</span>： <span class="math display">\[
+  \begin{bmatrix}
+    P(y_1|\mathbf{x};\mathbf{w}),\\
+    P(y_2|\mathbf{x};\mathbf{w}),\\
+    ...,\\
+    P(y_m|\mathbf{x};\mathbf{w})
+  \end{bmatrix}=\frac{1}{\sum_{k=1}^n\hat{y}_k}
+  \begin{bmatrix}
+    \hat{y_1},\\
+    \hat{y_2},\\
+    ...,\\
+    \hat{y_m}
+  \end{bmatrix}
+\]</span></li>
+<li>则有第<span
+class="math inline">\(i\)</span>个样本下的预估分类为<span
+class="math inline">\(j\)</span>的概率为： <span class="math display">\[
+  P(y^{(i)}=j|\mathbf{x}^{(i)};\mathbf{w}^{(i)})=\prod_{k=1}^m(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})^{I(k==j^{(i)})}
+\]</span></li>
+<li>其极大似然函数为： <span class="math display">\[
+  \begin{aligned}
+    \mathbf{w}^{*}&amp;=argmax\
+\prod_{i=1}^NP(y^{(i)}|\mathbf{x}^{(i)};\mathbf{w}^{(i)})\\
+    &amp;=argmax\
+\sum_{i=1}^Nlog(\prod_{k=1}^m(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})^{I(k==j^{(i)})})\\
+    &amp;=argmax\ \sum_{i=1}^N(\sum_{k=1}^m(I(k==j^{(i)})
+    log(\frac{\hat{y}_k^{(i)}}{\sum_{u=1}^m\hat{y}_u^{(i)}})))\\
+  \end{aligned}
+\]</span></li>
+<li>如果令<span class="math inline">\(\hat{y}_k=exp(u_k)\)</span>,
+其中<span
+class="math inline">\(u_k\)</span>是<code>logits</code>的第<span
+class="math inline">\(k\)</span>个分量，那么上诉最外层大括号内的表达式就是<code>softmax_cross_entropy_with_logits</code>的形式。</li>
+<li>为什么要令<span
+class="math inline">\(\hat{y}_k=exp(u_k)\)</span>，这样设计是为了求导方便，<code>softmax_cross_entropy_with_logits</code>的导数具有非常漂亮的形式，详见前面的损失函数的求导过程。</li>
+</ul></li>
+<li>回归问题：MSE损失函数：
+<ul>
+<li>设模型预估和真实分布之前存在如下关系： <span class="math display">\[
+  y = h(\mathbf{x};\mathbf{w})+\epsilon
+\]</span></li>
+<li>其中<span
+class="math inline">\(\epsilon\)</span>是预估误差，我们假设<span
+class="math inline">\(\epsilon \sim N(0,\sigma^2)\)</span>， 即<span
+class="math inline">\(p(\epsilon)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{\epsilon^2}{2\sigma})\)</span>，可得：
+<span class="math display">\[
+  p(\epsilon)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y-h(\mathbf{x};\mathbf{w}))^2}{2\sigma})
+\]</span></li>
+<li>那么在样本空间<span
+class="math inline">\(D\)</span>上，依据极大似然定理，有： <span
+class="math display">\[
+  \begin{aligned}
+    \mathbf{w}&amp;=argmax\ \prod_i^Np(\epsilon_i)\\
+    &amp;=argmax\
+\sum_i^Nlog(\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(y_i-h(\mathbf{x}_i;\mathbf{w}_i))^2}{2\sigma}))\\
+    &amp;\iff argmin\ \sum_i^N(y_i-h(\mathbf{x}_i;\mathbf{w}_i))^2)
+  \end{aligned}\\
+\]</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="loss进阶">Loss进阶</h2>
+<p>  
+Loss除了拟合模型预估分布到<code>Label</code>分布外，在样本选择，防止过拟合上也可以做很多文章。控制Loss是最直接的控制模型方向的一个方法。</p>
+<h3 id="flooding-loss">Flooding Loss</h3>
+<p>   <span class="math inline">\(flooding\
+loss\)</span>的方法非常简单，背后的思想也很朴素：通常随着训练次数的增加，<code>training_loss</code>由于过拟合将趋近于0，但<code>test_loss</code>由于过拟合会逐渐上涨。<span
+class="math inline">\(flooding
+loss\)</span>通过损失函数的设计将<code>training loss</code>的值控制在一个常数附近来降低过过拟合。</p>
+<ul>
+<li>假设一般Loss函数为<span
+class="math inline">\(J(\boldsymbol{\theta})\)</span>，<span
+class="math inline">\(flooding\ loss\)</span>的损失函数为： <span
+class="math display">\[
+\widetilde{J}(\boldsymbol{\theta})=|J(\boldsymbol{\theta})-b|+b
+\]</span></li>
+<li>假如<span class="math inline">\(J(\boldsymbol{\theta})\geq
+b\)</span>，<span
+class="math inline">\(\nabla_{\boldsymbol{\theta}}\widetilde{J}=\nabla_{\boldsymbol{\theta}}J\)</span>，损失函数降低。</li>
+<li>假如<span class="math inline">\(J(\boldsymbol{\theta})\leq
+b\)</span>，<span
+class="math inline">\(\nabla_{\boldsymbol{\theta}}\widetilde{J}=-\nabla_{\boldsymbol{\theta}}J\)</span>，损失函数升高。</li>
+</ul>
+<h3 id="focal-loss">Focal Loss</h3>
+<p>  
+样本不均衡问题在日常的模型训练中非常普遍。这篇论文主要是针对于CV领域里的目标检测问题提出来的损失函数的设计。但在搜索推荐领域，点击样本要远小于未点击样本，曝光样本远小于未曝光样本，正负样本不均衡也是非常突出的问题。<code>Focal Loss</code>设计的出发点是为了降低已经被<strong>很好分类</strong>的样本的权重。</p>
+<ul>
+<li>假如令： <span class="math display">\[
+p_t=\begin{cases}
+  p,\ if\ y=1\\
+  1-p,\ if\ y=0
+\end{cases}
+\]</span></li>
+<li>那么交叉熵损失可以改写为<span
+class="math inline">\(CE(p,y)=CE(p_t)=-log(p_t)\)</span>，<code>Focal Loss</code>公式为：<span
+class="math inline">\(FL(p_t)=-\alpha_t(1-p_t)^{\gamma}log(p_t)\)</span>，这样写可能会比较迷糊，改写成分类形式即为：
+<span class="math display">\[FL(p, y)=\begin{cases}
+-\alpha(1-p)^{\gamma}log(p),\ if\ y=1\\
+-(1-\alpha)p^{\gamma}log(1-p),\ if\ y=0
+\end{cases}
+\]</span></li>
+<li>针对正样本，如果模型已经预估很好，那么<span
+class="math inline">\(p\rightarrow
+1\)</span>，则前面的<code>weight</code>趋向于0，即降低其权重。如果模型预估的比较差(难分类样本)，那么<code>weight</code>趋向于1。</li>
+<li>其中<span class="math inline">\(\alpha\)</span>和<span
+class="math inline">\(\gamma\)</span>是用来控制调整方式的过程，<span
+class="math inline">\(\gamma\)</span>越大，降低得越快。</li>
+</ul>
+<h3 id="loss-与度量学习metrics-learning">LOSS 与度量学习(metrics
+learning)</h3>
+<h4 id="wce-loss">WCE Loss</h4>
+<h4 id="hisc-loss">Hisc Loss</h4>
+<h4 id="triplet-loss">(Triplet Loss)</h4>
+<h3 id="ref">Ref:</h3>
+<ol type="1">
+<li>Flooding Loss: https://arxiv.org/abs/2002.08709</li>
+<li>Focal Loss: https://arxiv.org/pdf/1708.02002.pdf</li>
+<li>Triplet Loss: https://en.wikipedia.org/wiki/Triplet_loss</li>
+<li><a
+target="_blank" rel="noopener" href="https://gombru.github.io/2019/04/03/ranking_loss/">Understanding
+Ranking Loss, Contrastive Loss, Margin Loss, Triplet Loss, Hinge Loss
+and all those confusing names</a></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Loss/" rel="tag"># Loss</a>
+          
+            <a href="/tags/Infomation-Theory/" rel="tag"># Infomation Theory</a>
+          
+            <a href="/tags/Probability-Theory/" rel="tag"># Probability Theory</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/18/Loss/" rel="next" title="Loss">
+                <i class="fa fa-chevron-left"></i> Loss
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/05/18/Debias/" rel="prev" title="Debias">
+                Debias <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80loss%E5%85%AC%E5%BC%8F%E5%9B%9E%E9%A1%BE"><span class="nav-number">1.</span> <span class="nav-text">基础Loss公式回顾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#crossentropy%E6%8D%9F%E5%A4%B1"><span class="nav-number">1.1.</span> <span class="nav-text">CrossEntropy损失：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mse%E6%8D%9F%E5%A4%B1"><span class="nav-number">1.2.</span> <span class="nav-text">MSE损失：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#softmaxcrossentropy%E6%8D%9F%E5%A4%B1"><span class="nav-number">1.3.</span> <span class="nav-text">SoftmaxCrossEntropy损失：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%A6%82%E7%8E%87%E8%AE%BA%E8%A7%92%E5%BA%A6%E7%9C%8B%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">从概率论角度看损失函数：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loss%E8%BF%9B%E9%98%B6"><span class="nav-number">2.</span> <span class="nav-text">Loss进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flooding-loss"><span class="nav-number">2.1.</span> <span class="nav-text">Flooding Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#focal-loss"><span class="nav-number">2.2.</span> <span class="nav-text">Focal Loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loss-%E4%B8%8E%E5%BA%A6%E9%87%8F%E5%AD%A6%E4%B9%A0metrics-learning"><span class="nav-number">2.3.</span> <span class="nav-text">LOSS 与度量学习(metrics
+learning)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wce-loss"><span class="nav-number">2.3.1.</span> <span class="nav-text">WCE Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hisc-loss"><span class="nav-number">2.3.2.</span> <span class="nav-text">Hisc Loss</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#triplet-loss"><span class="nav-number">2.3.3.</span> <span class="nav-text">(Triplet Loss)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ref"><span class="nav-number">2.4.</span> <span class="nav-text">Ref:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

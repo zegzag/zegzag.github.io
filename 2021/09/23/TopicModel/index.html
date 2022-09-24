@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP,Statistical Learning,Topic Model,Infomation Retrieval," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考Statistic-常见分布章节。 Tf-Idf  说明：  tf: term frequence：词频。 idf: inverse document frequence：逆向文档频率。  算法:  词汇: term: \(t\) ，文档: document: \(d\), 语料: corpus: \(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Topic Model">
+<meta property="og:url" content="http://example.com/2021/09/23/TopicModel/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考Statistic-常见分布章节。 Tf-Idf  说明：  tf: term frequence：词频。 idf: inverse document frequence：逆向文档频率。  算法:  词汇: term: \(t\) ，文档: document: \(d\), 语料: corpus: \(">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-23T10:19:08.000Z">
+<meta property="article:modified_time" content="2021-09-23T10:19:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Statistical Learning">
+<meta property="article:tag" content="Topic Model">
+<meta property="article:tag" content="Infomation Retrieval">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/09/23/TopicModel/"/>
+
+
+
+
+
+  <title>Topic Model | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/TopicModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Topic Model</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-23T18:19:08+08:00">
+                2021-09-23
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-09-23T18:19:08+08:00">
+                2021-09-23
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考<code>Statistic-常见分布</code>章节。</p>
+<h2 id="tf-idf">Tf-Idf</h2>
+<ul>
+<li>说明：
+<ul>
+<li><code>tf</code>: term frequence：词频。</li>
+<li><code>idf</code>: inverse document frequence：逆向文档频率。</li>
+</ul></li>
+<li><strong>算法</strong>:
+<ul>
+<li>词汇: <code>term</code>: <span class="math inline">\(t\)</span>
+，文档: <code>document</code>: <span class="math inline">\(d\)</span>,
+语料: <code>corpus</code>: <span class="math inline">\(D\)</span></li>
+<li><span class="math inline">\(tf(t,d)=\frac{f_{t,d}}{\sum_{t&#39;\in
+d}f_{t&#39;,d}}\)</span>
+<ul>
+<li><span class="math inline">\(f_{t,d}\)</span> 表示<code>term</code>:
+<span class="math inline">\(t\)</span> 在 <code>document</code>: <span
+class="math inline">\(d\)</span> 中出现的次数</li>
+<li><span class="math inline">\(tf\)</span>
+值是<code>term-document</code>共现的。</li>
+<li>一些变种：
+<ul>
+<li><span
+class="math inline">\(tf(t,d)=0.5+0.5\cdot\frac{f_{t,d}}{max\{f_{t&#39;,d}:\
+t&#39;\in d\} }\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(idf(t, D) = log(\frac{M}{\vert \{d\in D:
+t\in d \} \vert + 1})\)</span>
+<ul>
+<li><span class="math inline">\(M\)</span> 代表文档数量</li>
+<li><span class="math inline">\(\vert \{d\in D: t\in d \} \vert\)</span>
+表示出现单词 <span class="math inline">\(t\)</span> 的文档的个数。</li>
+<li><span class="math inline">\(idf\)</span> 值是全局的</li>
+</ul></li>
+<li><span class="math inline">\(tf\_idf(t,d,D)=tf(t,d)*idf(t,D)\)</span>
+<ul>
+<li><span class="math inline">\(tf\_idf\)</span> 是
+<code>term-document</code>共现的。</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="latent-semantic-analysislsa">Latent Semantic Analysis(LSA)</h2>
+<p>   潜在语义分析</p>
+<ul>
+<li><strong>符号定义</strong>:
+<ul>
+<li>假设共有 <span class="math inline">\(M\)</span> 篇文档，<span
+class="math inline">\(V\)</span> 个单词，矩阵 <span
+class="math inline">\(X_{M\times N}\)</span>
+表示文档-单词之间的关系。</li>
+<li>其中 <span class="math inline">\(x_{ij}\)</span>
+有多种表示形式，最简单的为各个单词在不同文档中出现的频数(<code>occurrence</code>)，一般用
+<span class="math inline">\(tfidf\)</span> 来表示。</li>
+<li>关于 <span class="math inline">\(X\)</span> 的一些说明：
+<ul>
+<li><span class="math inline">\(X\)</span>表示为列向量： <span
+class="math display">\[
+  X=(\mathbf{w}_1,...\mathbf{w}_V)
+\]</span>
+<ul>
+<li><span class="math inline">\(\mathbf{w}_i\)</span>
+可以用来表征单词。</li>
+</ul></li>
+<li><span class="math inline">\(X\)</span> 表征为行向量： <span
+class="math display">\[
+  X=\begin{bmatrix}
+    \mathbf{d}^T_1\\
+    ...\\
+    \mathbf{d}^T_M\\
+  \end{bmatrix}
+\]</span>
+<ul>
+<li><span class="math inline">\(\mathbf{d}^T_i\)</span>
+可以用来表征文档。</li>
+</ul></li>
+<li>原始的<span class="math inline">\(X\)</span>有一下特点：
+<ul>
+<li>噪音：单词存在多意，文档中可能存在许多冗余表述。</li>
+<li>稀疏：一篇文档含有的单词占全体单词集比例很少。</li>
+<li>低秩：一是因为稀疏性，另一个是存在许多同义词和统一表述。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>算法：
+<ul>
+<li>对 <span class="math inline">\(X\)</span> 做奇异值分解 <span
+class="math display">\[
+  X=U_{M\times M}\Sigma_{M\times N} V^T_{N\times N}
+\]</span></li>
+<li>降维： <span class="math display">\[
+  X&#39;=U_{M\times k}\Sigma_{k\times k}&#39;V^T_{k\times N}
+\]</span></li>
+</ul></li>
+<li>分析：
+<ul>
+<li>降维后的 <span
+class="math inline">\(X&#39;\)</span>表征潜在语义空间<code>Latent Semantic Space</code>。</li>
+<li>可以用多种方法去分析 <span class="math inline">\(X&#39;\)</span>
+里的 <span class="math inline">\(\mathbf{w}_i&#39;\)</span>和 <span
+class="math inline">\(\mathbf{d}^{&#39;T}_i\)</span>，比如计算<code>cosine similarity</code>，聚类等。</li>
+</ul></li>
+<li>Ref:
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Latent_semantic_analysis">Latent
+semantic analysis(wiki)</a></li>
+<li><a target="_blank" rel="noopener" href="http://lsa.colorado.edu/papers/dp1.LSAintro.pdf">An
+Introduction to Latent Semantic Analysis</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3">奇异值分解(wiki)</a></li>
+</ul></li>
+</ul>
+<h2 id="probabilistic-latent-semantic-analysisplsa">Probabilistic Latent
+Semantic Analysis(pLSA)</h2>
+<p>  pLSA认为文档生成概率如下: <span class="math display">\[
+    \begin{aligned}
+      p(d, w) &amp; = p(d)\sum_z p(z|d)p(w|z)\\
+          &amp; = \sum_z p(z, d)p(w|z)
+    \end{aligned}          \tag{1}
+  \]</span></p>
+<p><span class="math display">\[
+    p(d,w) = \sum_z p(d|z)p(z)p(w|z) \tag{2}
+  \]</span></p>
+<ul>
+<li><p><strong>pLSA和LSA的关系</strong>:</p>
+<p>令： <span class="math display">\[
+    U = \begin{bmatrix}
+      u_{11},...,u_{1M}\\
+      ...\\
+      u_{T1},...,u_{TM}\\
+    \end{bmatrix}
+    V = \begin{bmatrix}
+      v_{11},...,v_{1T}\\
+      ...\\
+      v_{T1},...,v_{TV}\\
+    \end{bmatrix}
+    \Sigma = \begin{bmatrix}
+      \sigma_{11},...,0\\
+      ...\\
+      0,...,\sigma_{TT}
+    \end{bmatrix}
+  \]</span> 其中： <span class="math display">\[
+    \begin{aligned}
+      u_{zd} &amp;= p(doc = d|topic = z)\\
+      v_{zw} &amp;= p(word = w|topic = z)\\
+      \sigma_{zz} &amp;= p(topic = z)\\
+    \end{aligned}
+  \]</span> 第 <span class="math inline">\(d\)</span> 篇文档上出现第
+<span class="math inline">\(w\)</span> 个单词对应的概率矩阵 <span
+class="math inline">\(P\)</span> 为： <span class="math display">\[
+    P=U^T\Sigma V=\begin{bmatrix}
+      p_{11} &amp; ... &amp; p_{1V}\\
+      ... &amp; p_{dw} &amp; ...\\
+      p_{M1} &amp; ... &amp; p_{MV}\\
+    \end{bmatrix}
+  \]</span> 则有： <span class="math display">\[
+    p_{dw} = p(d, w)
+  \]</span></p></li>
+<li><p><strong>pLSA的参数求解</strong>：<br />
+令： <span class="math display">\[
+    \Theta = \begin{bmatrix}
+      \theta_{11} &amp; ... &amp; \theta_{1T} \\
+      ... &amp; \theta_{dz} &amp; ... \\
+      \theta_{M1} &amp; ... &amp; \theta_{MT} \\
+    \end{bmatrix}
+    \Phi = \begin{bmatrix}
+      \varphi_{11} &amp; ... &amp; \varphi_{1V} \\
+      ... &amp; \varphi_{zw} &amp; ... \\
+      \varphi_{T1} &amp; ... &amp; \varphi_{TV} \\
+    \end{bmatrix}
+  \]</span> 其中： <span class="math display">\[
+    \begin{aligned}
+      \theta_{dz} &amp; = p(topic = z | doc = d) = p(z|d)\\
+      \varphi_{zw} &amp; = p(word = w | topic = z) = p(d|z)
+    \end{aligned}
+  \]</span></p>
+<ul>
+<li>概率分布：<br />
+令 <span class="math inline">\(n(d,w)\)</span> 表示文档 <span
+class="math inline">\(d\)</span> 和单词 <span
+class="math inline">\(w\)</span> 共现次数。
+<ul>
+<li>第 <span class="math inline">\(d\)</span> 及其全部单词 <span
+class="math inline">\(W\)</span> 的联合分布： <span
+class="math display">\[
+  \begin{aligned}
+    p(w, d) &amp;= p(d)\sum_z\theta_{dz}\varphi_{zw}\\
+    p(W, d) &amp; = p(d)\prod_w\sum_z p(w|z)p(z|d)\\
+            &amp; = p(d)\prod_w(\sum_z\theta_{dz}\varphi_{zw})^{n(d,w)}
+  \end{aligned}
+\]</span></li>
+<li>整体语料 <span class="math inline">\((D,W)\)</span> 的联合分布：
+<span class="math display">\[
+  \begin{aligned}
+    p(W, D) &amp; = \prod_d\prod_w\sum_z p(w|z)p(z|d)p(d)\\
+            &amp; = \prod_d p(d)
+\prod_w(\sum_z\theta_{dz}\varphi_{zw})^{n(d,w)}
+  \end{aligned}
+\]</span></li>
+<li>后验分布： <span class="math display">\[
+  \begin{aligned}
+    p(z|d,w) &amp; = \frac{p(w,z,d)}{\sum_z p(d,z, w)}\\
+    &amp; = \frac{p(d)p(z|d)p(w|z)}{\sum_z p(d)p(z|d)p(w|z)}\\
+    &amp; =
+\frac{\theta_{dz}\varphi_{zw}}{\sum_z\theta_{dz}\varphi_{zw}}
+  \end{aligned}
+\]</span></li>
+</ul></li>
+<li>EM算法：
+<ul>
+<li>整体语料 <span class="math inline">\((D, W)\)</span>
+的似然<code>likelyhood</code>： <span class="math display">\[
+  \begin{aligned}
+    LL(D,W;\Phi,\Theta) = \sum_d log(p(d)) + \sum_d\sum_w
+n(d,w)log(\sum_z(\theta_{dz}\varphi_{zw}))
+  \end{aligned}
+\]</span>
+<ul>
+<li>等式右边第一项为常量。</li>
+</ul></li>
+<li><code>M</code> 步所求解的 <span class="math inline">\(Q\)</span>
+函数为： <span class="math display">\[
+  \begin{aligned}
+    Q(LL) &amp; = \sum_d\sum_w n(d,w)p(z|d,w)\sum_z
+log(\theta_{dz}\varphi_{zw})\\
+    &amp; = \sum_d\sum_w
+n(d,w)\frac{\tilde{\theta}_{dz}\tilde{\varphi}_{zw}}{\sum_z\tilde{\theta}_{dz}\tilde{\varphi}_{zw}}\sum_z
+log(\theta_{dz}) + log(\varphi_{zw})\\
+  s.t: \\
+    &amp; \sum_z \theta_{dz} = 1\\
+    &amp; \sum_w \varphi_{zw} = 1\\
+  \end{aligned}
+\]</span>
+<ul>
+<li>其中 <span
+class="math inline">\(\tilde{\theta}_{dz},\tilde{\varphi}_{zw}\)</span>是上一步迭代所得到的参数。</li>
+<li>联立求解得当前步骤的参数为： <span class="math display">\[
+  \begin{aligned}
+    \theta_{dz} &amp; =\frac{\sum_w
+n(d,w)p(z|d,w)}{\sum_{w,z}n(d,w)p(z|d,w)} \\
+    \varphi_{zw} &amp; = \frac{\sum_d
+n(d,w)p(z|d,w)}{\sum_{d,z}n(d,w)p(z|d,w)}\\
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+<li>思考：如果将 <span class="math inline">\(p(d,w)\)</span> 的形式改成
+<span class="math inline">\((2)\)</span>的话，EM算法该如何更新呢？</li>
+</ul></li>
+</ul>
+<h2 id="latent-dirichlet-allocation">Latent Dirichlet Allocation</h2>
+<p>   LDA
+模型是一个生成式模型，主题思想是：文档是一批潜在(<code>Latent</code>)的主题所描述，而每个主题是由全体单词上的一个分布所描述。每个单词的生成过程为：<code>doc-&gt;topic, topic-&gt;word</code>两个步骤。<br />
+   LDA算法步骤异常简单，但是背后牵扯到的数学原理却极其之多。</p>
+<ul>
+<li><strong>符号定义</strong>：
+<ul>
+<li>词袋 <span class="math inline">\(Voc = \{1,..., V\}\)</span>
+代表全体word集合，每个 word 用长度为 <span
+class="math inline">\(V\)</span> 的 one-hot 向量表示。即<span
+class="math inline">\(word_i = (0,...,1_i,...,0)\)</span></li>
+<li>文档 (<code>doc</code>) 代表了 <span
+class="math inline">\(N\)</span> 个 <span
+class="math inline">\(word\)</span> 的序列。即 <span
+class="math inline">\(\mathbf{w} = (word_1,...,word_N)\)</span></li>
+<li>语料库 (<code>corpus</code>) 是 <span
+class="math inline">\(M\)</span> 个 <code>document</code> 集合。即 <span
+class="math inline">\(D=\{\mathbf{w_1},...,\mathbf{w_M} \}\)</span></li>
+</ul></li>
+<li><strong>算法过程</strong>：
+<ol type="1">
+<li>语料 <span class="math inline">\(D\)</span> 生成过程如下：
+<ul>
+<li>对于 <span class="math inline">\(M\)</span> 篇文档中的每篇文档 <span
+class="math inline">\(m\)</span>：
+<ol type="1">
+<li>依 <span class="math inline">\(\boldsymbol{\theta}_m\sim
+Dir(\boldsymbol{\alpha})\)</span> 生成 <span
+class="math inline">\(\boldsymbol{\theta}_m\)</span>。</li>
+<li>对于每篇文档的 <span class="math inline">\(N\)</span> 中的每个单词
+<span class="math inline">\(word_n\)</span>：
+<ol type="1">
+<li>依 <span class="math inline">\(z_n\sim
+Multinomial(\boldsymbol{\theta}_m)\)</span> 生成主题 <span
+class="math inline">\(z_n\)</span>，假设第 <span
+class="math inline">\(n\)</span> 次生成的主题为 <span
+class="math inline">\(t\)</span>，即 <span class="math inline">\(z_n =
+t\)</span>。</li>
+<li>依 <span class="math inline">\(w_n\sim
+p(w_n|z_n=t;\boldsymbol{\beta})\)</span> 生成单词 <span
+class="math inline">\(w_n\)</span>，这是一个基于<code>topic</code> <span
+class="math inline">\(t\)</span> 的多项式分布。假设 <span
+class="math inline">\(w_n = v\)</span>， 则 <span
+class="math inline">\(p(w_n|z_n=t)=\varphi_{tv}\)</span></li>
+</ol></li>
+</ol>
+<ul>
+<li>其中 <span class="math inline">\(\boldsymbol{\theta}_m,
+\boldsymbol{\alpha}\in R^T\)</span>，<span
+class="math inline">\(T\)</span> 是人为指定的，即主题的个数。<span
+class="math inline">\(\boldsymbol{\theta}\)</span> 由 <span
+class="math inline">\(\boldsymbol{\alpha}\)</span>
+生成，每篇文档生成一次，代表了某篇<code>document</code>下各个<code>topic</code>的出现概率。</li>
+<li>假设不同文档生成主题之间相互独立。</li>
+<li><span
+class="math inline">\(\boldsymbol{\varphi}_t,\boldsymbol{\beta} \in
+R^{V}\)</span>。 <span class="math inline">\(\varphi_{tv}\)</span>
+代表<code>topic</code>为 <span class="math inline">\(t\)</span>
+时，生成<code>word</code>为 <span class="math inline">\(v\)</span>
+的概率。<span class="math inline">\(\boldsymbol{\varphi}_t\)</span> 由
+<span class="math inline">\(\boldsymbol{\beta}\)</span>
+生成，代表了某个<code>topic</code>下，各个单词的出现概率。</li>
+<li>假设不同主题生成单词之间相互独立。</li>
+</ul></li>
+</ul></li>
+<li>1.2.2中针对某一主题下单词的生成规则：
+<ul>
+<li>这里摒弃文档概念，将单词按照 <code>topic</code> 进行分类。</li>
+<li>对于 <span class="math inline">\(T\)</span> 个 <code>topic</code>
+中的每一个 <code>topic</code> <span class="math inline">\(t\)</span>：
+<ol type="1">
+<li>依 <span class="math inline">\(\boldsymbol{\varphi}_t\sim
+Dir(\boldsymbol{\beta})\)</span> 生成 <span
+class="math inline">\(\boldsymbol{\varphi}_t\)</span></li>
+<li>对于第 <span class="math inline">\(t\)</span> 个 <code>topic</code>
+个中的各个单词 <span class="math inline">\(word_n\)</span>：
+<ol type="1">
+<li>依 <span class="math inline">\(w_n\sim
+Multinomial(\boldsymbol{\varphi}_k)\)</span> 生成各个单词。</li>
+</ol></li>
+</ol></li>
+</ul></li>
+</ol>
+<ul>
+<li>生成过程是单词一个一个生成的。而每次生成背后是两个假设好的分布，一个是
+<code>doc-&gt;topic</code> 分布，一个是
+<code>topic-&gt;word</code>分布。</li>
+</ul></li>
+<li><strong>概率分布</strong>：
+<ol type="1">
+<li>已知第 <span class="math inline">\(m\)</span> 篇文档的主题分布参数：
+<span
+class="math inline">\(\boldsymbol{\theta}_m\)</span>，该文档的主题分布为：
+<span class="math display">\[
+     p(\mathbf{z}_m|\boldsymbol{\theta}_m) =
+\prod_{t_m=1}^K\theta_{t_m}^{n_{t_m}} \tag{1}
+\]</span>
+<ul>
+<li><span class="math inline">\(n_{t_m}\)</span> 为<code>topic</code>
+<span class="math inline">\({t_m}\)</span> 出现的次数，<span
+class="math inline">\(\sum_{t_m=1}^Kn_{t_m}=N\)</span></li>
+</ul></li>
+<li>第 <span class="math inline">\(m\)</span> 篇文档的主题分布的概率为：
+<span class="math display">\[
+     \begin{aligned}
+     p(\mathbf{z}_m;\boldsymbol{\alpha}) &amp;= \int p(\mathbf{z}_m,
+\boldsymbol{\theta}_m;\boldsymbol{\alpha})d\boldsymbol{\theta}\\
+     &amp;= \int
+p(\mathbf{z}_m|\boldsymbol{\theta}_m;\boldsymbol{\alpha})p(\boldsymbol{\theta}_m;\boldsymbol{\alpha})d\boldsymbol{\theta}\\
+     &amp;= \int
+\prod_{t_m=1}^K\theta_{t_m}^{n_{t_m}}\frac{\prod_{t_m=1}^K\theta_{t_m}^{\alpha_{t_m}
+- 1}}{B(\boldsymbol{\alpha})}d\boldsymbol{\theta}\\
+     &amp;=\frac{1}{B(\boldsymbol{\alpha})}\int
+\prod_{t_m=1}^K\theta_{t_m}^{n_{t_m}+\alpha_{t_m} -
+1}d\boldsymbol{\theta}=\frac{B(\mathbf{\mathbf{n}_m+\boldsymbol{\alpha}-1})}{B(\boldsymbol{\alpha})}
+     \end{aligned} \tag{2}
+\]</span>
+<ul>
+<li><span class="math inline">\(\mathbf{n}_m\)</span> 代表第 <span
+class="math inline">\(m\)</span> 篇文档中各主题出现的次数。</li>
+<li>这里 <span class="math inline">\(p\)</span> 是 <span
+class="math inline">\(f:R^T\rightarrow R\)</span>，表示某篇文档中 <span
+class="math inline">\(t\)</span> 主题出现次数为 <span
+class="math inline">\(n_t\)</span>的概率。</li>
+</ul></li>
+<li>全部<code>doc</code>(整个空间)下，<code>topic</code>联合分布的概率为：
+<span class="math display">\[
+   p(\mathbf{z}_1,...,\mathbf{z}_M;\boldsymbol{\alpha})=\prod_{i=1}^M\frac{B(\mathbf{\mathbf{n}_m+\boldsymbol{\alpha}-1})}{B(\boldsymbol{\alpha})}
+   \tag{3}
+\]</span>
+<ul>
+<li>这里 <span class="math inline">\(p\)</span> 是 <span
+class="math inline">\(f:R^{M\times T}\rightarrow R\)</span>，表示第
+<span class="math inline">\(m\)</span> 篇文档中出现第 <span
+class="math inline">\(t\)</span> 个<code>topic</code>次数为 <span
+class="math inline">\(n_{mt}\)</span>的概率。</li>
+<li><span class="math inline">\(\mathbf{n}_m\)</span> 表示第 m
+篇文档中，各主题出现的次数。</li>
+</ul></li>
+<li>第 <span class="math inline">\(t\)</span>
+个主题下单词的分布为，同理2.： <span class="math display">\[
+   p(\mathbf{w}_t|z(\mathbf{w}_t)=t;\boldsymbol{\beta})=\frac{B(\mathbf{\mathbf{n}_t+\boldsymbol{\beta}-1})}{B(\boldsymbol{\beta})}
+   \tag{4}
+\]</span>
+<ul>
+<li><span class="math inline">\(\mathbf{n}_t\in R^V\)</span> 代表第
+<span class="math inline">\(t\)</span> 个主题中各单词出现的次数。</li>
+<li>这里 <span class="math inline">\(p\)</span> 是 <span
+class="math inline">\(f: R^V\rightarrow R\)</span>，单词都来源于主题
+<span class="math inline">\(t\)</span> 的情况下，单词<span
+class="math inline">\(i\)</span> 出现次数为 <span
+class="math inline">\(n_i\)</span> 的概率。</li>
+</ul></li>
+<li>全部<code>topic</code>(整个空间)下，所有单词的联合分布概率为： <span
+class="math display">\[
+   p(\mathbf{w}_1,...\mathbf{w}_T|z(\mathbf{w}_1)=1,...,z(\mathbf{w}_T)=T;\boldsymbol{\beta})=\prod_{t=1}^T\frac{B(\mathbf{\mathbf{n}_t+\boldsymbol{\alpha}-1})}{B(\boldsymbol{\alpha})}
+   \tag{5}
+\]</span>
+<ul>
+<li>这里 <span class="math inline">\(p\)</span> 是 <span
+class="math inline">\(f:R^{T\times V}\rightarrow R\)</span>，表示第
+<span class="math inline">\(t\)</span> 个<code>topic</code>中单词<span
+class="math inline">\(v\)</span>出现次数为 <span
+class="math inline">\(n_{tv}\)</span>的概率。</li>
+<li><span class="math inline">\(\mathbf{n}_t\)</span> 代表第 t
+个<code>topic</code>下个单词出现的次数。</li>
+</ul></li>
+<li>整个语料下，所有单词和主题的联合概率分布为： <span
+class="math display">\[
+   p(\mathbf{z}_1,...,\mathbf{z}_M,\mathbf{w}_1,...\mathbf{w}_T;\boldsymbol{\alpha},\boldsymbol{\beta})=\prod_{i=1}^M\frac{B(\mathbf{\mathbf{n}_m+\boldsymbol{\alpha}-1})}{B(\boldsymbol{\alpha})}\prod_{t=1}^T\frac{B(\mathbf{\mathbf{n}_t+\boldsymbol{\alpha}-1})}{B(\boldsymbol{\alpha})}
+   \tag{6}
+\]</span>
+<ul>
+<li>这里 <span class="math inline">\(p\)</span> 是 <span
+class="math inline">\(f:R^{M\times T\times T\times V}\rightarrow
+R\)</span>，表示第 <span class="math inline">\(m\)</span> 个文档中第
+<span class="math inline">\(t\)</span> 个<code>topic</code>出现次数为
+<span class="math inline">\(n_{mt}\)</span>， 且第 <span
+class="math inline">\(t\)</span> 个<code>topic</code>中第 <span
+class="math inline">\(v\)</span> 个单词出现次数为 <span
+class="math inline">\(n_{tv}\)</span> 的概率。</li>
+</ul></li>
+</ol>
+<ul>
+<li><strong>后验分布</strong>：
+<ul>
+<li>已知第 <span class="math inline">\(m\)</span> 篇文档的主题后验分布为
+<span class="math inline">\(\mathbf{z}_m\)</span>，<span
+class="math inline">\(\boldsymbol{\theta}_m\)</span> 的后验分布为：
+<span class="math display">\[
+  \begin{aligned}
+      p(\boldsymbol{\theta}_m|\mathbf{z}_m)&amp;=\frac{p(\mathbf{z}_m|\boldsymbol{\theta}_m)p(\boldsymbol{\theta}_m)}{p(\mathbf{z})}
+\\
+      &amp;=\frac{\prod_{t_m=1}^K\theta_{t_m}^{n_{t_m}+\alpha_{t_m} -
+1}}
+      {B(\boldsymbol{\alpha})}\cdot
+\frac{B(\boldsymbol{\alpha})}{B(\mathbf{n}_m+\boldsymbol{\alpha}-1)} \\
+      &amp;=\frac{\prod_{t_m=1}^K\theta_{t_m}^{n_{t_m}+\alpha_{t_m} -
+1}}
+      {B(\mathbf{\mathbf{n}+\boldsymbol{\alpha}-1})} \\
+  \end{aligned}
+\]</span> 即： <span class="math display">\[
+  \begin{aligned}
+    p(\boldsymbol{\theta}_m|\mathbf{z}_m)&amp;=\frac{\prod_{t_m=1}^K\theta_{t_m}^{n_{t_m}+\alpha_{t_m}
+- 1}}
+    {B(\mathbf{\mathbf{n}+\boldsymbol{\alpha}-1})}\sim
+Dir(\mathbf{n}_m+\boldsymbol{\alpha}-1) \\
+  \end{aligned}
+\]</span>
+<ul>
+<li>可以看到 <span class="math inline">\(\boldsymbol{\theta}_m\)</span>
+的先验分布 <span
+class="math inline">\(p(\boldsymbol{\theta}_m;\boldsymbol{\alpha})\)</span>
+和 后验分布 <span
+class="math inline">\(p(\boldsymbol{\theta}_m|\mathbf{z}_m;\boldsymbol{\alpha})\)</span>都服从
+Dirichlet分布。</li>
+<li><span class="math inline">\(\mathbf{n}_m\)</span>
+为各主题出现的次数。</li>
+</ul></li>
+<li>已知第 <span class="math inline">\(t\)</span>
+个<code>topic</code>主题下的单词后验分布为 <span
+class="math inline">\(\mathbf{w}_t\)</span>, <span
+class="math inline">\(\boldsymbol{\varphi}_t\)</span>的后验分布为：
+<span class="math display">\[
+  p(\boldsymbol{\varphi}_t|\mathbf{w}_t,\
+z(\mathbf{w}_t)=t;\boldsymbol{\beta})\sim
+Dir(\mathbf{n}_t+\boldsymbol{\beta}-1) \tag{8}
+\]</span>
+<ul>
+<li><span class="math inline">\(\mathbf{n}_t\)</span> 为该主题 t
+下各单词出现的次数。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>参数估计</strong>：
+<ul>
+<li><strong>Gibbs采样</strong>：
+<ul>
+<li>令: <span class="math inline">\(\mathbf{Z} =
+(\mathbf{z}_1,...,\mathbf{z}_M)\)</span> 代表整个语料上的主题，<span
+class="math inline">\(\mathbf{W}=(\mathbf{w}_1,...,\mathbf{w}_T)\)</span>
+代表整个语料上的单词，<span class="math inline">\(\mathbf{Z}_{\neg
+(m,n)}\)</span> 表示去掉第 <span class="math inline">\(m\)</span>
+篇文档下第 <span class="math inline">\(n\)</span>
+个单词背后的主题后剩下的主题集，<span
+class="math inline">\(\mathbf{W}_{\neg (m,n)}\)</span> 表示去掉第 <span
+class="math inline">\(m\)</span> 篇文档下第 <span
+class="math inline">\(n\)</span> 个单词后的剩下的语料集。 假设 <span
+class="math inline">\(z_{(m,n)}=t\)</span></li>
+<li>分布 <span class="math inline">\(p(\mathbf{W})\)</span>
+已知，主要是要求 <span
+class="math inline">\(p(\mathbf{Z}|\mathbf{W})\)</span> 的分布： <span
+class="math display">\[
+  \begin{aligned}
+    p(z_{(m,n)}|\mathbf{Z}_{\neg(m,n)},\mathbf{W})
+    &amp; = \frac{p(\mathbf{Z}, \mathbf{W})}{p(\mathbf{Z}_{\neg (m,n)},
+\mathbf{W})} \\
+    &amp;=\frac{p(\mathbf{Z}, \mathbf{W})}
+    {p(w_{(m,n)},\mathbf{Z}_{\neg (m,n)}, \mathbf{W}_{\neg (m,n)})} \\
+    &amp; = \frac{p(\mathbf{Z},
+\mathbf{W})}{p(w_{(m,n)}|\mathbf{Z}_{\neg (m,n)}, \mathbf{W}_{\neg
+(m,n)})
+    \cdot p(\mathbf{Z}_{\neg (m,n)}, \mathbf{W}_{\neg (m,n)})} \\
+    &amp; = \frac{p(\mathbf{Z}, \mathbf{W})}{p(w_{(m,n)}) \cdot
+p(\mathbf{Z}_{\neg (m,n)}, \mathbf{W}_{\neg (m,n)})} \\
+    &amp; \propto \frac{p(\mathbf{Z}, \mathbf{W})}{p(\mathbf{Z}_{\neg
+(m,n)}, \mathbf{W}_{\neg (m,n)})} \\
+    &amp; = p(z_{(m,n)},w_{(m,n)}|\mathbf{Z}_{\neg (m,n)},
+\mathbf{W}_{\neg (m,n)}) \\
+    &amp; = \iint
+p(z_{(m,n)},w_{(m,n)},\boldsymbol{\theta}_m,\boldsymbol{\varphi}_t|\mathbf{Z}_{\neg
+(m,n)}, \mathbf{W}_{\neg (m,n)})
+    d\boldsymbol{\theta}_md\boldsymbol{\varphi}_t \\
+    &amp; = \int p(z_{(m,n)},\boldsymbol{\theta}_m|\mathbf{Z}_{\neg
+(m,n)}, \mathbf{W}_{\neg (m,n)})d\boldsymbol{\theta}_m
+    \cdot \int p(w_{(m,n)},\boldsymbol{\varphi}_t|\mathbf{Z}_{\neg
+(m,n)}, \mathbf{W}_{\neg (m,n)})d\boldsymbol{\varphi}_t \\
+    &amp; = \int
+p(z_{(m,n)}|\boldsymbol{\theta}_m)p(\boldsymbol{\theta}_m|\mathbf{Z}_{\neg
+(m,n)}, \mathbf{W}_{\neg (m,n)})d\boldsymbol{\theta}_m
+    \cdot \int
+p(w_{(m,n)}|\boldsymbol{\varphi}_t)p(\boldsymbol{\varphi}_t|\mathbf{Z}_{\neg
+(m,n)}, \mathbf{W}_{\neg (m,n)})d\boldsymbol{\varphi}_t \\
+    &amp; = \int \theta_{mt}Dir(\mathbf{n}_{m, \neg
+(m,n)}+\boldsymbol{\alpha}-1)d\boldsymbol{\theta}_m
+    \cdot \int \varphi_{tv}Dir(\mathbf{n}_{t, \neg
+(m,n)}+\boldsymbol{\beta}-1)d\boldsymbol{\varphi}_m \\
+    &amp; = E(\theta_{mt})E(\varphi_{tv}) \\
+    &amp; = \hat{\theta}_{mt}\hat{\varphi}_{tv} \\
+    &amp; =
+\frac{n_{mt,\neg(m,n)}+\alpha_{t}}{\sum_{t=1}^Tn_{mt,\neg(m,n)}+\alpha_t
+}\cdot
+\frac{n_{tv,\neg(m,n)}+\beta_v}{\sum_{v=1}^Vn_{tv,\neg(m,n)}+\beta_v }
+  \end{aligned}
+  \tag{9}
+\]</span></li>
+<li>有了公式 <span class="math inline">\((9)\)</span>
+后，参数估计就变得容易许多了：
+<ul>
+<li>令： <span class="math display">\[
+  \begin{aligned}
+    \hat{\boldsymbol{\Theta}}&amp;=(\hat{\boldsymbol{\theta}}_1,...,\hat{\boldsymbol{\theta}}_M)\\
+    &amp;=\begin{bmatrix}
+      \hat{\theta}_{11} &amp; ... &amp; \hat{\theta}_{1T} \\
+      &amp; ... &amp; \\
+      \hat{\theta}_{M1} &amp; ... &amp; \hat{\theta}_{MT}
+    \end{bmatrix}\\
+    \hat{\boldsymbol{\varPhi}}&amp;=(\hat{\boldsymbol{\varphi}}_1,...,\hat{\boldsymbol{\varphi}}_K)\\
+    &amp;=\begin{bmatrix}
+      \hat{\varphi}_{11} &amp; ... &amp; \hat{\varphi}_{1V} \\
+      &amp; ... &amp; \\
+      \hat{\varphi}_{T1} &amp; ... &amp; \hat{\varphi}_{TV}
+    \end{bmatrix}\\
+  \end{aligned}
+\]</span></li>
+<li>LDA Gibbis采样算法：
+<ul>
+<li>输入：文档 <span class="math inline">\(D\)</span>，超参数 <span
+class="math inline">\(\boldsymbol{\alpha}\)</span>, <span
+class="math inline">\(\boldsymbol{\beta}\)</span></li>
+<li>输出: <span
+class="math inline">\(\hat{\boldsymbol{\Theta}}\)</span>, <span
+class="math inline">\(\hat{\boldsymbol{\varPhi}}\)</span></li>
+<li>过程：
+<ul>
+<li>for <span class="math inline">\(w_{(m,n)}\)</span> in <span
+class="math inline">\(D\)</span>:
+<ul>
+<li>randomize <span class="math inline">\(z_{(m,n)}\)</span> for <span
+class="math inline">\(w_{(m,n)}\)</span></li>
+</ul></li>
+<li>Loop:
+<ul>
+<li>for <span class="math inline">\(w_{(m,n)}\)</span> in <span
+class="math inline">\(D\)</span>:
+<ul>
+<li>generate <span class="math inline">\(z_{(m,n)}\)</span> according to
+<span class="math inline">\((9)\)</span></li>
+</ul></li>
+<li>until convergence</li>
+</ul></li>
+<li>Inference:
+<ul>
+<li><span
+class="math inline">\(\hat{\theta}_{mt}=\frac{n_{mt}+\alpha_{t}}{\sum_{t=1}^Tn_{mt}+\alpha_t}\)</span></li>
+<li><span
+class="math inline">\(\hat{\beta}_{tv}=\frac{n_{tv}+\beta_{v}}{\sum_{t=1}^Tn_{tv}+\beta_v}\)</span></li>
+</ul></li>
+</ul></li>
+<li>需要注意的是 <span class="math inline">\(n_{mt},n_{tv}\)</span>
+随着每轮的采样过程是不断变化的。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>工程实践：
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html">sklearn
+LDA</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.google.com/archive/p/plda/">Google
+pLDA</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.clustering.LDA.html#pyspark.ml.clustering.LDA">Spark
+LDA</a></li>
+</ul></li>
+<li>拓展阅读：
+<ul>
+<li>https://www.jiqizhixin.com/graph/technologies/e49b21d8-935a-4da6-910d-504c79b9785f</li>
+<li><a
+target="_blank" rel="noopener" href="https://papers.nips.cc/paper/2010/file/71f6278d140af599e06ad9bf1ba03cb0-Paper.pdf">Online
+Learning for Latent Dirichlet Allocation</a></li>
+</ul></li>
+<li>Ref:
+<ol type="1">
+<li>http://www.huaxiaozhuan.com/统计学习/chapters/18_topic_model.html</li>
+<li>《LDA数学八卦》by 靳志辉</li>
+<li><a target="_blank" rel="noopener" href="http://www.arbylon.net/publications/text-est.pdf">Parameter
+estimation for text analysis</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf">Latent
+Dirichlet Allocation</a></li>
+</ol></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/Statistical-Learning/" rel="tag"># Statistical Learning</a>
+          
+            <a href="/tags/Topic-Model/" rel="tag"># Topic Model</a>
+          
+            <a href="/tags/Infomation-Retrieval/" rel="tag"># Infomation Retrieval</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/14/Engineering/" rel="next" title="Engineering">
+                <i class="fa fa-chevron-left"></i> Engineering
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/09/25/Parsing/" rel="prev" title="Parsing">
+                Parsing <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tf-idf"><span class="nav-number">1.</span> <span class="nav-text">Tf-Idf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latent-semantic-analysislsa"><span class="nav-number">2.</span> <span class="nav-text">Latent Semantic Analysis(LSA)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#probabilistic-latent-semantic-analysisplsa"><span class="nav-number">3.</span> <span class="nav-text">Probabilistic Latent
+Semantic Analysis(pLSA)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latent-dirichlet-allocation"><span class="nav-number">4.</span> <span class="nav-text">Latent Dirichlet Allocation</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

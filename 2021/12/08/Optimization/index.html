@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Numerical Optimization," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="优化算法在深度学习中也起着非常重要的地位，各种优化算法对应的特点。在训练各个阶段的收敛速度，场景的适用性(例如是Dense还是Sparse场景)等，都应该比较熟练的掌握。 无约束优化    优化目标： \[   \underset{\mathbf{w}}{\operatorname{min}}\ L(\mathbf{w};\mathbf{x}_{1:N}) \] 给定样本 \(\">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Optimization">
+<meta property="og:url" content="http://example.com/2021/12/08/Optimization/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="优化算法在深度学习中也起着非常重要的地位，各种优化算法对应的特点。在训练各个阶段的收敛速度，场景的适用性(例如是Dense还是Sparse场景)等，都应该比较熟练的掌握。 无约束优化    优化目标： \[   \underset{\mathbf{w}}{\operatorname{min}}\ L(\mathbf{w};\mathbf{x}_{1:N}) \] 给定样本 \(\">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-12-08T12:23:08.000Z">
+<meta property="article:modified_time" content="2021-12-08T12:23:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Numerical Optimization">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/12/08/Optimization/"/>
+
+
+
+
+
+  <title>Optimization | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/08/Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Optimization</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-08T20:23:08+08:00">
+                2021-12-08
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-12-08T20:23:08+08:00">
+                2021-12-08
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  
+优化算法在深度学习中也起着非常重要的地位，各种优化算法对应的特点。在训练各个阶段的收敛速度，场景的适用性(例如是Dense还是Sparse场景)等，都应该比较熟练的掌握。</p>
+<h1 id="无约束优化">无约束优化</h1>
+<p>   优化目标： <span class="math display">\[
+  \underset{\mathbf{w}}{\operatorname{min}}\
+L(\mathbf{w};\mathbf{x}_{1:N})
+\]</span> 给定样本 <span class="math inline">\(\mathbf{x}_{1:N}\)</span>
+下，优化函数参数 <span
+class="math inline">\(\mathbf{w}\)</span>，L是关于变量<span
+class="math inline">\(\mathbf{w}\)</span>的函数。 <span id="more"></span> ##
+梯度下降法(Gradient Descent)</p>
+<p>  
+梯度是个矢量，为函数值增长最快的方向(可通过方向导数证明)。反方向则为函数值下降最快的方向。<br />
+   随机梯度下降法(SGD)由样本数量的不同有着几种分类。符号：<span
+class="math inline">\(t\)</span> 指迭代到第<span
+class="math inline">\(t\)</span>步；<span
+class="math inline">\(\mathbf{w}\)</span>为待学习参数；<span
+class="math inline">\(b\)</span>为 <code>batch_size</code>；<span
+class="math inline">\(\mathbf{z} := \{\mathbf{x},
+\mathbf{y}\}\)</span>为样本，则<span
+class="math inline">\(\mathbf{z}_{1:N}\)</span>代表全体样本，<span
+class="math inline">\(\mathbf{z}_t\)</span>代表第<span
+class="math inline">\(t\)</span>个样本，<span
+class="math inline">\(\mathbf{z}_{t:t+b}\)</span>代表第<span
+class="math inline">\(t\)</span>批次的样本。</p>
+<ul>
+<li><p>Batch Gradient Descent(BGD) <span class="math display">\[
+\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta
+\nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_{1:N})
+\]</span></p></li>
+<li><p>Online Gradient Descent(OGD) <span class="math display">\[
+\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta
+\nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_t)
+\]</span></p></li>
+<li><p>Mini-batch Gradient Descent <span class="math display">\[
+\mathbf{w}_{t+1} \leftarrow \mathbf{w}_{t} - \eta
+\nabla_{\mathbf{w}_{t}}L(\mathbf{w};\mathbf{z}_{t:t+b})
+\]</span></p></li>
+<li><p>问答：</p>
+<ul>
+<li>问：为什么样本数量不同都能对<span
+class="math inline">\(\mathbf{w}\)</span>求梯度呢，区别是啥？</li>
+<li>答：因为是求<span class="math inline">\(L\)</span>关于<span
+class="math inline">\(\mathbf{w}\)</span>的梯度。<span
+class="math inline">\(loss\)</span>是个标量，最后会在<code>batch_size</code>维度上做<code>reduce_sum/mean</code>。所以不同的样本量都同样可以对<span
+class="math inline">\(\mathbf{w}\)</span>求梯度。无非最后的极小值点代表的是全体样本，还是单个样本，还是单个批次的样本的极小值点罢了。</li>
+</ul></li>
+<li><p>Ref:</p>
+<ol type="1">
+<li>https://en.wikipedia.org/wiki/Gradient_descent</li>
+<li>https://zhuanlan.zhihu.com/p/75198821</li>
+</ol></li>
+</ul>
+<h2 id="牛顿法">牛顿法</h2>
+<ul>
+<li><p>基础知识：</p>
+<ul>
+<li>多元函数的二阶泰勒展开：<br />
+<span class="math inline">\(L(\mathbf{w})\)</span> 在某一点 <span
+class="math inline">\(\mathbf{w}_k\)</span> 的二阶泰勒展开为： <span
+class="math display">\[
+  L(\mathbf{w}) = L(\mathbf{w}_k) +
+\mathbf{g}_k^T(\mathbf{w}-\mathbf{w}_k)+\frac{1}{2}(\mathbf{w}-\mathbf{w}_k)^TH(\mathbb{w}_k)(\mathbf{w}-\mathbf{w}_k)
+\tag{0}
+\]</span> <span class="math display">\[
+  H(\mathbf{w}_k) = \begin{bmatrix}
+    \frac{\partial^2L}{\partial w_iw_j}
+  \end{bmatrix},\ \mathbf{g}_k = \nabla_{\mathbf{w}_k}L \tag{1}
+\]</span>
+<ul>
+<li><span class="math inline">\(H(\mathbf{w}_k)\)</span>
+为Hessian矩阵，是一个实对称矩阵。</li>
+</ul></li>
+<li>Hessian 矩阵的性质：<br />
+如果令 <span class="math inline">\(\mathbf{w} - \mathbf{w}_k =
+\epsilon\mathbf{v}\)</span>，即在 <span
+class="math inline">\(\mathbf{w}_k\)</span>
+的基础上向某一方向移动一小步长。有： <span class="math display">\[
+  L(\mathbf{w}_k+\epsilon\mathbf{v}) = L(\mathbf{w}_k) +
+\epsilon\mathbf{g}_k^T\mathbf{v}+\frac{\epsilon^2}{2}\mathbf{v}^TH(\mathbb{w}_k)\mathbf{v}
+\]</span> 当 <span class="math inline">\(\mathbf{w}_k\)</span>
+属于极值点的时候，即 <span class="math inline">\(\nabla_{\mathbf{w}_k}L
+= \mathbf{0}\)</span>时，有： <span class="math display">\[
+  L(\mathbf{w}_k+\epsilon\mathbf{v}) = L(\mathbf{w}_k)
++\frac{\epsilon^2}{2}\mathbf{v}^TH(\mathbb{w}_k)\mathbf{v}
+\]</span>
+<ul>
+<li>若 <span class="math inline">\(H(\mathbb{w}_k)\)</span>
+是正定矩阵，易得 <span
+class="math inline">\(L(\mathbf{w}_k+\epsilon\mathbf{v})&gt;L(\mathbf{w}_k)\)</span>，即<span
+class="math inline">\(\mathbf{w}_k\)</span>是极小值点。</li>
+<li>若 <span class="math inline">\(H(\mathbb{w}_k)\)</span>
+是负定矩阵，易得 <span
+class="math inline">\(L(\mathbf{w}_k+\epsilon\mathbf{v})&lt;L(\mathbf{w}_k)\)</span>，即<span
+class="math inline">\(\mathbf{w}_k\)</span>是极大值点。</li>
+<li>若 <span class="math inline">\(H(\mathbb{w}_k)\)</span>
+的特征值有正有负，则<span
+class="math inline">\(\mathbf{w}_k\)</span>是鞍点。</li>
+</ul></li>
+</ul></li>
+<li><p>算法：<br />
+   为了简单起见，假设 <span class="math inline">\(\mathbf{w}\)</span>
+是个向量。假设迭代到第 <span class="math inline">\(k\)</span> 步的 <span
+class="math inline">\(\mathbf{w}\)</span> 为 <span
+class="math inline">\(\mathbf{w}_k\)</span>，对 <span
+class="math inline">\(L\)</span> 在 <span
+class="math inline">\(\mathbf{w}_k\)</span> 附近做二阶泰勒展开(公式
+<span class="math inline">\((0)\)</span>)。 求 <span
+class="math inline">\(\nabla_{\mathbf{w}}L= 0\)</span>，把其解作为第
+<span class="math inline">\(k+1\)</span> 轮的迭代值即满足 <span
+class="math inline">\(\nabla_{\mathbf{w}_{k+1}}L = \mathbf{0}\)</span>。
+<span class="math display">\[
+\nabla_{\mathbf{w}_{k+1}}L =
+\nabla_{\mathbf{w}_{k}}L+H(\mathbf{w}_k)(\mathbf{w}_{k+1} - w_k) = 0
+\tag{2}
+\]</span> <span class="math display">\[
+\mathbf{w}_{k+1} = \mathbf{w}_k - H^{-1}(\mathbf{w}_k)\mathbf{g}_k
+\tag{3}
+\]</span></p></li>
+<li><p>对比牛顿法和梯度下降法，可以看到，不同于梯度下降法里的负梯度方向，牛顿法里面的迭代方向为
+<span
+class="math inline">\(H^{-1}(\mathbf{w}_k)\)</span>。它是由原函数的二阶泰勒近似的极小值点的必要条件
+公式<span class="math inline">\((2)\)</span> 求出来的。</p></li>
+<li><p>把 <span class="math inline">\((3)\)</span> 式带入 <span
+class="math inline">\((0)\)</span> 式中得: <span class="math display">\[
+  \begin{aligned}
+    L(\mathbf{w}_{k+1}) &amp; =
+L(\mathbf{w}_k)-\mathbf{g}_k^TH^{-1}(\mathbf{w}_k)\mathbf{g}_k
+  + \frac{1}{2}\left(-
+H^{-1}(\mathbf{w}_k)\mathbf{g}_k\right)^TH^{-1}(\mathbf{w}_k)\left(-
+H^{-1}(\mathbf{w}_k)\mathbf{g}_k\right)\\
+  &amp; =
+L(\mathbf{w}_k)-\frac{1}{2}\mathbf{g}_k^TH^{-1}(\mathbf{w}_k)\mathbf{g}_k
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>如果 <span class="math inline">\(H^{-1}(\mathbf{w}_k)\)</span>
+是正定阵，则有 <span class="math inline">\(L(\mathbf{w}_{k+1}) &lt;
+L(\mathbf{w}_k)\)</span></li>
+</ul></li>
+<li><p>关于 <span class="math inline">\(H^{-1}(\mathbf{w}_k)\)</span>
+的计算比较复杂，于是衍生出一系列的近似算法。见下面的拟牛顿法。</p></li>
+</ul>
+<h2 id="拟牛顿法">拟牛顿法</h2>
+<p>   在将 <span class="math inline">\(L(\mathbf{w})\)</span>
+做二阶泰勒展开近似后求导，即 <span class="math inline">\((2)\)</span>
+式，我们可以得到两次迭代步骤间<strong>梯度的变化</strong>，<strong>Hessian矩阵</strong>和<strong>值的变化</strong>三者之间的关系:
+<span class="math display">\[
+  \mathbf{g}_{k+1} - \mathbf{g}_k= H(\mathbf{w}_k)(\mathbf{w}_{k+1} -
+w_k)
+\]</span></p>
+<p>我们令: <span class="math display">\[
+  \begin{aligned}
+    \mathbf{y}_k &amp; = \mathbf{g}_{k+1} - \mathbf{g}_k \\
+    \boldsymbol{\delta}_k &amp; = \mathbf{w}_{k+1} - w_k
+  \end{aligned}
+\]</span> 则有: <span class="math display">\[
+  \mathbf{y}_k = H(\mathbf{w}_k)\boldsymbol{\delta}_k \tag{4}
+\]</span> <span class="math display">\[
+  H^{-1}(\mathbf{w}_k)\mathbf{y}_k =\boldsymbol{\delta}_k \tag{5}
+\]</span> <span class="math inline">\((4)\)</span> 或 <span
+class="math inline">\((5)\)</span>
+被称作拟牛顿条件，拟牛顿法的核心思想是寻找满足<strong>拟牛顿条件</strong>条件的近似矩阵
+<span class="math inline">\(B_k\approx H(\mathbf{w}_k)\)</span> 或 <span
+class="math inline">\(G_k\approx H^{-1}(\mathbf{w}_k)\)</span>。即：
+<span class="math display">\[
+   G_k\mathbf{y}_k = \boldsymbol{\delta}_k \tag{6}
+\]</span> 再令<span class="math inline">\(G_k\)</span> 的迭代为: <span
+class="math display">\[
+  G_{k+1} = G_k+\Delta G_k \tag{7}
+\]</span> 为了保证迭代的进行，<span
+class="math inline">\(G_{k+1}\)</span> 也需要满足第 <span
+class="math inline">\(k\)</span> 步的拟牛顿条件，即: <span
+class="math display">\[
+  G_{k+1}\mathbf{y}_k =\boldsymbol{\delta}_k \tag{8}
+\]</span></p>
+<ul>
+<li><strong>DFP算法</strong><br />
+算法对 <span class="math inline">\(G_k\)</span> 和 <span
+class="math inline">\(G_{k+1}\)</span> 的迭代定义如下: <span
+class="math display">\[
+  G_{k+1} = G_k + P_k + Q_k
+\]</span> 则有 <span class="math display">\[
+  G_{k+1}\mathbf{y}_k = G_k\mathbf{y}_k + P_k\mathbf{y}_k +
+Q_k\mathbf{y}_k
+\]</span> 若要满足 <span class="math inline">\((8)\)</span>， 不妨有：
+<span class="math display">\[
+  P_k\mathbf{y}_k = \boldsymbol{\delta}_k\\
+  Q_k\boldsymbol{\delta}_k = -G_k\mathbf{y}_k \tag{9}
+\]</span> 通过 <span class="math inline">\((9)\)</span> 可以找到 <span
+class="math inline">\(P_k\)</span> 和 <span
+class="math inline">\(Q_k\)</span> 为： <span class="math display">\[
+  \begin{aligned}
+    P_k &amp; =
+\frac{\boldsymbol{\delta}_k\boldsymbol{\delta}_k^T}{\boldsymbol{\delta}^T\mathbf{y}_k}\\
+    Q_k &amp; =
+\frac{-G_k\mathbf{y}_k\mathbf{y}_k^TG_k}{\mathbf{y}_k^TG_k\mathbf{y}_k}
+  \end{aligned}
+\]</span> 则有： <span class="math display">\[
+  G_{k+1} = G_k +
+\frac{\boldsymbol{\delta}_k\boldsymbol{\delta}_k^T}{\boldsymbol{\delta}^T\mathbf{y}_k}
+- \frac{G_k\mathbf{y}_k\mathbf{y}_k^TG_k}{\mathbf{y}_k^TG_k\mathbf{y}_k}
+\tag{10}
+\]</span>
+<ul>
+<li>算法过程:
+<ul>
+<li>输入: <span class="math inline">\(L(\mathbf{w})\)</span>，阈值 <span
+class="math inline">\(\epsilon\)</span></li>
+<li>输出：<span class="math inline">\(\mathbf{w}^* =
+\underset{\mathbf{w}}{\operatorname{argmin}}\
+L(\mathbf{w})\)</span></li>
+<li>初始化：随机选择初始点 <span
+class="math inline">\(\mathbf{w}_0\)</span>, 赋值 <span
+class="math inline">\(k = 0\)</span>, 选择一个正定矩阵 <span
+class="math inline">\(G_0\)</span></li>
+<li>迭代：
+<ul>
+<li>计算 <span class="math inline">\(\mathbf{g}_k\)</span>，如果 <span
+class="math inline">\(|\mathbf{g}_k|&lt;\epsilon\)</span>，停止迭代。</li>
+<li>一维搜索步长 <span class="math inline">\(\lambda_k: \lambda_k =
+\underset{\lambda_k}{\text{min}}\ L(\mathbf{w}-\lambda_k
+G_k\mathbf{g}_k)\)</span></li>
+<li>计算： <span class="math inline">\(\mathbf{w}_{k+1} = \mathbf{w}_k -
+\lambda_k G_k\mathbf{g}_k,\quad \mathbf{g}_{k+1} =
+\nabla_{\mathbf{w}_{k+1}}L\)</span>。
+<ul>
+<li>如果：<span
+class="math inline">\(|\mathbf{g}_{k+1}|&lt;\epsilon\)</span>，停止迭代。</li>
+<li>否则：
+<ul>
+<li>计算： <span class="math inline">\(\Delta\mathbf{g}_k,\quad
+\Delta\mathbf{w}_k\)</span></li>
+<li>计算：<span class="math inline">\(P_k, Q_k, G_{k+1}\)</span></li>
+<li>令: <span class="math inline">\(k = k+1\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>BFGS算法</strong><br />
+   如果我们按照条件 <span class="math inline">\((4)\)</span>
+去做近似，即: <span class="math display">\[
+B_k\boldsymbol{\delta}_k = \mathbf{y}_k
+\]</span> 做同样类似的假设，有： <span class="math display">\[
+B_{k+1}\boldsymbol{\delta}_k = B_{k}\boldsymbol{\delta}_k +
+P_{k}\boldsymbol{\delta}_k + Q_{k}\boldsymbol{\delta}_k\\
+P_k\boldsymbol{\delta}_k = \mathbf{y}_k\\
+Q_k\mathbf{y}_k = -G_k\boldsymbol{\delta}_k
+\]</span> 类似可以找到 <span class="math inline">\(P_k, Q_k\)</span>
+的公式为： <span class="math display">\[
+P_k = \\
+Q_k =
+\]</span> 得到 <span class="math inline">\(B_k\)</span> 的迭代公式为：
+<span class="math display">\[
+B_{k+1} =
+\]</span> 这里从 <span class="math inline">\(B_k\)</span>
+的迭代公式出发，由<code>Sherman-Morrison公式</code>: <span
+class="math inline">\((A+\mathbf{u}\mathbf{v}^T)^{-1}=?\)</span>
+可以得到 <span class="math inline">\(G_k\)</span> 的迭代公式： <span
+class="math display">\[
+G_{k+1} = B_{k+1}^{-1} =
+\]</span></li>
+</ul>
+<h2 id="梯度下降法进阶">梯度下降法进阶</h2>
+<p>   基础的梯度下降法每次都依赖于当前步骤<span
+class="math inline">\(\mathbf{w}_t\)</span>的梯度，因此非常不稳定。随着自动求导机制的出现，涌现出了大批的优化算法，目前这些算法大部分都集成在了主流的深度学习框架中。</p>
+<ul>
+<li><h3 id="momentum">Momentum</h3>
+<span class="math display">\[
+  \begin{aligned}
+    &amp;\mathbf{v}_t \leftarrow \gamma \mathbf{v}_{t-1} + \eta
+\nabla_{\mathbf{w}_{t-1}}L\\\\
+    &amp;\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t - \mathbf{v}_t
+  \end{aligned}
+\]</span>
+<ul>
+<li>直观来看的话，如果第<span
+class="math inline">\(t\)</span>次和第<span
+class="math inline">\(t-1\)</span>次的梯度方向相同，那么第<span
+class="math inline">\(t\)</span>的更新就会加快。如果方向相反，那么就会减速；如果两次梯度方向存在一个夹角，那么更新的梯度方向就处于这个夹角内；动量法一定程度上可以减少振荡。</li>
+</ul></li>
+<li><h3 id="adagrad">Adagrad</h3>
+<span class="math display">\[
+  \begin{aligned}
+  &amp;\mathbf{g}_t = \nabla_{\mathbf{w}_t}L\\\\
+  &amp;\mathbf{a}_t \leftarrow \mathbf{a}_{t-1}+\mathbf{g}_t\odot
+\mathbf{g}_t\\\\
+  &amp;\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t -
+\eta*\frac{1}{\sqrt{\mathbf{a}_t+\epsilon}}\odot\mathbf{g}_t
+  \end{aligned}
+\]</span>
+<ul>
+<li>注意这里的乘积符号是<code>element-wise</code>的，即<a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard
+Product</a>，相当于针对不同的参数学习率是不同的。一般的博客直接写成<span
+class="math inline">\(\mathbf{g}_t^2\)</span>。</li>
+<li><span
+class="math inline">\(\mathbf{a}_t\)</span>是一个单调递增的状态，训练后期学习率趋向于0。</li>
+</ul></li>
+<li><h3 id="adadelta">Adadelta</h3>
+<ul>
+<li>令<span class="math inline">\(\mathbf{g}_t^2 =
+\mathbf{g}_t\odot\mathbf{g}_t\)</span> <span class="math display">\[
+\begin{aligned}
+E[\mathbf{g}^2]_t &amp;\leftarrow \gamma E[\mathbf{g}^2]_t +
+(1-\gamma)\mathbf{g}_t^2\\\\
+\Delta \mathbf{w}_t
+&amp;=-\frac{\eta}{\sqrt{E[\mathbf{g}^2]_t+\epsilon}}\mathbf{g}_t\\\\
+&amp;=-\frac{\eta}{RMS[\mathbf{g}]_t}\mathbf{g}_t\\\\
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t +\Delta \mathbf{w}_t
+\end{aligned}
+\]</span></li>
+<li>这里的<span
+class="math inline">\(E[\mathbf{g}^2]_t\)</span>看着很唬人，其实初始化(<span
+class="math inline">\(t=0\)</span>时)就是一个零张量。</li>
+<li>如果把<span
+class="math inline">\(\eta\)</span>也加入到迭代当中来，那么有： <span
+class="math display">\[
+\begin{aligned}
+E[\Delta {\mathbf{w}}^2]_t &amp;\leftarrow \gamma E[\Delta
+{\mathbf{w}}^2]_t + (1-\gamma)\Delta {\mathbf{w}}_t^2\\\\
+RMS[\Delta {\mathbf{w}}]_t &amp;= \sqrt{E[\Delta
+{\mathbf{w}}^2]_t+\epsilon}\\\\
+\Delta \mathbf{w}_t &amp;=-\frac{RMS[\Delta
+{\mathbf{w}}]_t}{RMS[\mathbf{g}]_t}\mathbf{g}_t\\\\
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t +\Delta \mathbf{w}_t
+\end{aligned}
+\]</span></li>
+<li>Adadelta迭代甚至不需要设置人工的超参数。</li>
+</ul></li>
+<li><h3 id="rmsprop">RMSprop</h3>
+<ul>
+<li>RMS即<code>Root Mean Square</code>的缩写，RMSprop是Adadelta的特例。
+<span class="math display">\[
+\begin{aligned}
+E[\mathbf{g}^2]_t &amp;\leftarrow 0.9E[\mathbf{g}^2]_t +
+0.1\mathbf{g}_t^2\\\\
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t
+-\frac{\eta}{RMS[\mathbf{g}]_t}\mathbf{g}_t
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li><h3 id="adam">Adam</h3>
+<span class="math display">\[
+\begin{aligned}
+&amp;\mathbf{g}_t = \nabla_{\mathbf{w}_t}L\\\\
+&amp;\mathbf{m}_t \leftarrow \beta_1\mathbf{m}_{t-1} +
+(1-\beta_1)\mathbf{g}_t\\\\
+&amp;\mathbf{v}_t \leftarrow \beta_2\mathbf{v}_{t-1} +
+(1-\beta_2)\mathbf{g}_t\odot \mathbf{g}_t\\\\
+&amp;\hat{\mathbf{m}_t} \leftarrow \frac{\mathbf{m}_t}{1-\beta_1^t}\\\\
+&amp;\hat{\mathbf{v}_t} \leftarrow \frac{\mathbf{v}_t}{1-\beta_2^t}\\\\
+&amp;\mathbf{w}_{t+1} \leftarrow
+\eta·\mathbf{\hat{m}_t}\odot\frac{1}{\sqrt{\mathbf{\hat{v}}_t}+\epsilon}
+\end{aligned}
+\]</span>
+<ul>
+<li>里面的加减乘除变换都是<code>element-wise</code>的。</li>
+<li>其中<span
+class="math inline">\(\mathbf{m}_t\)</span>是梯度的一阶移动平均值，<span
+class="math inline">\(\mathbf{v}_t\)</span>是梯度的二阶移动平均值。</li>
+</ul></li>
+<li>Ref:
+<ol type="1">
+<li>Summary: https://arxiv.org/pdf/1609.04747.pdf</li>
+<li>Adagrad: https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf</li>
+<li>AdaDelta: https://arxiv.org/pdf/1212.5701.pdf</li>
+<li>Adam: https://arxiv.org/pdf/1412.6980.pdf</li>
+</ol></li>
+</ul>
+<h2
+id="ftrl漫谈超大规模在线学习稀疏性解决方案">FTRL漫谈(超大规模在线学习稀疏性解决方案)</h2>
+<p>  
+稀疏性是模型追求的一个目标，它在<strong>特征筛选</strong>，<strong>预估速度</strong>和<strong>防止过拟合</strong>上都有优势。</p>
+<ul>
+<li><h3 id="l1正则">L1正则</h3>
+<ul>
+<li>最直观的方法就是引入L1正则化。 <span class="math display">\[
+J(y, \mathbf{w}, \mathbf{x}) = L(y, \mathbf{w}, \mathbf{x}) +
+\lambda||\mathbf{w}||_1
+\]</span></li>
+<li>引入L1正则化的SGD： <span class="math display">\[
+\mathbf{w}_t \leftarrow \mathbf{w}_{t-1} -
+\eta\nabla_{\mathbf{w}_{t-1}}L - \eta\lambda sgn(\mathbf{w}_{t-1})
+\]</span></li>
+<li>设想其中一个分量<span
+class="math inline">\(w_i\)</span>，针对L1部分的<a
+target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Subderivative">次梯度</a>，它在自己的坐标轴上向原点收敛。
+那么针对空间中的一个点，其(次)梯度方向一定指向原点，表现为各分量分别向原点靠近<span
+class="math inline">\(\eta\lambda\)</span>个步长。其在迭代时，其更容易到达一个坐标轴平面，即某一个分量为0。</li>
+<li>为什么L1正则在SGD而非BGD情况下并不容易获得稀疏性？</li>
+</ul></li>
+<li><h3 id="简单截断法">简单截断法</h3>
+<ul>
+<li>以<span class="math inline">\(k\)</span>为窗口，当<span
+class="math inline">\(t/k\)</span>不时整数采用标准的SGD进行迭代，当<span
+class="math inline">\(t/k\)</span>为整数时，采取如下方式进行更新： <span
+class="math display">\[
+\begin{aligned}
+  &amp;\mathbf{w}_t \leftarrow
+T_0(\mathbf{w}_{t-1}-\eta_t\nabla_{\mathbf{w}_{t-1}}L; \theta)\\\\
+  &amp;T(x_i;\theta) = \begin{cases}
+    0, \ if\ |x_i|\leq\theta\\\\
+    v_i,\ otherwise
+  \end{cases}
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li><h3 id="梯度截断法tg">梯度截断法(TG)</h3>
+<span class="math display">\[
+  \begin{aligned}
+  &amp;\mathbf{w}_t \leftarrow
+T_1(\mathbf{w}_{t-1}-\eta_t\nabla_{\mathbf{w}_{t-1}}L,\ \eta_t\lambda,\
+\theta)\\\\
+  &amp;T_1(x, \alpha, \theta)=\begin{cases}
+    max(0, x-\alpha),\ if\ x\in[0,\ \theta]\\\\
+    min(0, x+\alpha),\ if\ x\in[-\theta,\  0]\\\\
+    x,\ otherwise
+  \end{cases}
+  \end{aligned}
+\]</span>
+<ul>
+<li>当<span
+class="math inline">\(\alpha\geq\theta\)</span>时，退化成简单截断法。</li>
+<li>当<span class="math inline">\(w=0\)</span>时，退化成SGD。</li>
+<li><span class="math inline">\(T_1公式改写一下\)</span>： <span
+class="math display">\[
+T_1(x, \alpha, \theta)=\begin{cases}
+  0,\ if\ |v|\leq\alpha\\\\
+  x-\alpha \cdot sgn(x)\ if\ \alpha\leq|v|\leq\theta\\\\
+  x,\ otherwise
+\end{cases}
+\]</span></li>
+<li>当<span class="math inline">\(\alpha,\
+w\rightarrow+\infty\)</span>时，退化成L1正则法。注意此时是更新梯度后(第t步)再做(L1)截断(求L1梯度)，而L1正则法是在更新梯度时(第t-1步)做L1截断(求L1梯度)。</li>
+</ul></li>
+<li><h3 id="fobos算法">FOBOS算法</h3>
+<ul>
+<li>在FOBOS 中，将权重的更新分为两个步骤： <span class="math display">\[
+\begin{aligned}
+  &amp;\mathbf{w}_{t+0.5}=\mathbf{w}_{t}-\eta_t\nabla_{\mathbf{w}_{t}}L\\\\
+  &amp;\mathbf{w}_{t+1}=argmin\
+\frac{1}{2}||\mathbf{w-w_{t+0.5}}||_2+\eta_t\Psi(w)
+\end{aligned}
+\]</span></li>
+<li>第一项<span
+class="math inline">\(\frac{1}{2}||\mathbf{w-w_{t+0.5}}||_2\)</span>保证权重更新在负梯度下降的附近，后一项<span
+class="math inline">\(\Psi(w)\)</span>是正则函数项。</li>
+<li>合并后即为： <span class="math display">\[
+\mathbf{w}_{t+1}=argmin\
+\frac{1}{2}||\mathbf{w}-\mathbf{w}_{t}+\eta_t\nabla_{\mathbf{w}_{t}}L||_2+\eta_t\Psi(w)
+\]</span></li>
+<li>当<span
+class="math inline">\(\Psi(\mathbf{w})=|\mathbf{w}|\)</span>时，为L1-FOBOS。省略推导公式，直接给出权重更新公式。
+<span class="math display">\[
+\begin{aligned}
+\mathbf{g}_t &amp;= \nabla_{\mathbf{w}_t}L\\\\
+for\ &amp;w_i\ in\ \mathbf{w}:\\\\
+&amp;w_i^{t+1}\leftarrow sgn(w_i^t-\eta g_i^t)max(0, |w_i^t-\eta
+g_i^t|-\eta_t\lambda)\\\\
+\end{aligned}
+\]</span></li>
+<li>上诉更新公式也可以写为： <span class="math display">\[
+w_i^{(t+1)}\leftarrow\begin{cases}
+0,\ if\ |w_i^{(t)}-\eta g_i^{(t)}|\leq\eta^{(t)}\lambda\\\\
+w_i^{(t)}-\eta g_i^{(t)}-\eta\lambda sgn(w_i^{(t)}-\eta^{(t)}
+g_i^{(t)}),\ otherwise\\\\
+\end{cases}
+\]</span></li>
+<li>可以看到这个几乎就是<strong>简单截断法</strong>和<strong>L1正则化</strong>法的结合。</li>
+</ul></li>
+<li><h3 id="rda算法">RDA算法</h3>
+<ul>
+<li>RDA算法的权重更新可表示为： <span class="math display">\[
+  \mathbf{w}_{t+1}=argmin\ \{\frac{1}{t}\sum_{\tau=1}^t\langle
+\mathbf{g}_{\tau},\mathbf{w} \rangle
+  + \Psi(\mathbf{w})+\frac{\beta_{t}}{t}h(\mathbf{w})\}
+\]</span>
+<ul>
+<li>其中<span class="math inline">\(\langle
+\mathbf{a},\mathbf{b}\rangle\)</span>表示<span
+class="math inline">\(\mathbf{a},\mathbf{b}\)</span>的点乘， <span
+class="math inline">\(\Psi(\mathbf{w})\)</span>是正则化项，<span
+class="math inline">\(h(\mathbf{w})\)</span>是辅助的严格凸函数。<span
+class="math inline">\(\beta_t\)</span>是非负非减函数，用来表征该算法的收敛特性。</li>
+</ul></li>
+<li>令<span
+class="math inline">\(\beta_t=\gamma\sqrt{t}，\Psi(\mathbf{w})=|\mathbf{w}|，h(\mathbf{w)=||w||_2}\)</span>
+则$L1正则化下的<code>element-wise</code>的更新可以表示为。 <span
+class="math display">\[
+  w_i^{(t+1)}=argmin\  \{\overline{g_i}^{(t)}w_i +
+\lambda|w_i|+\frac{\gamma}{\sqrt{t}}w_i^2\}
+\]</span></li>
+<li>经公式推导后可得： <span class="math display">\[
+  w_i^{(t+1)}=\begin{cases}
+    0,\ if\ |g_i^{(t)}|\leq\lambda\\\\
+    -\frac{\sqrt{t}}{\gamma}(\overline{g_i}^{(t)}-\lambda
+sgn(\overline{g_i}^{(t)})),\ otherwise
+  \end{cases}
+\]</span>
+<ul>
+<li>直观上看，如果某个权重参数<span
+class="math inline">\(w_i\)</span>的累计梯度均值的绝对值<span
+class="math inline">\(|g_i^{(t)}|\)</span>小于等于一个给定的阈值<span
+class="math inline">\(\lambda\)</span>，那么就置0。</li>
+<li>还有一点就是RDA算法置零的判断条件是根据<strong>累计梯度均值</strong>而非<strong>单次梯度</strong>来判断的，一定程度上避免了异常截断的问题。</li>
+<li>问题：
+<ul>
+<li>为什么RDA算法里要把第一项改为累计梯度和带求参数的点乘(<span
+class="math inline">\(\langle \mathbf{g}_{\tau},\mathbf{w}
+\rangle\)</span>)？</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><h3 id="ftrl算法">FTRL算法</h3>
+<ul>
+<li>FTRL算法综合考虑了FOBOS算法和RDA算法的优点，求解方程如下： <span
+class="math display">\[
+\mathbf{w}^{(t+1)}=argmin\
+\{\overline{g}^{(t)}\mathbf{w}+\lambda_1|\mathbf{w}|+\lambda_2\frac{1}{2}||\mathbf{w}||_2+\frac{1}{2}\sum_{s=1}^t\sigma^{(s)}||\mathbf{w}-\mathbf{w}^{(s)}||_2\}
+\]</span></li>
+<li>省略推导过程后，参数更新公式如下：
+<ul>
+<li>输入：<span
+class="math inline">\(\alpha,\beta,\lambda_1,\lambda_2\)</span></li>
+<li>初始化<span class="math inline">\(\mathbf{w}\in R^n, \mathbf{z}\in
+R^n,\mathbf{Q}\in R^n\)</span></li>
+<li><span class="math inline">\(for\ \ t=1,2,3,...\ \ do\)</span>
+<ul>
+<li><span
+class="math inline">\(\mathbf{g}=\nabla_{\mathbf{w}}L\)</span>  #Calculate
+Gradient</li>
+<li><span class="math inline">\(for\ \ i=1,2,3,...n\ \ do\)</span> #for
+each coordinate
+<ul>
+<li><span
+class="math inline">\(\sigma_i=\frac{1}{\alpha}\sqrt{q_i+g_i^2}-\sqrt{q_i}\)</span></li>
+<li><span class="math inline">\(q_i=q_i+g_i^2\)</span></li>
+<li><span class="math inline">\(z_i=z_i+g_i-\sigma_iw_i\)</span></li>
+<li><span class="math display">\[w_i=\begin{cases}
+  0,\ if\ |z_i^{(t)}|&lt;\lambda_1\\\\
+  -(\lambda_2+\frac{\beta+\sqrt{q_i}}{\alpha})^{-1}(z_i-\lambda_1sgn(z_i)),\
+otherwise
+  \end{cases}
+\]</span></li>
+</ul></li>
+<li><span class="math inline">\(end\)</span></li>
+</ul></li>
+<li><span class="math inline">\(end\)</span></li>
+</ul></li>
+</ul></li>
+<li>Ref:
+<ol type="1">
+<li>TG:
+https://www.jmlr.org/papers/volume10/langford09a/langford09a.pdf</li>
+<li>《在线最优化求解》冯扬</li>
+<li>http://www.huaxiaozhuan.com/ chapter 4</li>
+<li>https://zhuanlan.zhihu.com/p/61724627</li>
+<li>FOBOS：https://www.jmlr.org/papers/volume10/duchi09a/duchi09a.pdf</li>
+<li>RDA：https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/xiao10JMLR.pdf</li>
+<li>FTRL(提出)：https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/36483.pdf</li>
+<li>FTRL(工程实现)：https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/41159.pdf</li>
+<li>FTRL(几种正则化比较)：https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/37013.pdf</li>
+</ol></li>
+</ul>
+<hr />
+<h1 id="约束优化">约束优化</h1>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+            <a href="/tags/Numerical-Optimization/" rel="tag"># Numerical Optimization</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/07/Statistic/" rel="next" title="Statistics">
+                <i class="fa fa-chevron-left"></i> Statistics
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/18/CTR/" rel="prev" title="CTR">
+                CTR <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">无约束优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%9F%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">拟牛顿法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%E8%BF%9B%E9%98%B6"><span class="nav-number">1.3.</span> <span class="nav-text">梯度下降法进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#momentum"><span class="nav-number">1.3.1.</span> <span class="nav-text">Momentum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adagrad"><span class="nav-number">1.3.2.</span> <span class="nav-text">Adagrad</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adadelta"><span class="nav-number">1.3.3.</span> <span class="nav-text">Adadelta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rmsprop"><span class="nav-number">1.3.4.</span> <span class="nav-text">RMSprop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#adam"><span class="nav-number">1.3.5.</span> <span class="nav-text">Adam</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ftrl%E6%BC%AB%E8%B0%88%E8%B6%85%E5%A4%A7%E8%A7%84%E6%A8%A1%E5%9C%A8%E7%BA%BF%E5%AD%A6%E4%B9%A0%E7%A8%80%E7%96%8F%E6%80%A7%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.4.</span> <span class="nav-text">FTRL漫谈(超大规模在线学习稀疏性解决方案)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#l1%E6%AD%A3%E5%88%99"><span class="nav-number">1.4.1.</span> <span class="nav-text">L1正则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%88%AA%E6%96%AD%E6%B3%95"><span class="nav-number">1.4.2.</span> <span class="nav-text">简单截断法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E6%88%AA%E6%96%AD%E6%B3%95tg"><span class="nav-number">1.4.3.</span> <span class="nav-text">梯度截断法(TG)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fobos%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.4.</span> <span class="nav-text">FOBOS算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rda%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.5.</span> <span class="nav-text">RDA算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ftrl%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.6.</span> <span class="nav-text">FTRL算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">约束优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

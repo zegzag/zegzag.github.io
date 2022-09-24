@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Interpretability," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Deep模型的可解释性也是深度学习领域内的一大研究方向。可以用在工程实践上的大概可以分为以下三种：  积分梯度(Integral Gradient) MLP前向分域法(Energy) Attention Score  IG(Integral Gradient)  特征重要度(分数)应该满足两条公理：  公理一: Sensitivity  (a). 如果某个样本的某个特">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DeepLearning可解释性">
+<meta property="og:url" content="http://example.com/2021/04/18/Interpretability/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="Deep模型的可解释性也是深度学习领域内的一大研究方向。可以用在工程实践上的大概可以分为以下三种：  积分梯度(Integral Gradient) MLP前向分域法(Energy) Attention Score  IG(Integral Gradient)  特征重要度(分数)应该满足两条公理：  公理一: Sensitivity  (a). 如果某个样本的某个特">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-04-18T08:34:08.000Z">
+<meta property="article:modified_time" content="2021-12-16T08:34:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Interpretability">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/04/18/Interpretability/"/>
+
+
+
+
+
+  <title>DeepLearning可解释性 | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/18/Interpretability/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DeepLearning可解释性</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-18T16:34:08+08:00">
+                2021-04-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-12-16T16:34:08+08:00">
+                2021-12-16
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  Deep模型的可解释性也是深度学习领域内的一大研究方向。可以用在工程实践上的大概可以分为以下三种：</p>
+<ul>
+<li>积分梯度(Integral Gradient)</li>
+<li>MLP前向分域法(Energy)</li>
+<li>Attention Score</li>
+</ul>
+<h2 id="igintegral-gradient">IG(Integral Gradient)</h2>
+<ul>
+<li>特征重要度(分数)应该满足两条公理：
+<ul>
+<li>公理一: <code>Sensitivity</code>
+<ul>
+<li>(a).
+如果某个样本的某个特征有变(相对于基线值<code>baseline</code>)导致了预测值的变化，那么该特征维度的归因(重要度)应该非零<code>non-zero</code>。</li>
+<li>(b).
+如果深度网络的映射(数学上<code>mathmematically</code>)不依赖于某些变量，这些变量的重要度应该持续为零(<code>always zero</code>)</li>
+</ul></li>
+<li>公理二: <code>Implementation Invariance</code>
+<ul>
+<li>如果两个模型针对全体样本，都有同样的输出，那么这两个模型等价(<code>functionally equivalent</code>)。</li>
+<li>该特征归因(重要度)应该在两个等价模型上的值一样。</li>
+<li>如果不满足<em>公理二</em>，重要度的度量有可能会对模型不太重要的方面敏感。比如，如果一个模型的自由度较高(高于潜在映射所要求的自由度)，
+那么模型可能因为不同的初始化或者别的什么因素收敛到两个不同的参数集上，结果这两个参数集下的模型预测输出一样。</li>
+</ul></li>
+<li>公理三: <code>linearity</code>
+<ul>
+<li>如果把两个模型 <span class="math inline">\(f_1\)</span> <span
+class="math inline">\(f_2\)</span> 的输出进行线性组合: <span
+class="math inline">\(a\times f_1+b\times
+f_2\)</span>，那么对于线性组合后的输出的某个特征重要性应该也是其
+组合前两个输出的特征重要度的线性组合。</li>
+</ul></li>
+</ul></li>
+<li>方法：
+<ul>
+<li>考虑样本空间上的两点 <span class="math inline">\(x_{&#39;}\)</span>
+和 <span class="math inline">\(x\)</span>
+之间的直线路径(<code>straightline path</code>)点上的所有梯度。积分梯度(<code>Integrated gradients</code>)
+把这些所有梯度累积起来(<code>cumulating</code>)。事实上，积分梯度相当该路径的<code>路径积分</code>。</li>
+<li>定义：
+<ul>
+<li><span class="math inline">\(F: R^n \rightarrow [0,1]\)</span></li>
+<li>第 <span class="math inline">\(i\)</span> 维特征的积分梯度为: <span
+class="math display">\[
+IntegratedGrads_i(x):= (x_i - x_i^{&#39;})\times \int_{\alpha =0}^1
+\frac{\partial
+F(\mathbf{x}&#39;+\alpha(\mathbf{x}-\mathbf{x&#39;}))}{\partial x_i}
+d\alpha
+\]</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="mlp前向分域法energy">MLP前向分域法(Energy)</h3>
+<ul>
+<li>针对由<span
+class="math inline">\(k\)</span>个域<code>concat</code>后过<code>Dense</code>层的结构来说(比如一般DNN模型的最后一层)，<span
+class="math inline">\(energy\)</span> 定义：
+<ul>
+<li>假设针对一个样本有 <span class="math inline">\(\mathbf{x} =
+(\mathbf{x}_1, \mathbf{x}_2,...,\mathbf{x}_k)\)</span>，即 <span
+class="math inline">\(k\)</span> 个分域<code>concat</code>，
+每个分域的维度分别为 <span class="math inline">\(\mathbf{d} = (d_1,
+d_2,...,d_k); d_x = \sum_{i=1}^kd_i\)</span>，即<span
+class="math inline">\(\mathbf{x}\in
+R^{d_x}\)</span>。网络最后<code>MLP</code>部分的第一层<code>Dense</code>的<code>kernel</code>维度为
+<span class="math inline">\(W \in R^{d_x\times d_0}\)</span></li>
+<li>第一层的<code>Matmul</code>可以做一下分解，其中<span
+class="math inline">\(w_i\in R^{d_i\times d_0}\)</span>: <span
+class="math display">\[
+  \begin{aligned}
+    \mathbf{v}&amp;=\mathbf{x} W\\
+    &amp;= (\mathbf{x}_1, \mathbf{x}_2,...,\mathbf{x}_k)
+        \begin{bmatrix}
+              \mathbf{w}_1,\\
+              \mathbf{w}_2,\\
+              ...,\\
+              \mathbf{w}_k
+        \end{bmatrix}\\
+    &amp;=\sum_{i=1}^k\mathbf{x}_i\mathbf{w}_i\\
+    &amp;=\sum_{i=1}^k\mathbf{v}_i
+  \end{aligned}
+\]</span></li>
+<li>那么可以令<span
+class="math inline">\(energy=||\mathbf{v}_i||_2\)</span>作为第<span
+class="math inline">\(i\)</span>个分域的特征重要度度量。</li>
+<li><span
+class="math inline">\(energy\)</span>综合考虑了特征和特征权重的贡献度。</li>
+</ul></li>
+</ul>
+<h3 id="attention-score">Attention Score</h3>
+<ul>
+<li><p>具有attention结构的可以通过各个域的<code>attention score</code>作为辅助判断，不过如果attention具有<code>ResNet</code>结构，很可能很大一部分的重要度从<code>残差连接</code>结构中流走了。</p></li>
+<li><p>Ref:</p>
+<ol type="1">
+<li>Integral Gradient: https://arxiv.org/pdf/1703.01365.pdf</li>
+</ol></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+            <a href="/tags/Interpretability/" rel="tag"># Interpretability</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/04/18/Embedding/" rel="prev" title="Embedding">
+                Embedding <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#igintegral-gradient"><span class="nav-number">1.</span> <span class="nav-text">IG(Integral Gradient)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mlp%E5%89%8D%E5%90%91%E5%88%86%E5%9F%9F%E6%B3%95energy"><span class="nav-number">1.1.</span> <span class="nav-text">MLP前向分域法(Energy)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attention-score"><span class="nav-number">1.2.</span> <span class="nav-text">Attention Score</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>

@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Reinforcement Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="强化学习涉及到的一些符号定义。  状态空间\(\mathcal{S}\)  \(t\) 时刻的系统的状态为\(s_t\in \mathcal{S}\)  动作空间\(A\)  \(t\) 时刻agent采取的动作为\(a_t\in \mathcal{A}\)  奖励\(\mathcal{R}\)  \(t\) 时刻在状态\(s_t\)和动作\(a_t\)后，在\(t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习">
+<meta property="og:url" content="http://example.com/2021/06/05/Reinforcement/index.html">
+<meta property="og:site_name" content="泽">
+<meta property="og:description" content="强化学习涉及到的一些符号定义。  状态空间\(\mathcal{S}\)  \(t\) 时刻的系统的状态为\(s_t\in \mathcal{S}\)  动作空间\(A\)  \(t\) 时刻agent采取的动作为\(a_t\in \mathcal{A}\)  奖励\(\mathcal{R}\)  \(t\) 时刻在状态\(s_t\)和动作\(a_t\)后，在\(t">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-06-05T09:56:08.000Z">
+<meta property="article:modified_time" content="2021-06-05T09:56:08.000Z">
+<meta property="article:author" content="Z">
+<meta property="article:tag" content="Reinforcement Learning">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2021/06/05/Reinforcement/"/>
+
+
+
+
+
+  <title>强化学习 | 泽</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">泽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">君子藏器于身，待时而动</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/05/Reinforcement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="泽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">强化学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-06-05T17:56:08+08:00">
+                2021-06-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-06-05T17:56:08+08:00">
+                2021-06-05
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>强化学习涉及到的一些符号定义。
+<ul>
+<li>状态空间<span class="math inline">\(\mathcal{S}\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻的系统的状态为<span
+class="math inline">\(s_t\in \mathcal{S}\)</span></li>
+</ul></li>
+<li>动作空间<span class="math inline">\(A\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span>
+时刻<code>agent</code>采取的动作为<span class="math inline">\(a_t\in
+\mathcal{A}\)</span></li>
+</ul></li>
+<li>奖励<span class="math inline">\(\mathcal{R}\)</span>
+<ul>
+<li><span class="math inline">\(t\)</span> 时刻在状态<span
+class="math inline">\(s_t\)</span>和动作<span
+class="math inline">\(a_t\)</span>后，在<span
+class="math inline">\(t+1\)</span>时刻会得到奖励<span
+class="math inline">\(r_{t+1}\in R\)</span>，即 <span
+class="math inline">\(r_{t+1}\overset{def}{=}r_{t+1}(s_t,a_t)\)</span></li>
+</ul></li>
+<li>策略<code>Policy</code> <span class="math inline">\(\pi\)</span>
+<ul>
+<li>一般是一个条件概率分布<span
+class="math inline">\(\pi(a|s)\)</span>，即状态 <span
+class="math inline">\(S_t=s\)</span> 时采取动作<span
+class="math inline">\(A_t=a\)</span>的概率。 ## MDP:
+(有限)马尔科夫决策过程 ### 定义    (有限)马尔科夫决策过程中，<span
+class="math inline">\(\mathcal{S},\mathcal{A},\mathcal{R}\)</span>都是有限且离散的，且我们假设<span
+class="math inline">\(t\)</span>时刻的状态 <span
+class="math inline">\(S_{t}\)</span> 和 <span
+class="math inline">\(R_{t}\)</span> 都指依赖于上一时刻<span
+class="math inline">\(t-1\)</span>时候的状态 <span
+class="math inline">\(S_{t-1}\)</span> 和 动作 <span
+class="math inline">\(A_{t-1}\)</span>。即： <span
+class="math display">\[
+p(s&#39;,r|s,a)\overset{def}{=}P(S_t=s&#39;,R_t=r|S_{t-1}=s, A_{t-1}=a)
+\]</span></li>
+</ul></li>
+</ul></li>
+<li>注意这里的<span
+class="math inline">\(S_i,A_i,R_i\)</span>都是随机变量。</li>
+<li><span class="math inline">\(p\)</span>是一个映射: <span
+class="math inline">\(p:
+\mathcal{S}\times\mathcal{A}\times\mathcal{S}\times\mathcal{R}\rightarrow
+[0,1]\)</span></li>
+<li>我们可以得到一些基本的概率表示：
+<ul>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span
+class="math inline">\(a\)</span> 后，当前系统状态的概率： <span
+class="math display">\[
+  p(s&#39;|s,a)=\sum_{r\in \mathcal{R}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span
+class="math inline">\(s\)</span>，当前系统状态的概率： <span
+class="math display">\[
+  \begin{aligned}
+    p(s&#39;|s)&amp;=\frac{\sum_{a}p(s&#39;,s,a)}{p(s)}=\frac{\sum_{a}p(s&#39;|s,a)\pi(a|s)p(s)}{p(s)}\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)p(s&#39;|s,a)
+  \end{aligned}
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span
+class="math inline">\(a\)</span> 后，当前系统奖励值的概率： <span
+class="math display">\[
+  p(r|s,a)=\sum_{s&#39;\in \mathcal{S}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span
+class="math inline">\(a\)</span> 后，当前系统的奖励期望： <span
+class="math display">\[
+  R(s,a)=E(R_t|S_{t-1},A_{t-1})=\sum_{r\in
+\mathcal{R}}r\sum_{s&#39;\in\mathcal{S}}p(s&#39;,r|s,a)
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span>
+后，当前系统的奖励期望为： <span class="math display">\[
+  \begin{aligned}
+    R(s)&amp;=E(R_t|S_{t-1}=s)=\sum_{r\in
+\mathcal{R}}r\sum_{a\in\mathcal{A}}p(r|s,a)\pi(a|s)\\
+    &amp;=\sum_{a\in\mathcal{A}}\pi(a|s)\sum_{r\in
+\mathcal{R}}rp(r|s,a)\\
+    &amp;=\sum_{a\in\mathcal{A}}\pi(a|s)R(s,a)
+  \end{aligned}
+\]</span></li>
+<li>给定上一时刻状态 <span class="math inline">\(s\)</span> 和动作 <span
+class="math inline">\(a\)</span>，当前时刻状态<span
+class="math inline">\(s&#39;\)</span> 后，当前系统的奖励期望： <span
+class="math display">\[
+  \begin{aligned}
+    E(R_t|S_{t-1},A_{t-1},S_t)&amp;=\sum_{r\in
+\mathcal{R}}r*p(r|s,a,s&#39;)\\
+    &amp;=\sum_{r\in \mathcal{R}}r\frac{p(s&#39;,r|s,a)}{p(s&#39;|s,a)}
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul>
+<h3 id="一些新增定义">一些新增定义：</h3>
+<ul>
+<li>章节<code>Episode</code>
+<ul>
+<li>每段强化学习过程有个终止时刻<code>T</code>和终止状态<code>terminal state:</code><span
+class="math inline">\(\mathcal{S}^{+}\)</span>。</li>
+<li>每段<code>episode</code>之后，系统回到初始状态。</li>
+<li>不同的<code>episode</code>之间相互独立。</li>
+<li>每段<code>episode</code>的终止时刻<code>T</code>都不一样，是一个随机变量。</li>
+</ul></li>
+<li>回报<code>Return</code>：<span
+class="math inline">\(t\)</span>时刻采取动作<span
+class="math inline">\(A_t\)</span>后，后续全部的回报被定义为： <span
+class="math display">\[
+  G_t\overset{def}{=}R_{t+1}+\gamma
+R_{t+2}...=\sum_{k=0}^{T}\gamma^kR_{t+k+1}=R_{t+1}+\gamma G_{t+1}
+\]</span>
+<ul>
+<li>其中<span class="math inline">\(T\)</span>是终止时刻。</li>
+<li>关于<code>episode task</code>和<code>continue task</code>统一：
+<ul>
+<li><span
+class="math inline">\(T\)</span>时刻之后，可以看做进入了一个<code>special absorbing state</code>状态，之后时刻都回到该状态，且回报为<span
+class="math inline">\(0\)</span>。</li>
+<li><span
+class="math inline">\(T=\infty\)</span>代表无<code>terminal state</code>的过程。</li>
+</ul></li>
+</ul></li>
+<li>(状态)价值函数<code>state-value function</code>：<span
+class="math inline">\(t\)</span>时刻系统状态处于<span
+class="math inline">\(s\)</span>时，基于策略<span
+class="math inline">\(\pi\)</span>的价值函数<span
+class="math inline">\(v_{\pi}(s)\)</span>被定义为后续的回报期望，即：
+<span class="math display">\[
+  \begin{aligned}
+    v_{\pi}(s)&amp;\overset{def}{=}E[G_t|S_t=s]\\
+    &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s]
+  \end{aligned}
+\]</span>
+<ul>
+<li>价值函数定义了不同策略<span
+class="math inline">\(\pi\)</span>之间的偏序关系。</li>
+</ul></li>
+<li>动作价值函数： <span class="math display">\[
+\begin{aligned}
+  q_{\pi}(s,a)&amp;\overset{def}{=}E(\sum_{k=0}^{\infty}\gamma^kR_{t+k+1}|S_t=s,A_t=a)\\
+  &amp;=E[R_{t+1}+\gamma G_{t+1}|S_t=s,A_t=a]
+\end{aligned}
+\]</span></li>
+<li>最优策略：
+<ul>
+<li>策略是最优当且仅当对于所有状态 <span
+class="math inline">\(s\)</span>，其<code>state-value function</code>优于其他策略。或者对于所有状态
+<span class="math inline">\(s\)</span> 和动作 <span
+class="math inline">\(a\)</span>，其<code>action-value function</code>优于其他策略。
+<span class="math display">\[
+\begin{aligned}
+v_{\pi^*}(s)&amp;=\underset{\pi}{\operatorname{argmax}}\ v_{\pi}(s)\\
+q_{\pi^*}(s,a)&amp;=\underset{\pi}{\operatorname{argmax}}\
+q_{\pi}(s,a)\\
+&amp;=E[R_{t+1}+\gamma v_{\pi^*}(S_{t+1})|S_t=s,A_t=a]
+\end{aligned}
+\]</span></li>
+</ul></li>
+<li>性质：
+<ul>
+<li><span class="math inline">\(v_{\pi}\)</span>和<span
+class="math inline">\(q_{\pi}\)</span>之间的关系，若令<span
+class="math inline">\(g=G_t\)</span>： <span class="math display">\[
+  \begin{aligned}
+    v_{\pi}(s)&amp;=\sum_gg*p(g|s)\\
+    &amp;=\sum_gg\sum_{a\in \mathcal{A}}p(g|s,a)\pi(a|s)\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)\sum_gg*p(g|s,a)\\
+    &amp;=\sum_{a\in \mathcal{A}}\pi(a|s)q_{\pi}(s,a)\\
+  \end{aligned}
+\]</span></li>
+<li>相邻时刻 <span class="math inline">\(t\)</span> 和 <span
+class="math inline">\(t+1\)</span>
+的递推关系(<strong>贝尔曼方程</strong>)，令<span
+class="math inline">\(s&#39;=S_{t+1}\)</span>：
+<ul>
+<li><span class="math inline">\(v_{\pi}(s)\)</span> 和 <span
+class="math inline">\(v_{\pi}(s&#39;)\)</span>： <span
+class="math display">\[
+  \begin{aligned}
+    v_{\pi}(s)&amp;=E[R_{t+1}|S_t=s]+\gamma E[G_{t+1}|S_t=s]\\
+    &amp;=R(s)+\gamma
+\sum_{s&#39;}p(s&#39;|s)E[G_{t+1}|S_{t+1}=s&#39;]\\
+    &amp;=R(s)+\gamma \sum_{s&#39;}p(s&#39;|s)v_{\pi}(s&#39;)\\
+    &amp;=\sum_a\pi(a|s)R(s,a)+\gamma\sum_a\pi(a|s)\sum_{s&#39;}p(s&#39;|s,a)v_{\pi}(s&#39;)\\
+    &amp;=\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma
+v_{\pi}(s&#39;)]
+  \end{aligned}
+\]</span>
+<ul>
+<li>直观上看，就是 <span class="math inline">\(t\)</span>
+时刻产生的未来回报期望 = <span
+class="math inline">\(t\)</span>时刻产生的即时奖励 + 从<span
+class="math inline">\(t\)</span>转移到 <span
+class="math inline">\(t+1\)</span> 时刻之后基于 <span
+class="math inline">\(t+1\)</span> 时刻的未来回报期望。</li>
+</ul></li>
+<li><span class="math inline">\(q_{\pi}(s,a)\)</span> 和 <span
+class="math inline">\(q_{\pi}(s&#39;,a&#39;)\)</span>： <span
+class="math display">\[
+  \begin{aligned}
+    q_{\pi}(s,a)&amp;=E[R_{t+1}|S_t=s,A_t=a]+\gamma
+E[G_{t+1}|S_t=s,A_t=a]\\
+    &amp;=R(s,a)+\gamma
+\sum_{s&#39;}\sum_{a&#39;}p(s&#39;,a&#39;|s,a)E[G_{t+1}|S_{t+1}=s&#39;,A_{t+1}=a&#39;]\\
+    &amp;=R(s,a)+\gamma
+\sum_{s&#39;}\sum_{a&#39;}p(s&#39;,a&#39;|s,a)q_{\pi}(s&#39;,a&#39;)\\
+    &amp;=R(s,a)+\gamma
+\sum_{a&#39;}\pi(a&#39;|s&#39;)\sum_{s&#39;}p(s&#39;|s,a)q_{\pi}(s&#39;,a&#39;)
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="待解问题">待解问题：</h3>
+<ul>
+<li>MDP主要包括两个问题：
+<ul>
+<li>预测<code>Prediction</code>问题，即给定模型<span
+class="math inline">\(\mu
+=\{\mathcal{S},\mathcal{A},\mathcal{R},P,\pi,\gamma\}\)</span>，求<span
+class="math inline">\(v_{\pi}(s)\)</span></li>
+<li>控制<code>Control</code>问题，给定模型<span
+class="math inline">\(\mu = \{\mathcal{S},\mathcal{A},\mathcal{R},P,
+\gamma\}\)</span>，求解最佳策略<span
+class="math inline">\(\pi^*\)</span>。</li>
+</ul></li>
+</ul>
+<p>回顾以上推导，最关键的是两点：</p>
+<ul>
+<li>对状态转移函数的定义，由马尔科夫链的<span
+class="math inline">\(p(S_{t+1}|S_t)\)</span>变为<span
+class="math inline">\(p(S_{t+1}|S_t,A_t)\)</span>或者<span
+class="math inline">\(p(S_{t+1},R_{t+1}|S_t,A_t)\)</span>。</li>
+<li>满足马尔科夫性质，即<span
+class="math inline">\(p(S_{t+1},R_{t+1}|S_t,A_t,...,S_0,A_0)=p(S_{t+1},R_{t+1}|S_t,A_t)\)</span></li>
+<li>剩下所有的推导都是基于以上两点。所以，不同的概率定义方式产生不同的模型。试想一下如果想建模一个概率模型，该以什么方式定义概率。</li>
+</ul>
+<hr />
+<h2 id="动态规划法">动态规划法</h2>
+<h3 id="预测prediction问题">预测<code>Prediction</code>问题：</h3>
+<ul>
+<li><strong>解析法</strong>：
+<ul>
+<li>由<span
+class="math inline">\(v_{\pi}(s)=\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma
+v_{\pi}(s&#39;)]\)</span>可知，求解全状态其实就是在解一个线性方程组。
+<ul>
+<li>令： <span class="math display">\[
+  \begin{aligned}
+    b(s)&amp;=\sum_a\pi(a|s)\sum_{s&#39;,r}p(s&#39;,r|s,a)\\
+    w(s&#39;,s)&amp;=\sum_a\pi(a|s)\sum_rp(s&#39;,r|s,a)
+  \end{aligned}
+\]</span></li>
+<li>则有： <span class="math display">\[
+  \begin{aligned}
+    v_{\pi}(s_1)&amp;=
+    \sum_a\pi(a|s_1)\sum_{s&#39;}\sum_rp(s&#39;,r|s_1,a)[r+\gamma
+v_{\pi}(s&#39;)]\\
+    v_{\pi}(s_1)&amp;=rb(s_1)
+    +\gamma[w(s&#39;_1, s_0),...,w(s&#39;_d,s_0)]
+    \begin{bmatrix}
+      v_{\pi}(s&#39;_1)\\
+      ...\\
+      v_{\pi}(s&#39;_d)
+    \end{bmatrix}
+  \end{aligned}
+\]</span></li>
+<li>即： <span class="math display">\[
+  \begin{aligned}
+    \mathbf{v}&amp;=\mathbf{W}\mathbf{v}+\mathbf{b}\\
+    \mathbf{v}&amp;=(\mathbf{E}-\mathbf{W})^{-1}\mathbf{b}
+  \end{aligned}
+\]</span></li>
+</ul></li>
+</ul></li>
+<li><strong>迭代法</strong>：
+<ul>
+<li>输入：策略<span class="math inline">\(\pi\)</span>，阈值<span
+class="math inline">\(\theta\)</span></li>
+<li>过程：
+<ul>
+<li>随机初始化：<span class="math inline">\(v(s)\)</span></li>
+<li><span class="math inline">\(Loop:\)</span>
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(v\leftarrow v(s)\)</span></li>
+<li><span class="math inline">\(v(s)\leftarrow
+\sum_a\pi(a|s)\sum_{s&#39;}\sum_rp(s&#39;,r|s,a)[r+\gamma
+v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta,
+|v-v(s)|)\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(until\ \Delta &lt; \theta\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="控制control问题">控制<code>Control</code>问题：</h3>
+<ul>
+<li><strong>基于策略的迭代<code>Policy Iteration</code></strong>:
+<ul>
+<li>1: 初始化<code>Initialization</code>:
+<ul>
+<li>随机初始化：<span class="math inline">\(v(s)\in R, \pi(s)\in
+\mathcal{A}(s)\ for\ all\ s\in \mathcal{S}\)</span></li>
+</ul></li>
+<li>2: 回报预估<code>Policy Evaluation</code>:
+<ul>
+<li>运行<strong>迭代法</strong>进行预估。</li>
+</ul></li>
+<li>3: 策略改进<code>Policy Improvement</code>:
+<ul>
+<li><span class="math inline">\(policy\_stable\leftarrow
+true\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(old\_action\leftarrow
+\pi(s)\)</span></li>
+<li><span class="math inline">\(\pi(s)\leftarrow
+\underset{a}{\operatorname{argmax}}\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma
+v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(if\ old\_action\neq\pi(s),\
+policy\_stable\leftarrow false\)</span></li>
+</ul></li>
+<li><span class="math inline">\(if\ policy\_stable\leftarrow false,\
+goto\ 2\)</span></li>
+</ul></li>
+</ul></li>
+<li><strong>基于价值的迭代<code>Value Iteration</code></strong>:
+<ul>
+<li>1: 初始化<code>Initialization</code>:
+<ul>
+<li>随机初始化：<span class="math inline">\(V(s)\)</span></li>
+</ul></li>
+<li>2: 迭代(<code>Evaluation</code>和<code>Improvement</code>统一)：
+<ul>
+<li><span class="math inline">\(Loop:\)</span>
+<ul>
+<li><span class="math inline">\(\Delta \leftarrow 0\)</span></li>
+<li><span class="math inline">\(for\ s\in S:\)</span>
+<ul>
+<li><span class="math inline">\(v\leftarrow V(s)\)</span></li>
+<li><span class="math inline">\(V(s)\leftarrow
+\underset{a}{max}\sum_a\pi(a|s)\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma
+v(s&#39;)]\)</span></li>
+<li><span class="math inline">\(\Delta \leftarrow max(\Delta,
+|v-V(s)|)\)</span></li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(until\ \Delta &lt; \theta\)</span></li>
+</ul></li>
+<li>3: 产出<code>Deterministic</code>最优策略：
+<ul>
+<li><span class="math inline">\(for\ s\in S\)</span>
+<ul>
+<li><span
+class="math inline">\(\pi(s)=\underset{a}{\operatorname{argmax}}
+\sum_{s&#39;,r}p(s&#39;,r|s,a)[r+\gamma v(s&#39;)]\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>异步动态规划</strong></li>
+</ul>
+<h2 id="蒙特卡洛法">蒙特卡洛法</h2>
+<h3 id="预测prediction问题-1">预测<code>Prediction</code>问题：</h3>
+<p>   给定策略<span
+class="math inline">\(\pi\)</span>，动态规划法是直接<strong>计算</strong>出<code>Return</code>值。蒙特卡洛法则是<strong>学习</strong>出<code>Return</code>值。通过
+<span class="math inline">\(avg\)</span> 来估计 <span
+class="math inline">\(expectation\)</span>。 即<span
+class="math inline">\(v_{\pi}(s)=avg(G_t),s.t\ S_t=s\)</span></p>
+<ul>
+<li><strong>First-visit MC prediction</strong>:<br />
+给定策略<span class="math inline">\(\pi\)</span>后，状态<span
+class="math inline">\(s\)</span>可能会被多次访问，那么第一次访问<span
+class="math inline">\(s\)</span>后的平均回报的预估就是<code>First-visit MC prediction</code>
+<ul>
+<li><code>Input</code>: <span class="math inline">\(\pi\)</span></li>
+<li><code>Initialize</code>：
+<ul>
+<li><span class="math inline">\(Randomly\ initialize\ V(s)\ for\ all\
+s\in \mathcal{S}\)</span></li>
+<li><span class="math inline">\(Return(s)=\mathbf{0}\)</span></li>
+</ul></li>
+<li><span class="math inline">\(Loop\ forever\ (for\ each\
+episode)\)</span>:
+<ul>
+<li><span class="math inline">\(Generate\ an\ episode\ following\ \pi:
+S_0,A_0,R_1,S_1,A_1,R_2, . . . , S_{T−1},A_{T−1},R_T\)</span></li>
+<li><span class="math inline">\(G\leftarrow 0\)</span></li>
+<li><span class="math inline">\(Loop\ for\ each\ step\ of\ episode\
+t=T-1,T-2,...,0:\)</span>
+<ul>
+<li><span class="math inline">\(G\leftarrow \gamma
+G+R_{t+1}\)</span></li>
+<li><span class="math inline">\(Unless\ S_t\ appears\ in\
+S_0,...,S_{t-1}\)</span>
+<ul>
+<li><span class="math inline">\(Append\ G\ to\ Return(S_t)\)</span></li>
+<li><span class="math inline">\(V(S_t)\leftarrow
+avg(Returns(S_t))\)</span></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/26/Basic/" rel="next" title="DL Basic">
+                <i class="fa fa-chevron-left"></i> DL Basic
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/09/09/Blog/" rel="prev" title="博客踩坑">
+                博客踩坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives%7C%7Carchive">
+              
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zegzag" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%96%B0%E5%A2%9E%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">一些新增定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%85%E8%A7%A3%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">待解问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%B3%95"><span class="nav-number"></span> <span class="nav-text">动态规划法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8Bprediction%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">预测Prediction问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6control%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">控制Control问题：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%B3%95"><span class="nav-number"></span> <span class="nav-text">蒙特卡洛法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E6%B5%8Bprediction%E9%97%AE%E9%A2%98-1"><span class="nav-number">1.</span> <span class="nav-text">预测Prediction问题：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Z</span>
+
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+-->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"live2d-widget-model-hibiki"},"display":{"position":"right","width":150,"height":330,"hOffset":50,"vOffset":0},"mobile":{"show":true,"scale":0.5},"react":{"opacity":0.7}});</script></body>
+</html>
