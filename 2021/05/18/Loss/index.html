@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="基础Loss公式回顾 CrossEntropy损失：    CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多显然的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。  二分类标签为\(\{0, 1\}\)：  公式： \[   L(y,">
+<meta name="description" content="基础Loss公式回顾 CrossEntropy损失：    CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多显然的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。  二分类标签为\(\{0, 1\}\)：  公式： \[ \begin{">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Loss">
 <meta property="og:url" content="http://example.com/2021/05/18/Loss/index.html">
 <meta property="og:site_name" content="泽">
-<meta property="og:description" content="基础Loss公式回顾 CrossEntropy损失：    CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多显然的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。  二分类标签为\(\{0, 1\}\)：  公式： \[   L(y,">
+<meta property="og:description" content="基础Loss公式回顾 CrossEntropy损失：    CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是其实还是有不同的变种，针对这些变种的缘由及其求导公式都要熟悉。 不然可能在论文里面很多显然的地方犯迷糊。这种基础的简单的公式尝试手工推导一下，对模型理解和数学能力也是有帮助作用的。  二分类标签为\(\{0, 1\}\)：  公式： \[ \begin{">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-05-18T03:34:08.000Z">
 <meta property="article:modified_time" content="2021-05-18T03:34:08.000Z">
@@ -358,9 +358,20 @@ CrossEntropy公式是最基础的二分类损失函数，虽然简单，但是�
 <li>二分类标签为<span class="math inline">\(\{0, 1\}\)</span>：
 <ul>
 <li>公式： <span class="math display">\[
-  L(y, \hat{y}) = - \sum_{i=1}^{N}(y_ilog(\hat{y_i}) +
-(1-y_i)*log(1-\hat{y_i}))
-\]</span></li>
+\begin{aligned}
+  &amp; P(y=1|x) = \hat{y}\\
+  &amp; P(y=0|x) = 1-\hat{y}\\
+  &amp; P(y|x) = \hat{y}^y(1-\hat{y})^{1-y}\\
+  &amp; L(y, \hat{y}) = -log \prod_{i}P(y|x) = -\sum_{i}[ylog(\hat{y}) +
+(1-y)log(1-\hat{y})]
+\end{aligned}
+\]</span> 我们一般用 <code>sigmoid</code> 函数来表示 <span
+class="math inline">\(\hat{y}\)</span>，即 <span
+class="math inline">\(\hat{y} =
+\frac{1}{1+e^{-\mathbf{w}^T\mathbf{x}}}\)</span>。当然这种损失 <span
+class="math inline">\(\hat{y}\)</span>
+具体用什么函数都行，只要能满足概率和为 1 就行。用 <code>sigmoid</code>
+只是由于其优秀的数学性质。</li>
 <li>求导： <span class="math display">\[
   \nabla_{\hat{y}}L=\frac{\partial L}{\partial
 \hat{y}}=-\frac{y-\hat{y}}{\hat{y}(1-\hat{y})}
@@ -384,16 +395,26 @@ class="math inline">\(y=0\)</span>，<strong>负</strong>梯度方向一定为�
 </ul></li>
 <li>二分类标签为<span class="math inline">\(\{-1, 1\}\)</span>：
 <ul>
-<li>公式： <span class="math display">\[
-L(y, s) = \sum_{i=1}^{N}log(1+e^{-y_is_i})
-\]</span></li>
-<li>求导： <span class="math display">\[
+<li><p>假设模型输出为 <span class="math inline">\(s\in (-\infty,
++\infty)\)</span> 公式，则有： <span class="math display">\[
+  \begin{aligned}
+    &amp; P(y=1|x) = \frac{1}{1+e^{-s}} \\
+    &amp; P(y=-1|x) = \frac{1}{1+e^{s}} \\
+    &amp; P(y|x) = \frac{1}{1+e^{-ys}} \\
+    &amp; L(y, s) =
+-log\prod_{i}P(y_i|x_i)=\sum_{i=1}^{N}log(1+e^{-y_is_i})
+  \end{aligned}
+\]</span> 注意当损失函数为这种形式时，<span
+class="math inline">\(\hat{y} = P(y=1|x)\)</span> 和 <span
+class="math inline">\(s\)</span> 的关系必须要是 <code>sigmoid</code>
+函数。</p></li>
+<li><p>求导： <span class="math display">\[
 \nabla_{s}L=\frac{\partial L}{\partial s}=-\frac{y}{1+e^{ys}}
   =\begin{cases}
     -\frac{e^{-s}}{1+e^{-s}}, \quad if\ y=1\\
     \frac{e^{s}}{1+e^{s}}, \quad if\ y=-1
   \end{cases}
-\]</span>
+\]</span></p>
 <ul>
 <li>注意这里的是对<span class="math inline">\(s\)</span>求导，其中<span
 class="math inline">\(\hat{y} = sigmoid(s),\ s \in (-\infty,
@@ -515,8 +536,8 @@ j\)</span>的负梯度为负，即会往小了预估。</li>
 <li>当<span class="math inline">\(y\in \{1,0\}\)</span>时，令： <span
 class="math display">\[
 \begin{aligned}
-  &amp;P(y=1|s)=\hat{y}=sigmoid(s)=\frac{1}{1+e^{-s}}\\
-  &amp;P(y=0|s)=1-\hat{y}=1-P(y=1|s)
+  &amp;P(y=1|x)=\hat{y}=sigmoid(s)=\frac{1}{1+e^{-s}}\\
+  &amp;P(y=0|x)=1-\hat{y}=1-P(y=1|s)
 \end{aligned}
 \]</span>
 <ul>
@@ -706,8 +727,8 @@ and all those confusing names</a></li>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2021/05/18/Loss%20copy/" rel="prev" title="Loss">
-                Loss <i class="fa fa-chevron-right"></i>
+              <a href="/2021/05/18/Debias/" rel="prev" title="Debias">
+                Debias <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -785,7 +806,7 @@ and all those confusing names</a></li>
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
