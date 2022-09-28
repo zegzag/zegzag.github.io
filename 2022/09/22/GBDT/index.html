@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="GBDT,XGBoost,LightGBM," />
+  <meta name="keywords" content="GBDT,XGBoost,LightGBM,LTR,NDCG," />
 
 
 
@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="Decision Tree 映射表示   对于寻找 \((\mathbf{x}, y),\ x\in R^m,\ y\in R\) (即 \(m\) 维特征) 之间的映射关系 \(f\)，决策树进行如下建模： \[     f(\mathbf{x};\mathbf{w}) &#x3D; tree(\mathbf{x}; \mathbf{w}) &#x3D; \sum_{v&#x3D;1}^V w_v\text{I}">
+<meta name="description" content="这篇文档系统的总结经典树模型 (Decision Tree)，经典梯度提升树模型 (GBDT, XGBoost, LightGBM)，以及其在 LTR (Learning To Rank) 上的应用模型 (LambdaMART)。旨在理解业界著名的开源库 XGBoost 和 LightGBM 背后的原理及其相关参数含义。相关业界背景关键词：搜索，推荐，排序算法  GBDT 相关算">
 <meta property="og:type" content="article">
-<meta property="og:title" content="从Decision Tree到LightGBM">
+<meta property="og:title" content="从Decision Tree 到 LightGBM 到 LambdaMART">
 <meta property="og:url" content="http://example.com/2022/09/22/GBDT/index.html">
 <meta property="og:site_name" content="泽">
-<meta property="og:description" content="Decision Tree 映射表示   对于寻找 \((\mathbf{x}, y),\ x\in R^m,\ y\in R\) (即 \(m\) 维特征) 之间的映射关系 \(f\)，决策树进行如下建模： \[     f(\mathbf{x};\mathbf{w}) &#x3D; tree(\mathbf{x}; \mathbf{w}) &#x3D; \sum_{v&#x3D;1}^V w_v\text{I}">
+<meta property="og:description" content="这篇文档系统的总结经典树模型 (Decision Tree)，经典梯度提升树模型 (GBDT, XGBoost, LightGBM)，以及其在 LTR (Learning To Rank) 上的应用模型 (LambdaMART)。旨在理解业界著名的开源库 XGBoost 和 LightGBM 背后的原理及其相关参数含义。相关业界背景关键词：搜索，推荐，排序算法  GBDT 相关算">
 <meta property="og:locale">
 <meta property="og:image" content="http://example.com/images/xgboost_approximate_rank_function.jpg">
 <meta property="article:published_time" content="2022-09-22T12:38:00.000Z">
@@ -93,6 +93,8 @@
 <meta property="article:tag" content="GBDT">
 <meta property="article:tag" content="XGBoost">
 <meta property="article:tag" content="LightGBM">
+<meta property="article:tag" content="LTR">
+<meta property="article:tag" content="NDCG">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/xgboost_approximate_rank_function.jpg">
 
@@ -130,7 +132,7 @@
 
 
 
-  <title>从Decision Tree到LightGBM | 泽</title>
+  <title>从Decision Tree 到 LightGBM 到 LambdaMART | 泽</title>
   
 
 
@@ -284,7 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">从Decision Tree到LightGBM</h1>
+          <h1 class="post-title" itemprop="name headline">从Decision Tree 到 LightGBM 到 LambdaMART</h1>
         
 
         <div class="post-meta">
@@ -351,7 +353,14 @@
       
 
       
-        <h2 id="decision-tree">Decision Tree</h2>
+        <p>   这篇文档系统的总结经典树模型 (Decision Tree)，经典梯度提升树模型
+(GBDT, XGBoost, LightGBM)，以及其在 LTR (Learning To Rank) 上的应用模型
+(LambdaMART)。旨在理解业界著名的开源库 <code>XGBoost</code> 和
+<code>LightGBM</code>
+背后的原理及其相关参数含义。相关业界背景关键词：<code>搜索</code>，<code>推荐</code>，<code>排序算法</code></p>
+<hr />
+<h1 id="gbdt-相关算法">GBDT 相关算法</h1>
+<h2 id="decision-tree">Decision Tree</h2>
 <h3 id="映射表示">映射表示</h3>
 <p>  对于寻找 <span class="math inline">\((\mathbf{x}, y),\ x\in R^m,\
 y\in R\)</span> (即 <span class="math inline">\(m\)</span> 维特征)
@@ -858,6 +867,361 @@ n_{feature} \cdot n_{bin})\)</span>。如果采用 <code>All-Reduce</code>
 </ul></li>
 </ul>
 <h3 id="voting-parallel">Voting Parallel</h3>
+<hr />
+<h1 id="gbdt-在-ranking-领域的应用">GBDT 在 Ranking 领域的应用</h1>
+<h2 id="ranknet">RankNet</h2>
+<p>   对应 Rank 问题，我们先约定相关的符号变量定义。对于某两个文档 <span
+class="math inline">\(U_i\)</span> 和 <span
+class="math inline">\(U_j\)</span>，其对应的由模型预测的分数分别为 <span
+class="math inline">\(s_i = f(\mathbf{x}_i; \mathbf{w})\)</span> 和
+<span class="math inline">\(s_j = f(\mathbf{x}_j;
+\mathbf{w})。\)</span>如果 <span class="math inline">\(U_i\)</span>
+排在了 <span class="math inline">\(U_j\)</span> 前面，则用关系 <span
+class="math inline">\(U_i &gt; U_j\)</span> 表示，如果文档 <span
+class="math inline">\(U_i\)</span> 和 <span
+class="math inline">\(U_j\)</span> 的价值相等，则表示 <span
+class="math inline">\(U_i = U_j\)</span>。用概率 <span
+class="math inline">\(P_{ij}\)</span> 表示文档 <strong>应该</strong>
+<span class="math inline">\(U_i\)</span> 被排在了 <span
+class="math inline">\(U_j\)</span> 的前面的概率 (真值)，<span
+class="math inline">\(\hat{P}_{ij}\)</span>
+表示文档<strong>模型预测</strong>出来的 <span
+class="math inline">\(U_i\)</span> 被排在了 <span
+class="math inline">\(U_j\)</span> 前面的概率。那么我们可以用
+<code>logistic</code> 来计算 <span
+class="math inline">\(\hat{P}_{ij}\)</span>，即： <span
+class="math display">\[
+  \hat{P}_{ij} = \frac{1}{1+e^{-\sigma(s_i - s_j)}}
+\]</span></p>
+<ul>
+<li>如果 <span class="math inline">\(U_i &gt; U_j\)</span>，则模型预测的
+<span class="math inline">\(s_i - s_j \rightarrow +\infty\)</span> ，则
+<span class="math inline">\(\hat{P}_{ij}\rightarrow 1\)</span>，即<span
+class="math inline">\(U_i\)</span> <strong>越有可能</strong>排在 <span
+class="math inline">\(U_j\)</span> 的前面。如果 <span
+class="math inline">\(U_i &lt; U_j\)</span>，则模型预测的 <span
+class="math inline">\(s_i - s_j\rightarrow -\infty\)</span>，则 <span
+class="math inline">\(\hat{P}_{ij} \rightarrow 0\)</span>， 即 <span
+class="math inline">\(U_i\)</span> <strong>越不可能</strong> 排在 <span
+class="math inline">\(U_j\)</span> 的前面。</li>
+</ul>
+<p>用 <code>CrossEntropy</code> 来计算预测和真实之间的损失</p>
+<p><span class="math display">\[
+  \begin{aligned}
+  &amp;C_{ij} = -P_{ij}log(\hat{P_{ij}}) - (1-P_{ij})log(\hat{P_{ij}})\\
+  &amp;P_{ij} = \frac{1}{2}(1+S_{ij}) \\
+  &amp;S_{ij} = \begin{cases}
+    0, &amp; U_i = U_j\\
+    1, &amp; U_i &gt; U_j \\
+    -1, &amp; U_i &lt; Uj
+  \end{cases}
+  \end{aligned}
+\]</span></p>
+<p>带入 <span class="math inline">\(P_{ij},\ \hat{P}_{ij},\
+S_{ij}\)</span>，我们有：</p>
+$$
+<span class="math display">\[\begin{aligned}
+  C_{ij} &amp;= \frac{1-S_{ij}}{2}\sigma(s_i - s_j) +
+log[1+e^{-\sigma(s_i - s_j)}]\\
+
+  \frac{\partial C_{ij}}{\partial s_i} &amp;= \sigma[\frac{1-S_{ij}}{2}
+- \frac{1}{1+e^{\sigma(s_i - s_j)}}]  = -\frac{\partial C_{ij}}{\partial
+s_j}
+\end{aligned}\]</span>
+<p>$$</p>
+<p>令：<span class="math inline">\(\lambda_{ij} =
+\sigma[\frac{1-S_{ij}}{2} - \frac{1}{1+e^{\sigma(s_i -
+s_j)}}]\)</span>，则 <span class="math inline">\(\frac{\partial
+C_{ij}}{\partial s_i} = \lambda_{ij}\)</span></p>
+<ul>
+<li>注意这里的 <span class="math inline">\(\lambda_{ij}\)</span> 是针对
+<span class="math inline">\(\{i,j\}\)</span> pair 对 <span
+class="math inline">\(i\)</span> 的偏导。比如 <span
+class="math inline">\(\lambda_{12}\)</span> 是 <span
+class="math inline">\(\{1,2\}\)</span> 组合中对文档 <span
+class="math inline">\(1\)</span> 的偏导。<span
+class="math inline">\(\lambda_{23}\)</span> 是 <span
+class="math inline">\(\{2,3\}\)</span> 组合中对文档 <span
+class="math inline">\(2\)</span> 的偏导，对文档 <span
+class="math inline">\(3\)</span> 的偏导为 <span
+class="math inline">\(-\lambda_{23}\)</span></li>
+</ul>
+<p>   对于 <span class="math inline">\(\{i, j\}\)</span>
+的组合，我们不妨约定 <span class="math inline">\(U_i &gt;
+U_j\)</span>，这样可以大大化简公式。为什么这样约定是可行的，比如针对
+<span class="math inline">\(U_1, U_3\)</span> 文档组合 <span
+class="math inline">\(\{1, 3\}\)</span> 和 <span
+class="math inline">\(\{3,1\}\)</span> 表示的是同一对组合。假设 <span
+class="math inline">\(U_3 &gt; U_1\)</span>，则我们采用 <span
+class="math inline">\(\{3, 1\}\)</span> 的 pair 记录方式。
+约定之后，我们有：</p>
+<p><span class="math display">\[
+  \lambda_{ij} = -\frac{\sigma}{1+e^{\sigma(s_i - s_j)}}
+\]</span></p>
+<ul>
+<li>比如针对 4 个 文档，排序后的顺序为 <span
+class="math inline">\((1,3,2,4)\)</span>，那么我们有 6 个 pair 对 <span
+class="math inline">\(\{1,2\}, \{1,3\}, \{1,4\}, \{3,2\}, \{2,4\},
+\{3,4\}\)</span></li>
+<li>我们来看负梯度方向 <span class="math inline">\((-\lambda_{ij},
+\lambda_{ij})\)</span> 是 <span class="math inline">\(C_{ij}\)</span>
+下降最快的方向，<span class="math inline">\(-\lambda_{ij} =
+\frac{\sigma}{1+e^{\sigma(s_i - s_j)}}\)</span>
+是恒大于0的，类似于一种“力”，把 <span
+class="math inline">\(s_i\leftarrow s_i+\lambda_{ij}\)</span>
+往前(上)抬，把 <span class="math inline">\(s_j\)</span> 往下压。</li>
+<li>如果 <span class="math inline">\(s_i - s_j \gg 0\)</span>，则有
+<span class="math inline">\(-\lambda_{ij} \rightarrow 0\)</span>，即
+<span class="math inline">\(s_i\)</span> 方向上基本上不需要更新了。如果
+<span class="math inline">\(s_i - s_j \ll 0\)</span>，则有 <span
+class="math inline">\(-\lambda_{ij} \rightarrow +\infty\)</span>，即
+<span class="math inline">\(s_i\)</span> 方向上会有很大的步长更新。</li>
+</ul>
+<p><span class="math inline">\(C_{ij}\)</span> 对 <span
+class="math inline">\(\mathbf{w}\)</span> 的偏导为：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial C_{ij}}{\partial \mathbf{w}}
+&amp; = \frac{\partial C_{ij}}{\partial s_i}\frac{\partial s_i}{\partial
+\mathbf{w}}+\frac{\partial C_{ij}}{\partial s_j}\frac{\partial
+s_j}{\partial \mathbf{w}}\\
+&amp; = \lambda_{ij}(\frac{\partial s_i}{\partial \mathbf{w}} -
+\frac{\partial s_j}{\partial \mathbf{w}})\\
+\end{aligned} \\
+\]</span></p>
+<p>对于 <span class="math inline">\(N\)</span> 个文档，总共有 <span
+class="math inline">\(\frac{(N-1)(N-2)}{2}\)</span> 个 pair 对。对于
+<span class="math inline">\(N\times N\)</span> 的组合矩阵，这些 pair
+对即其除去对角线以外的上(下)三角 pair元素。假设这些 pair
+对组成的全体集合为：<span class="math inline">\(I = \{\{i,j\}\}\)</span>
+(用大括号而不是小括号说明 <span class="math inline">\(\{U_i,
+U_j\}\)</span> 和 <span class="math inline">\(\{U_j, U_i\}\)</span>
+是一个元素。则全体成员上的损失为： <span class="math display">\[
+  C = \sum_{\{i,j\}\in I}C_{ij} \\
+\]</span> 则有基于 N 个 doc 的梯度下降法为： <span
+class="math display">\[
+\begin{aligned} \\
+  &amp; \mathbf{w}\leftarrow \mathbf{w}-\eta\frac{\partial C}{\partial
+\mathbf{w}} \\
+  &amp; \mathbf{w}\leftarrow \mathbf{w}-\eta \sum_{\{i,j\}\in
+I}\frac{\partial C_{ij}}{\partial \mathbf{w}}\\
+  &amp; \mathbf{w}\leftarrow \mathbf{w}-\eta \sum_{\{i,j\}\in
+I}\frac{\partial C_{ij}}{\partial s_i}\frac{\partial s_i}{\partial
+\mathbf{w}}+\frac{\partial C_{ij}}{\partial s_j}\frac{\partial
+s_j}{\partial \mathbf{w}} \\
+\\
+\end{aligned}
+\]</span></p>
+<p>梯度下降法每次更新权重时，要在全体的 pair 对上做前向 (算<span
+class="math inline">\(\lambda_{ij})\)</span> 和 后向 (算偏导，更耗时)
+运算，其整体的时间复杂度(一个query下)为 <span
+class="math inline">\(O(N^2)\)</span> ### 梯度下降法加速</p>
+<p>  看前向后向的计算过程，后向过程 <span
+class="math inline">\(\frac{\partial s_i}{\partial \mathbf{w}}\)</span>
+其实只需对全体 <span class="math inline">\(N\)</span>
+个文档计算一次，<span class="math inline">\(\partial s_i 和 \partial
+s_j\)</span> 可以重复利用。只有前向过程 <span
+class="math inline">\(\frac{\partial C_{ij}}{\partial s_i}\)</span> 和
+作用在所有的 pair 对上。上诉一个 pair 对 <span
+class="math inline">\(C_{ij}\)</span> 会拆出两项出来。我们对 <span
+class="math inline">\(\sum_{\{i,j\}\in I}\)</span> 按 <span
+class="math inline">\(i\)</span> 拆解 ：</p>
+<p><span class="math display">\[
+\begin{aligned}
+  &amp; \sum_{\{i,j\}\in I}\frac{\partial C_{ij}}{\partial
+s_i}\frac{\partial s_i}{\partial \mathbf{w}}+\frac{\partial
+C_{ij}}{\partial s_j}\frac{\partial s_j}{\partial \mathbf{w}}\\
+  &amp; = \sum_{i\in N}\frac{\partial s_i}{\partial
+\mathbf{w}}(\sum_{j:\{i,j\}\in I}\frac{\partial C_{ij}}{\partial s_i}
++\sum_{j:\{j,i\}\in I}\frac{\partial C_{ij}}{\partial s_j})\\
+  &amp; = \sum_{i\in N}\frac{\partial s_i}{\partial
+\mathbf{w}}(\sum_{j:\{i,j\}\in I}\lambda_{ij} -
+\sum_{j:\{j,i\}}\lambda_{ij})\\
+  &amp; = \sum_{i\in N}\lambda_i\frac{\partial s_i}{\partial \mathbf{w}}
+\end{aligned}
+\]</span></p>
+<p>则有： <span class="math inline">\(\mathbf{w}\leftarrow
+\mathbf{w}-\eta \sum_{i}\lambda_i\frac{\partial s_i}{\partial
+\mathbf{w}}\)</span>，其中 <span class="math inline">\(\lambda_{i} =
+\sum_{(i,j)\in I}\lambda_{ij}-\sum_{j:(j,i)\in
+I}\lambda_{ij}\)</span>。</p>
+<ul>
+<li>对比 RankNet 和 XGBoost 对损失函数的化简过程，发现理清
+<strong>整个样本集和损失函数之间的对应关系</strong>
+是化简过程的关键所在</li>
+<li>关于加速过程，可以具体举 <span class="math inline">\(N\)</span> 个
+doc 例子看一下。</li>
+</ul>
+<p>仔细观察 <span class="math inline">\(\lambda_{ij}\)</span> 和 <span
+class="math inline">\(\lambda_{i}\)</span>。梯度下降法的过程是这样的：</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbf{w}\)</span> 随机初始化</li>
+<li>计算出模型 <span class="math inline">\(f\)</span> 对于所有文档
+的预测值 <span class="math inline">\(s_i\)</span>，以及对当前 <span
+class="math inline">\(\mathbf{w}\)</span> 的梯度。</li>
+<li>对于包含文档 <span class="math inline">\(i\)</span> 的 所有 pair 对
+<span class="math inline">\(\{i, j\}\)</span> 以及 <span
+class="math inline">\(\{j, i\}\)</span>，计算 <span
+class="math inline">\(\lambda_i\)</span>（比如针对 <span
+class="math inline">\(4\)</span> 个文档集合，包含文档 <span
+class="math inline">\(2\)</span> 的 pair 对为 <span
+class="math inline">\(\{1,2\}, \{2,3\}, \{2,4\}\)</span>）</li>
+<li>计算 <span class="math inline">\(\delta \mathbf{w} = -\eta
+\sum_{i}\lambda_i\frac{\partial s_i}{\partial \mathbf{w}}\)</span></li>
+<li>更新 <span class="math inline">\(\mathbf{w}\leftarrow
+\mathbf{w}+\delta\mathbf{w}\)</span></li>
+</ol>
+<h2 id="ir-评价指标">IR 评价指标</h2>
+<ul>
+<li><strong>NDCG (Normalized Discounted Cumulative Gain)</strong><br />
+NDCG at position n： 假设：
+<ul>
+<li><p>有 <span class="math inline">\(n\)</span> 个 <code>doc</code>:
+<span class="math inline">\(\{U_1,
+...,U_n\}\)</span>，每个<code>doc</code>的<strong>标注相关性</strong>为
+<span
+class="math inline">\(l_{U_i}\)</span>，<strong>预测相关性</strong>为
+<span class="math inline">\(s_{U_i}\)</span>。</p></li>
+<li><p>有 n 个位置，分别记为 <span
+class="math inline">\([1,2,...,n]\)</span></p></li>
+<li><p><span class="math inline">\(\pi\)</span> 为一种排列方式，在 <span
+class="math inline">\(\pi: U^{(\pi)}_j = \pi(i)\)</span> 的排列方式 (即
+<span class="math inline">\(i\)</span> 位置对应的 <code>doc</code> 为
+<span class="math inline">\(U_j\)</span>)
+下，<code>doc</code>的排序结果为：<span class="math inline">\([\pi(1),
+..., \pi(n)]\)</span>，对应的分数排序为 <span
+class="math inline">\([s_{\pi(1)}, ..., s_{\pi(n)}]，\)</span><span
+class="math inline">\(\pi^*\)</span>
+为最佳排列方式。可见，最佳排序方式为
+<code>[U_1, ...,U_n].sort(key = lambda U: l(U)</code>，即按照标签 <span
+class="math inline">\(l\)</span> 去排序。则有： <span
+class="math display">\[
+  DCG@k(\pi) = \sum_{j=1}^k \frac{G(j;r)}{D(j)}\\
+  G(j;r) = 2^{s_{\pi(j)} - 1},\ D(j) = {log(j+1)}\\
+  NDCG@k(\pi) = \frac{DCG@k(\pi)}{DCG@k(\pi^*)}
+\]</span> 其中 <span class="math inline">\(j\)</span> 表示
+<code>Position</code>，<span class="math inline">\(G\)</span> 表示
+<code>Gain</code>，<span class="math inline">\(D\)</span> 表示
+<code>Position Discount</code>，则 <span
+class="math inline">\(\sum\)</span> 表示
+<code>Cumulating</code>。</p></li>
+<li><p>一般的实现为<code>ndcg = dcg(y_pred, y_true)/dcg(y_true, y_true)</code>，其中
+<code>y_pred</code> 为模型预测值，<code>y_true</code>
+为真实的<code>label</code>。在<code>dcg()</code>里，将<code>y_true</code>
+按照 <code>y_pred</code> 进行排序。</p>
+<ul>
+<li>衍生出的问题是：如果有两个<code>y_pred</code>
+<strong>一样</strong>该怎么办呢？一样意味着相同分数下的 <code>doc</code>
+可以有多种排序情况。
+<ul>
+<li>计算相同 <code>y_pred</code> 下的 <span
+class="math inline">\(G\)</span> 均值和 <span
+class="math inline">\(D\)</span> 均值，再求和。</li>
+</ul></li>
+<li>具体的实现可以参看 <code>sklearn.metrics.ndcg_score</code> 源码。
+<ul>
+<li>注意<code>sklearn</code> 源码中有一个 <code>ignore_ties</code>
+选项，指的是如果 <code>y_pred</code>
+存在相同的值，那么这些相同的值被视为一个 <code>tie</code>。此时在计算
+<code>dcg</code>的时候会有一些区别，具体可见源码。</li>
+<li><code>sklearn</code>当中的<code>Gain</code>的映射直接放在<code>y_true</code>里面。</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><strong>MAP (Mean Average Precision)</strong> <span
+class="math display">\[
+      \begin{aligned}
+          &amp;P@n=\frac{NumRelDoc(n)}{n}\\
+          &amp;AP@n=\frac{\sum_k P@k \cdot
+IsRelevant(doc_k)}{NumRelDoc(n)}\\
+          &amp;MAP=\frac{\sum_{q=1}^QAP_q}{Q}
+      \end{aligned}
+  \]</span>
+<ul>
+<li>其中 <span class="math inline">\(NumRelDoc(n)\)</span> 表示前 <span
+class="math inline">\(n\)</span> 位相关 doc 的数量。<span
+class="math inline">\(IsRelevant(doc)\)</span> 表示该 <span
+class="math inline">\(doc\)</span> 是否相关，为 0-1 函数。</li>
+<li><span class="math inline">\(AP_q\)</span> 表示针对 <span
+class="math inline">\(query = q\)</span> 的平均准确率</li>
+</ul></li>
+</ul>
+<h2 id="lambdarank">LambdaRank</h2>
+<p>   回看 RankNet 中损失函数 <span
+class="math inline">\(C_{ij}\)</span> 对 <span
+class="math inline">\(s_i\)</span> 的偏导数 <span
+class="math display">\[
+  \frac{\partial C_{ij}}{\partial s_i} = \lambda_{ij} =
+-\frac{\sigma}{1+e^{\sigma(s_i - s_j)}}
+\]</span> 这里的位置信息并没有被建模进去。<code>DCG</code>
+指标中，越靠前的位置重要度越高。假设一批文档中只有两个相关的文档 <span
+class="math inline">\(U_1\)</span> 和 <span
+class="math inline">\(U_2\)</span>。假设 <span
+class="math inline">\(U_1\)</span> 排在第 3 位，<span
+class="math inline">\(U_2\)</span> 排在非常靠后的位置，那么模型更应该
+<strong>花费一点点力气</strong> 去把 <span
+class="math inline">\(U_1\)</span> 往前挪 1-2 位，而不是
+<strong>花费巨大的力气</strong> 把 <span
+class="math inline">\(U_2\)</span> 往前排很多位。</p>
+<p>   排序问题的建模中，通常我们根据已经排好 <strong>后</strong>
+的结果去规定文档的挪动规则，要比直接建立一个全局的，光滑可导的 <span
+class="math inline">\(NDCG\)</span> 的近似函数要方便得多。 LambdaRank
+的方法很直观，对于 <span class="math inline">\(\lambda_{ij}\)</span>
+乘上一个 <strong>因子</strong>，用来衡量 <span
+class="math inline">\(s_i\)</span> 方向上的
+<strong>迭代强度</strong>，对于 <span
+class="math inline">\(NDCG\)</span> 指标，该因子为 <span
+class="math inline">\(|\Delta NDCG|\)</span>，表示将文档 <span
+class="math inline">\(i\)</span> 和 <span
+class="math inline">\(j\)</span> 交换后 <span
+class="math inline">\(NDCG\)</span> 的变动幅度。对于其他指标，诸如 <span
+class="math inline">\(MAP, ERR\)</span> 等指标，也可以写出相应的
+<strong>因子</strong>。</p>
+<h3 id="delta-ndcg-计算方法"><span class="math inline">\(\Delta
+NDCG\)</span> 计算方法</h3>
+<p>   因为 <span class="math inline">\(NDCG\)</span>
+的分母为常数，我们只看交换文档 <span class="math inline">\(i,\
+j\)</span> 后， <span class="math inline">\(DCG\)</span>
+的变动。假设最佳排序 <span class="math inline">\(\pi^*\)</span>
+方式下，<span class="math inline">\(i,\ j\)</span> 的排序位置分别是
+<span class="math inline">\(r_i, r_j\)</span>。在 <span
+class="math inline">\(\pi^*\)</span>的基础上，仅仅交换 <span
+class="math inline">\(i, j\)</span> 俩文档位置对应的排序为 <span
+class="math inline">\(\pi&#39;\)</span> <span class="math display">\[
+\begin{aligned}
+  DCG@k(\pi^*) &amp;= \frac{2^{l_i - 1}}{log(1+r_i)} + \frac{2^{l_j} -
+1}{log(1+r_j)} + \sum_{r = 1, \pi^*(r) \neq
+\{i,j\}}^k\frac{2^{s_{\pi^*(r)} - 1}}{log(1+r)} \\
+  DCG@k(\pi&#39;) &amp;= \frac{2^{l_i - 1}}{log(1+r_j)} + \frac{2^{l_j
+-1}}{log(1+r_i)} + \sum_{r = 1, \pi&#39; \neq
+\{i,j\}}^k\frac{2^{s_{\pi&#39;} - 1}}{log(1+r)}\\
+  |\Delta DCG| &amp;= |DCG@k(\pi^*) - DCG@k(\pi&#39;)|\\
+               &amp;= |(2^{l_i - 1} - 2^{l_j - 1})(\frac{1}{log(1+r_i)}
+- \frac{1}{log(1+r_j)})|
+\end{aligned}
+\]</span> 论文中对 <span class="math inline">\(|\Delta DCG|\)</span>
+还乘了一个 <span class="math inline">\(N = max(DCG)\)</span></p>
+<h3 id="对-lambda_ij-的改进">对 <span
+class="math inline">\(\lambda_{ij}\)</span> 的改进</h3>
+<p><span class="math display">\[
+  \lambda_{ij} = -\frac{\sigma N}{1+e^{\sigma(s_i - s_j)}}|(2^{l_i - 1}
+- 2^{l_j - 1})(\frac{1}{log(1+r_i)} - \frac{1}{log(1+r_j)})|\\
+  \lambda_{ij} = -\frac{\sigma N}{1+e^{\sigma(s_i - s_j)}}[(2^{l_i - 1}
+- 2^{l_j - 1})(\frac{1}{log(1+r_i)} - \frac{1}{log(1+r_j)})]
+\]</span> + 由于 <span class="math inline">\(U_i &gt;
+U_j\)</span>，实际上有 <span class="math inline">\(l_i &gt; l_j,\ r_i
+&lt;
+r_j\)</span>，即绝对值符号可以去掉，原论文里面没有绝对值符号，但是后续相关的论文引用里面都有绝对值符号。感觉好些论文引用都搞得模棱两可的。
++ 对比前面的 <span class="math inline">\(\lambda_{ij}\)</span> “力”
+的解读，这里可以看到，越靠前的文档，给得“力”越大 (<span
+class="math inline">\(\Delta DCG\)</span>) 因子的作用。</p>
+<h3 id="其他">其他</h3>
+<p>   论文对如何引出 LambdaRank 思想给出了比较好的说明；以及 <span
+class="math inline">\(\lambda\)</span> 函数的的存在性理论证明
+(涉及到微分几何的知识)。太高深了看不懂，暂且不谈。</p>
+<h2 id="mart">MART</h2>
+<p>   所谓 MART 就是前面讲得 GBDT 算法，此处不再赘述。</p>
+<h2 id="lambdamart">LambdaMART</h2>
 
       
     </div>
@@ -880,6 +1244,10 @@ n_{feature} \cdot n_{bin})\)</span>。如果采用 <code>All-Reduce</code>
             <a href="/tags/XGBoost/" rel="tag"># XGBoost</a>
           
             <a href="/tags/LightGBM/" rel="tag"># LightGBM</a>
+          
+            <a href="/tags/LTR/" rel="tag"># LTR</a>
+          
+            <a href="/tags/NDCG/" rel="tag"># NDCG</a>
           
         </div>
       
@@ -975,9 +1343,9 @@ n_{feature} \cdot n_{bin})\)</span>。如果采用 <code>All-Reduce</code>
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives%7C%7Carchive">
+                <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1033,9 +1401,10 @@ n_{feature} \cdot n_{bin})\)</span>。如果采用 <code>All-Reduce</code>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#decision-tree"><span class="nav-number">1.</span> <span class="nav-text">Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.1.</span> <span class="nav-text">映射表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">基础算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#id3-%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">ID3 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c4.5-%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">C4.5 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart-%E7%AE%97%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">CART 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradient-boosting-gb"><span class="nav-number">2.</span> <span class="nav-text">Gradient Boosting (GB)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E8%A1%A8%E7%A4%BA-1"><span class="nav-number">2.1.</span> <span class="nav-text">映射表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B-gradient-boosting"><span class="nav-number">2.2.</span> <span class="nav-text">学习过程 (Gradient Boosting)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradient-boosting-desicion-tree-gbdt"><span class="nav-number">2.3.</span> <span class="nav-text">Gradient Boosting Desicion
-Tree (GBDT)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost"><span class="nav-number">3.</span> <span class="nav-text">XGBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-number">3.1.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">精确贪心算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95-weighted-quantile-sketch"><span class="nav-number">3.3.</span> <span class="nav-text">近似算法 (Weighted Quantile
-Sketch)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96"><span class="nav-number">3.4.</span> <span class="nav-text">其他优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lightgbm"><span class="nav-number">4.</span> <span class="nav-text">LightGBM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goss"><span class="nav-number">4.1.</span> <span class="nav-text">GOSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#efb"><span class="nav-number">4.2.</span> <span class="nav-text">EFB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#leaf-wise-learning"><span class="nav-number">4.3.</span> <span class="nav-text">Leaf-wise Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#histogram-substraction"><span class="nav-number">4.4.</span> <span class="nav-text">Histogram Substraction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feature-parallel"><span class="nav-number">4.5.</span> <span class="nav-text">Feature Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-parallel"><span class="nav-number">4.6.</span> <span class="nav-text">Data Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#voting-parallel"><span class="nav-number">4.7.</span> <span class="nav-text">Voting Parallel</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gbdt-%E7%9B%B8%E5%85%B3%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">GBDT 相关算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#decision-tree"><span class="nav-number">1.1.</span> <span class="nav-text">Decision Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.1.1.</span> <span class="nav-text">映射表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">基础算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#id3-%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">ID3 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c4.5-%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.4.</span> <span class="nav-text">C4.5 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cart-%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.5.</span> <span class="nav-text">CART 算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradient-boosting-gb"><span class="nav-number">1.2.</span> <span class="nav-text">Gradient Boosting (GB)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%A0%E5%B0%84%E8%A1%A8%E7%A4%BA-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">映射表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B-gradient-boosting"><span class="nav-number">1.2.2.</span> <span class="nav-text">学习过程 (Gradient Boosting)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradient-boosting-desicion-tree-gbdt"><span class="nav-number">1.2.3.</span> <span class="nav-text">Gradient Boosting Desicion
+Tree (GBDT)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xgboost"><span class="nav-number">1.3.</span> <span class="nav-text">XGBoost</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-number">1.3.1.</span> <span class="nav-text">理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">精确贪心算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%91%E4%BC%BC%E7%AE%97%E6%B3%95-weighted-quantile-sketch"><span class="nav-number">1.3.3.</span> <span class="nav-text">近似算法 (Weighted Quantile
+Sketch)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.4.</span> <span class="nav-text">其他优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lightgbm"><span class="nav-number">1.4.</span> <span class="nav-text">LightGBM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goss"><span class="nav-number">1.4.1.</span> <span class="nav-text">GOSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#efb"><span class="nav-number">1.4.2.</span> <span class="nav-text">EFB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#leaf-wise-learning"><span class="nav-number">1.4.3.</span> <span class="nav-text">Leaf-wise Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#histogram-substraction"><span class="nav-number">1.4.4.</span> <span class="nav-text">Histogram Substraction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feature-parallel"><span class="nav-number">1.4.5.</span> <span class="nav-text">Feature Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-parallel"><span class="nav-number">1.4.6.</span> <span class="nav-text">Data Parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#voting-parallel"><span class="nav-number">1.4.7.</span> <span class="nav-text">Voting Parallel</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gbdt-%E5%9C%A8-ranking-%E9%A2%86%E5%9F%9F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">GBDT 在 Ranking 领域的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ranknet"><span class="nav-number">2.1.</span> <span class="nav-text">RankNet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ir-%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="nav-number">2.2.</span> <span class="nav-text">IR 评价指标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambdarank"><span class="nav-number">2.3.</span> <span class="nav-text">LambdaRank</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#delta-ndcg-%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.1.</span> <span class="nav-text">\(\Delta
+NDCG\) 计算方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9-lambda_ij-%E7%9A%84%E6%94%B9%E8%BF%9B"><span class="nav-number">2.3.2.</span> <span class="nav-text">对 \(\lambda_{ij}\) 的改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">2.3.3.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mart"><span class="nav-number">2.4.</span> <span class="nav-text">MART</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambdamart"><span class="nav-number">2.5.</span> <span class="nav-text">LambdaMART</span></a></li></ol></li></ol></div>
             
 
           </div>
