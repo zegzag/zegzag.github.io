@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CTR," />
+  <meta name="keywords" content="CTR,Recommend System,Collaborative Filtering,Multitask Learning," />
 
 
 
@@ -79,15 +79,20 @@
 
 
 
+<meta name="description" content="这篇文档系统地总结 CTR 领域内的经典文章。主要提取出每篇文章如何分析问题并提出解决方案的，以及数学&#x2F;工业上的理论创新。不然容易仅仅抓住各种 fancy 的模型结构而忽略问题的本质所在。一些论文理论很简单，简单到无法应用在工业场景，但是理论创新和对问题的分析和剖析很厉害，有种开山鼻祖的感觉，思路可以很好地迁移到其他场景。一些论文模型很 fancy，在工业界有比较好的应用，但都是针对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CTR">
 <meta property="og:url" content="http://example.com/2021/12/18/CTR/index.html">
 <meta property="og:site_name" content="泽">
+<meta property="og:description" content="这篇文档系统地总结 CTR 领域内的经典文章。主要提取出每篇文章如何分析问题并提出解决方案的，以及数学&#x2F;工业上的理论创新。不然容易仅仅抓住各种 fancy 的模型结构而忽略问题的本质所在。一些论文理论很简单，简单到无法应用在工业场景，但是理论创新和对问题的分析和剖析很厉害，有种开山鼻祖的感觉，思路可以很好地迁移到其他场景。一些论文模型很 fancy，在工业界有比较好的应用，但都是针对">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-12-18T11:17:00.000Z">
-<meta property="article:modified_time" content="2021-12-18T11:17:00.000Z">
+<meta property="article:modified_time" content="2022-09-30T11:17:00.000Z">
 <meta property="article:author" content="Z">
 <meta property="article:tag" content="CTR">
+<meta property="article:tag" content="Recommend System">
+<meta property="article:tag" content="Collaborative Filtering">
+<meta property="article:tag" content="Multitask Learning">
 <meta name="twitter:card" content="summary">
 
 
@@ -306,8 +311,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2021-12-18T19:17:00+08:00">
-                2021-12-18
+              <time title="更新于" itemprop="dateModified" datetime="2022-09-30T19:17:00+08:00">
+                2022-09-30
               </time>
             
           </span>
@@ -345,7 +350,646 @@
       
 
       
-        
+        <p>   这篇文档系统地总结 CTR
+领域内的经典文章。主要提取出每篇文章<strong>如何分析问题</strong>并提出解决方案的，以及数学/工业上的理论创新。不然容易仅仅抓住各种
+fancy
+的模型结构而忽略问题的本质所在。一些论文理论很简单，简单到无法应用在工业场景，但是理论创新和对问题的分析和剖析很厉害，有种开山鼻祖的感觉，思路可以很好地迁移到其他场景。一些论文模型很
+fancy，在工业界有比较好的应用，但都是针对一个 case
+提一个修补的点，复杂而臃肿，可迁移性差。</p>
+<ul>
+<li>泛化性、特征交互：
+<ul>
+<li>FM</li>
+</ul></li>
+<li>记忆性和泛化性：
+<ul>
+<li>Wide&amp;Deep</li>
+</ul></li>
+<li>特征交互：
+<ul>
+<li>FFM、(NFM、AFM、)
+DeepFM、(xDeepFM)、DeepCross、AutoInt、FibiNet</li>
+</ul></li>
+<li>从用户行为(User 对 Item 的操作)角度来进行特征交互：
+<ul>
+<li>DIN (DIEN、DSIN、MIMN、SIM)</li>
+</ul></li>
+<li>点击似然：
+<ul>
+<li>DSSM</li>
+</ul></li>
+<li>多任务：
+<ul>
+<li>MMoE、ESMM</li>
+</ul></li>
+</ul>
+<h2 id="fm">FM</h2>
+<h3 id="问题背景">问题背景</h3>
+<p>   FM 模型主要是为了解决 <strong>稀疏高纬特征</strong>
+下的预估问题。高维稀疏特征在 <strong>推荐系统</strong>
+领域里很常见，所以作者用了推荐系统的样本示意。但 FM
+不仅仅在推荐领域内能用，在任何具有高维稀疏场景下的预估问题都能用 FM
+模型。FM 首先提出了用隐变量做泛化。</p>
+<p>模型结构：</p>
+<p><span class="math display">\[
+  \hat{y} = b + \sum_{i=1}^nw_ix_i + \sum_{i=1}^n\sum_{j=i+1}^n\langle
+\mathbf{v_i},\mathbf{v_j}\rangle \cdot x_ix_j
+\]</span></p>
+<ul>
+<li>给你一个输入变量 <span
+class="math inline">\(\mathbf{x}\)</span>，你能否用
+<code>tensorflow</code> 或 <code>pytorch</code> 写出该公式？</li>
+<li>注意这里的一阶项 (Memorization) 和二阶交互项
+(Generalization)，可对比后来的 Wide &amp; Deep 的模型。</li>
+</ul>
+<h3 id="从深度神经网络模型结构来看-fm-模型">从深度神经网络模型结构来看
+FM 模型</h3>
+<p>   作者给了一个推荐系统领域的样本的图</p>
+<p><img src = "/images/FM_sample.png" width = 480></p>
+<p>   Factorization Machines 模型可以看做是 <strong>Embedding +
+Feature-Interaction</strong> 模型，即特征交互+Embedding模型
+(特征交互方式在后续有大量的论文创新)，论文里的特征交互只使用了 2-d
+特征交互。对于一个特征 <span class="math inline">\(\mathbf{x}\in
+R^n\)</span> (行向量) ，交互出来的特征个数为 <span
+class="math inline">\(n^2\)</span>。可以这样看 <span
+class="math inline">\(X_{n\times n} = \mathbf{x}^T\mathbf{x}\)</span>
+(向量外积)，这样交互出来的矩阵里面上三角元素
+(不含对角线)。而对于交互特征的权重为对应两个原始特征的 Embedding
+的点积。<br />
+   在推荐系统里，我们通常有两类特征: User类特征 <span
+class="math inline">\(\mathbf{x}_U\)</span> 和 Item 类特征 <span
+class="math inline">\(\mathbf{x}_I\)</span>。深度学习大行其道的今天，许多模型都将焦点放在了如何交互这两类特征上。图里一共有
+<em>蓝、红、黄、绿、棕红</em> 四类特征。实际上 <em>蓝、黄、绿、棕红</em>
+可以归为 <span class="math inline">\(\mathbf{x}_U\)</span>，<em>红</em>
+为 <span
+class="math inline">\(\mathbf{x}_I\)</span>。这张图实际上是直接把两类特征
+<code>concat</code> 起来: <span class="math inline">\(\mathbf{x} =
+[\mathbf{x}_U, \mathbf{x}_I]\)</span>。假设 User 类特征有 <span
+class="math inline">\(N_U\)</span> 个，Item 类特征有 <span
+class="math inline">\(N_I\)</span> 个，特征总数为 <span
+class="math inline">\(n = n_U +n_I\)</span>。那么 FM 模型需要一个 <span
+class="math inline">\(V_{n\times n}\)</span> 的 <code>Embedding</code>
+矩阵。原始公式的神经网络结构的表示法 (矩阵表示法) 为：</p>
+<p><span class="math display">\[
+  \hat{y} = b + \mathbf{w}\cdot \mathbf{x}^T +
+sum[[(VV^T)(\mathbf{x}^T\mathbf{x})] \odot E_{sup}]
+\]</span></p>
+<p>其中 <span class="math inline">\(V\)</span> 是 <code>Embedding</code>
+矩阵，<span class="math inline">\(\odot\)</span> 是
+<code>element-wise product</code>，<span
+class="math inline">\(E_{sup}\)</span>
+是不含对角线的上三角单位阵。写成这种矩阵形式的时间复杂度为 <span
+class="math inline">\(O(k*n^2)\)</span></p>
+<h3 id="优化">优化</h3>
+<p>   作者对交叉项做了数学上的公式推导化简，将复杂度降为了 <span
+class="math inline">\(O(k*N)\)</span>，这里只贴结果：</p>
+<p><span class="math display">\[
+  \sum_{i=1}^n\sum_{j=i+1}^n\langle \mathbf{v_i},\mathbf{v_j}\rangle
+\cdot x_ix_j = \frac{1}{2}\sum_{f=1}^k[(\sum_{i=1}^nv_{if}x_i)^2 -
+\sum_{i=1}^nv_{if}^2x_i^2]
+\]</span></p>
+<ul>
+<li>能否用矩阵形式写出优化后的模型结构？</li>
+</ul>
+<h3 id="学习">学习</h3>
+<p>   容易计算出 <span class="math inline">\(\frac{\partial
+\hat{y}}{\partial \theta}, \theta=b,w_i,v_{if}\)</span>
+的各项偏导为：</p>
+<p><span class="math display">\[
+   \frac{\partial \hat{y}}{\partial \theta} =
+    \begin{cases}
+      1,\ \theta = b \\
+      x_i,\ \theta = w_i\\
+      x_i\sum_{j=1}^nv_{jf}x_j - v_{if}x_i^2,\ \theta = v_{if}
+    \end{cases}
+\]</span></p>
+<p>那么针对损失函数 <span class="math inline">\(l(y,
+\hat{y})\)</span>，我们有有梯度下降法：</p>
+$$
+<span class="math display">\[\begin{aligned}
+  &amp; \theta \leftarrow \theta - \eta\frac{\partial l}{\partial
+\theta} \\
+
+  &amp; \theta \leftarrow \theta - \eta \frac{\partial l}{\partial
+\hat{y}}\frac{\partial \hat{y}}{\partial \theta}  
+\end{aligned}\]</span>
+<p>$$</p>
+<h3 id="为何能解决稀疏性问题">为何能解决稀疏性问题</h3>
+<p>   假如我们把交互项的权重从 <span
+class="math inline">\(\langle\mathbf{v}_i, \mathbf{v}_j \rangle\)</span>
+改为 <span
+class="math inline">\(w_{ij}\)</span>。那么如果针对一个样本，其特征
+<span class="math inline">\(x_i = 1\ \&amp;\ x_j = 1\)</span>
+训练时没有出现但是预测时出现了。前者就学不到这个 <span
+class="math inline">\(w_{ij}\)</span> 的权重。但后者就可以，因为可能
+<span class="math inline">\(x_i = 1\ \&amp;\ x_k = 1\)</span>
+出现过，<span class="math inline">\(x_l =1\ \&amp; \ x_j = 1\)</span>
+出现过。那么我们就能够学到 <span
+class="math inline">\(\mathbf{v}_i\)</span> 和 <span
+class="math inline">\(\mathbf{v}_j\)</span>
+的向量。主要原因是<strong>通过 <code>Embedding (Factorizing)</code>
+将相互独立的权重 <span class="math inline">\(w_{ij}\)</span>
+给非独立化了</strong>。</p>
+<h3 id="与其他经典算法对比">与其他经典算法对比</h3>
+<p>   论文还给出了 FM 和
+SVM、SVM++、MF、PITF、FPMC算法的类比，这里不展开。</p>
+<h2 id="ffm">FFM</h2>
+<p>   FFM 的思想非常简单。在 <span class="math inline">\(n\)</span>
+个特征中，不同的特征可能属于不同的域
+(field)，那么不同域的交互方式应该不一样 (FM
+把所有特征看做是同一个域）。比如我们对一个 categorical 特征 (C 个值)
+进行 one-hot 编码后，会生成 C 个 feature，则这 C 个 feature 属于同一个域
+(field)，即该原始 categorical 特征。<br />
+   假设所有的 <span class="math inline">\(n\)</span> 个 feature 属于
+<span class="math inline">\(f\)</span> 个域，那么针对每个 feature <span
+class="math inline">\(i\)</span>，FM 只有一个隐向量 <span
+class="math inline">\(\mathbf{v}_i\)</span>，而 FFM 有 <span
+class="math inline">\(f\)</span> 个隐向量 <span
+class="math inline">\(\mathbf{v}_{if}\)</span>，当与其他特征交互时，选择对应的两个域下的隐向量
+<span class="math inline">\(\mathbf{v}_{if_j},
+\mathbf{v}_{jf_i}\)</span> 来进行交互。即 <span
+class="math inline">\(\hat{y}\)</span> 改成如下形式：</p>
+<p><span class="math display">\[
+  \hat{y} = b + \sum_{i=1}^nw_ix_i+\sum_{i=1}^n\sum_{j=i+1}^n\langle
+\mathbf{v}_{if_j}, \mathbf{v}_{jf_i}\rangle\cdot x_ix_j
+\]</span></p>
+<ul>
+<li>模型参数复杂度为：<span
+class="math inline">\(O(kfn)\)</span>，由于引入 field
+信息不能化简，计算复杂度为 <span
+class="math inline">\(O(kfn^2)\)</span></li>
+<li>SGD 过程就不详细赘述了</li>
+</ul>
+<h2 id="wide-deep">Wide &amp; Deep</h2>
+<p>  个人觉得 Wide &amp; Deep 最大的亮点就是归纳出了
+<strong>低阶(一阶)特征和高阶交叉特征的 <em>各自作用</em>
+是啥</strong>。许多论文都只将注意力关注在如何交叉特征上，特征是高阶还是低阶上了。论文指出：模型需要同时具有
+<strong>记忆性 (<code>Memorization</code>)</strong> 和 <strong>泛化性
+(<code>Generalization</code>)</strong>。</p>
+<ul>
+<li>记忆性：指模型记住训练数据集 (<code>training dataset</code>)
+中已有的数据之间的相关关系。</li>
+<li>泛化性：指模型能够把学出来的相关性很好地迁移到尚未出现的数据上。</li>
+</ul>
+<p>除此之外，论文对推荐系统架构、训练过程、样本预处理也有论述，都是比较好的学习资料。</p>
+<h3 id="模型结构">模型结构</h3>
+<p>   <code>Memorization</code>
+一般是表现在低阶特征项上的，比如针对长尾情况：样本里的数据出现得很少，那么模型只需要很少量的参数和学习就能够容易的记住这些数据里的关系。
+<code>Generalization</code> 一般是通过
+<code>Embedding (Factorization)</code> 来表现的，但是容易出现
+<code>over-generalized</code>
+的情况，比如针对长尾数据，当大量的非长尾的一般数据训练出了对应的隐向量后，长尾结果上的预估情况就会被这些隐向量带偏。这时候就需要模型的
+<code>Memorization</code> 去纠正。</p>
+<p>   泛化性除了用一些 Factorization
+技术去解决外，一个很直观的方案就是使用更加 <code>Generalized</code>
+的特征，比如把 ID 类 (UserID, ItemID) 类的特征换成对应的 Context
+Feature。比如年龄、性别、Item属性等。这也是一种泛化手段，同时能够解决
+<em>冷启动</em> 问题。</p>
+<p>   Wide &amp; Deep 的模型结构如下：</p>
+<p><img src = "/images/Wide_And_Deep.png"></p>
+<ul>
+<li><p>Wide 部分包括原始特征 (<code>raw feature</code>) 和变换特征
+(<code>transformed features</code>)。作者提到了一种常用的变换方式就是
+<code>cross-product transformation</code>，其实就是把 <span
+class="math inline">\(n\)</span> 个特征的 <span
+class="math inline">\(k\)</span> 阶交叉统一成一个数学公式：</p>
+<p><span class="math display">\[
+  \begin{aligned}
+    x_{new} &amp;= \phi_k(x) = \prod_{i=1}^nx_{i}^{c_{ik}} \\
+    c_{ik} &amp;= 0, 1
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>我们来看二阶交叉 (就是 FM 里的那种交叉)。这里针对每个 <span
+class="math inline">\(x_{new}\)</span>，连乘 <span
+class="math inline">\(\prod\)</span> 项中，只有两个 <span
+class="math inline">\(c_{ik} = 1\)</span>。<span class="math inline">\(k
+= C_{N}^{N} = N(N-1)/2\)</span>，即 <span
+class="math inline">\(c_{ik}\)</span> 一共有 <span
+class="math inline">\(\frac{N(N-1)}{2}\)</span> 种组合方式，对应于 <span
+class="math inline">\(\frac{N(N-1)}{2}\)</span> 种二阶特征交互。</li>
+<li>变换特征需要人工的特征工程</li>
+<li>Deep 部分是直接把 <code>Embedding</code> 向量 <code>concat</code>
+起来然后喂进 DNN。</li>
+</ul></li>
+</ul>
+<h3 id="推荐系统架构与训练过程">推荐系统架构与训练过程</h3>
+<p>   论文给贴出了推荐系统架构和训练过程的大致框架：</p>
+<ul>
+<li><p>推荐系统
+<img src = "/images/Wide_And_Deep_RecSys.png" width = 480></p>
+<ul>
+<li>Query 是每个 User 用户</li>
+<li>Wide &amp; Deep 是用在了精排阶段</li>
+<li>训练样本从线上日志里面抽取</li>
+</ul></li>
+<li><p>训练流程</p>
+<p><img src = "/images/Wide_And_Deep_TrainingPipeline.png" width = 480></p></li>
+</ul>
+<h3 id="样本生成">样本生成</h3>
+<ul>
+<li>作者将所有的 Categorical Features 映射成 IDs。</li>
+<li>Numerical Features 用分位数进行归一化</li>
+<li><strong>App 的 <em>一次展现</em> 对应
+<em>一个样本</em></strong>，如果 App 被下载了，那么其对应的 Label 为
+1，如果没被下载，则为 0。关于 <strong>样本生成</strong>
+可以单独拿出来讲一篇文章了，因为不同于学术领域已经生成好的各种样本，生产领内数据是通过
+<strong>前端埋点的用户行为</strong> 和 <strong>后端的请求日志</strong>
+产生的，如何组合这批数据非常讲究。</li>
+</ul>
+<h2 id="nfm">NFM</h2>
+<p>   NFM 首次把 FM 纳入 Nerual Network
+框架中。论文的创新点也非常简单，就是把 FM 的二阶交叉项用 DNN
+来表示。然而改成 DNN
+的话模型结构可以千遍万换，还是要从如何解决问题来入手设计模型结构。NFM
+比较好的分析了各大主流模型的优缺点。模型的表现力关键在于两点：1.
+特征交互 (<code>Feature Interactioin</code>)。2. 非线性性
+(<code>Nonlinearity</code>)。</p>
+<ul>
+<li>如果我们把交互出来的特征 <span class="math inline">\(x_ix_j\)</span>
+看做是一个特征的话，FM、FFM、AFM 等着眼于特征交互的模型仍是
+<strong>线性</strong> 模型。</li>
+<li>如 Wide &amp; Deep 或者 NCF 模型，着眼于解决非线性性，只是把
+<code>Embedding</code> 特征 <code>concat</code>
+起来，这种携带的特征交互信息太少。</li>
+</ul>
+<p>对此，作者提出了一个叫做 <code>Bi-Interaction Layer</code>
+的网络结构。用白话来统一解释 NFM 和 FM 在二阶交叉项上的异同：</p>
+<ul>
+<li>FM 对二阶交叉项对隐向量是先 <code>element-wise</code> 乘起来，再
+<strong>直接求和</strong>；</li>
+<li>而 <code>Bi-Interaction Layer</code> 对二阶交叉项对隐向量是先
+<code>element-wise</code> 乘起来，然后再过几层 FCN 网络结构来学习
+<code>Nonlinearity</code>。</li>
+</ul>
+<p><img src = "/images/NFM_BInteraction.png" width = 480></p>
+<p>就这么简单。用数学公式表示为：</p>
+<p><span class="math display">\[
+  \hat{y} = b + \sum_{i=1}^nw_ix_i + FCN_n(f_{BI}(\mathbf{v},
+\mathbf{x})) \\
+  f_{BI}(\mathbf{v}, \mathbf{x}) =
+\sum_{i=1}^n\sum_{j=i+1}^n(\mathbf{v}_ix_i) \odot (\mathbf{v}_j x_j)
+\]</span></p>
+<ul>
+<li>其中 <span class="math inline">\(f_{BI}\)</span> 输出的是个向量，FCN
+表示 <code>Fully Connected Layer</code>，<span
+class="math inline">\(\odot\)</span> 表示
+<code>element-wise product</code></li>
+<li>FM 就是把 <span class="math inline">\(FCN\)</span> 改成 <span
+class="math inline">\(\sum_{f=1}^k\)</span>，即对隐向量的所有维度上的值直接
+<code>reduce_sum</code></li>
+<li>二阶交叉项上把时间复杂度优化到 <span
+class="math inline">\(O(k*n)\)</span> 的操作在此场景仍然适用。</li>
+</ul>
+<h2 id="deepfm">DeepFM</h2>
+<p>   DeepFM
+将主要经理放在特征交互上。论文指出，过去的一些模型，要么特征交互做得太低价
+(诸如 FM，FFM)，要么特征交互做得太高阶 (FNN，PNN)，要么需要专家特征工程
+(Wide &amp; Deep)。</p>
+<p>   DeepFM 将低价和高阶特征交互统一在一个神经网络模型框架里。其实就是
+DeepFM = FM + DNN。</p>
+<p><span class="math display">\[
+  \hat{y} = sigmoid(\hat{y}_{FM} + \hat{y}_{DNN})
+\]</span></p>
+<p>如图：</p>
+<p><img src = "/images/DeepFM_Model.png" width = 480></p>
+<ul>
+<li>不用 FM 进行预训练初始化隐向量 (把 FM 纳入框架一起训练)</li>
+<li>FM 部分和 Deep 部分共用一套 Embedding 矩阵 (和 Wide &amp; Deep
+不同)</li>
+</ul>
+<h3 id="fm-部分">FM 部分：</h3>
+<p><img src = "/images/DeepFM_FM.png" width = 480></p>
+<ul>
+<li>黑线部分就是 FM 的一阶特征的线性部分</li>
+<li>红线部分就是 FM 的二阶特征交叉的部分
+(图里面没给出隐向量和原特征值的相乘过程)</li>
+</ul>
+<h3 id="deep-部分">Deep 部分：</h3>
+<p><img src = "/images/DeepFM_Deep.png" width = 480></p>
+<ul>
+<li>从图上看起来，Deep 部分的所谓高阶特征交叉就是把所有 Embedding 隐向量
+<code>concat</code> 起来 (论文里没说)</li>
+</ul>
+<h2 id="ncf">NCF</h2>
+<p>  推荐系统即：要针对每一个 <code>User</code>: <span
+class="math inline">\(U_i\)</span>，推荐一批用户感兴趣的物品
+<code>Items</code>: <span class="math inline">\([Item_1, ...,
+Item_n]\)</span>。假设每个 User 和 每个 Item 的特征表示分别为 <span
+class="math inline">\(\mathbf{x}_{U_i}\)</span> 和 <span
+class="math inline">\(\mathbf{x}_{I_j}\)</span>。一个直观的建模思路就是
+<strong>如何交互这两类</strong>
+特征。而之前的模型都是把该两类特征混在一起，不加区别讨论特征交互问题。这种思路直接看预估问题似乎没什么，但是应用到推荐系统里时，将论文里的方法实施起来，在特征工程、模型搭建时，可能还要多拐个弯才能搞清对应的关系。</p>
+<p>  这边文章直接从推荐系统的研究场景入手，设计模型结构。作者先是设计了基础的协同过滤网络，然后又把
+MF (Matrix Factorization)
+纳入进来。论文属于桥接性质的文章，没什么新意，直接贴图。</p>
+<ul>
+<li><p>Neural collaborative Filtering framework</p>
+<p><img src = "/images/NCF_Base.png"></p>
+<ul>
+<li>上诉的 <span class="math inline">\(U\)</span> 和 <span
+class="math inline">\(I\)</span> 进入 <code>CF Layer</code> 时是
+<code>concat</code> 操作</li>
+</ul></li>
+<li><p>Neural matrix factorization model</p>
+<p><img src = "/images/NCF_MF.png"></p>
+<ul>
+<li>这两个网络的 <span class="math inline">\(User\)</span> 层和 <span
+class="math inline">\(Item\)</span> 层使用纯粹的 <code>ID</code>
+特征。</li>
+<li>对于 <code>context-aware</code>, <code>content-based</code>,
+<code>neighbor-based</code> 类特征，可直接迁移。</li>
+<li>MF 部分和 Deep 部分分别使用两套不同的 Embedding。</li>
+</ul></li>
+</ul>
+<h2 id="autoint">AutoInt</h2>
+<p>   好的推荐系统需要处理好两大问题： 1. 极度稀疏的特征。 2.
+需要非常高阶的特征交互信息。</p>
+<p>稀疏性问题可以通过 <code>Embedding(Factorization)</code>
+来解决，而高阶的特征交互方式则可以有非常多的变种，如何设计出一种
+<strong>阶数可以很高、又能有较好的解释性、同时可以实现端到端的训练</strong>
+的特征交互方式就是一个众望所归的 <code>idea</code>。AutoInt
+正是为此设计出来的，通过将 <code>Self-Attention</code>
+结构引入推荐领域，模型便可以同时拥有上诉三大良好的特性 (还真是 Attention
+is all you need 啊)。有了这个思路以后，模型结构自然成形。</p>
+<p>   特征交互可以用如下的数学符号来表示：</p>
+<p><span class="math display">\[
+  x_{new} = g(x_1, ..., x_n)
+\]</span></p>
+<ul>
+<li>Wide &amp; Deep 里的 <span class="math inline">\(g =
+\prod_{i=1}^nx_i^{c_{ik}}\)</span>，即 n阶乘积交互方式。</li>
+</ul>
+<p>模型结构：</p>
+<p><img src = "../images/AutoInt_Model.png" width = 480></p>
+<ul>
+<li>输入的 embedding 分为三类：
+<ul>
+<li>One-Hot 类型特征：<span class="math inline">\(\mathbf{e}_i =
+V\mathbf{x}_i\)</span>，<span class="math inline">\(V\)</span> 是
+Embedding 矩阵。</li>
+<li>Multi-Hot 类型特征 (Categorical 类型，例如 <span
+class="math inline">\([1,0,1,0]\)</span>)：<span
+class="math inline">\(\mathbf{e}_i =
+\frac{1}{q}V\mathbf{x}_i\)</span>，论文里写得不是很清楚，应该是对应
+Multi-Hot 下 Embedding 的均值。</li>
+<li>Numerical 类型特征： <span class="math inline">\(e_i =
+x_i\mathbf{v}_i\)</span>。对应 Embedding 向量乘以该特征的数值。</li>
+</ul></li>
+<li>MultiHead 结构请参考 MultiHead 篇幅，此处不再赘述。</li>
+<li>解释性可以通过 <code>attention score</code>
+来哪两类特征之间的交互关系是最重要的 (搜索领域里通常 query 和 doc
+的文本交互关系是最重要的)</li>
+</ul>
+<h2 id="din">DIN</h2>
+<p>   电商推荐领域，针对每个用户 <code>User</code> 推荐的
+<code>Item</code> 而言，用户 <code>User</code> 都有着丰富的针对各式各样
+<code>Items</code> 的历史行为
+(其实不止是电商推荐领域，搜索、视频推荐都有)。假设用户<strong>历史上交互</strong>的多种
+<code>Items</code> 记为：<span class="math inline">\(\mathbf{I} = [I_1,
+..., I_n]\)</span>，<strong>最新推荐</strong>的一个 <code>Item</code>
+记为 <span class="math inline">\(A\)</span>。如何评估 <span
+class="math inline">\(A\)</span> 的合理性呢？DIN 认为：<strong><span
+class="math inline">\(A\)</span> 一定是命中了用户历史上对于某个 Item
+的兴趣才导致了用户这次可能会点击 <span
+class="math inline">\(A\)</span></strong>
+(思考下这个观点的合理性和缺陷性)。有几个关键性问题论文里没有说，这里提一下：</p>
+<ol type="1">
+<li>假设这次推荐的 <span
+class="math inline">\(A\)</span>，用户历史上曾经点击过，即出现在 <span
+class="math inline">\(\mathbf{I}\)</span>
+中，会存在标签泄露吗？会不会使得模型全部学到了历史上的 <span
+class="math inline">\(A\)</span> 上面去了？</li>
+<li>用户行为存在高噪声，可能突然在某天就产生了一个新兴趣，特别是针对电商领域，低频用户购买了一件商品后很长一段时间都不会对该商品感兴趣，有的商品会被频繁的重复购买(廉价的小件)，但有的商品购买了就不会再购买(贵重的大件)，对于这种低频长尾大件的数据，历史行为几乎没有参考性，模型该怎么办？</li>
+</ol>
+<h3 id="模型结构-1">模型结构</h3>
+<p>Anyway，这里给出模型结构：</p>
+<p><img src = "../images/DIN.png"></p>
+<ul>
+<li>左边是 BaseLine，右边是 DIN。</li>
+<li>所谓的 Intrest 是指：当前被推荐的 Item <strong>命中</strong>
+用户历史上的 Item (代表用户的兴趣)。即用 Item 对 用户历史行为做
+attention，而不是用 User 对用户历史行为做 attention</li>
+<li>这里的 attention 没有加 softmax 归一化，用来模拟用户的兴趣强度 (NLP
+领域内语言大都具有比较规范的语法结构，所以 attention 加 softmax
+是比较合理的。但是用户行为会变动很大(一般是极长尾的分布)，这时候加
+softmax 就不太合理)</li>
+<li>attention 比较类似门(Gate)机制。</li>
+</ul>
+<h3 id="activation-unit">Activation Unit</h3>
+<p>   值得细讲的是这里的激活单元(Activation
+Unit)，论文里面没有说太清楚。每个 Activation Unit 输入是一个历史的
+<code>Item</code> <span class="math inline">\(I\)</span> 和 当前被推荐的
+<code>Item</code> <span
+class="math inline">\(A\)</span>，两者首先做一次外积 (Out Product)
+(外积会形成一个矩阵，表征隐向量里面每个维度的两两交互关系)，之后外积上面的绿色的小矩形应该是指
+<code>Flatten</code> 操作(论文里没说，图里也没标(无力吐槽))，然后将
+<code>Flatten</code> 后的 <strong>外积向量</strong> 和原 <span
+class="math inline">\(I,\ A\)</span> <code>concat</code>
+一起过全连接层。</p>
+<h3 id="数学上的小-trick">数学上的小 trick</h3>
+<ul>
+<li><p>Mini-Batch Aware Regularization</p>
+<p>针对大规模稀疏 Embedding 矩阵，每次 mini-batch 训练时，只有非 0 的
+one-hot 处对应的 Embedding 向量会被更新，所以也只需要对这部分向量做
+<span class="math inline">\(L1/L2\)</span> 正则化 (每次mini-batch
+正则化全量的 Embedding 向量也实现不了)。</p></li>
+<li><p>Dice 激活函数： <span class="math display">\[
+  \begin{aligned}
+    f(s) = \begin{cases}
+      s,\ s&gt;0\\
+      \alpha s,\ s\leq 0
+    \end{cases} \rightarrow f(s) &amp;= p(s)s+(1-p(s))\alpha s \\
+    p(s) &amp;= \frac{1}{1+e^{-\frac{s-E[s]}{\sqrt{Var[s]}+\epsilon}}}
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>训练时 <span class="math inline">\(E[s]\)</span> 和 <span
+class="math inline">\(Var[s]\)</span> 是每个 mini-batch 里输入的 均值 和
+方差。</li>
+<li>预测时 <span class="math inline">\(E[s]\)</span> 和 <span
+class="math inline">\(Var[s]\)</span> 是输入的移动平均值</li>
+<li>Dice 函数使得激活函数可以随着数据的分布的变动而变动
+<ul>
+<li>Dice 函数的效能值得商榷。 ## DSSM</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>   DSSM 是用深度学习对主题模型 (诸如 LSA，pLSA)
+进行扩展。模型结构也是异常简单，一句话就概括完了：<strong>用全连接层分别映射
+Query 和 Doc 至相同的隐向量表示，然后用 cosin
+相似度度量计算相似度，学习时用 cosin
+相似度去拟合点击后验</strong>。<br />
+   前面的模型是直接去学一个打分 score (一般都是 sigmoid 打分)。而 DSSM
+却是从建模 <strong>query 和 doc 的相关性</strong> 出发，用 cosin
+去打分，而拟合的 <code>label</code>
+是用户点击行为，从而保证了最后一层输出 <strong>隐向量</strong>
+的语义相关性含义
+(进而这些向量在许多地方都可以拿来使用)，这是一种全新的建模范式。如何把利用
+<code>点击</code> 把 <code>(向量间的)相关性</code>学习出来，是 DSSM
+的核心思路所在 (有点像 word2vec)。</p>
+<p>关键是有几个点要搞清：</p>
+<ol type="1">
+<li>模型的输入是什么，embedding 吗？</li>
+<li>Word Hashing 具体过程是怎样的</li>
+<li>样本怎么设计的。</li>
+</ol>
+<p>模型结构：</p>
+<p><img src = "/images/DSSM.png"></p>
+<p>对上诉问题的回答：</p>
+<ol type="1">
+<li><p>由论文里可以看出，模型的输入不是
+embedding，而是词袋模型下的文档的全局词向量的表示</p></li>
+<li><p>Word Hashing 论文里说的比较清楚。首先对一个 word 的前后加上标记
+<code>#</code>，比如 <code>good</code> 就变成了
+<code>#good#</code>，然后对每个词用 <code>3-gram</code> 语法模型拆成
+subword . <code>#good#</code> 就被拆成了
+<code>[#go, goo, ood, od#]</code>。论文讲到这里就停止了。</p>
+<ul>
+<li>剩下的应该是：统计全局的 subword 组成的 subword-bag，然后用该
+subword-bag vector 去表示每篇文档，这样就形成了图里面的 Word Hasing
+这一层的向量。</li>
+<li>字母的 <code>n-gram</code>
+在泛化性上有一定的提升，可以处理新词问题。</li>
+</ul></li>
+<li><p><strong>样本生成</strong>：<br />
+  
+样本生成和训练过程这块作者说得十分模糊，许多博客也没谈。而样本生成却是这个模型建模思路与传统的预估问题重要区别所在。也正是
+DSSM 的精髓所在<br />
+   模型的最后输出层为一个 128 维的向量 <span
+class="math inline">\(\mathbf{v}\)</span>。计算 Query 和 Doc 的 cosin
+相似度：</p>
+<p><span class="math display">\[
+   R(q, d_i) =
+\frac{\mathbf{v}_q\mathbf{v}_{d_i}^T}{|\mathbf{v}_q||\mathbf{v}_{d_i}|}
+\]</span></p>
+<p>模型预估的每个样本的点击概率为：</p>
+<p><span class="math display">\[
+   P(d_i|q) = \frac{exp(\gamma R(q, d_i))}{\sum_{d_j\in D}exp(\gamma
+R(q, d_j))}
+\]</span></p>
+<ul>
+<li>注意这里的 <code>softmax</code>
+并不是对应多分类问题，而是对应负采样率。</li>
+</ul>
+<p>关键就是 <strong>样本集 <span
+class="math inline">\(D\)</span></strong> 和 <strong>损失函数
+(似然函数)</strong> 怎么构造的：假设点击样本为 <span
+class="math inline">\(d^+\)</span>，未点击样本为 <span
+class="math inline">\(d^-\)</span>，那么 DSSM 针对每个 <span
+class="math inline">\((q, d^+)\)</span> 样本，随机采样4 <span
+class="math inline">\((q, d^-)\)</span> 负样本。如此构建了整个样本集
+<span class="math inline">\(D\)</span>
+(这里不是拿真实点曝的样本(真实正负比)去构建样本，而是针对每个正样本去采样
+4 个负样本)。<br />
+损失：</p>
+<p><span class="math display">\[
+   L(\Lambda) = -\prod_{(q,d^+)\in D}P(d_i|q)
+\]</span></p>
+<ul>
+<li>注意这里的极大似然<strong>不是去似然整个样本分布</strong>，而是去极大似然
+<strong>点击概率</strong>。所以这里的 <code>softmax</code> 和
+似然损失函数 (负的似然函数)
+和一般的预估问题都不一样。一般的预估问题是模型去似然
+<strong>样本分布</strong>，而这里是让模型去似然
+<strong>点击概率</strong>，而 <strong>样本分布靠采样</strong>
+来完成。</li>
+<li>样本生成和学习过程的详细理解可以仔细阅读论文附录部分的梯度下降求解方法。</li>
+<li>具体到实施上：针对每一个<strong>点击正样本</strong>，我们可以构建一个<span
+class="math inline">\((q, d^+, d^-_1, d^-_2, d^-_3, d^-_4)\)</span>
+的输入，即模型是一个 <span class="math inline">\(6\)</span>
+元组的向量输入。模型中 <span class="math inline">\(q\)</span> 和每个
+<span class="math inline">\(d\)</span> 的匹配是相互独立的
+(极大似然的样本独立性假设)，一共有 <span
+class="math inline">\(5\)</span> 个匹配输出 <code>logit</code> 为 <span
+class="math inline">\([r^+, r^-_1, r^-_2, r^-_3,
+r^-_4]\)</span>。则对应该样本的 <code>label</code> 为 <span
+class="math inline">\([1, 0, 0, 0, 0]\)</span>。然后对 <span
+class="math inline">\(5\)</span> 个 <code>logit</code> 和
+<code>label</code> 用 <code>softmax_crossentropy_with_logits</code>
+函数算损失。</li>
+</ul></li>
+</ol>
+<h3 id="工业实践">工业实践</h3>
+<ul>
+<li>应用上，可以先 <strong>离线训练</strong> 好模型，储存好每个 query
+(query 对应的 word-hash 向量) 和 doc
+训练出来的隐向量。然后线上预估的时候直接计算 cosin
+相似度，算作一种向量召回吧。</li>
+<li>DSSM 本来是解决搜索领域里的语义匹配问题的，但是其设计思想而衍生出的
+<strong>双塔模型思想</strong> 却在推荐领域大放异彩。我们把
+<code>query</code> 换成 <code>user</code>，<code>doc</code> 换成
+<code>item</code> 就很自然地迁移到了推荐领域。</li>
+</ul>
+<h2 id="esmm">ESMM</h2>
+<p>   ESMM 是面向 CVR
+领域的。有转化的样本比点击样本更少。假设我们有全量(曝光)样本集 <span
+class="math inline">\(S\)</span>，这部分样本上有一批样本点击样本 <span
+class="math inline">\(S_c\)</span>，在点击样本里有一批转化样本 <span
+class="math inline">\(S_v\)</span>，那么每进一层，ESMM 指出样本约下降
+3-4 个数量级。传统的 CVR 模型都是直接那 <strong>点击样本</strong> <span
+class="math inline">\(S_c\)</span>
+来训练，而预测时，却拿全量样本来预测，这就一定会导致分布上的偏差和
+position-bias。样本关系如下图所示：</p>
+<p><img src = "../images/ESMM_Sample.png" width=480></p>
+<p>   CVR 领域里还有一个重要的困难点是 delayed feedback (可以参考 CVR
+篇)，但是由于 ESMM 面对的场景 (论文由 alibaba
+淘宝团队提出，场景是淘宝的推荐场景) 里
+转化延迟在可接受的范围，所以本篇论文没有建模这个因素。</p>
+<p>   整个论文的核心观点在于对 <span class="math inline">\(pCTR\)</span>
+和 <span class="math inline">\(pCVR\)</span>
+概率的拆解，并用模型来表示和学习。用数学公式表达就两个公式：</p>
+<p><span class="math display">\[
+  \begin{aligned}
+    p(y=1, z=1 |\mathbf{x}) &amp;= p(y=1|\mathbf{x})\times p(z=1|y=1,
+\mathbf{x}) \\
+    L([y,z], [\hat{y}, \hat{z}]) &amp;= \sum_{i=1}^N l(y_i,
+f(\mathbf{x};\theta_{ctr})) + \sum_{i=1}^N l(y_i \&amp; z_i,
+f(\mathbf{x};\theta_{cvr}))
+  \end{aligned}
+\]</span></p>
+<ul>
+<li>上诉损失函数里的 <span class="math inline">\(N\)</span>
+代表了全量(曝光)样本 <span class="math inline">\(S\)</span>
+的样本数量。</li>
+<li>针对每个样本，把损失拆成 <code>ctr</code> 损失 和 <code>cvr</code>
+损失两部分，假设我们用 <span class="math inline">\([y_{ctr},
+y_{cvr}]\)</span> 来表示。那么针对每一个样本，有三种
+<code>label</code>：
+<ul>
+<li>第一种：只曝光，未点击，未购买(转化)，<span
+class="math inline">\([y_{ctr}, y_{cvr}] = [0, 0]\)</span>。</li>
+<li>第二种：曝光，点击，未购买(转化)，<span
+class="math inline">\([y_{ctr}, y_{cvr}] = [1, 0]\)</span></li>
+<li>第三种: 曝光，点击，且购买(转化)，<span
+class="math inline">\([y_{ctr}, y_{cvr} = [1, 1]\)</span></li>
+</ul></li>
+<li>ESMM 模型是直接基于全量曝光样本，一起 <strong>联合训练</strong> CTR
+和 CVR 两个任务的。</li>
+</ul>
+<p>   模型结构：</p>
+<p><img src = "../images/ESMM_Model.png"></p>
+<ul>
+<li>训练时，模型输出两个预估 <span class="math inline">\(pCTR\)</span>
+和 <span class="math inline">\(pCVR\)</span>，然后用这两个预估来结合
+<code>Loss</code> 函数进行训练。</li>
+<li>预估时，我们得到 <span class="math inline">\(pCTR\)</span> 和 <span
+class="math inline">\(pCVR\)</span>，而 <span
+class="math inline">\(p(y=1, z=1 | \mathbf{x}) = pCTR \times
+pCVR\)</span>，即可以直接把两项预估相乘得到我们想要的 <code>Item</code>
+转化率。</li>
+<li>左右两个塔采用相同的模型结构 (双塔模型又来喽)</li>
+<li>CTR 和 CVR 任务公用一套 Embedding 矩阵，因为 CVR
+的正样本数据太少，用 CTR 的任务来增强 CVR 模型的表现力 (迁移学习)
+<ul>
+<li>如果 Embedding 不共享，那么 ESMM 的训练过程，就跟 <strong>直接基于
+<span class="math inline">\(S_c\)</span> 和 <span
+class="math inline">\(S_v\)</span> 分别训练出 CTR 模型和 CVR 模型
+(这里的 CVR，曝光未点击(当然未购买) 和 曝光点击未购买
+统一当做一样的负样本来看待)</strong> 的训练过程是一样的。</li>
+</ul></li>
+<li>模型结构可以自行设计。</li>
+</ul>
 
       
     </div>
@@ -365,6 +1009,12 @@
           
             <a href="/tags/CTR/" rel="tag"># CTR</a>
           
+            <a href="/tags/Recommend-System/" rel="tag"># Recommend System</a>
+          
+            <a href="/tags/Collaborative-Filtering/" rel="tag"># Collaborative Filtering</a>
+          
+            <a href="/tags/Multitask-Learning/" rel="tag"># Multitask Learning</a>
+          
         </div>
       
 
@@ -376,8 +1026,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/12/08/Optimization/" rel="next" title="Optimization">
-                <i class="fa fa-chevron-left"></i> Optimization
+              <a href="/2021/12/18/MultiTask/" rel="next" title="MultiTask Learning">
+                <i class="fa fa-chevron-left"></i> MultiTask Learning
               </a>
             
           </div>
@@ -440,8 +1090,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -456,7 +1115,7 @@
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -469,7 +1128,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -502,6 +1161,23 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#fm"><span class="nav-number">1.</span> <span class="nav-text">FM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84%E6%9D%A5%E7%9C%8B-fm-%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">从深度神经网络模型结构来看
+FM 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0"><span class="nav-number">1.4.</span> <span class="nav-text">学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BD%95%E8%83%BD%E8%A7%A3%E5%86%B3%E7%A8%80%E7%96%8F%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.</span> <span class="nav-text">为何能解决稀疏性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%E5%AF%B9%E6%AF%94"><span class="nav-number">1.6.</span> <span class="nav-text">与其他经典算法对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffm"><span class="nav-number">2.</span> <span class="nav-text">FFM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wide-deep"><span class="nav-number">3.</span> <span class="nav-text">Wide &amp; Deep</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">推荐系统架构与训练过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B7%E6%9C%AC%E7%94%9F%E6%88%90"><span class="nav-number">3.3.</span> <span class="nav-text">样本生成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nfm"><span class="nav-number">4.</span> <span class="nav-text">NFM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deepfm"><span class="nav-number">5.</span> <span class="nav-text">DeepFM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fm-%E9%83%A8%E5%88%86"><span class="nav-number">5.1.</span> <span class="nav-text">FM 部分：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#deep-%E9%83%A8%E5%88%86"><span class="nav-number">5.2.</span> <span class="nav-text">Deep 部分：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ncf"><span class="nav-number">6.</span> <span class="nav-text">NCF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#autoint"><span class="nav-number">7.</span> <span class="nav-text">AutoInt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#din"><span class="nav-number">8.</span> <span class="nav-text">DIN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%93%E6%9E%84-1"><span class="nav-number">8.1.</span> <span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#activation-unit"><span class="nav-number">8.2.</span> <span class="nav-text">Activation Unit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E4%B8%8A%E7%9A%84%E5%B0%8F-trick"><span class="nav-number">8.3.</span> <span class="nav-text">数学上的小 trick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%B8%9A%E5%AE%9E%E8%B7%B5"><span class="nav-number">8.4.</span> <span class="nav-text">工业实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#esmm"><span class="nav-number">9.</span> <span class="nav-text">ESMM</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

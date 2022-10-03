@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考Statistic-常见分布章节。 Tf-Idf  说明：  tf: term frequence：词频。 idf: inverse document frequence：逆向文档频率。  算法:  词汇: term: \(t\) ，文档: document: \(d\), 语料: corpus: \(">
+<meta name="description" content="关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考Statistic-常见分布章节。 词袋模型 (bag-of-word model)    假设我们有 \(N\) 篇文档 \(\{d_1,...d_n\}\) 组成的语料 \(D\)。词袋模型先统计全局下整篇语料的全部的单词个数，假设为 \(K &#x3D; |D_{\text{term}}|\)。那么每篇文档 \(d_i\)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Topic Model">
 <meta property="og:url" content="http://example.com/2021/09/23/TopicModel/index.html">
 <meta property="og:site_name" content="泽">
-<meta property="og:description" content="关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考Statistic-常见分布章节。 Tf-Idf  说明：  tf: term frequence：词频。 idf: inverse document frequence：逆向文档频率。  算法:  词汇: term: \(t\) ，文档: document: \(d\), 语料: corpus: \(">
+<meta property="og:description" content="关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考Statistic-常见分布章节。 词袋模型 (bag-of-word model)    假设我们有 \(N\) 篇文档 \(\{d_1,...d_n\}\) 组成的语料 \(D\)。词袋模型先统计全局下整篇语料的全部的单词个数，假设为 \(K &#x3D; |D_{\text{term}}|\)。那么每篇文档 \(d_i\)">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-09-23T10:19:08.000Z">
-<meta property="article:modified_time" content="2021-09-23T10:19:08.000Z">
+<meta property="article:modified_time" content="2021-10-02T10:19:08.000Z">
 <meta property="article:author" content="Z">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="Statistical Learning">
@@ -311,8 +311,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2021-09-23T18:19:08+08:00">
-                2021-09-23
+              <time title="更新于" itemprop="dateModified" datetime="2021-10-02T18:19:08+08:00">
+                2021-10-02
               </time>
             
           </span>
@@ -351,6 +351,34 @@
 
       
         <p>  关于主题模型的背景和历史可以参考维基百科，主题模型的概率基础要求参考<code>Statistic-常见分布</code>章节。</p>
+<h2 id="词袋模型-bag-of-word-model">词袋模型 (bag-of-word model)</h2>
+<p>   假设我们有 <span class="math inline">\(N\)</span> 篇文档 <span
+class="math inline">\(\{d_1,...d_n\}\)</span> 组成的语料 <span
+class="math inline">\(D\)</span>。词袋模型先统计全局下整篇语料的全部的单词个数，假设为
+<span class="math inline">\(K = |D_{\text{term}}|\)</span>。那么每篇文档
+<span class="math inline">\(d_i\)</span> 用一个 <span
+class="math inline">\(K\)</span> 维的向量 <span
+class="math inline">\(\mathbf{v}_i\)</span>
+表示，向量的每个维度代表一个单词
+(单词映射为维度整数)。而每个向量里面的值为 <span
+class="math inline">\(freq(term_k,
+d_i)\)</span>，即该位置上的单词在该文档中出现的频率。<br />
+  
+向量的维度有了单词的意义，向量的值有了文档里该单词词频的意义，那么该向量可以一定程度上表示该文档。而全局语料
+<span class="math inline">\(D\)</span> 就可以表示成一个大矩阵</p>
+<p><span class="math display">\[
+V_{N\times K}= \begin{bmatrix}
+  \mathbf{v}_1, \\
+  ... \\
+  \mathbf{v}_n
+\end{bmatrix}
+\]</span> 有了 <span
+class="math inline">\(V\)</span>，我们就可以做许多数学上的操作和分析。</p>
+<ul>
+<li>需要注意的一点是，针对大语料
+(比如搜索引擎下的文档数量(千亿级别))，<span
+class="math inline">\(K\)</span> 的数量可能非常大 (几十万量级)</li>
+</ul>
 <h2 id="tf-idf">Tf-Idf</h2>
 <ul>
 <li>说明：
@@ -370,7 +398,7 @@ d}f_{t&#39;,d}}\)</span>
 <span class="math inline">\(t\)</span> 在 <code>document</code>: <span
 class="math inline">\(d\)</span> 中出现的次数</li>
 <li><span class="math inline">\(tf\)</span>
-值是<code>term-document</code>共现的。</li>
+值是<code>term-document</code>共现的。表示某个词在该文档中的"词频重要度"</li>
 <li>一些变种：
 <ul>
 <li><span
@@ -384,7 +412,8 @@ t\in d \} \vert + 1})\)</span>
 <li><span class="math inline">\(M\)</span> 代表文档数量</li>
 <li><span class="math inline">\(\vert \{d\in D: t\in d \} \vert\)</span>
 表示出现单词 <span class="math inline">\(t\)</span> 的文档的个数。</li>
-<li><span class="math inline">\(idf\)</span> 值是全局的</li>
+<li><span class="math inline">\(idf\)</span>
+值是全局的。表示改词的全局重要度。</li>
 </ul></li>
 <li><span class="math inline">\(tf\_idf(t,d,D)=tf(t,d)*idf(t,D)\)</span>
 <ul>
@@ -1111,7 +1140,7 @@ Dirichlet Allocation</a></li>
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1124,7 +1153,7 @@ Dirichlet Allocation</a></li>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1167,8 +1196,8 @@ Dirichlet Allocation</a></li>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#tf-idf"><span class="nav-number">1.</span> <span class="nav-text">Tf-Idf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latent-semantic-analysislsa"><span class="nav-number">2.</span> <span class="nav-text">Latent Semantic Analysis(LSA)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#probabilistic-latent-semantic-analysisplsa"><span class="nav-number">3.</span> <span class="nav-text">Probabilistic Latent
-Semantic Analysis(pLSA)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latent-dirichlet-allocation"><span class="nav-number">4.</span> <span class="nav-text">Latent Dirichlet Allocation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B-bag-of-word-model"><span class="nav-number">1.</span> <span class="nav-text">词袋模型 (bag-of-word model)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tf-idf"><span class="nav-number">2.</span> <span class="nav-text">Tf-Idf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latent-semantic-analysislsa"><span class="nav-number">3.</span> <span class="nav-text">Latent Semantic Analysis(LSA)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#probabilistic-latent-semantic-analysisplsa"><span class="nav-number">4.</span> <span class="nav-text">Probabilistic Latent
+Semantic Analysis(pLSA)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#latent-dirichlet-allocation"><span class="nav-number">5.</span> <span class="nav-text">Latent Dirichlet Allocation</span></a></li></ol></div>
             
 
           </div>

@@ -493,25 +493,42 @@ y_i)\},\ \ |D|=n,\  \mathbf{x}\in R^m,\ y\in R\)</span>， 即 <span
 class="math inline">\(\mathbf{x}\)</span> 有 <span
 class="math inline">\(m\)</span> 个 feature, 共 <span
 class="math inline">\(n\)</span> 个样本。我们要学习一个复杂的映射 <span
-class="math inline">\(F(\mathbf{x})\)</span>，如何学习呢？集成模型的建模思路如下：
-<span class="math display">\[
+class="math inline">\(F(\mathbf{x})\)</span>，如何学习呢？集成模型的建模思路如下：</p>
+<p><span class="math display">\[
     \hat{y} = F_K(\mathbf{x}) = \sum_{k=1}^K\rho_k f_k(\mathbf{x}) =
 F_{K-1}(\mathbf{x}) + \rho_kf_k(\mathbf{x})
-\]</span> 即 <span class="math inline">\(F(\mathbf{x})\)</span>
+\]</span></p>
+<p>即 <span class="math inline">\(F(\mathbf{x})\)</span>
 由一系列弱学习器 <span class="math inline">\(f_k(\mathbf{x})\)</span>
 组成，<span class="math inline">\(\rho_k\)</span>
 为每个弱学习器的权重，而 <span class="math inline">\(f_k\)</span>
 一般是一些参数化的模型 (<code>parameterized function</code>)
 来表示，比如神经网络，SVM，决策树等。我们表示为 <span
 class="math inline">\(f_k(\mathbf{x};
-\mathbf{w})\)</span>。损失可以表示为： <span class="math display">\[
+\mathbf{w})\)</span>。损失可以表示为：</p>
+<p><span class="math display">\[
     L = \sum_{i=1}^nl(y_i, F_k(\mathbf{x})) = \sum_{i=1}^nl(y_i,
-F_{k-1}(\mathbf{x}) + \rho_kf_k(\mathbf{x};\mathbf{w}))
-\]</span> 当函数形式 (<code>function</code>) 确定时，确定了<span
+F_{k-1}(\mathbf{x}_i) + \rho_kf_k(\mathbf{x}_i;\mathbf{w}))
+\]</span></p>
+<p>当函数形式 (<code>function</code>) 确定时，确定了<span
 class="math inline">\(\mathbf{w}_k\)</span> 可以唯一确定一个映射<span
 class="math inline">\(f_k\)</span>，则函数拟合
 (<code>function estimation</code>)问题可以转化成参数拟合
 (<code>parameter estimation</code>)问题。</p>
+<p>   我们对损失在前 <span class="math inline">\(k-1\)</span>
+个学习器的基础上 (<span
+class="math inline">\(F_{k-1}(\mathbf{x})\)</span> 处)
+做一阶泰勒展开：</p>
+<p><span class="math display">\[
+  L = \sum_{i=1}^Ll(y_i, F_{k-1}(\mathbf{x}_i))+\frac{\partial l(y,
+F_{k-1})}{\partial F_{k-1}}|_{\mathbf{x} =
+\mathbf{x}_i}\cdot\rho_kf_{k}(\mathbf{x}_i;\mathbf{w})
+\]</span></p>
+<p>那么一个直观的方法就是第 <span class="math inline">\(k\)</span>
+个学习器 <span class="math inline">\(f_k\)</span> 去拟合前 k 个学习器
+<span class="math inline">\(F_k\)</span> 的负梯度 <span
+class="math inline">\(-\frac{\partial l(y, F_{k-1})}{\partial
+F_{k-1}}\)</span></p>
 <h3 id="学习过程-gradient-boosting">学习过程 (Gradient Boosting)</h3>
 <p>  可以看到，损失函数中只有两类未知值：<span
 class="math inline">\(\rho, \
@@ -1488,7 +1505,7 @@ U_j)\sigma |\Delta Z_{ij}|\rho_{ij}(1-\rho_{ij})}
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1501,7 +1518,7 @@ U_j)\sigma |\Delta Z_{ij}|\rho_{ij}(1-\rho_{ij})}
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

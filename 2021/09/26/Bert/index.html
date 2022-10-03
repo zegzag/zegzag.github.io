@@ -429,18 +429,19 @@ algorithm)。 例：
 <ul>
 <li><code>run_pretraining.py</code>:
 <ul>
-<li><code>input_fn_builder()</code>: 返回一个创建输入的闭包函数:
-<code>input_fn()</code>，该函数返回 <code>tf.data.Dataset</code></li>
-<li><code>model_fn_builder()</code>: 返回一个 BertModel 的闭包函数:
-<code>model_fn()</code>，该函数返回<code>TPUEstimatorSpec</code> <img
-src="../images/bert_pretraining_model_fn_builder.png"
-alt="avatar" /></li>
-<li>创建 <code>estimator</code>，由 <code>model_fn</code> 做初始化 <img
-src="../images/bert_pretraining_estimator.png" alt="avatar" /></li>
-<li>开始训练， 由 <code>input_fn()</code> 表达其输入数据 <img
-src="../images/bert_pretraining_train.png" alt="avatar" /></li>
-<li>训练中的 batch metrics 评估： <img
-src="../images/bert_pretraining_eval.png" alt="avatar" /></li>
+<li><p><code>input_fn_builder()</code>: 返回一个创建输入的闭包函数:
+<code>input_fn()</code>，该函数返回
+<code>tf.data.Dataset</code></p></li>
+<li><p><code>model_fn_builder()</code>: 返回一个 BertModel 的闭包函数:
+<code>model_fn()</code>，该函数返回<code>TPUEstimatorSpec</code></p>
+<p><img src = "../images/bert_pretraining_model_fn_builder.png"></p></li>
+<li><p>创建 <code>estimator</code>，由 <code>model_fn</code>
+做初始化</p>
+<p><img src = "/images/bert_pretraining_estimator.png"></p></li>
+<li><p>开始训练， 由 <code>input_fn()</code> 表达其输入数据</p>
+<p><img src = "/images/bert_pretraining_train.png"></p></li>
+<li><p>训练中的 batch metrics 评估：</p>
+<p><img src = "/images/bert_pretraining_eval.png"></p></li>
 </ul></li>
 </ul>
 
@@ -568,7 +569,7 @@ src="../images/bert_pretraining_eval.png" alt="avatar" /></li>
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -581,7 +582,7 @@ src="../images/bert_pretraining_eval.png" alt="avatar" /></li>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

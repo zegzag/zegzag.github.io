@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="关于写博客的初衷  做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜">
+<meta name="description" content="写博客的初衷  做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜，加粗等">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于算法工程的一些思考">
 <meta property="og:url" content="http://example.com/2021/05/19/Wondering/index.html">
 <meta property="og:site_name" content="泽">
-<meta property="og:description" content="关于写博客的初衷  做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜">
+<meta property="og:description" content="写博客的初衷  做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜，加粗等">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-05-19T03:34:08.000Z">
 <meta property="article:modified_time" content="2021-05-19T03:34:08.000Z">
@@ -347,16 +347,17 @@
       
 
       
-        <ul>
-<li>关于写博客的初衷
+        <h3 id="写博客的初衷">写博客的初衷</h3>
 <ul>
 <li>做算法工程还是必须理解算法背后的原理的，然而这个难度和过程是和真正的实践的难度和过程一样长，甚至有过之而无不及。
 也许费了半天的脑力劲理解的内容工作中根本就用不上。那么为什么还要费这么大的劲去推理这些复杂的公式呢？以及如何才能够更加深入的理解这些过程。
 实践发现，单纯地去看内容，基本上都是过目就忘的一个状态。如果纯粹手写推算的话，速度又太慢。比如各种符号的区分，取斜，加粗等，
 这些在手推时往往难以表示。后来发现写博客其实是一种比较高效而折中的方法。把看的内容加工一下，再写出来，虽然内容上整体大同小异，但理解和记忆
 的效果要大于只是看一遍或者看几遍的情况。并且博客可以沉淀下来反复观看。</li>
-</ul></li>
-<li>遇到公式太长太复杂记不住怎么办？
+</ul>
+<h3 id="学习的道与术">学习的道与术</h3>
+<ul>
+<li>公式太复杂太长记不住怎么办？
 <ul>
 <li>可以尝试从简单的地方入手，一步一步构建起复杂的公式模型。
 比如针对交叉熵损失函数，我们先记住一个样本下的公式： <span
@@ -369,8 +370,20 @@ class="math display">\[
 (1-y_i)*log(1-\hat))
 \]</span> 其实没有别的方法，就是简单的反复和思考。</li>
 <li>看到公式慢一点，特别是自己不熟悉的新公式时。每一个点多想想背后的含义，能否用白话语言给说出来，就算说不出来脑子里也要过几遍，理解该公式的含义。</li>
+<li>假设如果自己来解决这个问题，需要哪些变量，这些变量的关系是怎样的，脚标怎么标。优化方法有哪些，需要哪些基础知识，涉及到哪些领域知识。</li>
 </ul></li>
-<li>工作经验：
+<li>关于 ML 和 DL 学习上的区别
+<ul>
+<li>DL
+是一个细节决定成败的地方，理论和公式可能很少，看得也比较舒服，但是有非常多的细节和经验性的地方。这些地方在论文里可能就是一句话的事情，跟论文的
+Obj 没啥关系，却是非常有价值的能够运用在实际里的调参经验。</li>
+<li>ML 虽然表现力没有 DL 强，但是需要弄清的公式和推导过程却大大多于 DL
+论文，理解远比 DL 领域的论文费劲。但 ML
+你理解了所有的公式，就理解并能掌控了全部的学习过程
+(DL却不行，就是门玄学)。</li>
+</ul></li>
+</ul>
+<h3 id="工作经验">工作经验：</h3>
 <ul>
 <li><p>模型只是一方面，实际工作中，从<strong>问题发现，目标拆解，目标设计，数据分析，数据检查，假设验证，模型设计和选择</strong>，
 <strong>模型结构check和调整，最终上线观察验证</strong>，是一套整体的方法和实践过程。不是想到一个idea，
@@ -394,7 +407,8 @@ SQL，spark，flink
 错误日志打印等，单点清晰地给暴露出来。但是<strong>数据处理相关的代码，错误非常隐蔽，即时错了也没有足够"solid"的信息可以参考，有时候一个逻辑的错误，就会导致数据分布这那样的区别。最后结果的数据分布可能和写代码逻辑
 时候的数据分布有出入</strong>。这就要求涉及到数据相关的代码的时候必须要小心，不能急于求成，多个方面不断地检验，哪些方法可以看出是允许内的噪声，哪些方法可以一眼就看出是代码逻辑出了问题。避免
 garbage in, garbage out。</li>
-<li>数据处理前，作为算法人员，<strong>必不能</strong>对上游数据（比如各种hive表，埋点，以及由此衍生出的数据等）产生充分信任。首先搞清楚源数据的产出逻辑，然后是一些基础的分析，比如分布分析，样本重复率分析等，通过检验后才能开始算法流程开发，而不能拿到数据就一股脑就直接模型怼起来。</li>
+<li>数据处理前，作为算法人员，<strong>一定不能充分信任</strong>
+上游数据（比如各种hive表，埋点，以及由此衍生出的数据等)。拿到数据时，首先搞清楚源数据的产出逻辑，然后是一些基础的分析，比如分布分析，样本重复率分析等，通过检验后才能开始算法流程开发，而不能拿到数据就一股脑就直接模型怼起来。</li>
 <li>整体算法流程跑通后，如果取得预期效果而上线，也不是一步上线后就万事大吉了。因为整套算法流程涉及的链路非常之长，所以<strong>在一些节点上必要加入监控以及检查判断就非常有必要</strong>。如果出现问题（隐蔽的数据问题），<strong>直接终止流程比把错误的数据和结果带到线上要好得多</strong>。</li>
 </ul></li>
 <li><p>关于<strong>数据分析</strong>：</p>
@@ -406,7 +420,6 @@ garbage in, garbage out。</li>
 <li>一个超大型的项目是由许多个小模块构成的，而在开发小模块时，是按照业务逻辑来写代码的。很多情况下只是满足了业务逻辑，但是隐藏的各种情况，边界条件等。都很难在写主代码的时候给考虑到。写单元测试代码的时候是从测试的角度逻辑去写代码
 (例如
 GoogleTest)，在写测试代码的同时(甚至测试还未开始)，就可以暴露出很多主代码的各种细节问题，从而提高程序的健壮性。所以，开发人员写单元测试代码并不是浪费时间，磨刀不误砍柴工。5%的单元测试代码开发时间可以减少70%的线上debug时间。</li>
-</ul></li>
 </ul></li>
 </ul>
 
@@ -503,8 +516,17 @@ GoogleTest)，在写测试代码的同时(甚至测试还未开始)，就可以�
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -519,7 +541,7 @@ GoogleTest)，在写测试代码的同时(甚至测试还未开始)，就可以�
               
                 <a href="/archives%7C%7C%20archive">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -532,7 +554,7 @@ GoogleTest)，在写测试代码的同时(甚至测试还未开始)，就可以�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -565,6 +587,22 @@ GoogleTest)，在写测试代码的同时(甚至测试还未开始)，就可以�
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%88%9D%E8%A1%B7"><span class="nav-number">1.</span> <span class="nav-text">写博客的初衷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%9A%84%E9%81%93%E4%B8%8E%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">学习的道与术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E7%BB%8F%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">工作经验：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
